@@ -1,5 +1,23 @@
 #!/bin/bash
-pdflatex v-research_experiment-alpha.tex
-biber v-research_experiment-alpha
-pdflatex v-research_experiment-alpha.tex
-pdflatex v-research_experiment-alpha.tex
+latexOutputDir="latex-output-dir"
+latexInputFile="v-research_experiment-alpha.tex"
+pdfOutputDir="${latexOutputDir}/${latexInputFile%.*}.pdf"
+
+if [[ ! -d $latexOutputDir ]]; then 
+	mkdir $latexOutputDir
+fi
+
+if pdflatex -halt-on-error -output-directory=$latexOutputDir $latexInputFile
+then 
+	if biber --nodieonerror --input-directory=$latexOutputDir --output-directory=$latexOutputDir ${latexInputFile%.*}
+	then
+		if pdflatex -halt-on-error -output-directory=$latexOutputDir $latexInputFile
+		then 
+			pdflatex -halt-on-error -output-directory=$latexOutputDir $latexInputFile 
+			if [[ -f $pdfOutputDir ]]
+			then
+				mv $pdfOutputDir `dirname $0`
+			fi
+		fi
+	fi
+fi
