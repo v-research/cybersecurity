@@ -713,7 +713,7 @@ vulnerability and a vulnerability is a mistake which, in turn, is a weakness.
 The only difference (between weakness and vulnerability) seems to be
 that one can consider weakness as a ground term and state that a
 vulnerability is caused by a weakness, i.e. 
-$\World,\Weakness\models\Diamond\Vulnerability$ where
+$\World,\Weakness\models\Diamond\Vulnerability\wedge\Weakness$ where
 $\Weakness,\Vulnerability$ are Regions of Weaknesses and Vulnerabilities (resp.);
 accepting the hierarchy in the CWE\autocite{CWE} as a ground truth. 
 Similarly, we consider the CVE\autocite{CVE} (a database of Vulnerability) 
@@ -721,12 +721,13 @@ or the CVE reported in the NVD as a ground truth.
 
 \begin{definition}{\bf Region: Weakness and Vulnerability --}\label{def:weakness}
 	A Region $\region\subseteq\agent$ of an agent
-	$\agent\in\agentuniverse$ is defined as Weakness $\Weakness$ (i.e.
+	$\agent\in\agentuniverse$, is defined as Weakness $\Weakness$ (i.e.
 	representing a weakness introduced by the agent into any phase of
 	production, e.g.  of the secure process development life-cycle, of any
 	system or subsystem) iff there exists $\world\in\possibleworlds$ such
-	that $\World,\Weakness\models\Diamond\exists\Weakness',\Vulnerability'.~
-	\po{\Weakness'}{\Vulnerability'}$, where $\Weakness'\subseteq\Weakness$, and
+	that $\world,\Weakness\models\Diamond\exists\Weakness',\Vulnerability'.~
+	\rcc(\Weakness',\Vulnerability')\wedge\neg\dr{\Weakness'}{\Vulnerability'}$, 
+	where $\Weakness'\subseteq\Weakness$, and
 	$\Vulnerability'\subseteq\Vulnerability$ is a Region of an agent $\agent'\in\agentuniverse$.
 \end{definition}
 
@@ -789,9 +790,9 @@ or the CVE reported in the NVD as a ground truth.
 		\caption{Representation with RCC8}
 		\label{fig:rcc8_CWE-116}
 	\end{subfigure}
-	\begin{subfigure}[b]{.5\textwidth}
+	\begin{subfigure}[b]{\textwidth}
 		\centering
-		\includegraphics[width=.7\textwidth]{rcc8_CWE-116.pdf}
+		\includegraphics[width=\textwidth]{KML_CWE-116.pdf}
 		\caption{Representation in K-Modal Logic}
 		\label{fig:KML_CWE-116}
 	\end{subfigure}
@@ -806,6 +807,7 @@ A region $\region\subseteq\agent$ of an agent $\agent\in\agentuniverse$ is
 	\emph{Defect} if the agent is referred to as Nature.
 \end{definition}
 
+\subsubsection{Process: Incidents and Accidents}\label{sec:vulnerabilitydefect}
 In our informal definition depicted in Figure~\ref{fig:safety-security}, a
 Vulnerability is seen as a process through which an agent (i.e. Mankind)
 generates an Incident, i.e.
@@ -834,6 +836,8 @@ introduce the concept of \emph{intent} to define a \emph{threat agent}.
 	\caption{Informal representation of Knowledge and Belief}
 	\label{fig:knowledge-belief}
 \end{figure}
+
+\subsubsection{Region: Threat and Asset}\label{sec:vulnerabilitydefect}
 
 The difference between Knowledge and Belief is depicted in
 Figure~\ref{fig:knowledge-belief} (see \autocite{wiki-knowledgebelief}).  However,
