@@ -476,7 +476,7 @@ truth-value semantics. The choice of this logic is required by the
 semantics of the concepts formalized afterwards in this section. 
 
 We consider a first-order language $\follang$ over a
-signature $\Sigma_P$ where $P,P',\ldots,P^n$ represent terms, 
+signature $\Sigma_P$ where $P,P',\ldots,P^n$ represent terms, and
 $\varphi,\varphi',\ldots,\varphi^n$ represent formulas.
 The syntax is defined as follows.
 \begin{displaymath}
@@ -539,18 +539,20 @@ generic form. In fact, the accessibility relation $\modalrelation$ is free from
 any axiomatic restriction (e.g. it's not reflexive nor anti-reflexive).  
 We will focus in Section~\ref{sec:process} (for our tests) on 
 the application of our theory to CPS system engineering.
-More detailed case studies (i.e. \fix{mr}{a CPS as a smart power-grid}), 
+More detailed case studies (i.e. \fix{mr}{a CPS as a smart power-grid}) 
 will be defined in Section~\ref{sec:prototest}, where
 the accessibility relation defines in details how the system itself evolves, due to causal relation 
 (i.e. by restricting the causality principle only to those cause-effect that defines
 the system). Therefore, the definition of $\modalrelation$
 will be specialized in a more strict way based on the application domains and case study.
 
-\fix{mr}{We note that we have, so far, defined the
+We note that we have defined the
 Causality principle without considering it a \emph{threat source} since 
-we lack the concept of intent and maliciousness. We introduce those concepts
-in Section~\ref{sec:mankind-nature} and then formally define a threat agent
-in the same section.}
+we lack the concept of intent and maliciousness. Similarly, in the 
+next sections we won't discriminate between Nature and Mankind until we introduce 
+the concepts of maliciousness in Section~\ref{sec:theory} 
+and then formally define a threat agent
+in the same section.
 
 \subsubsection{Agents: Mankind and Nature}\label{sec:mankind-nature}
 \begin{table}[t]
@@ -588,7 +590,7 @@ we define Mankind and Nature, and any
 other agent in the reminder of this article, as a meronomy (an hierarchy of
 Part-Whole relations) based on a standard definition of mereology, i.e. based
 on the definition of Parthood relation between \emph{Parts}.  
-However, we will need to
+However, shall 
 consider different types of Part; so, we extend the mereology to a
 mereo-topology\autocite{Smith1996mereotopology,Varzi1994mereotopology,Rachavelpula2017mereotopology},
 to increase the number of different types considered and to generalize the relations between Parts (as
@@ -599,7 +601,7 @@ The choice of mereotopology is also correlated to the objective of defining a fo
 ontology, which we use to define the (formal) semantics of the terms (Parts) in
 Section~\ref{sec:problem}, and of the concepts of safety and security
 (whole). We aim at creating a meronomy instead of the taxonomies such as the one provided
-in\autocite{NIST2020NVD,MITRE2020CVE} or instead of the dogmatic 
+in\autocite{NIST2020NVD,MITRE2020CVE} or instead of the poorly justified 
 CVSS\autocite{Mell2007CVSS} scoring system.  
 
 A mereotopology, as defined e.g. in\autocite{Rachavelpula2017mereotopology},
@@ -628,7 +630,7 @@ a better\fixnote{mr}{Can we prove this by construction?}
 positioning w.r.t. risk assessment technologies
 (which most often reason on the constituent of a system design), and
 protocol verification tools (which requires some formalization of a cause-effect relation, e.g.
-the Linear Temporal Logic).
+in Linear Temporal Logic).
 
 As we argued in Section~\ref{sec:problem}, we must correlate the definition of
 agent (i.e. Mankind and Nature) in Definition~\ref{def:mankind-nature} to the
@@ -640,7 +642,8 @@ Region Connection Calculus (RCC), as defined
 in~\cite{bennettLogics,improvingRCC}, to provide an axiomatization of the
 spatial concepts and relations in first-order logic to correlate the algebraic
 structure to mereology. In its broader definition, the RCC theory is composed
-by eight axioms, and is known as RCC8, but here we restrict to RCC5 (without
+by eight axioms, and is known as RCC8. In the text, for brevity, 
+we will often focus only on RCC5 (without
 loss of generality) by not considering tangential connections between spatial
 Regions. We discuss the choice of RCC5 in more detail in
 Appendix~\ref{app:rcc}. In Table~\ref{tab:rcc}, we
@@ -673,8 +676,7 @@ where $Z$ is a mereotopological Region.
 Currently, we do not distinguish between Mankind and Nature (since we still
 lack of the definition of ``malicious intent'', which is defined in
 Section~\ref{sec:theory}) and we have defined them as two generic
-agents.\fixnote{mr}{check if it's a repetition and if links to sections are
-consistent}
+agents.
 
 As depicted in Figure~\ref{fig:safety-security}, Causality, Mankind, and Nature
 have a dashed border representing their correlation in terms of cause-effect
@@ -715,7 +717,7 @@ that one can consider weakness as a ground term and state that a
 vulnerability is caused by a weakness, i.e. 
 $\World,\Weakness\models\Diamond\Vulnerability\wedge\Weakness$ where
 $\Weakness,\Vulnerability$ are Regions of Weaknesses and Vulnerabilities (resp.);
-accepting the hierarchy in the CWE\autocite{CWE} as a ground truth. 
+accepting the hierarchy in the CWE\autocite{CWE} as ground truth. 
 Similarly, we consider the CVE\autocite{CVE} (a database of Vulnerability) 
 or the CVE reported in the NVD as a ground truth. 
 
@@ -782,7 +784,7 @@ or the CVE reported in the NVD as a ground truth.
 	\begin{subfigure}[b]{.5\textwidth}
 		\centering
 		\includegraphics[width=.7\textwidth]{rcc5_CWE-116.pdf}
-		\caption{Representation with RCC5}
+		\caption{Representation with RCC3}
 		\label{fig:rcc5_CWE-116}
 	\end{subfigure}\begin{subfigure}[b]{.5\textwidth}
 		\centering
@@ -798,8 +800,30 @@ or the CVE reported in the NVD as a ground truth.
 	\end{subfigure}
 	\caption{Relations between CWE-116 and correlated CVEs}
 \end{figure}
+Definition~\ref{def:weakness} states that CWE-116 is a weakness iff there exists a world in
+K Modal Logic, representing the system in which this weakness exists, 
+such that the natural evolution of this system (i.e. formalized by the causality principle) 
+make it possible to reach another state of the system (i.e. another, accessible world)
+where there exist a vulnerability that can be implemented from CWE-116 (and this relation 
+is not DR). The CWE website proposes the connection between CWE-116 and, for example, 
+CVE-2008-5573; a vulnerability of the login sub-system 
+of the Poll Pro v2.0\autocite{pollpro} system.
+The formal relation between the two is given as a link (i.e. URI) between the CWE and
+the CVE, the description of the relation is not defined but it is supposed to be
+inferred from the descriptions of the CWE-CVE. 
+We can formally represent this link as the ONE connection in RCC3, depicted in 
+Figure~\ref{fig:rcc5_CWE-116}, or EC connection in RCC8 (Figure~\ref{fig:rcc8_CWE-116}).
 
+\fixnote{mr}{shouldn't we consider the agent who introduces the weakness as dishonest? don't we say this in part 1?}
 \end{example}
+
+It is interesting to note that the CWE-CVE relation expresses the correlation
+between weaknesses and vulnerabilities in the most simple form, such that we
+can formalize all the relation as ONE in RCC3 or EC in RCC8.  To express a more
+complex relation between the two we shall analyze the definition of CWE-116.
+This is related to the Weakness-Vulnerability-Incident process (i.e. to the
+details on the implementation/realization in Figure~\ref{fig:safety-security})
+that we analyze in the next section, Section~\ref{sec:incidentaccident}.
 
 \begin{definition}{\bf Region: Vulnerability and Defect --}\label{def:vulnerability-defect}
 A region $\region\subseteq\agent$ of an agent $\agent\in\agentuniverse$ is
@@ -807,15 +831,14 @@ A region $\region\subseteq\agent$ of an agent $\agent\in\agentuniverse$ is
 	\emph{Defect} if the agent is referred to as Nature.
 \end{definition}
 
-\subsubsection{Process: Incidents and Accidents}\label{sec:vulnerabilitydefect}
+\subsubsection{Process: Incidents and Accidents}\label{sec:incidentaccident}
 In our informal definition depicted in Figure~\ref{fig:safety-security}, a
 Vulnerability is seen as a process through which an agent (i.e. Mankind)
 generates an Incident, i.e.
 Agent$\rightarrow$Vulnerability$\rightarrow$Exploit$\rightarrow$Attack$\rightarrow$Incident.
 We describe processes, in our current formalization, in terms of the K-Modal
-Structure in Definition~\ref{def:modalinterpretation} (i.e. in terms of
+Structure as in Definition~\ref{def:modalinterpretation} (i.e. in terms of
 causality principle). 
-
 
 \begin{definition}{\bf Vulnerability-Incident Process --}\label{def:vulnerability-incident}
 	Given two 
@@ -837,8 +860,19 @@ introduce the concept of \emph{intent} to define a \emph{threat agent}.
 	\label{fig:knowledge-belief}
 \end{figure}
 
-\subsubsection{Region: Threat and Asset}\label{sec:vulnerabilitydefect}
+\begin{example}
+given in natural language in the description of the 
+CWE-116 which we can analyze as follows:
+\begin{itemize}
+	\item ``the software prepares a structured message''
+	\item [the message is intended] ``for communication with another component''
+	\item ``but''
+	\item ``encoding or escaping of the data is either missing or done incorrectly''
+	\item ``[\ldots] result, the intended structure of the message is not preserved''
+\end{itemize}
+\end{example}
 
+\subsubsection{Region: Threat and Asset}\label{sec:threatasset}
 The difference between Knowledge and Belief is depicted in
 Figure~\ref{fig:knowledge-belief} (see \autocite{wiki-knowledgebelief}).  However,
 according to\autocite{Gettier2012knowledge},
