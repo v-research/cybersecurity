@@ -1,24 +1,59 @@
-\begin{enumerate}[noitemsep]
-	\item cybersecurity as a requirement
-	\item vulnerability\label{def:vulnerability}
-\end{enumerate}
+In order to address the problem raised by Herley, 
+we shall define how to distinguish between a secure and an insecure system.
+While most of the literature (and this paper so far) have
+correlated the problem of in-security to the maliciousness of
+agents interacting with the system, we show that security
+doesn't seem to have a malicious nature but, rather, insecurity 
+raises from the lack of well-defined security requirements for the
+design process of a system. We argue that the high number
+of security vulnerability reported today are simply the realization
+of potential system configurations, which deviate from the unintended 
+behavior just because the intended behavior of the system is not precisely 
+defined in the specification of the design process.
 
-We describe processes, in our current formalization, in terms of the K-Modal
-Structure as in Definition~\ref{def:modalinterpretation} (i.e. in terms of
-causality principle). 
+Given that the application of our theory is \emph{systems engineering} and that
+the two foundational processes (exploitation and hacking) are based on the
+concept of a system, we shall begin by defining what a system is, in its
+abstract form.
 
-\begin{definition}{\bf Vulnerability-Incident Process --}\label{def:vulnerability-incident}
-	Given two 
-\end{definition}
+\subsection{Abstract Systems}\label{sec:system}
+The ISO/IEC/IEEE 15288:2015 (System Life Cycle Processes) 
+provides a definition of system as ``A combination of interacting elements organized to
+achieve one or more stated purposes.''\autocite{ISO201515288}.
+Therefore, a system can be considered as a single agent where it's interacting
+elements are the constituents of the agent itself. For the sake of simplicity
+we first define a system as an agent and then extend the definition
+to a ``combination of interacting'' agents.
 
-The whole-part relation \fix{mr}{(i.e.  HAS-A\footnote{HAS-A is just an hint for the
-mechanization of this theory.  We'll come back to this in
-Section~\ref{sec:implementation}})} is given, in the following, over the K Modal
-logic described beforehand. To do so, we first need to formally define the
-concept of \emph{agent} in its abstract form. We build it following the same
-structure of\autocite{Santaca2016abf} but over the terms used in
-Section~\ref{sec:problem}, i.e. knowledge, and belief as epistemic concepts. We'll then 
-introduce the concept of \emph{intent} to define a \emph{threat agent}.
+We use the same process of \autocite{Santaca2016abf} but over slightly different
+terms. The differences and commonalities with \autocite{Santaca2016abf} 
+are described in Appendix~\ref{app:abf}. There is no 
+agreement between the research communities (e.g. Multi-Agent-System, Epistemic Logic)
+on which are the constituent of an agent as a system. However,
+the same ideas revolved around for thousands of years. Some examples
+follows.
+\begin{itemize}
+	\item In \autocite{Georgeoff1995bdi}, the BDI (Belief, Desire, Intent)
+		paradigm is explained; where an agent can be defined over those
+		three constituents.
+	\item In \autocite{Hintikka1962knwoledge}, Hintikka describes the
+		difference between Knowledge and Belief (as epistemological
+		concepts), and the whole Doxastic logic defines in details how
+		Beliefs can be formalized.
+	\item In \autocite{Hintikka1993Information}, Hintikka describes the concept
+		of Information and the difference with Knowledge and Belief.
+	\item In \autocite{Empiricus1990Pyrrhonism}, the author states: ``The
+		logical criterion also may be used in three senses -- of the
+		agent, or the instrument, or the ``according to what''; the
+		agent, for instance, may be a man, the instrument either sense
+		perception or intelligence, and the ``according to what'' the
+		application of the impression ``according to'' which the man
+		proceeds to judge by means of one of the aforesaid
+		instruments.'' 
+	\item In \autocite{Santaca2016abf}, the authors defines an agent as a
+		tuple of Assertions, Beliefs, and Facts.
+\end{itemize}
+
 
 \begin{figure}[t]
 	\centering
@@ -26,7 +61,6 @@ introduce the concept of \emph{intent} to define a \emph{threat agent}.
 	\caption{Informal representation of Knowledge and Belief}
 	\label{fig:knowledge-belief}
 \end{figure}
-
 
 \subsubsection{Region: Threat and Asset}\label{sec:threatasset}
 The difference between Knowledge and Belief is depicted in
