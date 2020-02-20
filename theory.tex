@@ -1,0 +1,135 @@
+\begin{enumerate}[noitemsep]
+	\item cybersecurity as a requirement
+	\item vulnerability\label{def:vulnerability}
+\end{enumerate}
+
+We describe processes, in our current formalization, in terms of the K-Modal
+Structure as in Definition~\ref{def:modalinterpretation} (i.e. in terms of
+causality principle). 
+
+\begin{definition}{\bf Vulnerability-Incident Process --}\label{def:vulnerability-incident}
+	Given two 
+\end{definition}
+
+The whole-part relation \fix{mr}{(i.e.  HAS-A\footnote{HAS-A is just an hint for the
+mechanization of this theory.  We'll come back to this in
+Section~\ref{sec:implementation}})} is given, in the following, over the K Modal
+logic described beforehand. To do so, we first need to formally define the
+concept of \emph{agent} in its abstract form. We build it following the same
+structure of\autocite{Santaca2016abf} but over the terms used in
+Section~\ref{sec:problem}, i.e. knowledge, and belief as epistemic concepts. We'll then 
+introduce the concept of \emph{intent} to define a \emph{threat agent}.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=.8\textwidth]{knowledge-belief.pdf}
+	\caption{Informal representation of Knowledge and Belief}
+	\label{fig:knowledge-belief}
+\end{figure}
+
+
+\subsubsection{Region: Threat and Asset}\label{sec:threatasset}
+The difference between Knowledge and Belief is depicted in
+Figure~\ref{fig:knowledge-belief} (see \autocite{wiki-knowledgebelief}).  However,
+according to\autocite{Gettier2012knowledge},
+Knowledge\footnote{``\emph{Theaetetus}: [\ldots] He said that knowledge was
+true opinion accompanied by reason, but that unreasoning true opinion was
+outside of the sphere of knowledge; and matters of which there is not a
+rational explanation are unknowable -- yes, that is what he called them -- and
+those of which there is are knowable. [\ldots] \emph{Socrates}: [\ldots] the
+primary elements of which we and all else are composed admit of no rational
+explanation; for each alone by itself can only be named, and no qualification
+can be added, neither that it is nor that it is not, for that would at once be
+adding to it existence or non-existence, whereas we must add nothing to it, if
+we are to speak of that itself alone.  [\ldots]'' Plato -- Theaetetus 201
+\autocite{Plato1914Plato}} as an epistemological concept is difficult (and
+sometimes believed impossible\autocite{citation}) to formally define. In this
+work, we are not interested in 
+how knowledge can be precisely formalized from an epistemic standpoint. 
+We assume that a semantic of a correct definition of epistemic knowledge exists,
+for example the one given in\autocite{Hintikka1962knwoledge} by Hintikka, and we then define 
+knowledge in terms of the Kripke structure defined in Definition~\ref{def:causality}.
+
+\begin{definition}{\bf Knowledge --}\label{def:knowledge}
+Given an abstract collection of Agents $Ag$, and the modal operator
+	$\knows{a}{}$ (where $a\in Ag$), Knowledge is defined as a collection
+	of predicates known by an agent $\knowledge{a}=\bigcup_\Phi \knows{a}{\varphi}$ 
+	(where $\Phi$ is the collection of all the propositions known by $a$).
+	Given a proposition $P$, we extend the semantics of the Causality structure with:
+	\begin{enumerate}[noitemsep]
+		\item[$(\interpretation6)$] $\world\models\knows{a}{P}$ iff
+			$\world'\models P$ for all $\world'$ such that
+			$\world\modalrelation\world'$.
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{\bf Belief --}\label{def:belief}
+	\fix{mr}{we should help the reader in understanding the upgrades of the logic. We used propositional with modal operators with a K Kripke semantics and we are now introducing Belief as in Doxastic logic? and we have epistemological operators as knowledge}
+	Given an abstract collection of Agents $Ag$, and the modal operator
+	$\believe{a}{}$ (where $a\in Ag$), Belief is defined as a collection
+	of predicates believed by an agent $\belief{a}=\bigcup_\Phi \believe{a}{\varphi}$
+	(where $\Phi$ is the collection of all the propositions believed by $a$).
+	Given a proposition $P$, we extend the semantics of the Causality structure with:
+	\begin{enumerate}[noitemsep]
+		\item[$(\interpretation7)$] $\world\models\believe{a}{P}$ iff
+			$\world\models\neg\knows{a}{\neg P}$ (i.e. the agent $a$ considers $P$ possible) 
+			and $\world'\models P$ for all
+			$\world'$ such that $\world\modalrelation\world'$.
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{\bf Mankind/Nature --}\label{def:mankind-nature}
+Mankind/Nature is represented as an agent.  
+	%countable logical signature $\Sigma_M$/$\Sigma_N$ over an
+	%abstract algebraic structure.  We also consider a countable signature
+	%of variables, disjoint from $\Sigma_M$/$\Sigma_N$, and write
+	%$\Sigma_{M_n}$/$\Sigma_{N_n}$ for the symbols of $\Sigma_M$/$\Sigma_N$
+	%with arity $n$. Thus, $\Sigma_0$ is a collection of constants, which we
+	%assume to have disjoint sub-collections that we refer to as
+	%\emph{sub-agents} of Mankind or Nature (i.e. humans, plants, \&c).
+	%The variables are untyped and can be instantiated with arbitrary types,
+	%yielding an untyped model.
+\end{definition}
+
+\subsubsection{Mereotopological Representation of Safety and Security}\label{sec:formalGlossary}
+The objectives of this section are:
+\begin{enumerate}[noitemsep]
+	\item formalize the abstract algebraic structure (as a mereotopology)
+		on top of which we have formalized the terms in
+		Figure~\ref{fig:safety-security} so far, i.e. Mankind, Nature,
+		Truths, Beliefs, and Knowledge.
+	\item correlate mereological structure to Causality and then Kripke
+		structure by defining the relation $R$ over the Kripke
+		structure as the mereotopological basic relation connects with,
+		i.e. reflexive and symmetric
+	\item we map signature to mereotopological Regions to express the
+		logical formulation of terms (e.g. Mankind, Nature, Truths,
+		Beliefs, Knowledge, Vulnerabilities) over the mereotopological
+		structure
+	\item we formalize the relations between terms using the RCC(5)
+\end{enumerate}
+
+\fix{mr}{change propositions in propositional language\url{http://logic.stanford.edu/intrologic/lectures/lecture_02.pdf}}
+
+Given that the concepts of Truths, Beliefs, and Knowledge are positioned over
+an underlying structure of Propositions, the first concept to formalize is that
+of Propositions. We do not restrict Propositions to a specific structure but,
+as for Mankind and Nature, we refer to them as a collection.  We express the
+generality of a collection as a (propositional) signature over an abstract
+algebraic structure. In our formalization, we use mereotopology as algebraic
+structure (due to its generality, as discussed in Section~\ref{sec:problem})
+and the RCC to formalize concepts over a mereotopology. 
+
+We can now define the possible mereotopological relations between Belief and
+Knowledge (informally depicted in Figure~\ref{fig:knowledge-belief}) and then
+define the peculiarity of the believed difference between Mankind and Nature 
+(i.e. maliciousness as intent). 
+We first start from the formalization of Figure~\ref{fig:knowledge-belief}, as
+follows.  
+
+\begin{definition}{\bf Information}\label{def:information}
+\end{definition}
+\begin{definition}{\bf Desire}\label{def:desire}
+\end{definition}
+\begin{definition}{\bf Intent}\label{def:intent}
+\end{definition}
