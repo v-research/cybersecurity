@@ -1,6 +1,6 @@
 #!/bin/bash
 latexOutputDir="latex-output-dir"
-latexInputFile="v-research_experiment-alpha.tex"
+latexInputFile="main.tex"
 pdfOutputDir="${latexOutputDir}/${latexInputFile%.*}.pdf"
 
 if [[ ! -d $latexOutputDir ]]; then 
