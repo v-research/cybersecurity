@@ -1,0 +1,227 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage[toc,page]{appendix}
+\usepackage[gen]{eurosym}
+\usepackage{tabularx}
+\usepackage{epigraph}
+\usepackage{textcomp}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{csquotes}% Recommended
+\usepackage{rotating}
+\usepackage[style=numeric]{biblatex}
+% \bibliography{<mybibfile>}% ONLY selects .bib file; syntax for version <= 1.1b
+\addbibresource{literature.bib}% Syntax for version >= 1.2
+
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{Property of V-Research S.r.l.}
+\renewcommand\headrulewidth{0pt}
+\renewcommand\footrulewidth{0pt}
+
+\usepackage[colorinlistoftodos]{todonotes}
+
+\newcommand{\Paragraph}[1]{\smallskip\noindent{\bf #1.}}
+\newcommand{\fixnote}[2]{\textbf{\color{red}{FIX}}\footnote{{\bf #1:} #2}}
+\newcommand{\fix}[2]{{\color{red} {\bf tofix:} #2}}
+% \renewcommand{\fixnote}[2]{}
+% \renewcommand{\fix}[2]{}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{corollary}
+\newtheorem{corollary}{Corollary}[section]
+\theoremstyle{lemma}
+\newtheorem{lemma}{Lemma}[section]
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{theorem}
+\newtheorem{example}{Example}
+
+\usepackage{authblk}
+\date{}                     %% if you don't need date to appear
+\setcounter{Maxaffil}{0}
+\renewcommand\Affilfont{\itshape\small}
+
+% for fancy table with rotated column titles
+\usepackage{adjustbox}
+\newcolumntype{R}[2]{%
+    >{\adjustbox{angle=#1,lap=\width-(#2)}\bgroup}%
+    l%
+    <{\egroup}%
+}
+\newcommand*\rot{\multicolumn{1}{R{45}{0.01em}}}% no optional argument here, please!
+\newcommand*\rota{\multicolumn{1}{R{90}{0.01em}}}% no optional argument here, please!
+\def\hb{\hbox to 10.7 cm{}}
+
+% circles
+\usepackage{wasysym}
+\newcommand{\Tdot}{$\CIRCLE$}
+\newcommand{\Thdot}{$\LEFTcircle$}
+\newcommand{\Twdot}{$\Circle$}
+
+% formulas
+\newcommand{\kframe}{\mathbf{K}}
+\newcommand{\bframe}{\mathbf{B_K}}
+\newcommand{\possibleworlds}{G}
+\newcommand{\modalrelation}{R}
+\newcommand{\actualworld}{\omega*}
+\newcommand{\world}{\omega}
+\newcommand{\World}{\Omega}
+\newcommand{\kmodel}{M}
+\newcommand{\interpretation}{\sigma}
+\newcommand{\knowledge}[1]{\mathbb{K}_{#1}}
+\newcommand{\knows}[2]{K_{#1}#2}
+\newcommand{\belief}[1]{\mathbb{B}_{#1}}
+\newcommand{\believe}[2]{B_{#1}#2}
+\newcommand{\region}{\chi}
+\newcommand{\Region}{\mathrm{X}}
+\newcommand{\agentuniverse}{\mathcal{A}}
+\newcommand{\agent}{a}
+\newcommand{\follang}{\mathcal{L}}
+\newcommand{\weakness}{w}
+\newcommand{\Weakness}{W}
+\newcommand{\vulnerability}{v}
+\newcommand{\Vulnerability}{V}
+%rcc5
+\newcommand{\rcc}{rcc}
+\newcommand{\connects}[2]{C(#1,#2)}
+\newcommand{\disconnected}[2]{\neg C(#1,#2)}
+\newcommand{\partof}[2]{P(#1,#2)}
+\newcommand{\overlaps}[2]{O(#1,#2)}
+\newcommand{\eq}[2]{EQ(#1,#2)}
+\newcommand{\pp}[2]{PP(#1,#2)}
+\newcommand{\po}[2]{PO(#1,#2)}
+\newcommand{\ppi}[2]{PPi(#1,#2)}
+\newcommand{\dr}[2]{DR(#1,#2)}
+
+
+\makeindex 
+
+\begin{document}
+
+\title{On Cybersecurity\\Science and Engineering\footnote{Confidential, restricted to the authors. Property of V-Research S.r.l.}}
+\author[1]{Francesco Beltramini}
+\author[1]{Marco Rocchetto}
+\affil[1]{V-Research, Verona, Italy}
+
+\maketitle
+
+\begin{abstract}
+ \input{abstract}
+\end{abstract}
+\newpage
+
+\section{Introduction}\label{sec:intro}
+\input{introduction}
+
+\section{Problem Statement}\label{sec:problem}
+\input{problem_statement}
+
+\section{Glossary -- A Formalization}\label{sec:glossary}
+\input{formal_glossary}
+
+\section{Honesty and Maliciousness -- A Cybersecurity Theory}\label{sec:theory}
+\input{theory}
+
+\section{Cybersecurity Engineering Process}\label{sec:process}
+\epigraph{The difference between ideas and reality is the
+difference between philosophy and engineering. The work to transform one into
+the other is scientific research}{{\itshape V-Research}}
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{vmodel.pdf}
+	\caption{Cybersecurity Engineering Life-cycle}
+	\label{fig:knowledge-belief}
+\end{figure}
+
+\subsubsection{Relevant Standards}\label{sec:standards}
+\begin{enumerate}[noitemsep]
+	\item DO-326A
+\end{enumerate}
+
+
+\section{Prototype and Empirical Tests}\label{sec:prototest}
+\subsection{Prototype Implementation}\label{sec:implementation}
+\subsection{Empirical Tests}\label{sec:tests}
+
+\section{Conclusion and Related Work}\label{sec:related}
+
+\printbibliography
+
+\begin{appendices}
+	\section{RCC3, RCC5, or RCC8}\label{app:rcc}
+	\section{Wrong idea 1}
+In order to apply consistently the mereotopological structure not just to
+reason the agents but also on their evolution, we extend the properties of the
+Parthood relation (reflexivity and symmetry) to the modal relation
+$\modalrelation$ of the K Modal logic, which in turns defines the causality
+principle. This updates the K Modal logic to a B (Brouwer) Modal Logic\autocite{Garson2018modal}.
+
+\begin{definition}{\bf B Modal Logic --}\label{thm:bk-parthood}
+	The B Modal Logic (defined, with a slight abuse of notation as
+	$\bframe=\langle\possibleworlds,\modalrelation\rangle$) is an extension
+	of the K modal logic with the following axioms
+	\begin{enumerate}[noitemsep]
+		\item[$(\interpretation8)$] $\world\models P\Rightarrow Q$ iff
+			$\world\not\models P$ or $\world\models Q$ (logical implication)~\footnote{In
+			Definition~\ref{def:modallogic} we didn't specify the
+			semantics in the case of the connective $\Rightarrow$
+			(i.e. logical implication), so we state it here. Given
+			that $P\Rightarrow Q$ is equisatisfiable to
+			$\neg(P\wedge \neg Q)$, for any proposition $P$ and
+			$Q$, $\world\models P\Rightarrow Q$ is equisatisfiable
+			to $\world\models \neg(P\wedge \neg Q)$. If
+			$\world\models \neg(P\wedge \neg Q)$ then
+			$\world\not\models P\wedge\neg Q$ and then
+			$\world\models \neg P$ or $\world\models Q$.}
+		\item[$(\interpretation9)$] $\Box P\Rightarrow P$ (which ``claims that whatever is necessary is the case''\autocite{Garson2018modal}), and
+		\item[$(\interpretation10)$] $P\Rightarrow\Box\Diamond P$
+			(which says that if $P$ is the case, then $P$ is
+			necessarily possible\autocite{Garson2018modal})
+	\end{enumerate}
+\end{definition}
+
+	
+\begin{theorem}{\bf Causality, Parthood, and B Modal Logic}\label{thm:bk-parthood}
+	\begin{enumerate}[noitemsep]
+		\item (Reflexivity) $\bframe\models\Box P\Rightarrow P$ ($\interpretation8$) iff $\modalrelation$ is reflexive
+		\item (Symmetry) $\bframe\models P\Rightarrow\Box\Diamond$ ($\interpretation9$) iff $\modalrelation$ is symmetric
+		\item (Consistency) $\world\modalrelation\world'$ iff $\connects{\region}{\region'}$
+	\end{enumerate}
+	whenever $\world$ and $\world'$, and $\region$ and $\region'$ are logically equivalent ($\equiv$).
+\end{theorem}
+\begin{proof}
+	The proof is exhaustive over all possible cases.
+	\begin{enumerate}[noitemsep]
+		\item(Reflexivity) proven in\autocite{}
+		\item(Symmetry) proven in\autocite{}
+		\item(Equivalence) \fix{mr}{todo} If
+			$\world\modalrelation\world'$ and
+			$\world\equiv\region$, then if
+			it doesn't hold that $\connects{\region,\region'}$ it
+			follows that there is no reflexive and transitive
+			relation that correlates $\region$ to $\region'$. Given 
+			that Regions are defined as signatures
+	\end{enumerate}
+\end{proof}
+
+\end{appendices}
+
+\end{document}
