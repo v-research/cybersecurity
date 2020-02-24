@@ -209,29 +209,24 @@ As already presented in \autocite{Santaca2016abf} it follows that, defining
 a system (or an operational system) with 3 regions, there exist
 an upper-bound to the number of possible configuration of a system, defined by
 the possible relations between the different regions.
-For completeness we report in  stated in the next paragraph
+For completeness we report in the next paragraph 
 the calculation done in \autocite{Santaca2016abf}.
 
 \Paragraph{Number of different configurations of a system}
-\fix{mr}{
 The general formula to calculate the number of different types of agents is
 $r^{\binom{n}{k}}$, where $r$ is the number of relations with arity $k$,
 between $n$ different sets, where $r^e$ is the number of permutation of $r$
 relations over $e$ elements with repetitions, with $e$ being the number of
 $k$-ary combinations of $n$ sets, $\binom{n}{k}$.
-%and the proof is given in the appendix (Section~\ref{app:proof}).
 In our case, $\binom{n}{k}=3$ since we consider $3$ sets
-($\assertionRegion,\beliefRegion,\factRegion$), and all the relations
+($\assertionRegion,\behaviorRegion,\factRegion$), and all the relations
 considered in the RCC are binary.  Hence, using RCC5 (with five different
 spatial relations) over three sets, we can theoretically define up to 125
 different type of agents. However, only 54 of the 125 (as showed in
-\cite{improvingRCC} and derived by the composition table of RCC5 in
-Table~\ref{tab:5com}) combinations are topologically correct with respect to
-the definition of the relations of RCC5. Generalizing to all the RCCs, in
-Table~\ref{tab:relations} we calculate the number of different agents with
-respect to all the variations of RCC (i.e., with 3, 5 or 8 spatial relations).
+\cite{improvingRCC}) combinations are topologically correct with respect to
+the definition of the relations of RCC5. Generalizing to all the RCCs:
 
-\begin{itemize}
+\begin{itemize}%[nosep]
 \item \emph{RCC3} --- theoretical: $3^3=27$,  correct: 15 
 \item \emph{RCC5} --- theoretical: $5^3=125$, correct: 54
 \item \emph{RCC8} --- theoretical: $8^3=512$, correct: 193
@@ -242,5 +237,5 @@ $\assertionRegion$, $\behaviorRegion$ and $\factRegion$ exponentially affects
 the number of theoretical agents, the application of RCC downscales that number
 of a factor that ranges from 1.8 to 2.5. In addition, using RCC5 we consider
 3.6 times more (different) types of agents than RCC3, but using RCC8 would
-allow us to consider 3.5 times more different agents.}
+allow us to consider 3.5 times more different agents.
 
