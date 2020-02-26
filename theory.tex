@@ -16,7 +16,7 @@ the two foundational processes (exploitation and hacking) are based on the
 concept of a system, we shall begin by defining what a system is, in its
 abstract form.
 
-\subsection{Abstract Systems}\label{sec:system}
+\subsection{Abstract System State}\label{sec:systemstate}
 The ISO/IEC/IEEE 15288:2015 (System Life Cycle Processes) provides a definition
 of system as ``A combination of interacting elements organized to achieve one
 or more stated purposes.''\autocite{ISO201515288}.  Therefore, a system can be
@@ -32,9 +32,6 @@ Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent
 as a system. However, the same ideas revolved around for thousands of years.
 Some examples follows.
 \begin{itemize}
-	\item In \autocite{Georgeoff1995bdi}, the BDI (Belief, Desire, Intent)
-		paradigm is explained; where an agent can be defined over those
-		three constituents.
 	\item In \autocite{Hintikka1962knowledge}, Hintikka describes the
 		difference between Knowledge and Belief (as epistemological
 		concepts), and the whole Doxastic logic defines in details how
@@ -63,12 +60,13 @@ summarized by the following axiom: ``Information is specified by specifying
 which alternatives concerning the reality it admits and which alternatives
 excludes''. This means, for our argument, that considering a propositional
 variable, which admits the two alternatives True/False, its information is
-defined as excluding either to be True or False and then, as we'll discuss
-later on, Believed to be the opposite. Similarly, when reasoning on a
-mereotopological region w.r.t. the RCC (e.g. RCC3 admits two regions to be
-equal, disjoint, or overlapping) and information on this region should exclude
-some of the alternatives. Finally, in \autocite{Empiricus1990Pyrrhonism}
-the author states that the logical criterium can be judged according to something.
+defined as Believed to be True/False and not Believed to be the opposite. 
+%Similarly, when reasoning on a
+%mereotopological region w.r.t. the RCC (e.g. RCC3 admits two regions to be
+%equal, disjoint, or overlapping) information on this region should exclude
+%some of the alternatives. 
+Finally, in \autocite{Empiricus1990Pyrrhonism}
+the author states that the logical criterium can be judged according to a frame of reference.
 For our argument, as in \autocite{Santaca2016abf}, we define this concept
 as Knowledge (or Facts); where knowledge is defined, as in \autocite{Steup2020epistemology}, as
 a set of proposition known by an agent, such that: (i) knowledge requires belief,
@@ -77,11 +75,11 @@ a set of proposition known by an agent, such that: (i) knowledge requires belief
 Before detailing what ``properly justified'' means, we discuss the mentioned
 relation between agent and belief and we introduce a more formal definition
 of knowledge and belief. For our argument, the only objective of
-Information is to interact with the behavior of a system or an agent. 
-Due to the definition of Information and its relation to the probabilistic
-correlation between information and truth/reality, we must consider
+Information is to exchange beliefs between agents.
+Due to the definition of Information and then with its relation to the probabilistic
+correlation to truth/reality, we consider
 information in relation with an agent's beliefs. Similarly, we consider
-beliefs to define the behavior of an agent or a system. On the other hand,
+beliefs to define the actual behavior of an agent or a system. On the other hand,
 Knowledge drives the nominal behavior of an agent or a system. This view
 is not considered in most (if not all) the approaches to protocol verification
 and the Dolev-Yao theory is usually applied to a representation/abstraction
@@ -90,17 +88,19 @@ if an agent sends a message, the recipient knows that message). However,
 the security of a system is tightly related to the difference between
 the nominal behavior and the implemented one.
 
-\begin{definition}{\bf System --}\label{def:system}
-	A system (or a sub-system) is an agent (see Definition~\ref{def:agent})
+\begin{definition}{\bf System State Space --}\label{def:system}
+	A state of a system (or a sub-system) $s$ is identified with 
+	an instance of an agent state (see Definition~\ref{def:agent})
 	such that
 	$s=\langle\rcc(\knowledgeRegion,\beliefRegion),\rcc(\knowledgeRegion,\informationRegion),\rcc(\beliefRegion,\informationRegion)\rangle$,
 	where $\knowledgeRegion,\beliefRegion,\informationRegion$ are Regions of Knowledge, Beliefs, and Information respectively.
 \end{definition}
-A system is then defined as a superposition of multiple states where knowledge,
+A system state space is then defined as a superposition of multiple system states where knowledge,
 beliefs, and information are related between each other (in a mereotopological
-space) through the RCC. A \emph{system instance} is a specific definition of
-the $\rcc$ relations between the three regions. Therefore, a set of 
-system instances defines a set of choices for those $\rcc$ relations.
+space) through the RCC. A \emph{system state} (as an instance of the system state space)
+is a specific configuration of
+the $\rcc$ relations between the three regions. Therefore, a collection of 
+system states defines a collection of choices for those $\rcc$ relations.
 
 % \item  ``normally concern the state or the history of the entire universe but only
 % of some small part of
@@ -141,7 +141,7 @@ Definition~\ref{def:modallogic}; similarly for Belief.
 
 \begin{definition}{\bf Knowledge --}\label{def:knowledge}
 Given an abstract collection of Agents $Ag$, and the modal operator
-	$\knows{a}{}$ (where $a\in Ag$), Knowledge is defined as a collection
+	$\knows{a}{}$ (where $a\in Ag$), Knowledge is defined as a region 
 	of predicates known by an agent $\knowledge{a}=\bigcup_\Phi \knows{a}{\varphi}$ 
 	(where $\Phi$ is the collection of all the propositions known by $a$).
 	Given a proposition $P$, we extend the semantics of the Causality structure with:
@@ -154,7 +154,7 @@ Given an abstract collection of Agents $Ag$, and the modal operator
 
 \begin{definition}{\bf Belief --}\label{def:belief}
 	Given an abstract collection of Agents $Ag$, and the modal operator
-	$\believe{a}{}$ (where $a\in Ag$), Belief is defined as a collection
+	$\believe{a}{}$ (where $a\in Ag$), Belief is defined as a region 
 	of predicates believed by an agent $\belief{a}=\bigcup_\Phi \believe{a}{\varphi}$
 	(where $\Phi$ is the collection of all the propositions believed by $a$).
 	Given a proposition $P$, we extend the semantics of the Causality structure with:
@@ -168,16 +168,16 @@ Given an abstract collection of Agents $Ag$, and the modal operator
 
 \begin{definition}{\bf Information --}\label{def:information}
 	Given an abstract collection of Agents $Ag$, and the modal operator
-	$\informs{a}{}$ (where $a\in Ag$), Information is defined as a collection
+	$\informs{a}{}$ (where $a\in Ag$), Information is defined as a region 
 	of beliefs asserted by an agents $a$.
 	%and transferred from $a$ to $b$ ($a\rightarrow b$).
 	$\information{a}=\bigcup_\Phi \informs{a}{}{\varphi}$
-	(where $\Phi$ is the collection of all the propositions believed and asserted by $a$).
+	(where $\Phi$ is the region of all the propositions believed and asserted by $a$).
 	Given a proposition $P$, we extend the semantics of the Causality structure with:
 	\begin{enumerate}[noitemsep]
 		\item[$(\interpretation18)$] $\world\models\informs{a}{P}$ iff
-			$\world\models\neg\knows{a}{\neg P}$ (i.e. the agent $a$ considers $P$ possible) 
-			and $\world'\models P$ for all
+			$\world\models\belief{a}{P}$ (i.e. the agent $a$ considers $P$ possible), 
+			$\world\models\neg\belief{a}{\neg P}$, and $\world'\models P$ for all
 			$\world'$ such that $\world\modalrelation\world'$.
 	\end{enumerate}
 \end{definition}
@@ -188,17 +188,56 @@ considering information may be an over-complication since we are usually not
 interested in the information in abstract but to the transfer of that
 information, which we call Assertions. Therefore, we consider information only
 if there is a sender and a recipient.  Similarly, the portion of Beliefs we
-consider is the one that builds the behavior of an agent and we consider a set
-of axiomatic Facts instead of Knowledge.
+consider is the one that builds the behavior of an agent (strategy rules
+\footnote{``The logical
+structure of information is one of the most basic and one of the most basic
+and one of the simplest thing in the wide and wonderful world of logical
+analysis. This point can be put in a deeper perspective. A distinction [\ldots] ought to
+be made [--] between two kinds of rules (or principles) in any strategic activity like
+knowledge seeking. On the one hand you have the rules that define the game, e.g. how
+chessmen are moved on a board. The can be called \emph{definitory} rules.
+They must be distinguished from rules [\ldots] that deal with what is better and what is worse
+in the game in question. Definitory rules do not say anything about this subject. Rules
+which do can be called \emph{strategic rules}'' -- Hintikka in \autocite{Hintikka1993Information}}) 
+and we consider a set
+of axiomatic Facts (definitory rules) instead of considering the more general 
+epistemic definition of Knowledge.
 
-\begin{definition}{\bf Assertion}\label{def:assertion}
-\end{definition}
-\begin{definition}{\bf Behavior}\label{def:behavior}
-\end{definition}
-\begin{definition}{\bf Fact}\label{def:fact}
+\begin{definition}{\bf Assertion -- }\label{def:assertion}
+	An assertion is an intended transfer of beliefs between
+	two agents $a$ and $b$ such that
+	\begin{enumerate}[noitemsep]
+		\item[$(\interpretation19)$] $\world\models\assert{a}{b}{P}$ iff
+			$\world\models\belief{a}{P}$, 
+			$\world'\models\rcc(\belief{a}{P},\belief{b}{P})$, 
+			$\world'\models\belief{a}{\belief{b}{P}}$
+			and $\world'\models P$ for all
+			$\world'$ such that $\world\modalrelation\world'$.
+	\end{enumerate}
 \end{definition}
 
-\begin{definition}{\bf Operational System --}\label{def:system}
+\begin{definition}{\bf Fact -- }\label{def:fact}
+Facts are a sub-region of Knowledge $\factRegion = \bigcup_\Phi \knows{a}{\varphi}$
+	that predicate in a factive way, e.g.
+	if $a$ knows that $P$ then $P$, and the region of facts is monotone (no revision).
+	\begin{enumerate}[noitemsep]
+		\item[$(\interpretation20)$] $\world\models\fact{a}{P}$ iff
+			$\world \models P$ and 
+		.
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{\bf Behavior -- }\label{def:behavior}
+	The behavior of an agent is determined by its beliefs. 
+	\begin{enumerate}[noitemsep]
+		\item[$(\interpretation21)$] $\world\models\assert{a}{b}{P}$ iff
+			$\world\models\belief{a}{P}$, 
+			$\world'\models\rcc(\belief{a}{P},\belief{b}{P})$, and $\world'\models P$ for all
+			$\world'$ such that $\world\modalrelation\world'$.
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{\bf Operational System State --}\label{def:system}
 	An operational system (or a sub-system) is an agent (see Definition~\ref{def:agent})
 	such that
 	$s=\langle\rcc(\factRegion,\behaviorRegion),\rcc(\factRegion,\assertionRegion),\rcc(\behaviorRegion,\assertionRegion)\rangle$,
@@ -239,3 +278,49 @@ of a factor that ranges from 1.8 to 2.5. In addition, using RCC5 we consider
 3.6 times more (different) types of agents than RCC3, but using RCC8 would
 allow us to consider 3.5 times more different agents.
 
+\subsection{System Security Evolution}\label{sec:systemevoution}
+\fix{mr}{
+Facts should be correlated to the causality principle. Therefore a
+specification in opnet should be translated into vmt and and by bounded model
+checking with nuxmv identify a path towards an undesired state, if that fails
+use abf to mutate the first state into one of the possible according to abf and
+re-run nuxmv.
+
+Knowledge is the theory itself, an instance is the facts of a design of it. A
+testing process tests facts against knowledge as much as we test a cps design
+chiices against its specification.  Information carries the knowledge of the
+negation of the opposite of the information. Therefore an assertion carries the
+belief (as a result of the behavior execution) of not the opposite. But, as
+Hintikka States in "popper" our previous statement is true if the probability
+distribution of the information is representative wrt the causality structure
+(i.e. knowledge and facts, see email before). So, based on our theory, the
+assertions should have a number between 3 to 5 possible negated meaning, one
+per each rcc if reference and not just a negation of the information. Those
+negation representative of an insecure configuration on the communication of
+the system. In turn, those configurations should categorize all the CWE.  The
+fact that weaknesses are generated by mankind but not exploited makes malicious
+attacks confined to the hackers (and black-hat hackers). Fix: move black-hat
+hackers as subregion of mankind with malicious intent. Describe the intent as a
+desire of reaching a breach of a cybersecurity property over an asset (agent of
+the system), instead of searching for a specific attack. The tool would then
+translate the system from opnet to abf formula. The abf tool generates all the
+sat state of the system fix: add state to all def before this text. And we
+shall define the causality relation between the different states generated by
+the abf tool as chosen nondeterministically from the possible sat states by a
+model checker such as nuxmv.
+
+By calculating sat instead of validity with abf tool and then adding it to the
+causality structure of a system fact description, e.g. in nuxmv; we can
+calculate a path for reachability of an insecurity property violated on an
+agent which represents an asset. Whenever nuxmv fails, we can add a new state
+and re-run the process. Those guesses should be better managed by a trained
+v-ai since the inference by induction from the partial information of the
+system in which we represent the assertions as negation of a beliefs and
+without rcc do not carry enough information for a Reasoner that doesn't
+implemented rcc.
+}
+
+\subsection{Security Properties and Assets}\label{sec:properties}
+In \autocite{Georgeoff1995bdi}, the BDI (Belief, Desire, Intent)
+paradigm is explained; where an agent can be defined over those
+three constituents.

@@ -105,11 +105,14 @@
 \newcommand{\information}[1]{\mathbb{I}_{#1}}
 \newcommand{\informs}[2]{I_{#1}#2}
 \newcommand{\informationRegion}{\mathbb{I}}
-
 %ABF
 \newcommand{\assertionRegion}{\mathcal{A}}
 \newcommand{\behaviorRegion}{\mathcal{B}}
 \newcommand{\factRegion}{\mathcal{F}}
+\newcommand{\abf}{\assertionRegion,\behaviorRegion,\factRegion}
+\newcommand{\assert}[3]{A_{#1\rightarrow #2}#3}
+\newcommand{\behave}[2]{B_{#1}#2}
+\newcommand{\fact}[2]{F_{#1}#2}
 %rcc5
 \newcommand{\rcc}{rcc}
 \newcommand{\connects}[2]{C(#1,#2)}
@@ -152,21 +155,7 @@
 \input{theory}
 
 \section{Cybersecurity Engineering Process}\label{sec:process}
-\epigraph{The difference between ideas and reality is the
-difference between philosophy and engineering. The work to transform one into
-the other is scientific research}{{\itshape V-Research}}
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=\textwidth]{vmodel.pdf}
-	\caption{Cybersecurity Engineering Life-cycle}
-	\label{fig:knowledge-belief}
-\end{figure}
-
-\subsubsection{Relevant Standards}\label{sec:standards}
-\begin{enumerate}[noitemsep]
-	\item DO-326A
-\end{enumerate}
-
+\input{engineering}
 
 \section{Prototype and Empirical Tests}\label{sec:prototest}
 \subsection{Prototype Implementation}\label{sec:implementation}
