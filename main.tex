@@ -86,19 +86,33 @@
 \newcommand{\World}{\Omega}
 \newcommand{\kmodel}{M}
 \newcommand{\interpretation}{\sigma}
+\newcommand{\knowledgeRegion}{\mathbb{K}}
 \newcommand{\knowledge}[1]{\mathbb{K}_{#1}}
 \newcommand{\knows}[2]{K_{#1}#2}
 \newcommand{\belief}[1]{\mathbb{B}_{#1}}
 \newcommand{\believe}[2]{B_{#1}#2}
+\newcommand{\beliefRegion}{\mathbb{B}}
 \newcommand{\region}{\chi}
 \newcommand{\Region}{\mathrm{X}}
 \newcommand{\agentuniverse}{\mathcal{A}}
 \newcommand{\agent}{a}
+\newcommand{\system}{s}
 \newcommand{\follang}{\mathcal{L}}
 \newcommand{\weakness}{w}
 \newcommand{\Weakness}{W}
 \newcommand{\vulnerability}{v}
 \newcommand{\Vulnerability}{V}
+\newcommand{\information}[1]{\mathbb{I}_{#1}}
+\newcommand{\informs}[2]{I_{#1}#2}
+\newcommand{\informationRegion}{\mathbb{I}}
+%ABF
+\newcommand{\assertionRegion}{\mathcal{A}}
+\newcommand{\behaviorRegion}{\mathcal{B}}
+\newcommand{\factRegion}{\mathcal{F}}
+\newcommand{\abf}{\assertionRegion,\behaviorRegion,\factRegion}
+\newcommand{\assert}[3]{A_{#1\rightarrow #2}#3}
+\newcommand{\behave}[2]{B_{#1}#2}
+\newcommand{\fact}[2]{F_{#1}#2}
 %rcc5
 \newcommand{\rcc}{rcc}
 \newcommand{\connects}[2]{C(#1,#2)}
@@ -136,6 +150,18 @@
 
 \section{Glossary -- A Formalization}\label{sec:glossary}
 \input{formal_glossary}
+
+\section{$\assertionRegion\behaviorRegion\factRegion$ -- A Security Theory}\label{sec:theory}
+\input{theory}
+
+\section{Cybersecurity Engineering Process}\label{sec:process}
+\input{engineering}
+
+\section{Prototype and Empirical Tests}\label{sec:prototest}
+\subsection{Prototype Implementation}\label{sec:implementation}
+\subsection{Empirical Tests}\label{sec:tests}
+
+\section{Conclusion and Related Work}\label{sec:related}
 
 \printbibliography
 
