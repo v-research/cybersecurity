@@ -188,7 +188,7 @@ Given an abstract collection of Agents $Ag$, and the modal operator
 	\end{enumerate}
 \end{definition}
 
-\subsection{Engineering Operational System States}\label{sec:engsystemstate}
+\subsection{Operational System State}\label{sec:engsystemstate}
 When dealing with a specification of a system (i.e. the design if the system
 for a specific operation (as a generic operating/operational system),
 considering abstract and general concepts such as knowledge, belief, or
@@ -323,14 +323,14 @@ allow us to consider 3.5 times more different agents.
 \subsection{System Security Evolution}\label{sec:systemevoution}
 \fix{mr}{
 Facts should be correlated to the causality principle. Therefore a
-specification in opnet should be translated into vmt and and by bounded model
+specification in opnet should be translated into vmt and by bounded model
 checking with nuxmv identify a path towards an undesired state, if that fails
 use abf to mutate the first state into one of the possible according to abf and
 re-run nuxmv.
 
 Knowledge is the theory itself, an instance is the facts of a design of it. A
 testing process tests facts against knowledge as much as we test a cps design
-chiices against its specification.  Information carries the knowledge of the
+choices against its specification.  Information carries the knowledge of the
 negation of the opposite of the information. Therefore an assertion carries the
 belief (as a result of the behavior execution) of not the opposite. But, as
 Hintikka States in "popper" our previous statement is true if the probability
@@ -361,8 +361,3 @@ system in which we represent the assertions as negation of a beliefs and
 without rcc do not carry enough information for a Reasoner that doesn't
 implemented rcc.
 }
-
-\subsection{Security Properties and Assets}\label{sec:properties}
-In \autocite{Georgeoff1995bdi}, the BDI (Belief, Desire, Intent)
-paradigm is explained; where an agent can be defined over those
-three constituents.
