@@ -88,16 +88,21 @@ if an agent sends a message, the recipient knows that message). However,
 the security of a system is tightly related to the difference between
 the nominal behavior and the implemented one.
 
-\begin{definition}{\bf System State Space --}\label{def:system}
-	A state of a system (or a sub-system) $s$ is identified with 
-	an instance of an agent state (see Definition~\ref{def:agent})
-	such that
+\begin{definition}{\bf System State and State-Space --}\label{def:system}
+	The state of a system (or a sub-system) $s$ is identified with an
+	instance of an agent state (see Definition~\ref{def:agent}) such that
 	$s=\langle\rcc(\knowledgeRegion,\beliefRegion),\rcc(\knowledgeRegion,\informationRegion),\rcc(\beliefRegion,\informationRegion)\rangle$,
-	where $\knowledgeRegion,\beliefRegion,\informationRegion$ are Regions of Knowledge, Beliefs, and Information respectively.
+	where $\knowledgeRegion,\beliefRegion,\informationRegion$ are Regions
+	of Knowledge, Beliefs, and Information respectively, and $\rcc$ is a
+	specific relation between the Regions it predicates on.  The
+	state-space of a system is then defined by the different $\rcc$
+	relations between the three pairs of Regions defining the system and
+	all the sub-systems.
 \end{definition}
-A system state space is then defined as a superposition of multiple system states where knowledge,
+A system state space can be seen as a superposition of multiple agent states where knowledge,
 beliefs, and information are related between each other (in a mereotopological
-space) through the RCC. A \emph{system state} (as an instance of the system state space)
+space) through the all the admissible RCC relations. 
+A \emph{system state} (as an instance of the system state space)
 is a specific configuration of
 the $\rcc$ relations between the three regions. Therefore, a collection of 
 system states defines a collection of choices for those $\rcc$ relations.
@@ -177,31 +182,66 @@ Given an abstract collection of Agents $Ag$, and the modal operator
 	\begin{enumerate}[noitemsep]
 		\item[$(\interpretation18)$] $\world\models\informs{a}{P}$ iff
 			$\world\models\belief{a}{P}$ (i.e. the agent $a$ considers $P$ possible), 
-			$\world\models\neg\belief{a}{\neg P}$, and $\world'\models P$ for all
-			$\world'$ such that $\world\modalrelation\world'$.
+			$\world\models\neg\belief{a}{\neg P}$%, 
+			%and $\world'\models P$ for all
+			%$\world'$ such that $\world\modalrelation\world'$.
 	\end{enumerate}
 \end{definition}
 
+\subsection{Engineering Operational System States}\label{sec:engsystemstate}
 When dealing with a specification of a system (i.e. the design if the system
 for a specific operation (as a generic operating/operational system),
-considering information may be an over-complication since we are usually not
-interested in the information in abstract but to the transfer of that
-information, which we call Assertions. Therefore, we consider information only
-if there is a sender and a recipient.  Similarly, the portion of Beliefs we
-consider is the one that builds the behavior of an agent (strategy rules
-\footnote{``The logical
-structure of information is one of the most basic and one of the most basic
-and one of the simplest thing in the wide and wonderful world of logical
-analysis. This point can be put in a deeper perspective. A distinction [\ldots] ought to
-be made [--] between two kinds of rules (or principles) in any strategic activity like
-knowledge seeking. On the one hand you have the rules that define the game, e.g. how
-chessmen are moved on a board. The can be called \emph{definitory} rules.
-They must be distinguished from rules [\ldots] that deal with what is better and what is worse
-in the game in question. Definitory rules do not say anything about this subject. Rules
-which do can be called \emph{strategic rules}'' -- Hintikka in \autocite{Hintikka1993Information}}) 
-and we consider a set
-of axiomatic Facts (definitory rules) instead of considering the more general 
-epistemic definition of Knowledge.
+considering abstract and general concepts such as knowledge, belief, or
+information may result to be too abstract for the objectives of the overall engineering
+process (e.g. verification and validation).
+As an example, we are usually not
+interested in information in abstract but to the transfer of that
+information, which we call Assertions, made by a subset of agents. 
+Therefore, we now define how we consider an agent for the engineering
+of CPS.
+
+\begin{enumerate}
+	\item We consider Information only when the intention of exchanging 
+		that Information is from a sender to 
+		recipient is defined; and we call it \emph{Assertion}  
+	\item Similarly, the portion of Beliefs we consider for system
+		engineering is the one that builds (input) or describes
+		(output) the behavior of an agent (strategy rules
+		\footnote{``The logical structure of information is one of the
+		most basic and one of the most basic and one of the simplest
+		thing in the wide and wonderful world of logical analysis. This
+		point can be put in a deeper perspective. A distinction
+		[\ldots] ought to be made [--] between two kinds of rules (or
+		principles) in any strategic activity like knowledge seeking.
+		On the one hand you have the rules that define the game, e.g.
+		how chessmen are moved on a board. The can be called
+		\emph{definitory} rules.  They must be distinguished from rules
+		[\ldots] that deal with what is better and what is worse in the
+		game in question.  Definitory rules do not say anything about
+		this subject. Rules which do can be called \emph{strategic
+		rules}'' -- Hintikka in \autocite{Hintikka1993Information}}),
+		and
+	\item We consider a set of axiomatic \emph{Facts} (definitory rules) instead
+		of considering the more general epistemic definition of
+		Knowledge. Specifically, Facts describes:
+		\begin{itemize}
+			\item the functional architecture of each agents
+			\item the structural (HW/SW) architecture of each
+				subsystem of agents and agent within a
+				subsystem
+			\item the data flow as a transfer of Beliefs through
+				Assertions (i.e. the Beliefs flow)
+		\end{itemize}
+\end{enumerate}
+
+We give a graphical representation of (sub-)system and agent in Figure~\ref{fig:system-agent}.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=.9\textwidth]{system-agent.pdf}
+	\caption{Example of system and agent structure}
+	\label{fig:system-agent}
+\end{figure}
 
 \begin{definition}{\bf Assertion -- }\label{def:assertion}
 	An assertion is an intended transfer of beliefs between
@@ -216,39 +256,41 @@ epistemic definition of Knowledge.
 	\end{enumerate}
 \end{definition}
 
+\begin{definition}{\bf Behavior -- }\label{def:behavior}
+	The behavior of an agent is defined as the transformation process (e.g. defined as a
+	protocol, or a functional architecture) that determined the
+	output-beliefs based on input-beliefs (where input-beliefs and
+	output-beliefs are beliefs taken as input or output respectively).
+	\begin{enumerate}[noitemsep]
+		\item[$(\interpretation21)$] $\world\models\bigcup_{s\in S}\believe{s}{P_{s}}$ and $\world\models\behave{a}{[\bigcup_{s\in S}\believe{s}{P_{s}}]}$ iff
+			$\world\models\belief{a}{P'}$, 
+			
+		where $a$ is an agent, $S$ is a set of agents such that $a\neg\in S$, and the calculation of $P'$ is deteministic.
+	\end{enumerate}
+\end{definition}
+
 \begin{definition}{\bf Fact -- }\label{def:fact}
 Facts are a sub-region of Knowledge $\factRegion = \bigcup_\Phi \knows{a}{\varphi}$
 	that predicate in a factive way, e.g.
 	if $a$ knows that $P$ then $P$, and the region of facts is monotone (no revision).
 	\begin{enumerate}[noitemsep]
 		\item[$(\interpretation20)$] $\world\models\fact{a}{P}$ iff
-			$\world \models P$ and 
-		.
-	\end{enumerate}
-\end{definition}
-
-\begin{definition}{\bf Behavior -- }\label{def:behavior}
-	The behavior of an agent is determined by its beliefs. 
-	\begin{enumerate}[noitemsep]
-		\item[$(\interpretation21)$] $\world\models\assert{a}{b}{P}$ iff
-			$\world\models\belief{a}{P}$, 
-			$\world'\models\rcc(\belief{a}{P},\belief{b}{P})$, and $\world'\models P$ for all
-			$\world'$ such that $\world\modalrelation\world'$.
+			$\world \models \Box P$. 
 	\end{enumerate}
 \end{definition}
 
 \begin{definition}{\bf Operational System State --}\label{def:system}
-	An operational system (or a sub-system) is an agent (see Definition~\ref{def:agent})
+	An operational system (or a sub-system) is represented as an agent (see Definition~\ref{def:agent}) and then defined by the resulting state space,
 	such that
 	$s=\langle\rcc(\factRegion,\behaviorRegion),\rcc(\factRegion,\assertionRegion),\rcc(\behaviorRegion,\assertionRegion)\rangle$,
-	where $\factRegion,\behaviorRegion,\assertionRegion$, are regions of facts, behavior, and assertions respectively.
+	where $\assertionRegion,\behaviorRegion,\factRegion$, are regions of assertions, behavior, and facts respectively.
 \end{definition}
 
 As already presented in \autocite{Santaca2016abf} it follows that, defining
-a system (or an operational system) with 3 regions, there exist
+a system (or an operational system) with a fixed number of regions, there exist
 an upper-bound to the number of possible configuration of a system, defined by
 the possible relations between the different regions.
-For completeness we report in the next paragraph 
+For completeness, we report in the next paragraph 
 the calculation done in \autocite{Santaca2016abf}.
 
 \Paragraph{Number of different configurations of a system}
