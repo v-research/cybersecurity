@@ -8,10 +8,95 @@ the other is scientific research}{{\itshape V-Research}}
 	\label{fig:knowledge-belief}
 \end{figure}
 
+Infosec, or Information Security, aims at mitigating the security risks related
+to information. The standard de-facto is the so called CIA triad 
+(where CIA stands for Confidentiality, Integrity, Availability), which is often
+criticized for being too general or non-adequate (e.g. by adding authenticity which is 
+often used as a building block for confidentiality and integrity) 
+to be effectively applied to the engineering of systems. Due to this,
+many researchers an organization tried to improve the CIA triad. 
+The evolutions/extensions of the CIA triad has been documented, e.g.,
+in \autocite{Samonas2014cia} and is summarized in Table~\ref{tab:ciaevolution}.
+
+\begin{table}[h]
+\centering
+%\setlength{\tabcolsep}{3.5pt}
+%\renewcommand{\arraystretch}{1}
+\small
+\begin{tabular}{rll} 
+	{\bf Year} & {\bf Definition} & {\bf Legend}\\
+	\hline
+	1970s & infosec = CIA & Confidentiality, Integrity, Availability\\
+	1980s & infosec += (Au, nR) & Authenticity and non-Repudiation\\
+	1990s & infosec += CSpec & Correctness in Specification\\
+	2000s & infosec += RITE & Responsibility, Integrity of people, Trust, Ethicality
+\end{tabular}
+\caption{Chronological progression of the CIA triad~\label{tab:ciaevolution}}
+\end{table}
+
+
+An example is the effort made by the OECD (Organisation for Economic
+Co-operation and Development) in \autocite{OECD2013guidelines} to define
+security guidelines for information system (1992) based on new principles such
+as ``awareness, ethics, risk assessment'' and maintain those revising the
+document (e.g.  following the multistakeholder expert consultation in 2013).
+Other similar efforts focused on defining entirely new principles or extending
+the CIA triad, such as \autocite{NISTSP800-160}. What is of interest for our
+argument is that, to the best of our knowledge, all of the approaches that aim
+at improving the CIA triad motivated by empirical evidences. On the contrary,
+we now define (in Section~\ref{sec:properties}) the CIA triad for an agent
+defined in the $\abftheory$ theory and we test if (i) other properties are
+allowed in the $\abftheory$ theory, and (ii) if and how the CIA triad can be
+detailed in the $\abftheory$ theory.
+
 \subsection{Elicitation of Security Requirements}\label{sec:properties}
-Infosec, or Information Security, aims at mitigating the security
-risks related to information. The standard de-facto is 
-the so called CIA triad (where CIA stands for Confidentiality, Integrity, Availability).
+In \autocite{Anderson1972report,Samonas2014cia}, CIA are defined as follows.
+\begin{itemize}
+	\item Unauthorized information release: an unauthorized person is able
+		to read and take  advantage  of  information  stored  in  the
+		computer.  This  category of concern  sometimes  extends  to
+		``traffic  analysis,''  in  which  the intruder  only observes
+		the  patterns  of  information  use.  From  those patterns,
+		the  intruder can   infer   some   information   content.
+		This category   also   includes   the unauthorized use of a
+		proprietary program.  (Confidentiality or Secrecy) 
+	\item Unauthorized  information  modification:  an  unauthorized person
+		is  able  to make changes in stored information –a form  of
+		sabotage.  It should be noted that in the case of this kind of
+		violation, the intruder does not necessarily see the
+		information he has changed.  (Integrity)
+	\item Unauthorized  denial  of  use:  an  intruder  can  prevent  an
+		authorized  user  from referring to, or from modifying
+		information, even though the intruder may not be able to refer
+		to, neither modify the information themselves. (Availability)
+\end{itemize}
+
+We now want to generalize the CIA triad to agents and not just 
+information and map it to the $\abftheory$ theory.
+\begin{definition}{\bf Infosec-Confidentiality --}\label{def:infosec-c}
+	An Information $\varphi$ is considered to be confidential over a set of
+	agents $Ag_c$ if, per each agent $a\in Ag_c$, the content of the
+	information (i.e. the data it carries) can only be understood (i.e. the relation
+	between the information and its data can be known) by the
+	agents in $Ag_c$.
+
+	\begin{itemize}
+		\item[$(\interpretation21)$]
+			for all agents $a\in Ag$, $\world\models\information{a}{\varphi}$ and
+			$\world\models\rcc(\varphi,Conf) \wedge \neg\dr{Conf}{\varphi}$ iff
+			$\world\models\knows{x}{[\information{a'}{\varphi}\rightarrow\varphi]}$
+			for any agent $a'$ such that $a'\not\in Ag_c$
+	\end{itemize}
+\end{definition}
+
+\begin{definition}{\bf System-Confidentiality --}\label{def:confidentiality}
+	The property of confidentiality holds in a system when its information
+	preserves confidentiality.
+\end{definition}
+
+\begin{definition}{\bf Agent-Confidentiality --}\label{def:confidentiality}
+An agent preserves the property of confidentiality iff 
+\end{definition}
 
 Confidentiality: the information is accessible only to authorised individuals.
 A set of rules that limits access to information.  The information can be
