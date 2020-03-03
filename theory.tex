@@ -319,6 +319,106 @@ the number of theoretical agents, the application of RCC downscales that number
 of a factor that ranges from 1.8 to 2.5. In addition, using RCC5 we consider
 3.6 times more (different) types of agents than RCC3, but using RCC8 would
 allow us to consider 3.5 times more different agents.
+The quantitative evaluation of an agent is depicted in Figure~\ref{fig:quantitative}.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=.8\textwidth]{quantitative.pdf}
+	\caption{Quantitative representation of the cybersecurity risk for a single agent}
+	\label{fig:quantitative}
+\end{figure}
+
+\subsection{Qualitative Evaluation of Agent Space in $\abf$}\label{sec:agentspace}
+While a quantitative analysis reveals how many possible configurations
+of an agent (i.e. a system) may exist in $\abf$ (i.e. $54/125$ in RCC5), a qualitative
+analysis of the different configurations allows us to understand 
+which configurations are allowed by the $\abf$ theory.
+
+\begin{table}[t]
+\centering
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{r||c|c|c|c|c} 
+& $\mathit{DR}$($\mathit{X}$, $\mathit{Y}$) & $\mathit{PO}$($\mathit{X}$,
+	$\mathit{Y}$)& $\mathit{EQ}$($\mathit{X}$, $\mathit{Y}$) &
+	$\mathit{PPi}$($\mathit{X}$, $\mathit{Y}$) & PP($\mathit{X}$,
+	$\mathit{Y}$) \\
+\hline
+\hline
+ \multirow{3}{*}{$\mathit{DR}$($\mathit{Y}$, $\mathit{Z}$)} &
+	\cellcolor{abfred} &
+	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) &
+	 \cellcolor{abfred} &
+	\cellcolor{abfred} &
+	\cellcolor{abfred}\multirow{3}{*}{$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$)} \\
+& \cellcolor{abfred}$\mathit{T}$($\mathit{X}$, $\mathit{Z}$)&
+	\cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) &
+	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$)&
+	\cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) &
+	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$)\\
+ & \cellcolor{abfred}& 
+	\cellcolor{abfred}$\mathit{PP}$($\mathit{X}$,$\mathit{Z}$) & 
+	\cellcolor{abfred} &
+	$\cellcolor{abfred}\mathit{PP}$($\mathit{X}$, $\mathit{Z}$)
+	&\cellcolor{abfred}  \\
+\hline
+ \multirow{3}{*}{$\mathit{PO}$($\mathit{Y}$, $\mathit{Z}$)} &
+	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) &
+	\cellcolor{abforange} & 
+	\cellcolor{abforange} &
+	\cellcolor{abforange}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) \\
+ & \cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abforange} $\mathit{T}$($\mathit{X}$,$\mathit{Z}$) & 
+	\cellcolor{abforange} $\mathit{PO}$($\mathit{X}$, $\mathit{Z}$)& 
+	\cellcolor{abforange}$\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) \\
+ & \cellcolor{abfred}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) &
+	\cellcolor{abforange} & 
+	\cellcolor{abforange}& 
+	\cellcolor{abforange}&
+	\cellcolor{abfred}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) \\
+\hline
+	$\mathit{EQ}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abforange} $\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abfgreen} $\mathit{EQ}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abforange} $\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abfred}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) \\
+\hline
+ \multirow{4}{*}{$\mathit{PP}$($\mathit{Y}$, $\mathit{Z}$)} &
+	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abforange}&
+	\cellcolor{abforange}&
+	\cellcolor{abforange}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) &
+	\cellcolor{abfred}\\
+ & \cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abforange}$\mathit{PO}$($\mathit{X}$,$\mathit{Z}$) & 
+	\cellcolor{abforange}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$)& 
+	\cellcolor{abforange}$\mathit{EQ}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abfred}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$)\\
+ & \cellcolor{abfred}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abforange}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abforange}& 
+	\cellcolor{abforange}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) & 
+	\cellcolor{abfred}\\
+ & \cellcolor{abfred}&\cellcolor{abforange} & \cellcolor{abforange}& $\cellcolor{abforange}\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$) & \cellcolor{abfred}\\
+\hline
+ \multirow{3}{*}{$\mathit{PPi}$($\mathit{Y}$, $\mathit{Z}$)} &
+ \cellcolor{abfred}\multirow{3}{*}{} &
+ \cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) &
+ \cellcolor{abfred} &
+ \cellcolor{abfred}&
+ \cellcolor{abfred}\\
+& \cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) &
+ \cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) & 
+ \cellcolor{abfred}$\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$)& 
+ \cellcolor{abfred}$\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$)& 
+ \cellcolor{abfred}$\mathit{T}$($\mathit{X}$, $\mathit{Z}$)\\
+&\cellcolor{abfred} & \cellcolor{abfred}$\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$) & \cellcolor{abfred}& \cellcolor{abfred}&\cellcolor{abfred} 
+\end{tabular}
+\end{adjustbox}
+\caption{RCC5 composition table over 3 sets. The results show that there exist 54 possible relations and the coloring anticipates the ideal risk matrix (green the secure state with low risk, orange the medium risk states, and red the high risk states). $\mathit{T}(\mathit{X},\mathit{Z}) = \{\mathit{DR}(\mathit{X}, \mathit{Z}), \, \mathit{PO}(\mathit{X},\mathit{Z}),\, \mathit{EQ}(\mathit{X},\mathit{Z}),\, \mathit{PP}(\mathit{X},\mathit{Z}),\, \mathit{PPi}(\mathit{X},\mathit{Z})\}$\label{tab:5com}}
+\end{table}
 
 \subsection{System Security Evolution}\label{sec:systemevoution}
 \fix{mr}{
