@@ -61,7 +61,7 @@ In \autocite{Anderson1972report,Samonas2014cia}, CIA are defined as follows.
 		This category   also   includes   the unauthorized use of a
 		proprietary program.  (Confidentiality or Secrecy) 
 	\item Unauthorized  information  modification:  an  unauthorized person
-		is  able  to make changes in stored information –a form  of
+		is  able  to make changes in stored information -- a form  of
 		sabotage.  It should be noted that in the case of this kind of
 		violation, the intruder does not necessarily see the
 		information he has changed.  (Integrity)
@@ -74,19 +74,56 @@ In \autocite{Anderson1972report,Samonas2014cia}, CIA are defined as follows.
 We now want to generalize the CIA triad to agents and not just 
 information and map it to the $\abftheory$ theory.
 \begin{definition}{\bf Infosec-Confidentiality --}\label{def:infosec-c}
-	An Information $\varphi$ is considered to be confidential over a set of
+	An Information $\varphi$ is considered to be confidential to a set of 
 	agents $Ag_c$ if, per each agent $a\in Ag_c$, the content of the
 	information (i.e. the data it carries) can only be understood (i.e. the relation
 	between the information and its data can be known) by the
 	agents in $Ag_c$.
 
 	\begin{itemize}
-		\item[$(\interpretation21)$]
-			for all agents $a\in Ag$, $\world\models\information{a}{\varphi}$ and
-			$\world\models\rcc(\varphi,Conf) \wedge \neg\dr{Conf}{\varphi}$ iff
-			$\world\models\knows{x}{[\information{a'}{\varphi}\rightarrow\varphi]}$
-			for any agent $a'$ such that $a'\not\in Ag_c$
+		\item[$(\interpretation21)$] for all agents $a\in Ag$,
+			$\world\models\information{a}{\varphi}$ and
+			$\world\models\rcc(\varphi,Conf) \wedge
+			\neg\dr{Conf}{\varphi}$ iff for any world $\world'$
+			such that $\world \modalrelation\world'$,
+			$\world'\models\believe{a}{\varphi}$, and
+			$\world'\models\knows{a}{\exists f.~
+			f(\information{a}{\varphi})=\varphi}$, where 
+			$Conf$ is a Region and $f$ is an uninterpreted function.
 	\end{itemize}
+\end{definition}
+
+\begin{example}{Dummy security protocol --}
+	The last part (part III) of the protocol in our first example
+	(Figure~\ref{fig:protocol-example}) represents the actual key exchange
+	which, in general, needs to be confidential; otherwise the key would be
+	known by any other agent who can, e.g., read on the communication
+	channel.  Therefore, the last message, in Alice-and-Bob notation can be
+	rephrased as: \begin{displaymath} Alice\Rightarrow Bob: enc(pk(Bob),
+	symmetricKey) \end{displaymath} where $enc$ is the standard asymmetric
+	encryption operator that encrypts the message $symmetricKey$ with the
+	public key of Bob $pk(Bob)$ (see, e.g.,
+	\autocite{Rocchetto2017interpolation} for a detailed formalization).
+	The function $f$ in Definition~\ref{def:infosec-c}, represents any
+	function used to enforce confidentiality on information.  In this
+	example, $f$ is identified with $enc$ (i.e.
+	$enc(pvt(Bob),symmetricKey)=symmetricKey$), the information is
+	$\information{Alice}{[enc(pk(Bob),symmetricKey)]}$ and the data, i.e.
+	$\varphi$ in Definition~\ref{def:infosec-c}, is $\varphi=symmetricKey$.
+	In the perfect cryptography assumption, and assuming for simplicity
+	that the logic of the whole protocol preserves confidentiality, the
+	message is confidential. In fact, if $Ag={Alice, Bob}$ and $\eq{symmetricKey}{Conf}$:
+	\begin{align*}
+		\world^0\models\belief{Alice}{symmetricKey},\\
+		\world^1\models\information{Alice}{symmetricKey}, \text{and}\\
+		\world^2\models\belief{Bob}{symmetricKey} ~\text{if} \\
+		enc(pvt(Bob), \information{Alice}{symmetricKey}=symmetricKey)=symmetricKey\\
+		(i.e. f=enc ~\text{and}~ \information{Alice}{symmetricKey}=enc(pub(Bob),symmetricKey))\\
+	\end{align*}
+\end{example}
+
+\begin{definition}{\bf Agent-Confidentiality --}\label{def:confidentiality}
+An agent preserves the property of confidentiality iff 
 \end{definition}
 
 \begin{definition}{\bf System-Confidentiality --}\label{def:confidentiality}
@@ -94,9 +131,6 @@ information and map it to the $\abftheory$ theory.
 	preserves confidentiality.
 \end{definition}
 
-\begin{definition}{\bf Agent-Confidentiality --}\label{def:confidentiality}
-An agent preserves the property of confidentiality iff 
-\end{definition}
 
 Confidentiality: the information is accessible only to authorised individuals.
 A set of rules that limits access to information.  The information can be
