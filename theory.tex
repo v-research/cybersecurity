@@ -3,18 +3,25 @@ we shall define how to distinguish between a secure and an insecure system.
 While most of the literature (and this paper so far) have
 correlated the problem of in-security to the maliciousness of
 agents interacting with the system, we show that security
-doesn't seem to have a malicious nature but, rather, insecurity 
+doesn't seem to stem from a malicious nature but, rather, insecurity 
 raises from the lack of well-defined security requirements for the
 design process of a system. We argue that the high number
 of security vulnerability reported today are simply the realization
 of potential system configurations, which deviate from the nominal
-behavior just because the intended behavior of the system is not precisely 
-defined in the specification of the design process. 
+behavior just because the \emph{intended behavior} of the system is not precisely 
+defined in the specification at the very early stages of the engineering process. 
+A reference engineering process (so called, system security lifecycle of a product)
+is described, in details, in Section~\ref{sec:process}. However,
+for the sake of simplicity, the reader can assume for this section that 
+we are currently dealing with just the relation between 
+the specification of a system and its design.
 
 Given that we apply our theory to \emph{systems engineering} and that
 the two foundational processes (exploitation and hacking) are based on the
 concept of a system, we shall begin by defining what a system is, in its
 abstract form.
+
+\subsection{A Reference Model for Cybersecurity Engineering}\label{sec:vmodel}
 
 \subsection{Abstract System State}\label{sec:systemstate}
 The ISO/IEC/IEEE 15288:2015 (System Life Cycle Processes) provides a definition
@@ -225,16 +232,20 @@ of CPS.
 		of considering the more general epistemic definition of
 		Knowledge. Specifically, Facts describes:
 		\begin{itemize}
-			\item the functional architecture of each agents
-			\item the structural (HW/SW) architecture of each
+			\item The functional architecture of each agents
+			\item The structural (HW/SW) architecture of each
 				subsystem of agents and agent within a
 				subsystem
-			\item the data flow as a transfer of Beliefs through
-				Assertions (i.e. the Beliefs flow)
+			\item Other important aspects of the system that we
+				describe afterwards in this paper, such as
+				the assets and security properties 
 		\end{itemize}
 \end{enumerate}
-
 We give a graphical representation of (sub-)system and agent in Figure~\ref{fig:system-agent}.
+
+We note here (and describe with more details afterwards in this paper) that the
+data flow can be defined as a transfer of Beliefs through Assertions (i.e. the
+Beliefs flow).
 
 \begin{figure}[t]
 	\centering
@@ -258,11 +269,11 @@ We give a graphical representation of (sub-)system and agent in Figure~\ref{fig:
 
 \begin{definition}{\bf Behavior -- }\label{def:behavior}
 	The behavior of an agent is defined as the transformation process (e.g. defined as a
-	protocol, or a functional architecture) that determined the
+	protocol, or a functional architecture) that determines the
 	output-beliefs based on input-beliefs (where input-beliefs and
 	output-beliefs are beliefs taken as input or output respectively).
 	\begin{enumerate}[noitemsep]
-		\item[$(\interpretation21)$] $\world\models\bigcup_{s\in S}\believe{s}{P_{s}}$ and $\world\models\behave{a}{[\bigcup_{s\in S}\believe{s}{P_{s}}]}$ iff
+		\item[$(\interpretation20)$] $\world\models\bigcup_{s\in S}\believe{s}{P_{s}}$ and $\world\models\behave{a}{[\bigcup_{s\in S}\believe{s}{P_{s}}]}$ iff
 			$\world\models\belief{a}{P'}$, 
 			
 		where $a$ is an agent, $S$ is a set of agents such that $a\neg\in S$, and the calculation of $P'$ is deteministic.
@@ -274,7 +285,7 @@ Facts are a sub-region of Knowledge $\factRegion = \bigcup_\Phi \knows{a}{\varph
 	that predicate in a factive way, e.g.
 	if $a$ knows that $P$ then $P$, and the region of facts is monotone (no revision).
 	\begin{enumerate}[noitemsep]
-		\item[$(\interpretation20)$] $\world\models\fact{a}{P}$ iff
+		\item[$(\interpretation21)$] $\world\models\fact{a}{P}$ iff
 			$\world \models \Box P$. 
 	\end{enumerate}
 \end{definition}
@@ -319,105 +330,188 @@ the number of theoretical agents, the application of RCC downscales that number
 of a factor that ranges from 1.8 to 2.5. In addition, using RCC5 we consider
 3.6 times more (different) types of agents than RCC3, but using RCC8 would
 allow us to consider 3.5 times more different agents.
-The quantitative evaluation of an agent is depicted in Figure~\ref{fig:quantitative}.
+
+In the quantitative evaluation of a single agent, depicted in Figure~\ref{fig:quantitative},
+we argue that only 1 configuration represents the nominal (expected) behavior 
+of the agent while the other configurations are either impossible to 
+implement or diverge from the intended nominal behavior.
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=.8\textwidth]{quantitative.pdf}
+	\includegraphics[width=.9\textwidth]{quantitative.pdf}
 	\caption{Quantitative representation of the cybersecurity risk for a single agent}
 	\label{fig:quantitative}
 \end{figure}
 
 \subsection{Qualitative Evaluation of Agent Space in $\abf$}\label{sec:agentspace}
-While a quantitative analysis reveals how many possible configurations
-of an agent (i.e. a system) may exist in $\abf$ (i.e. $54/125$ in RCC5), a qualitative
-analysis of the different configurations allows us to understand 
-which configurations are allowed by the $\abf$ theory.
+While a quantitative analysis reveals how many possible configurations of an
+agent (i.e. a system) exist w.r.t. the $\abf$ theory (i.e. $54/125$ in RCC5), a
+qualitative analysis of the different configurations describes
+the configurations allowed by the $\abf$ theory, and how those configurations can be
+categorized.  In Table~\ref{tab:5com} we provide the generic composition table
+of RCC5 over 3 regions instantiated over $\abf$, which shows the whole state
+space for a single agent. The color coding of the table represents the 
+risk function as a risk matrix as we detail afterwards in this Section.
+
+A detailed qualitative categorization of agents over a theory similar to 
+the $\abf$ theory presented in this article is described in \autocite{Santaca2016abf}
+but the differences in the formalization and of the application requires
+another in-depth analysis. We categorize agents by first analyzing 
+the relations between each pair of Regions defining an agent (i.e. $\abf$),
+and then we categorize the different agents as tuple of the three Regions.
+
+\begin{enumerate}
+	\item \Rcc{$\assertionRegion$}{$\behaviorRegion$}, in order to reason
+		on the relation between assertions and behavior we first need
+		to consider that, by definition, assertions are defined as
+		transfer of information between two agents, e.g., $a$ and $b$.
+		Therefore, as depicted in Figure~\ref{fig:system-agent}, an
+		agent has two main categories of assertions, input assertions.
+		Given an agent $a$ and a collection of asserted predicates
+		$\Phi$, the Input assertions are those received
+		from a by an agent acting as a sender $s$,
+		$\assert{s}{a}{\Phi}$; similarly, output assertions are sent
+		from $a$ to a receiver $r$, $\assert{a}{r}{\Phi}$. We shall consider
+		two pairs of regions: 
+		\begin{itemize}
+			\item \Rcc{$\assertionRegion_{s\rightarrow a}$}{$\behaviorRegion$}, where 
+				the relation between inputs and behavior describes the completeness
+				and correctness of the execution of the functional architecture
+				w.r.t. input elicitation. 
+			\item \Rcc{$\assertionRegion_{a\rightarrow r}$}{$\behaviorRegion$}, where
+				the relation between behavior and outputs describes the 
+		\end{itemize}
+	\item \Rcc{$\behaviorRegion$}{$\factRegion$} (Competence)
+	\item \Rcc{$\assertionRegion$}{$\factRegion$} (Honesty)
+\end{enumerate}
+
+\Paragraph{Security Requirements} The following security requirement for a CPS specification can be summarized:
+\begin{enumerate}
+	\item Proper interaction between multiple correctly-behaving agents (in
+		contrast with the ``Improper Interaction Between Multiple
+		Correctly-Behaving Entities'' defined by the CWE in the
+		categorization of ``research concepts'' in
+		\autocite{MITRE2020CWEresearch}) is defined as $\eq{\assertionRegion}{\behaviorRegion}$
+	\item The equality relation $\eq{\assertionRegion_{s\rightarrow a}}{\behaviorRegion}$
+		describes the intended secure behavior as: the beliefs generated by the behavior of the functional architecture
+		shall be complete w.r.t. the specified inputs of the agent. Therefore, \emph{the assertions received by an agent or a system
+		shall be compliant with the expected inputs of the functional architecture}. For example, the inputs
+		of the user of a SW must be sanitized to exclude deviations w.r.t. the expected inputs of the functions
+		implemented in the SW. Another example is the type checking between allowed inputs and expected inputs.
+\end{enumerate}
+
+\begin{example}
+	\begin{itemize}
+		\item https://cwe.mitre.org/data/definitions/1000.html highlight diff between CWE ``improper interaction\ldots'' and our ''Proper interatcion\ldots'' and the internal categorization of the classes and base of the subitems of this CWE
+	\end{itemize}
+\end{example}
+
+\begin{definition}{\bf Security and Insecurity of a System or an Agent --}\label{def:security}
+\end{definition}
+
+\begin{definition}{\bf Risk --}
+\end{definition}
+\begin{definition}{\bf Risk Matrix --}
+\end{definition}
 
 \begin{table}[t]
 \centering
 \begin{adjustbox}{width=\textwidth}
 \begin{tabular}{r||c|c|c|c|c} 
-& $\mathit{DR}$($\mathit{X}$, $\mathit{Y}$) & $\mathit{PO}$($\mathit{X}$,
-	$\mathit{Y}$)& $\mathit{EQ}$($\mathit{X}$, $\mathit{Y}$) &
-	$\mathit{PPi}$($\mathit{X}$, $\mathit{Y}$) & PP($\mathit{X}$,
-	$\mathit{Y}$) \\
+& \dr{$\assertionRegion$}{$\behaviorRegion$} & 
+	\po{$\assertionRegion$}{$\behaviorRegion$}& 
+	\pp{$\assertionRegion$}{$\behaviorRegion$} &
+	\ppi{$\assertionRegion$}{$\behaviorRegion$} & 
+	\eq{$\assertionRegion$}{$\behaviorRegion$} \\
 \hline
-\hline
- \multirow{3}{*}{$\mathit{DR}$($\mathit{Y}$, $\mathit{Z}$)} &
-	\cellcolor{abfred} &
-	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) &
-	 \cellcolor{abfred} &
-	\cellcolor{abfred} &
-	\cellcolor{abfred}\multirow{3}{*}{$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$)} \\
-& \cellcolor{abfred}$\mathit{T}$($\mathit{X}$, $\mathit{Z}$)&
-	\cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) &
-	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$)&
-	\cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) &
-	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$)\\
- & \cellcolor{abfred}& 
-	\cellcolor{abfred}$\mathit{PP}$($\mathit{X}$,$\mathit{Z}$) & 
-	\cellcolor{abfred} &
-	$\cellcolor{abfred}\mathit{PP}$($\mathit{X}$, $\mathit{Z}$)
-	&\cellcolor{abfred}  \\
-\hline
- \multirow{3}{*}{$\mathit{PO}$($\mathit{Y}$, $\mathit{Z}$)} &
-	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) &
-	\cellcolor{abforange} & 
-	\cellcolor{abforange} &
-	\cellcolor{abforange}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) \\
- & \cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abforange} $\mathit{T}$($\mathit{X}$,$\mathit{Z}$) & 
-	\cellcolor{abforange} $\mathit{PO}$($\mathit{X}$, $\mathit{Z}$)& 
-	\cellcolor{abforange}$\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) \\
- & \cellcolor{abfred}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) &
-	\cellcolor{abforange} & 
-	\cellcolor{abforange}& 
-	\cellcolor{abforange}&
-	\cellcolor{abfred}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) \\
-\hline
-	$\mathit{EQ}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abforange} $\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abfgreen} $\mathit{EQ}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abforange} $\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abfred}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) \\
-\hline
- \multirow{4}{*}{$\mathit{PP}$($\mathit{Y}$, $\mathit{Z}$)} &
-	\cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abforange}&
-	\cellcolor{abforange}&
-	\cellcolor{abforange}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) &
-	\cellcolor{abfred}\\
- & \cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abforange}$\mathit{PO}$($\mathit{X}$,$\mathit{Z}$) & 
-	\cellcolor{abforange}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$)& 
-	\cellcolor{abforange}$\mathit{EQ}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abfred}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$)\\
- & \cellcolor{abfred}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abforange}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abforange}& 
-	\cellcolor{abforange}$\mathit{PP}$($\mathit{X}$, $\mathit{Z}$) & 
-	\cellcolor{abfred}\\
- & \cellcolor{abfred}&\cellcolor{abforange} & \cellcolor{abforange}& $\cellcolor{abforange}\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$) & \cellcolor{abfred}\\
-\hline
- \multirow{3}{*}{$\mathit{PPi}$($\mathit{Y}$, $\mathit{Z}$)} &
- \cellcolor{abfred}\multirow{3}{*}{} &
- \cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) &
- \cellcolor{abfred} &
- \cellcolor{abfred}&
- \cellcolor{abfred}\\
-& \cellcolor{abfred}$\mathit{DR}$($\mathit{X}$, $\mathit{Z}$) &
- \cellcolor{abfred}$\mathit{PO}$($\mathit{X}$, $\mathit{Z}$) & 
- \cellcolor{abfred}$\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$)& 
- \cellcolor{abfred}$\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$)& 
- \cellcolor{abfred}$\mathit{T}$($\mathit{X}$, $\mathit{Z}$)\\
-&\cellcolor{abfred} & \cellcolor{abfred}$\mathit{PPi}$($\mathit{X}$, $\mathit{Z}$) & \cellcolor{abfred}& \cellcolor{abfred}&\cellcolor{abfred} 
+\hline %dr
+ \multirow{3}{*}{\dr{$\behaviorRegion$}{$\factRegion$}} & 
+	\cellcolor{abfred} & %dr
+	\cellcolor{abf-rg-1}\dr{$\assertionRegion$}{$\factRegion$} & %po
+	\cellcolor{abf-rg-2}\multirow{3}{*}{\dr{$\assertionRegion$}{$\factRegion$}} & %pp
+	\cellcolor{abf-rg-3} \dr{$\assertionRegion$}{$\factRegion$}& % ppi
+	 \cellcolor{abf-rg-4} \\ % eq
+& \cellcolor{abfred}\all{$\assertionRegion$}{$\factRegion$}& %dr
+	\cellcolor{abf-rg-1}\po{$\assertionRegion$}{$\factRegion$} & %po
+	\cellcolor{abf-rg-2}\dr{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-3}\po{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-4}\dr{$\assertionRegion$}{$\factRegion$}\\ % e q
+ & \cellcolor{abfred}& %dr
+	\cellcolor{abf-rg-1}\pp{$\assertionRegion$}{$\factRegion$} & %po
+	\cellcolor{abf-rg-2}  & %pp
+	\cellcolor{abf-rg-3}\pp{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-4} \\ %eq
+\hline %po
+ \multirow{3}{*}{\po{$\behaviorRegion$}{$\factRegion$}} &
+	\cellcolor{abf-rg-1}\dr{$\assertionRegion$}{$\factRegion$} & %dr
+	\cellcolor{abf-rg-2} & %po
+	\cellcolor{abf-rg-3}\dr{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-4}\po{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-5} \\ %eq
+ & \cellcolor{abf-rg-1}\po{$\assertionRegion$}{$\factRegion$} & %dr
+	\cellcolor{abf-rg-2} \all{$\assertionRegion$}{$\factRegion$} & %po 
+	\cellcolor{abf-rg-3}\po{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-4}\ppi{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-5} \po{$\assertionRegion$}{$\factRegion$}\\%eq
+ & \cellcolor{abf-rg-1}\pp{$\assertionRegion$}{$\factRegion$} & %dr
+	\cellcolor{abf-rg-2} &  %po
+	\cellcolor{abf-rg-3}\pp{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-4}& %ppi
+	\cellcolor{abf-rg-5}\\ %eq
+\hline %pp
+ \multirow{4}{*}{\pp{$\behaviorRegion$}{$\factRegion$}} &
+	\cellcolor{abf-rg-2}\dr{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-3}&
+	\cellcolor{abf-rg-4} & %pp
+	\cellcolor{abf-rg-5}\po{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-6}\\ %eq
+ & \cellcolor{abf-rg-2}\po{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-3}\po{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-4}\pp{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-5}\eq{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-6}\pp{$\assertionRegion$}{$\factRegion$} \\ %eq
+ & \cellcolor{abf-rg-2}\pp{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-3}\pp{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-4} & %pp
+	\cellcolor{abf-rg-5}\pp{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-6} \\ %eq
+ & \cellcolor{abf-rg-2}&
+ 	\cellcolor{abf-rg-3} & 
+	\cellcolor{abf-rg-4}& %pp
+	\cellcolor{abf-rg-5}\ppi{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-6} \\ %eq
+\hline %ppi
+ \multirow{3}{*}{\ppi{$\behaviorRegion$}{$\factRegion$}} &
+ 	\cellcolor{abf-rg-3}\multirow{3}{*}{} &
+ 	\cellcolor{abf-rg-4}\dr{$\assertionRegion$}{$\factRegion$} &
+ 	\cellcolor{abf-rg-5}& %pp
+ 	\cellcolor{abf-rg-6}& %ppi
+ 	\cellcolor{abf-rg-7} \\ %eq
+& \cellcolor{abf-rg-3}\dr{$\assertionRegion$}{$\factRegion$} &
+ 	\cellcolor{abf-rg-4}\po{$\assertionRegion$}{$\factRegion$} & 
+ 	\cellcolor{abf-rg-5}\all{$\assertionRegion$}{$\factRegion$}& %pp
+ 	\cellcolor{abf-rg-6}\ppi{$\assertionRegion$}{$\factRegion$}& %ppi
+ 	\cellcolor{abf-rg-7}\ppi{$\assertionRegion$}{$\factRegion$}\\ %eq
+& \cellcolor{abf-rg-3} & 
+	\cellcolor{abf-rg-4}\ppi{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-5} & %pp
+	\cellcolor{abf-rg-6}& %ppi
+	\cellcolor{abf-rg-7}\\ %eq
+\hline %eq
+	\eq{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-4}\dr{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-5} \po{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-6}\pp{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-7} \ppi{$\assertionRegion$}{$\factRegion$} & %ppi 
+	\cellcolor{abfgreen} \eq{$\assertionRegion$}{$\factRegion$}  %eq
 \end{tabular}
 \end{adjustbox}
-\caption{RCC5 composition table over 3 sets. The results show that there exist 54 possible relations and the coloring anticipates the ideal risk matrix (green the secure state with low risk, orange the medium risk states, and red the high risk states). $\mathit{T}(\mathit{X},\mathit{Z}) = \{\mathit{DR}(\mathit{X}, \mathit{Z}), \, \mathit{PO}(\mathit{X},\mathit{Z}),\, \mathit{EQ}(\mathit{X},\mathit{Z}),\, \mathit{PP}(\mathit{X},\mathit{Z}),\, \mathit{PPi}(\mathit{X},\mathit{Z})\}$\label{tab:5com}}
+\caption{RCC5 composition table over 3 regions. The results show that there
+exist 54 possible relations and the coloring anticipates the ideal risk matrix
+(green the secure state with low risk, red the high risk state, and a gradient
+of medium risk states). 
+\all{$\assertionRegion$}{$\factRegion$} = \{\dr{$\assertionRegion$}{$\factRegion$}, \po{$\assertionRegion$}{$\factRegion$}, \pp{$\assertionRegion$}{$\factRegion$}, \ppi{$\assertionRegion$}{$\factRegion$}, \eq{$\assertionRegion$}{$\factRegion$}\}
+\label{tab:5com}}
 \end{table}
 
 \subsection{System Security Evolution}\label{sec:systemevoution}
