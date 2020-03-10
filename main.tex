@@ -46,9 +46,18 @@
 % \renewcommand{\fix}[2]{}
 
 %colors in tables
-\definecolor{abfgreen}{RGB}{221, 232, 203}
+\definecolor{abfred}{RGB}{255, 215, 215}
+\definecolor{abf-rg-1}{RGB}{251,213,242}
+\definecolor{abf-rg-2}{RGB}{243,212,249}
+\definecolor{abf-rg-3}{RGB}{213,210,245}
+\definecolor{abf-rg-4}{RGB}{208,231,242}
+\definecolor{abf-rg-5}{RGB}{206,238,223}
+\definecolor{abf-rg-6}{RGB}{205,236,210}
+\definecolor{abf-rg-7}{RGB}{211,234,204}
+\definecolor{abfgreen}{RGB}{221,232,203}
+
 \definecolor{abforange}{RGB}{255, 245, 206}
-\definecolor{abfred}{RGB}{247, 209, 213}
+
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
@@ -118,11 +127,12 @@
 \newcommand{\factRegion}{\mathcal{F}}
 \newcommand{\abf}{\assertionRegion,\behaviorRegion,\factRegion}
 \newcommand{\abftheory}{\assertionRegion\behaviorRegion\factRegion}
-\newcommand{\assert}[3]{A_{#1\rightarrow #2}#3}
-\newcommand{\behave}[2]{B_{#1}#2}
-\newcommand{\fact}[2]{F_{#1}#2}
+\newcommand{\assert}[3]{\mathcal{A}_{#1\rightarrow #2}#3}
+\newcommand{\behave}[2]{\mathcal{B}_{#1}#2}
+\newcommand{\fact}[2]{\mathcal{F}_{#1}#2}
 %rcc5
 \newcommand{\rcc}{rcc}
+\newcommand{\Rcc}[2]{rcc(#1,#2)}
 \newcommand{\connects}[2]{C(#1,#2)}
 \newcommand{\disconnected}[2]{\neg C(#1,#2)}
 \newcommand{\partof}[2]{P(#1,#2)}
@@ -132,6 +142,7 @@
 \newcommand{\po}[2]{PO(#1,#2)}
 \newcommand{\ppi}[2]{PPi(#1,#2)}
 \newcommand{\dr}[2]{DR(#1,#2)}
+\newcommand{\all}[2]{T(#1,#2)}
 
 
 \makeindex 
