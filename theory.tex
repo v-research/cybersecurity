@@ -8,7 +8,8 @@ raises from the lack of well-defined security requirements for the
 design process of a system. We argue that the high number
 of security vulnerability reported today are simply the realization
 of potential system configurations, which deviate from the nominal
-behavior just because the \emph{intended behavior} of the system is not precisely 
+behavior just because the \emph{intended behavior}\fixnote{mr}{maybe ``nominal'' instead of ``intended'' is better and behavior can be confused with the
+relation between assertions and beliefs which is not what we mean} of the system is not precisely 
 defined in the specification at the very early stages of the engineering process. 
 A reference engineering process (so called, system security lifecycle of a product)
 is described, in details, in Section~\ref{sec:process}. However,
@@ -37,7 +38,7 @@ over slightly different terms. The differences and commonalities with
 There is no agreement between the research communities (e.g.
 Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent
 as a system. However, the same ideas revolved around for thousands of years.
-Some examples follows.
+Some relevant examples for our objective are the following.
 \begin{itemize}
 	\item In \autocite{Hintikka1962knowledge}, Hintikka describes the
 		difference between Knowledge and Belief (as epistemological
@@ -60,9 +61,9 @@ Some examples follows.
 If we consider \autocite{Empiricus1990Pyrrhonism}, the author applies a
 ``logical criterion'' to an agent, for instance a man, for instance a device in
 a system (or a system) as in \autocite{Santaca2016abf}.  The instrument identified is sense
-perception, because a man is considered as example, but we can abstract the
-concept of instrument as any received information, where information is
-considered as defined in \autocite{Hintikka1993Information}; which can be
+perception, because a man is considered as example, but we can abstract from the
+concept of instrument and consider any received information, where information is
+considered as in \autocite{Hintikka1993Information}; which can be
 summarized by the following axiom: ``Information is specified by specifying
 which alternatives concerning the reality it admits and which alternatives
 excludes''. This means, for our argument, that considering a propositional
@@ -93,7 +94,7 @@ and the Dolev-Yao theory is usually applied to a representation/abstraction
 of a protocol that only considers knowledge and transfer of knowledge (i.e.
 if an agent sends a message, the recipient knows that message). However,
 the security of a system is tightly related to the difference between
-the nominal behavior and the implemented one.
+the nominal behavior and the actual (e.g. the implemented) one.
 
 \begin{definition}{\bf System State and State-Space --}\label{def:system}
 	The state of a system (or a sub-system) $s$ is identified with an
@@ -106,10 +107,10 @@ the nominal behavior and the implemented one.
 	relations between the three pairs of Regions defining the system and
 	all the sub-systems.
 \end{definition}
-A system state space can be seen as a superposition of multiple agent states where knowledge,
+Therefore, a system state space can be seen as a superposition of multiple agent states where knowledge,
 beliefs, and information are related between each other (in a mereotopological
-space) through the all the admissible RCC relations. 
-A \emph{system state} (as an instance of the system state space)
+space) through all the admissible RCC relations. 
+\fixnote{mr}{are the next lines redundant?}A \emph{system state} (as an instance of the system state space)
 is a specific configuration of
 the $\rcc$ relations between the three regions. Therefore, a collection of 
 system states defines a collection of choices for those $\rcc$ relations.
@@ -146,7 +147,7 @@ Similarly for the concept of information, Hintikka in \autocite{Hintikka1993Info
 states that ``A purely logical definition of information is impossible''.
 In this work, however, we are not interested in how knowledge, information, or
 belief can be precisely formalized from an epistemic standpoint.  We assume
-that a semantic of a correct definition of epistemic knowledge exists, for
+that a semantic of a correct (i.e. commonly believed to be true) definition of epistemic knowledge exists, for
 example the one given in\autocite{Hintikka1962knowledge} by Hintikka, and we
 then define knowledge in terms of the Kripke structure defined in
 Definition~\ref{def:modallogic}; similarly for Belief.
@@ -233,7 +234,7 @@ of CPS.
 		Knowledge. Specifically, Facts describes:
 		\begin{itemize}
 			\item The functional architecture of each agents
-			\item The structural (HW/SW) architecture of each
+			\item The physical/structural (HW/SW) architecture of each
 				subsystem of agents and agent within a
 				subsystem
 			\item Other important aspects of the system that we
@@ -258,22 +259,21 @@ Beliefs flow).
 	An assertion is an intended transfer of beliefs between
 	two agents $a$ and $b$ such that
 	\begin{enumerate}[noitemsep]
-		\item[$(\interpretation19)$] $\world\models\assert{a}{b}{P}$ iff
+		\item[$(\interpretation19)$] $\world\models\rassert{a}{b}{P}$ iff
 			$\world\models\belief{a}{P}$, 
+			$\world\models\neg\belief{a}{\neg P}$, 
 			$\world'\models\rcc(\belief{a}{P},\belief{b}{P})$, 
-			$\world'\models\belief{a}{\belief{b}{P}}$
-			and $\world'\models P$ for all
-			$\world'$ such that $\world\modalrelation\world'$.
+			for all $\world'$ such that $\world\modalrelation\world'$.
 	\end{enumerate}
 \end{definition}
 
 \begin{definition}{\bf Behavior -- }\label{def:behavior}
 	The behavior of an agent is defined as the transformation process (e.g. defined as a
 	protocol, or a functional architecture) that determines the
-	output-beliefs based on input-beliefs (where input-beliefs and
+	output-beliefs based on input-beliefs and vice versa (where input-beliefs and
 	output-beliefs are beliefs taken as input or output respectively).
 	\begin{enumerate}[noitemsep]
-		\item[$(\interpretation20)$] $\world\models\bigcup_{s\in S}\believe{s}{P_{s}}$ and $\world\models\behave{a}{[\bigcup_{s\in S}\believe{s}{P_{s}}]}$ iff
+		\item[$(\interpretation20)$] $\world\models\bigcup_{\Phi}\believe{s}{\varphi}$ and $\world\models\behave{a}{[\bigcup_{s\in S}\believe{s}{P_{s}}]}$ iff
 			$\world\models\belief{a}{P'}$, 
 			
 		where $a$ is an agent, $S$ is a set of agents such that $a\neg\in S$, and the calculation of $P'$ is deteministic.
@@ -294,7 +294,7 @@ Facts are a sub-region of Knowledge $\factRegion = \bigcup_\Phi \knows{a}{\varph
 	An operational system (or a sub-system) is represented as an agent (see Definition~\ref{def:agent}) and then defined by the resulting state space,
 	such that
 	$s=\langle\rcc(\factRegion,\behaviorRegion),\rcc(\factRegion,\assertionRegion),\rcc(\behaviorRegion,\assertionRegion)\rangle$,
-	where $\assertionRegion,\behaviorRegion,\factRegion$, are regions of assertions, behavior, and facts respectively.
+	where $\assertionRegion,\behaviorRegion,\factRegion$, are regions of assertions, behavior (i.e. the beliefs generated by the behavior), and facts respectively.
 \end{definition}
 
 As already presented in \autocite{Santaca2016abf} it follows that, defining
@@ -343,6 +343,19 @@ implement or diverge from the intended nominal behavior.
 	\label{fig:quantitative}
 \end{figure}
 
+As described beforehand in this section, the collection of Facts shall define
+the functional and the physical architecture of an agent, but Assets and
+security properties are defined as Facts. Given that understanding
+why an Asset is considered as such by the user doesn't necessarily allow
+us to better qualify an Asset, we consider the fact of ``being an asset'' as
+a Boolean property of an Agent. 
+
+\begin{definition}{\bf Asset --}\label{def:asset}
+	\fix{mr}{asset def.}
+\end{definition}
+
+The definition of the security properties is given in Section~\ref{sec:properties}
+
 \subsection{Qualitative Evaluation of Agent Space in $\abf$}\label{sec:agentspace}
 While a quantitative analysis reveals how many possible configurations of an
 agent (i.e. a system) exist w.r.t. the $\abf$ theory (i.e. $54/125$ in RCC5), a
@@ -353,12 +366,30 @@ of RCC5 over 3 regions instantiated over $\abf$, which shows the whole state
 space for a single agent. The color coding of the table represents the 
 risk function as a risk matrix as we detail afterwards in this Section.
 
-A detailed qualitative categorization of agents over a theory similar to 
-the $\abf$ theory presented in this article is described in \autocite{Santaca2016abf}
-but the differences in the formalization and of the application requires
-another in-depth analysis. We categorize agents by first analyzing 
-the relations between each pair of Regions defining an agent (i.e. $\abf$),
-and then we categorize the different agents as tuple of the three Regions.
+A detailed qualitative categorization of agents over a theory similar to the
+$\abf$ theory presented in this article is described in
+\autocite{Santaca2016abf} but the differences in the formalization and of the
+application requires another in-depth analysis. As depicted in
+Figure~\ref{fig:soundness}, the relation between Facts, and Assertions and Behavior
+defines the soundness of the design (admissible configurations of Assertions,
+Behaviors and, in turn, Beliefs) w.r.t. the specification (what the
+specification mandates, such as by the nature of the physical/functional
+architectural models). Similarly, the relation between Assertions and Behavior defines the
+soundness of the functional architecture.
+We categorize agents by first analyzing the relations
+between each pair of Regions defining an agent (i.e. $\abf$), and then we
+categorize the different agents as tuple of the three Regions.
+For the sake of simplicity, soundness is opposed to non-soundness in the following, however,
+with the RCC we consider different ``degrees'' of soundness. For example,
+in RCC5, if we consider EQ between two Regions as representing soundness, DR over the same Regions
+represents non-soundness while PP, PO, PPi represents the different degrees of soundness.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=.8\textwidth]{soundness.pdf}
+	\caption{Example relation between Facts, and Assertions and Beliefs}
+	\label{fig:soundness}
+\end{figure}
 
 \begin{enumerate}
 	\item \Rcc{$\assertionRegion$}{$\behaviorRegion$}, in order to reason
@@ -366,20 +397,36 @@ and then we categorize the different agents as tuple of the three Regions.
 		to consider that, by definition, assertions are defined as
 		transfer of information between two agents, e.g., $a$ and $b$.
 		Therefore, as depicted in Figure~\ref{fig:system-agent}, an
-		agent has two main categories of assertions, input assertions.
+		agent has two main categories of assertions, input and output assertions.
 		Given an agent $a$ and a collection of asserted predicates
 		$\Phi$, the Input assertions are those received
-		from a by an agent acting as a sender $s$,
-		$\assert{s}{a}{\Phi}$; similarly, output assertions are sent
-		from $a$ to a receiver $r$, $\assert{a}{r}{\Phi}$. We shall consider
+		by $a$ from an agent $s$ acting as a sender,
+		$\rassert{s}{a}{\Phi}$; similarly, output assertions are sent
+		from $a$ to a receiver $r$, $\rassert{a}{r}{\Phi}$. We shall consider
 		two pairs of regions: 
 		\begin{itemize}
-			\item \Rcc{$\assertionRegion_{s\rightarrow a}$}{$\behaviorRegion$}, where 
-				the relation between inputs and behavior describes the completeness
-				and correctness of the execution of the functional architecture
-				w.r.t. input elicitation. 
-			\item \Rcc{$\assertionRegion_{a\rightarrow r}$}{$\behaviorRegion$}, where
-				the relation between behavior and outputs describes the 
+			\item \Rcc{$\assertionRegion_{s\rightarrow
+				a}$}{$\behaviorRegion$}, where the relation
+				between Input-assertions and behavior describes
+				the soundness of the execution of the
+				functional architecture w.r.t. input
+				elicitation. With more details, the ideal
+				specification of the functional architecture,
+				along with the expected inputs, defines the
+				functional behavior of an ideal system.  If all
+				the inputs (Assertions) are correctly handled
+				in the functional specification (behavior) the
+				specification is sound. 
+
+			\item \Rcc{$\assertionRegion_{a\rightarrow
+				r}$}{$\behaviorRegion$}, where the relation
+				between behavior and outputs describes the
+				completeness of the behavior defined in the
+				specification w.r.t. the input elicitation.
+				With more details, if all the outputs
+				(assertions) of the functional architecture can
+				be produced, the functional architecture is
+				complete.
 		\end{itemize}
 	\item \Rcc{$\behaviorRegion$}{$\factRegion$} (Competence)
 	\item \Rcc{$\assertionRegion$}{$\factRegion$} (Honesty)
