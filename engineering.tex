@@ -1,23 +1,183 @@
-\epigraph{The difference between ideas and reality is the
+\epigraph{The difference between ideas and reality is like the
 difference between philosophy and engineering. The work to transform one into
 the other is scientific research}{{\itshape V-Research}}
+
+Several standards mandates a secure-by-design approach in which 
+cybersecurity shall be considered at the very early stages of the 
+design process. For example,
+\begin{enumerate}[noitemsep]
+	\item DO-326A -- ``Airworthiness Security Process Specification''
+		requires a cybersecurity risk assessment of the design and is
+		the ``are the only Acceptable Means of Compliance (AMC) by FAA
+		\& EASA for aviation cyber-security airworthiness certification,
+		as of 2019'' as pointed out by SAE in \autocite{SAE2019DO326A}.
+	\item NIST 800-82 \autocite{Stouffer2011guide} -- ``guide to Industrial
+		Control System (ICS) Security''
+	\item J3061:2016-1 \autocite{SAE2016J3061} -- ``Cybersecurity Guidebook
+		for Cyber-Physical Vehicle Systems'' defines ``set of
+		high-level guiding principles for Cybersecurity as it relates
+		to cyber-physical vehicle systems'' and states that
+		``incorporate Cybersecurity into cyber-physical vehicle systems
+		from concept phase through production, operation, service, and
+		decommissioning''
+\end{enumerate}
+Companies who develop CPS (e.g. aerospace systems or elevator systems), must adhere
+to strict regulations and quality assurances processes. Introducing tools and procedures 
+in their processes requires a detailed and justified overview on how those
+tools and procedures can be used. In Figure~\ref{fig:spdl}, we provide an overview
+of a process that consider cybersecurity in the specification, design, and implementation
+stages. The overall process start with the specification of the architectural (both physical
+and functional) requirements from which the Weaknesses are automatically identified.
+Based on the Assets, architectures, and the Weaknesses the cybersecurity risk is
+calculated based on the $\abf$-theory. An iterative process between 
+the user (e.g. the engineer) and the \secramod module of the \abftool allows the user to move to the design phase
+when the risk level is considered acceptable. The design phase starts by automatically mapping
+the Weaknesses into Vulnerabilities which are, in turn, fed into the \designverifmod
+module along with the final specification. The Module returns a list of Vulnerabilities and
+potential Mitigations. The user then procees in implementing the CPS and the SW/HW choices
+can be tested by the \atgmod. 
 
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{spdl.pdf}
 	\caption{Secure-by-design System Development Life-cycle}
-	\label{fig:knowledge-belief}
+	\label{fig:spdl}
 \end{figure}
 
-Infosec, or Information Security, aims at mitigating the security risks related
-to information. The standard de-facto is the so called CIA triad 
-(where CIA stands for Confidentiality, Integrity, Availability), which is often
-criticized for being too general or non-adequate (e.g. by adding authenticity which is 
-often used as a building block for confidentiality and integrity) 
-to be effectively applied to the engineering of systems. Due to this,
-many researchers an organization tried to improve the CIA triad. 
-The evolutions/extensions of the CIA triad has been documented, e.g.,
-in \autocite{Samonas2014cia} and is summarized in Table~\ref{tab:ciaevolution}.
+In order to explain in details the SPDL, we use the following running example.
+\begin{example}
+	As depicted in Figure~\ref{fig:usecase}, the use case of the running example
+	(a small part of a subprocess of the SwAT testbed \autocite{}), shows
+	\begin{itemize}[noitemsep]
+		\item a tank that is filled with raw water coming from the inlet pipe 
+		\item a motorized valve (a valve with an actuator) that regulates that
+			\begin{itemize}
+				\item if opened, allows the raw water to flow into the tank
+				\item if closed, stops the raw water to flow into the tank
+			\end{itemize}
+		\item a sensor that reads the meters of raw water in the tank
+		\item a PLC controller, connected to the sensor and the actuator, that receives the readings from the sensor and regulates the quantity of water in the tank by communicating a change in the state of the actuator based on the following logi
+			\begin{itemize}
+				\item if the readings from the sensor reports a water level in the tank above (or equal) to 10m, the actuator shall close the valve
+				\item if th readings are below 10m the actuator shall open the valve.
+			\end{itemize}
+	\end{itemize}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=.55\textwidth]{usecase.pdf}
+	\caption{Use Case -- Running Example}
+	\label{fig:usecase}
+\end{figure}
+\end{example}
+
+\subsection{Specification -- Elicitation of Security Requirements}\label{sec:properties}
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{spec.pdf}
+	\caption{Specification -- Running Example}
+	\label{fig:spec}
+\end{figure}
+The first step of the SPDL is the definition of the requirements and then, for
+the purpose of this paper of the (i) security requirements, (ii) architectural
+(physical and functional) requirements.  Our focus in mainly on security
+requirements but they are necessarily intertwined with the architectural
+requirements, as we will show afterwards in this section.  A complete study on
+how to properly define the architectural requirements is outside the scope of
+this paper so we propose a method that is convenient for the purpose of our
+assessment.
+
+\Paragraph{System Requirements}
+In our running example, there is a system (a CPS) composed by $5$ main
+subsystem which we consider atomic (i.e. not themself composed by subsystems)
+and then agents: the tank, the sensor, the controller, the actuator, and the
+motorized valve (valve from now on).  The whole specification (which we now
+describe) of the physical and functional architecture is depicted in
+Figure~\ref{fig:spec}.  In the use case, the communication flow is as follows:
+\begin{enumerate}
+	\item the sensor reads the level of water in the tank ($\text{tank}\rightarrow \text{sensor}$) \footnote{this communication depends on the technology in use for the readings. We assume a unidirectional communication without loss of generality}
+	\item the sensor communicates the readings to the controller ($\text{sensor}\rightarrow \text{controller}$)
+	\item the controller calculates the valve state and communicates it to the actuator ($\text{controller}\rightarrow \text{actuator}$)
+	\item the actuator translates (digital to analog) the states received and communicates\footnote{we do not distinguish, for the sake of simplicity between different types of channels and assume that communicating to the valve produces the expected change of physical state} it to the valve
+\end{enumerate}
+Each agent has an input or output port from which it communicates with other
+agents.  It is also composed by the functional blocks that defines its
+functional architecture and physical boundaries that defines its physical
+architecture, as follows.
+\begin{enumerate}[start=1, label={req\arabic*)}]
+	\item the tank has no functional architecture, it is a purely physical component which has the only purpose of containing water
+	\item the communication is unidirectional from the tank to the input port of the sensor
+	\item the sensor has an input-port that receives only incoming communication from the tank
+	\item the sensor has two functional blocks
+		\begin{enumerate}[label={req4.\arabic*)}]
+			\item read\_water\_level, accepts inputs only from the input-port and outputs a new reading every $t$ seconds
+			\item comm\_water\_level, accepts inputs only from the read\_water\_level and communicates the readings to the output-port
+		\end{enumerate}
+	\item the sensor has an output-port that only outputs the messages generated by the comm\_water\_level to the input-port of the controller
+	\item the controller has in input-port that only receives incoming communications from the sensor and sends the messages to the functional architecture
+	\item the functional architecture of the controller is composed by three functional blocks
+		\begin{enumerate}[label={req7.\arabic*)}]
+			\item get\_water\_level, accepts inputs only from the input-port and outputs the water level to the main control function
+			\item control, calculate the next state of the valve based on the inputs receive from the get\_water\_level
+			\item send\_state, receives the output of the control function and communicates it to the output-port
+		\end{enumerate}
+	\item the controller has an output-port that only outputs the messages generated by the send\_state to the input-port of the actuator 
+	\item the actuator has an input-port that receives only incoming communication from the controller 
+	\item the functional architecture of the actuator is composed by two functional blocks
+		\begin{enumerate}[label={req10.\arabic*)}]
+			\item read\_change\_state, accepts inputs only from the input-port and outputs the next state of the valve to the close\_open\_valve function
+			\item close\_open\_valve, converts the digital next state received from the read\_change\_state an analog signal and communicates it the output-port
+		\end{enumerate}
+	\item the valve accepts analog messages from the output port of the actuator and changes its state based on those messages
+\end{enumerate}
+
+While \emph{agents} and \emph{communication} between agents are described and
+defined in Section~\ref{sec:theory}, both the concepts of \emph{port},
+\emph{channel}, \emph{functional and physical architecture}, and
+\emph{functional block} have not yet been defined with respect to the $\abf$-theory.
+Informally, a channel identifies the place where the communication takes place.
+In this work we only consider mono-directional channels and communication but the 
+extension to bi-directional channel can be considered as the union of two
+unidirectional channels. 
+
+\begin{definition}{\bf mono-directional channel --}\label{def:monochannel}
+	A mono-directional channel is defined by the message sent and received
+	over the channel. Given two agents $s$ (sender) and $r$ (receiver) a
+	mono-directional channel $s \rightarrow r$ defines the sending of
+	information between $s$ and $r$. 
+	%$\assertion{s}{r}$ is defined as a (improper) subset of the assertions of $s$, i.e.
+	%$\pp{\assertion{s}{r}}{\assertion{s}}
+	%PP(A λ S ,λ R , A λ S ) ∨ EQ(A λ S ,λ R , A λ S ) (since λ S may
+	%communicate with other agents).  The receipt of messages over a
+	%mono-directional channel is defined as the topolog- ical boundary B S
+	%,R (improper) subset of the beliefs of the receiver (i.e., the beliefs
+	%generated by the message exchange and by computations over the set of
+	%beliefs): PP(B S ,R , B R ) ∨ EQ(B S ,R , B R ).
+\end{definition}
+
+\begin{definition}{\bf \fix{mr}{informal Input or Output Port} --}\label{def:port} 
+	Ports are agents with the following predefined behavior: an input-port
+	changes the type of information from assertion to belief while an
+	output-port from belief to assertion; forwarding information from the
+	outside of an agent's boundary to the inside (input-port) or vice versa
+	(output-port).
+\end{definition}
+
+\Paragraph{Security Requirements} 
+While standards (such
+as IEC62443-1-3\fixnote{mr}{check the correct version}) defines requirements as
+``information in transit/at-rest should be encrypted'' we believe that, at
+specification level, security requirements can be formulated as subcategories of
+the well-known CIA triad (where CIA stands for Confidentiality, Integrity,
+Availability).
+Infosec, or Information Security, defines the security risks related to
+information with the de-facto standard CIA triad , which is often criticized
+\autocite{CIAcriticismCPS} for being too general or non-adequate (e.g. by
+adding authenticity which is often used as a building block for confidentiality
+and integrity) to be effectively applied to the engineering of systems. Due to
+this, many researchers an organization tried to improve the CIA triad.  The
+evolutions/extensions of the CIA triad has been documented, e.g., in
+\autocite{Samonas2014cia} and is summarized in Table~\ref{tab:ciaevolution}.
 
 \begin{table}[h]
 \centering
@@ -36,7 +196,7 @@ in \autocite{Samonas2014cia} and is summarized in Table~\ref{tab:ciaevolution}.
 \end{table}
 
 
-An example is the effort made by the OECD (Organisation for Economic
+An representative example is the effort made by the OECD (Organisation for Economic
 Co-operation and Development) in \autocite{OECD2013guidelines} to define
 security guidelines for information system (1992) based on new principles such
 as ``awareness, ethics, risk assessment'' and maintain those revising the
@@ -44,13 +204,12 @@ document (e.g.  following the multistakeholder expert consultation in 2013).
 Other similar efforts focused on defining entirely new principles or extending
 the CIA triad, such as \autocite{NISTSP800-160}. What is of interest for our
 argument is that, to the best of our knowledge, all of the approaches that aim
-at improving the CIA triad motivated by empirical evidences. On the contrary,
+at improving the CIA triad are besed on motivations related to empirical evidences. On the contrary,
 we now define (in Section~\ref{sec:properties}) the CIA triad for an agent
 defined in the $\abftheory$ theory and we test if (i) other properties are
 allowed in the $\abftheory$ theory, and (ii) if and how the CIA triad can be
 detailed in the $\abftheory$ theory.
 
-\subsection{Elicitation of Security Requirements}\label{sec:properties}
 In \autocite{Anderson1972report,Samonas2014cia}, CIA are defined as follows.
 \begin{itemize}
 	\item Unauthorized information release: an unauthorized person is able
@@ -165,12 +324,7 @@ sent it and cannot deny it (partial overlap??).  If sender A sends information
 X, it cannot say he didn't do it.  Non-repudiation implies authenticity and
 integrity. Authenticity doesn't imply non-repudiation (replay attacks?).
 Integrity doesn't imply non-repudiation (replay attacks?). 
-}
 
-\subsubsection{Relevant Standards}\label{sec:standards}
-\begin{enumerate}[noitemsep]
-	\item DO-326A
-\end{enumerate}
 
 \begin{enumerate}
 \item specification -- definition of the desired design of a system. The
@@ -181,3 +335,4 @@ CWE.
 are implemented into the design. The security of the assets w.r.t. the design are
 verified with a, so called, cybersecurity risk assessment.
 \end{enumerate}
+}
