@@ -166,6 +166,8 @@ or $\Rcc{\assertionRegion_r}{\beliefRegion_a}$.
 	$\world\models\varphi$, and $\varphi\in\assertionRegion_s$ where $s$
 	has the only input port $p_I$, $\world'\models\beliefRegion_a$ and $\varphi\in\beliefRegion_a$.
 \end{definition}
+
+\Paragraph{Port weaknesses}
 From this definition, it follows that there exist only the following types of insecure port in RCC5:
 \begin{itemize}
 	\item \emph{drop port} ($s\circ\rightarrow a$), where assertions reaches the port but do not pass the boundary of the agent (i.e. do not become belief of the agent)
