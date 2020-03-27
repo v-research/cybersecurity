@@ -138,23 +138,33 @@ architecture, as follows.
 	\label{fig:ioports}
 \end{figure}
 
-While \emph{agents} and \emph{communication} between agents are described and
-defined in Section~\ref{sec:theory}, both the concepts of \emph{port} (depicted in Figure~\ref{fig:ioports},
-\emph{channel}, \emph{functional and physical architecture}, and
-\emph{functional block} have not yet been defined with respect to the
-$\abf$-theory.  Informally, a channel identifies the place where the
-communication takes place.  In this work we only consider mono-directional
-channels and communication but the extension to bi-directional channel can be
-considered as the union of two unidirectional channels. A mono-directional
-channel is defined by the assertions sent or received (over the channel). 
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=.9\textwidth]{channel.pdf}
+	\caption{Communication over a Mono-directional Channel}
+	\label{fig:channel}
+\end{figure}
 
-\begin{definition}{\bf mono-directional channel --}\label{def:monochannel}
-	Given two agents $s$ (sender) and $r$ (receiver) a
-	mono-directional channel $s \rightarrow r$ is defined as the union of all the assertions 
-	$\rassert{s}{r}$ sent by $s$ to $r$ ($\assertionRegion_s$) and received by $r$ from $s$ ($\assertionRegion_r$). 
-\end{definition}
-The \emph{quality of a mono-directional} channel is defined as the 
-$\rcc$ relation between the assertions made by the sender and the ones received by the receiver, i.e. $\Rcc{s}{r}$.
+While \emph{agents} and \emph{communication} between agents are described and
+defined in Section~\ref{sec:theory}, the concepts of \emph{port} (depicted in
+Figure~\ref{fig:ioports}), \emph{channel} (depicted in
+Figure~\ref{fig:channel}), \emph{functional and physical architecture}, and
+\emph{functional block} have not yet been defined with respect to the
+$\abf$-theory.  Informally, a channel\footnote{for now, we rely on the
+intuitive notion of channel as ``something'' that transfers information as
+Assertions between output and input port, i.e. monodirectional} identifies the
+place where the communication takes place.  In this work, we only consider
+mono-directional channels and communication but the extension to bi-directional
+channel can be considered as the union of two unidirectional channels. A
+mono-directional channel is defined by the assertions sent or received (over
+the channel). 
+
+\Paragraph{Input and Output Ports}
+Since the $\abf$-theory is a theory of agents, we consider ports as agents that
+allows the exchange of information between a channel and another
+agent.  However, a port must be considered as a special type of agent to avoid
+an \emph{infinite regress} in which a port needs a port to transfer information
+between the outside of the port to the inside of itself.
 
 \begin{definition}{\bf Input or Output Port --}\label{def:port} 
 	Ports are agents with the following predefined behavior: an input-port changes
@@ -174,18 +184,19 @@ or $\Rcc{\assertionRegion_r}{\beliefRegion_a}$.
 	has the only input port $p_I$, $\world'\models\beliefRegion_a$ and $\varphi\in\beliefRegion_a$.
 \end{definition}
 
-\Paragraph{Port weaknesses}
-From this definition, it follows that there exist only the following types of insecure port in RCC5:
-\begin{itemize}
+\Paragraph{Port Weaknesses}
+From this definition, it follows that there exist only the following \emph{six} types of weaknesses, generating six types of insecure port in RCC5:
+\begin{enumerate}[start=1, label={W\arabic*)}]
 	\item \emph{drop port} ($s\dropport a$), where assertions reaches the port but do not pass the boundary of the agent (i.e. do not become belief of the agent)
 	\item \emph{insertion port} ($s\insertport a$), where some new information is believed by $a$ as incoming from the port but $s$ didn't send it
 	\item \emph{injection port} ($s\injectionport a$), where information coming from $s$ is substituted with new information which becomes believed by $a$
-	\item \emph{selective port}, where some
-		information passes the port while other is either dropped
-		($s\selectivedropport a$), inserted
-		($s\selectiveinsertport a$), or injected
-		($s\selectiveinjectionport a$)
-\end{itemize}
+	\item \emph{selective port}, where some information passes the port and part is either:
+	\begin{enumerate}[start=1, label={W4.\arabic*)}]
+		\item dropped ($s\selectivedropport a$), 
+		\item inserted ($s\selectiveinsertport a$), or
+		\item injected ($s\selectiveinjectionport a$)
+\end{enumerate}
+\end{enumerate}
 
 \begin{proof}
 An input port is, in the $\abf$-theory, defined secure as long as the relation
@@ -242,6 +253,7 @@ An input port is, in the $\abf$-theory, defined secure as long as the relation
 					assumed that a communication was taking place (absurd).
 			\end{itemize}
 	\end{itemize}
+	In other words, $\dr{\assertionRegion}{\beliefRegion}\equiv\neg\overlaps{\assertionRegion}{\beliefRegion}\equiv\neg(\varphi\subseteq\assertionRegion\wedge\varphi\subseteq\beliefRegion)\equiv\varphi\not\subseteq\assertionRegion\vee\varphi\not\subseteq\beliefRegion$
 	Similarly, 
 	\begin{itemize}
 		\item given that $\po{\assertionRegion}{\beliefRegion}$ is equivalent to
@@ -263,6 +275,31 @@ An input port is, in the $\abf$-theory, defined secure as long as the relation
 		\end{itemize}
 	\end{itemize}
 \end{proof}
+
+\Paragraph{Communication Channels}
+We start by considering the difference between a (communication)
+mono-directional channel (channel from now on) and an agent, as we did for the
+ports, since the $\abf$-theory is a theory of agents.  In fact, if a channel
+were considered an agent (channel-agent) then the question would be how an
+agent would transfer its Assertions to the channel-agent. If the channel
+between the agent and the channel-agent is again an agent, we would generate an
+\emph{infinite regress}. Therefore, we do allow channel-agents but we assume
+a finite depth (of detail) for a channel, where there exists a bottom-channel 
+which is not an agent. For now, we do not constrain a channel-agent in any way
+so there is no difference between a channel agent and agent. Therefore, for
+the sake of simplicity, we consider, in this text, channels to be bottom-channels,
+defined as agents with the pre-defined behavior of storing Assertions that are transferred
+over them (i.e. over the channel we are defining).
+
+\begin{definition}{\bf Mono-directional Channel --}\label{def:monochannel}
+	Given two agents $s$ (sender) and $r$ (receiver) a
+	mono-directional channel $s \rightarrow r$ is defined as the union of all the assertions 
+	$\rassert{s}{r}$ sent by $s$ to $r$ ($\assertionRegion_s$) and received by $r$ from $s$ ($\assertionRegion_r$) (for any given instance of time). 
+\end{definition}
+The \emph{quality of a mono-directional} channel is defined as the 
+$\rcc$ relation between the Assertions made by the sender and the ones received by the receiver, i.e. $\Rcc{\assertionRegion_s}{\beliefRegion_r}$.
+
+\Paragraph{Channel Weaknesses}
 
 \Paragraph{Security Requirements} 
 While standards (such
@@ -425,15 +462,8 @@ sent it and cannot deny it (partial overlap??).  If sender A sends information
 X, it cannot say he didn't do it.  Non-repudiation implies authenticity and
 integrity. Authenticity doesn't imply non-repudiation (replay attacks?).
 Integrity doesn't imply non-repudiation (replay attacks?). 
-
-
-\begin{enumerate}
-\item specification -- definition of the desired design of a system. The
-specification is verified w.r.t. the  $\abf$ theory. Checking the
-controls of the whole cybersecurity life-cycle and the relation with
-CWE.
-\item design -- the mitigations identified in the specification stage
-are implemented into the design. The security of the assets w.r.t. the design are
-verified with a, so called, cybersecurity risk assessment.
-\end{enumerate}
 }
+\subsection{Abstraction Level of a Specification in $\abf$-theory}
+As highlighted in \autocite{}, ``The level of abstraction is always a concern
+when it come sto the definition of a system model.'' (as we already mentioned in Section~\ref{sec:problem}).
+
