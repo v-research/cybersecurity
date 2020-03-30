@@ -152,7 +152,7 @@ Figure~\ref{fig:channel}), \emph{functional and physical architecture}, and
 \emph{functional block} have not yet been defined with respect to the
 $\abf$-theory.  Informally, a channel\footnote{for now, we rely on the
 intuitive notion of channel as ``something'' that transfers information as
-Assertions between output and input port, i.e. monodirectional} identifies the
+Assertions between output and input port, i.e. mono-directional} identifies the
 place where the communication takes place.  In this work, we only consider
 mono-directional channels and communication but the extension to bi-directional
 channel can be considered as the union of two unidirectional channels. A
@@ -185,7 +185,7 @@ or $\Rcc{\assertionRegion_r}{\beliefRegion_a}$.
 \end{definition}
 
 \Paragraph{Port Weaknesses}
-From this definition, it follows that there exist only the following \emph{six} types of weaknesses, generating six types of insecure port in RCC5:
+From this definition, it follows that there exist only the following \emph{six} types of weaknesses, generating six types of insecure port in RCC5 (the notation is reported for input-ports, i.e. on the lef-hand side of the arrow):
 \begin{enumerate}[start=1, label={W\arabic*)}]
 	\item \emph{drop port} ($s\dropport a$), where assertions reaches the port but do not pass the boundary of the agent (i.e. do not become belief of the agent)
 	\item \emph{insertion port} ($s\insertport a$), where some new information is believed by $a$ as incoming from the port but $s$ didn't send it
@@ -283,23 +283,89 @@ ports, since the $\abf$-theory is a theory of agents.  In fact, if a channel
 were considered an agent (channel-agent) then the question would be how an
 agent would transfer its Assertions to the channel-agent. If the channel
 between the agent and the channel-agent is again an agent, we would generate an
-\emph{infinite regress}. Therefore, we do allow channel-agents but we assume
-a finite depth (of detail) for a channel, where there exists a bottom-channel 
+\emph{infinite regress}. Therefore, we do allow channel-agents but we assume a
+finite depth (of detail) for a channel, where there exists a bottom-channel
 which is not an agent. For now, we do not constrain a channel-agent in any way
-so there is no difference between a channel agent and agent. Therefore, for
-the sake of simplicity, we consider, in this text, channels to be bottom-channels,
-defined as agents with the pre-defined behavior of storing Assertions that are transferred
-over them (i.e. over the channel we are defining).
+so there is no difference between a channel agent and agent. Therefore, for the
+sake of simplicity, we consider, in this text, channels to be bottom-channels,
+defined as agents with the pre-defined behavior (i.e. defined in a dogmatic
+way) of forwarding any input-assertion as output-assertion, without modifying it\footnote{Nothing
+prevents us from introducing additional constraints to the channel as storing
+Assertions that are transferred over the channel, or filter out some
+input-assertions.}.
 
-\begin{definition}{\bf Mono-directional Channel --}\label{def:monochannel}
-	Given two agents $s$ (sender) and $r$ (receiver) a
-	mono-directional channel $s \rightarrow r$ is defined as the union of all the assertions 
-	$\rassert{s}{r}$ sent by $s$ to $r$ ($\assertionRegion_s$) and received by $r$ from $s$ ($\assertionRegion_r$) (for any given instance of time). 
+\begin{definition}{\bf Secure Mono-directional Channel (bottom-channel) --}\label{def:monochannel}
+	A mono-directional channel between the two agents ($s \rightarrow r$) is defined as 
+	an agent which behavior is (dogmatically) defined as: to forward any Assertion received from $s$ over an input-port, to  
+	the output-port where $r$ is listening to.
 \end{definition}
 The \emph{quality of a mono-directional} channel is defined as the 
-$\rcc$ relation between the Assertions made by the sender and the ones received by the receiver, i.e. $\Rcc{\assertionRegion_s}{\beliefRegion_r}$.
+$\rcc$ relation between the Assertions made by the sender and the ones received by the receiver, i.e. $\Rcc{\assertionRegion_s}{\assertionRegion_r}$.
 
 \Paragraph{Channel Weaknesses}
+Given that a mono-directional bottom-channel is assumed to be perfectly
+forwarding any Assertion from its input-port to its output-port, there is no
+insecure behavior but only the combination of the weaknesses of the input and
+output port; therefore there exists $(7^2)-2=47$ theoretical configurations
+($7^2$ because there are $6$ insecure types of port, plus $1$ secure type, on both input and oupput
+side; and we exclude the configuration with $2$ secure types as input
+and ouput, $-2$); where only 43 are possible.
+
+\begin{enumerate}[start=5, label={W\arabic*)}]
+	\item \emph{secure input port} and \emph{output drop port} ($s\sdcom r$), 
+	\item \emph{secure input port} and \emph{output insertion port} ($s\sicom r$), 
+	\item \emph{secure input port} and \emph{output injection port} ($s\sjcom r$), 
+	\item \emph{secure input port} and \emph{output selective drop port} ($s\ssdcom r$), 
+	\item \emph{secure input port} and \emph{output selective insertion port} ($s\ssicom r$), 
+	\item \emph{secure input port} and \emph{output selective injection port} ($s\ssjcom r$), 
+
+	\item \emph{input drop port} and \emph{output drop port} ($s\ddcom r$)
+	\item \emph{input drop port} and \emph{output insertion port} ($s\dicom r$)
+	\item \emph{input drop port} and \emph{output secure port} ($s\dscom r$)
+
+	\item \emph{input insert port} and \emph{output drop port} ($s\idcom r$)
+	\item \emph{input insert port} and \emph{output insert port} ($s\iicom r$)
+	\item \emph{input insert port} and \emph{output injection port} ($s\ijcom r$)
+	\item \emph{input insert port} and \emph{output selective drop port} ($s\isdcom r$)
+	\item \emph{input insert port} and \emph{output selective insertion port} ($s\isicom r$)
+	\item \emph{input insert port} and \emph{output selective injection port} ($s\isjcom r$)
+	\item \emph{input insert port} and \emph{output secure port} ($s\iscom r$)
+
+	\item \emph{input injection port} and \emph{output drop port} ($s\jdcom r$)
+	\item \emph{input injection port} and \emph{output insertion port} ($s\jicom r$)
+	\item \emph{input injection port} and \emph{output injection port} ($s\jjcom r$)
+	\item \emph{input injection port} and \emph{output selective drop port} ($s\jsdcom r$)
+	\item \emph{input injection port} and \emph{output selective insertion port} ($s\jsicom r$)
+	\item \emph{input injection port} and \emph{output selective injection port} ($s\jsjcom r$)
+	\item \emph{input injection port} and \emph{output secure port} ($s\jscom r$)
+
+	\item \emph{input selective drop port} and \emph{output drop port} ($s\sddcom r$)
+	\item \emph{input selective drop port} and \emph{output insertion port} ($s\sdicom r$)
+	\item \emph{input selective drop port} and \emph{output injection port} ($s\sdjcom r$)
+	\item \emph{input selective drop port} and \emph{output selective drop port} ($s\sdsdcom r$)
+	\item \emph{input selective drop port} and \emph{output selective insertion port} ($s\sdsicom r$)
+	\item \emph{input selective drop port} and \emph{output selective injection port} ($s\sdsjcom r$)
+	\item \emph{input selective drop port} and \emph{output secure port} ($s\sdscom r$)
+
+	\item \emph{input selective insertion port} and \emph{output drop port} ($s\sidcom r$)
+	\item \emph{input selective insertion port} and \emph{output insertion port} ($s\siicom r$)
+	\item \emph{input selective insertion port} and \emph{output injection port} ($s\sijcom r$)
+	\item \emph{input selective insertion port} and \emph{output selective drop port} ($s\sisdcom r$)
+	\item \emph{input selective insertion port} and \emph{output selective insertion port} ($s\sisicom r$)
+	\item \emph{input selective insertion port} and \emph{output selective injection port} ($s\sisjcom r$)
+	\item \emph{input selective insertion port} and \emph{output secure port} ($s\siscom r$)
+
+	\item \emph{input selective injection port} and \emph{output drop port} ($s\sjdcom r$)
+	\item \emph{input selective injection port} and \emph{output insertion port} ($s\sjicom r$)
+	\item \emph{input selective injection port} and \emph{output injection port} ($s\sjjcom r$)
+	\item \emph{input selective injection port} and \emph{output selective drop port} ($s\sjsdcom r$)
+	\item \emph{input selective injection port} and \emph{output selective insertion port} ($s\sjsicom r$)
+	\item \emph{input selective injection port} and \emph{output selective injection port} ($s\sjsjcom r$)
+	\item \emph{input selective injection port} and \emph{output secure port}  ($s\sjcom r$)
+\end{enumerate}
+In Appendix~\ref{app:insecurecom}, we report the proof which is exhaustive on all
+possible combinations. The only 
+
 
 \Paragraph{Security Requirements} 
 While standards (such
@@ -313,7 +379,7 @@ information with the de-facto standard CIA triad , which is often criticized
 \autocite{CIAcriticismCPS} for being too general or non-adequate (e.g. by
 adding authenticity which is often used as a building block for confidentiality
 and integrity) to be effectively applied to the engineering of systems. Due to
-this, many researchers an organization tried to improve the CIA triad.  The
+this, many researchers and organization tried to improve the CIA triad.  The
 evolutions/extensions of the CIA triad has been documented, e.g., in
 \autocite{Samonas2014cia} and is summarized in Table~\ref{tab:ciaevolution}.
 
@@ -344,9 +410,9 @@ the CIA triad, such as \autocite{NISTSP800-160}. What is of interest for our
 argument is that, to the best of our knowledge, all of the approaches that aim
 at improving the CIA triad are besed on motivations related to empirical evidences. On the contrary,
 we now define (in Section~\ref{sec:properties}) the CIA triad for an agent
-defined in the $\abftheory$ theory and we test if (i) other properties are
-allowed in the $\abftheory$ theory, and (ii) if and how the CIA triad can be
-detailed in the $\abftheory$ theory.
+defined in the $\abftheory$-theory and we test if (i) other properties are
+allowed in the $\abftheory$-theory, and (ii) if and how the CIA triad can be
+detailed in the $\abftheory$-theory.
 
 In \autocite{Anderson1972report,Samonas2014cia}, CIA are defined as follows.
 \begin{itemize}
@@ -370,7 +436,49 @@ In \autocite{Anderson1972report,Samonas2014cia}, CIA are defined as follows.
 \end{itemize}
 
 We now want to generalize the CIA triad to agents and not just 
-information and map it to the $\abftheory$ theory.
+information and map it to the $\abftheory$-theory. For the sake of simplicity,
+we revert the order and start from availability.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{client-server.pdf}
+	\caption{Client-Server paradigm in $\abf$-theory}
+	\label{fig:client-server}
+\end{figure}
+Availability, again, is the denial of use of a resource. In the $\abf$-theory, 
+in order to prevent a resource to be available, there
+exists only (i.e. inclusively) the following mutually exclusive cases
+that we illustrate using a client-server paradigm (depicted in Figure~\ref{fig:client-server}).
+\begin{enumerate}
+	\item\label{case:srv1} The resource on the server cannot be found, so that it is
+		possible for the client to contact the server and the server
+		sends a response back, but the output-port does not receive the
+		necessary information. This may be due to a software error such
+		that the functional architecture doesn't output a response, or
+		a problem in the flow of information (i.e. the functional
+		architecture doesn't receive the necessary information from
+		other resources), or an hardware failure \&c. This is formalized
+		as the relation between the beliefs produced by the functional
+		architecture and the ones received by the output port, i.e.
+		$\rcc(\behaviorRegion_s,\{\text{res}\})$ or 
+		$\rcc(\beliefRegion_s,\{\text{res}\})$ 
+	\item\label{case:srv2} The server hosting the resource is down, and then the server
+		cannot output responses (i.e. insecure output port due to drop-related issue) or receive
+		requests (insecure input port due to drop-related issue) or both.
+	\item The client cannot properly compute request (simmetrically to Case~\ref{case:srv1})
+	\item The client is down, symmetric to Case~\ref{case:srv2}
+	\item The channel is down due to a drop related issue in one of the two channels 
+\end{enumerate}
+
+\begin{definition}{\bf Infosec-Availability --}\label{def:infosec-c}
+\end{definition}
+
+\begin{definition}{\bf Agent-Availability --}\label{def:agent-a}
+\end{definition}
+
+\begin{definition}{\bf System-Availability --}\label{def:system-a}
+\end{definition}
+
 \begin{definition}{\bf Infosec-Confidentiality --}\label{def:infosec-c}
 	An Information $\varphi$ is considered to be confidential to a set of 
 	agents $Ag_c$ if, per each agent $a\in Ag_c$, the content of the

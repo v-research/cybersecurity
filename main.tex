@@ -92,13 +92,92 @@
 \newcommand{\Thdot}{$\LEFTcircle$}
 \newcommand{\Twdot}{$\Circle$}
 
-\newcommand{\dropport}{\mathrel{\circ\!\!\rightarrow}}
-\newcommand{\insertport}{\mathrel{\rightarrow\!\!\bullet}}
-\newcommand{\injectionport}{\mathrel{\circ\!\!\rightarrow\!\!\bullet}}
-\newcommand{\selectiveport}{\mathrel{\hookrightarrow}}
-\newcommand{\selectiveinsertport}{\mathrel{\hookrightarrow\!\!\bullet}}
-\newcommand{\selectiveinjectionport}{\mathrel{\circ\!\!\hookrightarrow\!\!\bullet}}
-\newcommand{\selectivedropport}{\mathrel{\circ\!\!\hookrightarrow}}
+
+\newcommand*\halfbullet[1][0.4ex]{%
+  \begin{tikzpicture}
+	  \raisebox{0.6pt}{\draw[fill] (0,0)-- (90:#1) arc (90:270:#1) -- cycle ;
+	  \draw (0,0) circle (#1);}
+  \end{tikzpicture}}
+
+\newcommand{\fakedmapsfromchar}{%
+  \mathrel{\mathpalette\reflectmathchar\mapstochar}%
+}
+\makeatletter
+\newcommand{\reflectmathchar}[2]{%
+  \reflectbox{$\m@th#1#2$}%
+}
+\makeatother
+\newcommand{\rightbararrow}{\rightarrow\fakedmapsfromchar}
+\newcommand{\leftbararrow}{\mapstochar\rightarrow}
+\newcommand{\rightleftbararrow}{\mapstochar\rightarrow\fakedmapsfromchar}
+\setlength{\fboxrule}{0.1pt}
+\setlength{\fboxsep}{1.5pt}
+\newcommand{\dropportelem}{\mathrel{\circ\!\!\rightarrow}}
+\newcommand{\dropport}{\fbox{\ensuremath \dropportelem}}
+\newcommand{\insertportelem}{\mathrel{\bullet\!\!\rightarrow}}
+\newcommand{\insertport}{\fbox{\ensuremath \insertportelem}}
+\newcommand{\injectionportelem}{\mathrel{\halfbullet\!\!\rightarrow}}
+\newcommand{\injectionport}{\fbox{\ensuremath \injectionportelem}}
+\newcommand{\selectiveportelem}{\mathrel{\leftbararrow}}
+\newcommand{\selectiveport}{\fbox{\ensuremath \selectiveportelem}}
+\newcommand{\selectiveinsertportelem}{\mathrel{\bullet\!\!\leftbararrow}}
+\newcommand{\selectiveinsertport}{\fbox{\ensuremath \selectiveinsertportelem}}
+\newcommand{\selectiveinjectionportelem}{\mathrel{\halfbullet\!\leftbararrow}}
+\newcommand{\selectiveinjectionport}{\fbox{\ensuremath \selectiveinjectionportelem}}
+\newcommand{\selectivedropportelem}{\mathrel{\circ\!\!\leftbararrow}}
+\newcommand{\selectivedropport}{\fbox{\ensuremath \selectivedropportelem}}
+%communication channels
+%secure input port
+\newcommand{\sdcom}{\mathrel{\rightarrow\!\!\circ}}
+\newcommand{\sicom}{\mathrel{\rightarrow\!\!\bullet}}
+\newcommand{\sjcom}{\mathrel{\rightarrow\!\!\halfbullet}}
+\newcommand{\ssdcom}{\mathrel{\rightbararrow\!\!\circ}}
+\newcommand{\ssicom}{\mathrel{\rightbararrow\!\!\bullet}}
+\newcommand{\ssjcom}{\mathrel{\rightbararrow\!\halfbullet}}
+%drop input port
+\newcommand{\ddcom}{\mathrel{\circ\!\!\rightarrow\!\!\circ}}
+\newcommand{\dicom}{\mathrel{\circ\!\!\rightarrow\!\!\bullet}}
+\newcommand{\dscom}{\mathrel{\circ\!\!\rightarrow}}
+%insert input port
+\newcommand{\idcom}{\mathrel{\bullet\!\!\rightarrow\!\!\circ}}
+\newcommand{\iicom}{\mathrel{\bullet\!\!\rightarrow\!\!\bullet}}
+\newcommand{\ijcom}{\mathrel{\bullet\!\!\rightarrow\!\!\halfbullet}}
+\newcommand{\isdcom}{\mathrel{\bullet\!\!\rightbararrow\!\!\circ}}
+\newcommand{\isicom}{\mathrel{\bullet\!\!\rightbararrow\!\!\bullet}}
+\newcommand{\isjcom}{\mathrel{\bullet\!\!\rightbararrow\!\halfbullet}}
+\newcommand{\iscom}{\mathrel{\bullet\!\!\rightarrow}}
+%injection input
+\newcommand{\jdcom}{\mathrel{\halfbullet\!\!\rightarrow\!\!\circ}}
+\newcommand{\jicom}{\mathrel{\halfbullet\!\!\rightarrow\!\!\bullet}}
+\newcommand{\jjcom}{\mathrel{\halfbullet\!\!\rightarrow\!\!\halfbullet}}
+\newcommand{\jsdcom}{\mathrel{\halfbullet\!\!\rightbararrow\!\!\circ}}
+\newcommand{\jsicom}{\mathrel{\halfbullet\!\!\rightbararrow\!\!\bullet}}
+\newcommand{\jsjcom}{\mathrel{\halfbullet\!\!\rightbararrow\!\halfbullet}}
+\newcommand{\jscom}{\mathrel{\halfbullet\!\!\rightarrow}}
+%selective drop input
+\newcommand{\sddcom}{\mathrel{\circ\!\!\leftbararrow\!\!\circ}}
+\newcommand{\sdicom}{\mathrel{\circ\!\!\leftbararrow\!\!\bullet}}
+\newcommand{\sdjcom}{\mathrel{\circ\!\!\leftbararrow\!\!\halfbullet}}
+\newcommand{\sdsdcom}{\mathrel{\circ\!\!\rightleftbararrow\!\!\circ}}
+\newcommand{\sdsicom}{\mathrel{\circ\!\!\rightleftbararrow\!\!\bullet}}
+\newcommand{\sdsjcom}{\mathrel{\circ\!\!\rightleftbararrow\!\halfbullet}}
+\newcommand{\sdscom}{\mathrel{\circ\!\!\leftbararrow}}
+%selective insertion
+\newcommand{\sidcom}{\mathrel{\bullet\!\!\leftbararrow\!\!\circ}}
+\newcommand{\siicom}{\mathrel{\bullet\!\!\leftbararrow\!\!\bullet}}
+\newcommand{\sijcom}{\mathrel{\bullet\!\!\leftbararrow\!\!\halfbullet}}
+\newcommand{\sisdcom}{\mathrel{\bullet\!\!\rightleftbararrow\!\!\circ}}
+\newcommand{\sisicom}{\mathrel{\bullet\!\!\rightleftbararrow\!\!\bullet}}
+\newcommand{\sisjcom}{\mathrel{\bullet\!\!\rightleftbararrow\!\halfbullet}}
+\newcommand{\siscom}{\mathrel{\bullet\!\!\leftbararrow}}
+%selective injection
+\newcommand{\sjdcom}{\mathrel{\halfbullet\!\!\leftbararrow\!\!\circ}}
+\newcommand{\sjicom}{\mathrel{\halfbullet\!\!\leftbararrow\!\!\bullet}}
+\newcommand{\sjjcom}{\mathrel{\halfbullet\!\!\leftbararrow\!\!\halfbullet}}
+\newcommand{\sjsdcom}{\mathrel{\halfbullet\!\!\rightleftbararrow\!\!\circ}}
+\newcommand{\sjsicom}{\mathrel{\halfbullet\!\!\rightleftbararrow\!\!\bullet}}
+\newcommand{\sjsjcom}{\mathrel{\halfbullet\!\!\rightleftbararrow\!\halfbullet}}
+\newcommand{\sjscom}{\mathrel{\halfbullet\!\!\leftbararrow}}
 
 % formulas
 \newcommand{\kframe}{\mathbf{K}}
@@ -199,6 +278,8 @@
 \appendix
 \section{Selective Injection Port}\label{app:selectiveinjectionport}
 \input{selectiveinjectionport}
+\section{Insecure Communication Port}\label{app:insecurecom}
+\input{insecureport}
 
 \printbibliography
 
