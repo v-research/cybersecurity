@@ -29,7 +29,7 @@ of a process that consider cybersecurity in the specification, design, and imple
 stages. The overall process start with the specification of the architectural (both physical
 and functional) requirements from which the Weaknesses are automatically identified.
 Based on the Assets, architectures, and the Weaknesses the cybersecurity risk is
-calculated based on the $\abf$-theory. An iterative process between 
+calculated based on the $\abftheory$-theory. An iterative process between 
 the user (e.g. the engineer) and the \secramod module of the \abftool allows the user to move to the design phase
 when the risk level is considered acceptable. The design phase starts by automatically mapping
 the Weaknesses into Vulnerabilities which are, in turn, fed into the \designverifmod
@@ -150,7 +150,7 @@ defined in Section~\ref{sec:theory}, the concepts of \emph{port} (depicted in
 Figure~\ref{fig:ioports}), \emph{channel} (depicted in
 Figure~\ref{fig:channel}), \emph{functional and physical architecture}, and
 \emph{functional block} have not yet been defined with respect to the
-$\abf$-theory.  Informally, a channel\footnote{for now, we rely on the
+$\abftheory$-theory.  Informally, a channel\footnote{for now, we rely on the
 intuitive notion of channel as ``something'' that transfers information as
 Assertions between output and input port, i.e. mono-directional} identifies the
 place where the communication takes place.  In this work, we only consider
@@ -160,7 +160,7 @@ mono-directional channel is defined by the assertions sent or received (over
 the channel). 
 
 \Paragraph{Input and Output Ports}
-Since the $\abf$-theory is a theory of agents, we consider ports as agents that
+Since the $\abftheory$-theory is a theory of agents, we consider ports as agents that
 allows the exchange of information between a channel and another
 agent.  However, a port must be considered as a special type of agent to avoid
 an \emph{infinite regress} in which a port needs a port to transfer information
@@ -199,7 +199,7 @@ From this definition, it follows that there exist only the following \emph{six} 
 \end{enumerate}
 
 \begin{proof}
-An input port is, in the $\abf$-theory, defined secure as long as the relation
+An input port is, in the $\abftheory$-theory, defined secure as long as the relation
 	between the two regions of input assertions $\assertionRegion$ and
 	output beliefs $\beliefRegion$ are equal, i.e.
 	$\eq{\assertionRegion}{\beliefRegion}$. Therefore, any other relation
@@ -279,7 +279,7 @@ An input port is, in the $\abf$-theory, defined secure as long as the relation
 \Paragraph{Communication Channels}
 We start by considering the difference between a (communication)
 mono-directional channel (channel from now on) and an agent, as we did for the
-ports, since the $\abf$-theory is a theory of agents.  In fact, if a channel
+ports, since the $\abftheory$-theory is a theory of agents.  In fact, if a channel
 were considered an agent (channel-agent) then the question would be how an
 agent would transfer its Assertions to the channel-agent. If the channel
 between the agent and the channel-agent is again an agent, we would generate an
@@ -364,7 +364,61 @@ and ouput, $-2$); where only 43 are possible.
 	\item \emph{input selective injection port} and \emph{output secure port}  ($s\sjcom r$)
 \end{enumerate}
 In Appendix~\ref{app:insecurecom}, we report the proof which is exhaustive on all
-possible combinations. The only 
+possible combinations. 
+
+\Paragraph{Functional Block}
+A Functional Architecture, as already described beforehand, takes Information as input-Beliefs
+and transforms the Information into output-Beliefs. Those transformations 
+occurs within the Functional Architecture, where Functional Blocks transforms Beliefs into 
+other Beliefs. Similarly to channels, we could consider a Functional Block as a Functional Architecture
+occurring in an infinite regress. Therefore, we consider Functional Blocks as 
+correctly executing their abstract behavior, correctly transforming inputs into outputs (Beliefs).
+
+\begin{definition}{\bf Functional Block and Architecture --}\label{def:funblock}
+	A functional block of an agent $a$ 
+	takes a region of input-Beliefs and outputs a region of output-Beliefs. 
+	A functional architecture is an interconnected system of functional blocks.
+\end{definition}
+The quality of a functional block or architecture cannot be expressed as a relation 
+between input and output belief since there is a transformation process in the functional
+block which will be defined during the design and implementation phase, but not
+necessarily known in details in the specification phase. In order to
+define the quality of functional block we first need to introduce the engineering concept of
+Facts.
+
+\Paragraph{Facts}
+During the specification phase, for any agent, channel, port, functional block
+and architecture, there exist a Fact predicating over them.
+In other words, any requirement is defined as a Fact since they must be true in
+any design or implementation. As we stated in Section~\ref{sec:theory} and depicted in
+Figure~\ref{fig:soundness}, Facts are strategic rules that defines how
+the system shall behave (by specification), while reality may be shown to
+be insecure.
+
+The quality of a Functional Block is determined by the relation between the
+input-Beliefs formulas and the symmetric formulas in the Fact region
+(equivalently for output-Beliefs). Therefore, the quality of the functional
+architecture is not a purely architectural property but relies on the logic
+implemented in the functional blocks (which we abstract away at this stage of
+the engineering model).
+\begin{definition}{\bf Secure Functional Block and Architecture --}\label{def:secfun}
+	A functional block is secure if the input beliefs and output beliefs
+	are in $EQ$ relation with the corresponding Facts mandated by requirements.
+	A functional architecture composed exclusively by secure functional blocks
+	is considered secure.
+\end{definition}
+
+Therefore, there exists the following weaknesses in the functional
+architecture, where $\beliefRegion_I$ and $\beliefRegion_O$ are input and
+output Beliefs respectively, and $\factRegion_I$ and $\factRegion_O$ are
+the corresponding Facts (i.e. what really happens).
+\begin{enumerate}
+	\item $\dr{\beliefRegion_I}{\factRegion_I}$ and
+		$\dr{\beliefRegion_O}{\factRegion_O}$, the input beliefs are
+		misinterpreted and this result in the complete alteration of the
+		output beliefs
+	\item \fix{mr}{TBD}
+\end{enumerate}
 
 
 \Paragraph{Security Requirements} 
@@ -375,7 +429,7 @@ specification level, security requirements can be formulated as subcategories of
 the well-known CIA triad (where CIA stands for Confidentiality, Integrity,
 Availability).
 Infosec, or Information Security, defines the security risks related to
-information with the de-facto standard CIA triad , which is often criticized
+information with the de-facto standard CIA triad, which is often criticized
 \autocite{CIAcriticismCPS} for being too general or non-adequate (e.g. by
 adding authenticity which is often used as a building block for confidentiality
 and integrity) to be effectively applied to the engineering of systems. Due to
@@ -442,10 +496,10 @@ we revert the order and start from availability.
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{client-server.pdf}
-	\caption{Client-Server paradigm in $\abf$-theory}
+	\caption{Client-Server paradigm in $\abftheory$-theory}
 	\label{fig:client-server}
 \end{figure}
-Availability, again, is the denial of use of a resource. In the $\abf$-theory, 
+Availability, again, is the denial of use of a resource. In the $\abftheory$-theory, 
 in order to prevent a resource to be available, there
 exists only (i.e. inclusively) the following mutually exclusive cases
 that we illustrate using a client-server paradigm (depicted in Figure~\ref{fig:client-server}).
@@ -465,20 +519,73 @@ that we illustrate using a client-server paradigm (depicted in Figure~\ref{fig:c
 	\item\label{case:srv2} The server hosting the resource is down, and then the server
 		cannot output responses (i.e. insecure output port due to drop-related issue) or receive
 		requests (insecure input port due to drop-related issue) or both.
-	\item The client cannot properly compute request (simmetrically to Case~\ref{case:srv1})
+	\item\label{case:srv3} The client cannot properly compute request (simmetrically to Case~\ref{case:srv1})
 	\item The client is down, symmetric to Case~\ref{case:srv2}
 	\item The channel is down due to a drop related issue in one of the two channels 
 \end{enumerate}
-
-\begin{definition}{\bf Infosec-Availability --}\label{def:infosec-c}
-\end{definition}
-
+%All the cases but Case~\ref{case:srv1} and Case~\ref{case:srv3}, tell us how to map the
+%property of availability over the weaknesses of ports and communications.  The
+%Cases~\ref{case:srv1} and~\ref{case:srv3}, are exceptions because the formulas $res$ and $req$ 
+%detail the specification with a singleton instead of a region of formulas (or, better, $|res|$ is equal to the one of the
+%base).
+%In other words, a channel, a port, an entity, or a functional block are
+%Fact (stated in a factorial way) and not Beliefs; what they produce or 
+%their non-specified internals are Beliefs.  In fact, we never assume an
+%entity not to be in the design implementing the specification.  Similarly, when a
+%functional block produces some information it produces a Belief, unless this Belief if detailed in the specification.
+%For example, the server produces the Belief $res$ but the Belief given that can only be in $EQ$
+%relation with the Fact $res$ (in contrast other Belief may not); therefore, $res$ is not really a belief but a Fact. 
+%$res$ as a Fact is something that
+%exists in the specification, while the Belief of $res$ in one of the possible
+%designs may not exist. 
+We shall, then, distinguish between two cases:
 \begin{definition}{\bf Agent-Availability --}\label{def:agent-a}
+when the property of availability is expressed over
+	an agent or a system, the list of possible designs violating the
+	availability property can be shown as the designs that allow drop ports
+	or drop channels. 
+\end{definition}
+\begin{definition}{\bf Infosec-Availability --}\label{def:infosec-c}
+when the property of availability is expressed
+	over a formula, the list of possible designs that violates the
+	availability property is reduced to the part of the system that
+	influences that specific variable.
 \end{definition}
 
-\begin{definition}{\bf System-Availability --}\label{def:system-a}
+In a similar way we can define integrity since this requirement may 
+be expressed over an agent/system or a specific formula (i.e. element of a Region).
+
+\begin{definition}{\bf Agent-Integrity --}\label{def:agent-a}
+when the property of integrity is expressed over
+	an agent or a system, the list of possible designs violating the
+	integrity property can be shown as the designs that allow insert or inject ports,
+	or inert or inject channels. 
+\end{definition}
+\begin{definition}{\bf Infosec-Integrity --}\label{def:infosec-c}
+when the property of integrity is expressed
+	over a formula, the list of possible designs that violates the
+	integrity property is reduced to the part of the system that
+	influences that specific variable.
 \end{definition}
 
+While availability and integrity are architectural property, meaning that they
+can be expressed over the behavior of a port or a channel (as constituent of
+the physical or functional architecture), confidentiality is not.
+Confidentiality states that an information shall not be understood and not that
+the information shall not be retrieved. So, if a port leaks an entire message,
+there is no confidentiality issue in general. On the other hand, if the
+information is not provided or altered there is an availability or integrity
+issue. A similar argument can be proposed for integrity sub-properties such as
+authenticity or non-repudiation. No wonder why it is often stated that
+availability and integrity are the first properties to be considered in CPS
+while confidentiality takes the first place when dealing with security
+protocols. In fact, integrity is often assumed by pattern-matching (e.g. in
+AVANTSSAR \autocite{avantssar}) and availability is hardly ever considered in
+protocol verification). The question is, can we express properties such as
+confidentiality, authentication, or non-repudiation as architectural properties
+in $\abftheory$-theory?
+
+\newpage
 \begin{definition}{\bf Infosec-Confidentiality --}\label{def:infosec-c}
 	An Information $\varphi$ is considered to be confidential to a set of 
 	agents $Ag_c$ if, per each agent $a\in Ag_c$, the content of the
@@ -571,7 +678,7 @@ X, it cannot say he didn't do it.  Non-repudiation implies authenticity and
 integrity. Authenticity doesn't imply non-repudiation (replay attacks?).
 Integrity doesn't imply non-repudiation (replay attacks?). 
 }
-\subsection{Abstraction Level of a Specification in $\abf$-theory}
+\subsection{Abstraction Level of a Specification in $\abftheory$-theory}
 As highlighted in \autocite{}, ``The level of abstraction is always a concern
 when it come sto the definition of a system model.'' (as we already mentioned in Section~\ref{sec:problem}).
 
