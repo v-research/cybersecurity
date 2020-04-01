@@ -493,6 +493,7 @@ We now want to generalize the CIA triad to agents and not just
 information and map it to the $\abftheory$-theory. For the sake of simplicity,
 we revert the order and start from availability.
 
+\subsubsection{Availability and Integrity (Architecture Security)}
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{client-server.pdf}
@@ -544,7 +545,8 @@ when the property of availability is expressed over
 	an agent or a system, the list of possible designs violating the
 	availability property can be shown as the designs that allow drop ports
 	or drop channels. 
-\end{definition}
+\end{definition}\fixnote{mr}{all security definitions defines when the property is
+not preserved instead of when it's preserved}
 \begin{definition}{\bf Infosec-Availability --}\label{def:infosec-c}
 when the property of availability is expressed
 	over a formula, the list of possible designs that violates the
@@ -573,7 +575,9 @@ can be expressed over the behavior of a port or a channel (as constituent of
 the physical or functional architecture), confidentiality is not.
 Confidentiality states that an information shall not be understood and not that
 the information shall not be retrieved. So, if a port leaks an entire message,
-there is no confidentiality issue in general. On the other hand, if the
+there is no confidentiality issue in general, unless that message was not
+encrypted at all, in which case the confidentiality leakage is straightforward. 
+On the other hand, if the
 information is not provided or altered there is an availability or integrity
 issue. A similar argument can be proposed for integrity sub-properties such as
 authenticity or non-repudiation. No wonder why it is often stated that
@@ -581,88 +585,50 @@ availability and integrity are the first properties to be considered in CPS
 while confidentiality takes the first place when dealing with security
 protocols. In fact, integrity is often assumed by pattern-matching (e.g. in
 AVANTSSAR \autocite{avantssar}) and availability is hardly ever considered in
-protocol verification). The question is, can we express properties such as
+protocol verification. The question is, can we express properties such as
 confidentiality, authentication, or non-repudiation as architectural properties
-in $\abftheory$-theory?
+in $\abftheory$-theory? Confidentiality (and Availability) is based on the concept 
+of secrecy so we shall first start from describing what secrecy is and how it
+can be used to guarantee confidentiality in a system.
 
-\newpage
-\begin{definition}{\bf Infosec-Confidentiality --}\label{def:infosec-c}
-	An Information $\varphi$ is considered to be confidential to a set of 
-	agents $Ag_c$ if, per each agent $a\in Ag_c$, the content of the
-	information (i.e. the data it carries) can only be understood (i.e. the relation
-	between the information and its data can be known) by the
-	agents in $Ag_c$.
+\subsubsection{Secrecy, Authenticity, and Key Agreement (Cryptographic Security)}\label{sec:encryption}
+As Maurer puts it (\autocite{Maurer1999information}), there exist two types of
+cryptographic security (i.e. scientific theories aiming at guaranteeing
+security through the use of cryptographic functions): `` The  security  of a
+cryptographic system can rely either on the computational infeasibility of
+breaking it (computational security), or on the theoretical impossibility of
+breaking it, even using in infinite computing power (information-theoretic or
+unconditional security)''. We are not currently interested in detailing the
+difference between the two and we simplify it as follows. A
+computationally-secure cryptographic function (usually called encryption
+function) $E(\varphi)=e$ (where $\varphi$ is a plain-text and $e$ a
+cipher-text) can be considered perfectly secure if a malicious agent that
+obtains the result of the cryptographic function ($e$) has bounded
+computational power, while a unconditional secure cryptographic functions are
+considered perfectly secure. In this context, security means that is is
+impossible to calculate $\varphi$ from $e$, therefore impossible to compute
+$D(e)=\varphi$.  As one can evince from \autocite{Shannon1948information}, the
+commonality between the two types of cryptographic functions is that they both
+rely on the assumption about the probabilistic behavior of the universe. They
+do so, for the random (i.e. with high entropy
+\autocite{Shannon1948information}) generation of the so called \emph{key}, a
+piece of information, parametric to the cryptographic function, used to
+guarantee the security. Therefore, we can conclude that it is feasible for an
+agent who knows $k$ to decrypt the cipher-text obtaining the clear-text (i.e. $D(k, E(k,\varphi))=\varphi$)
+while it is impossible for any agent who has not the proper key. In this
+case, the information is considered to be \emph{secret or confidential}.
 
-	\begin{itemize}
-		\item[$(\interpretation21)$] for all agents $a\in Ag$,
-			$\world\models\information{a}{\varphi}$ and
-			$\world\models\rcc(\varphi,Conf) \wedge
-			\neg\dr{Conf}{\varphi}$ iff for any world $\world'$
-			such that $\world \modalrelation\world'$,
-			$\world'\models\believe{a}{\varphi}$, and
-			$\world'\models\knows{a}{\exists f.~
-			f(\information{a}{\varphi})=\varphi}$, where 
-			$Conf$ is a Region and $f$ is an uninterpreted function.
-	\end{itemize}
+\begin{definition}{Infosec-Secrecy or Confidentiality --}\label{def:confidentiality}
+	When an Assertion has been generated as an output of a functional or
+	physical agent, port, or functional block such that it is said (in a
+	factorial way) to encrypt the input, that Assertion is considered
+	confidential.
 \end{definition}
-
-\begin{example}{Dummy security protocol --}
-	The last part (part III) of the protocol in our first example
-	(Figure~\ref{fig:protocol-example}) represents the actual key exchange
-	which, in general, needs to be confidential; otherwise the key would be
-	known by any other agent who can, e.g., read on the communication
-	channel.  Therefore, the last message, in Alice-and-Bob notation can be
-	rephrased as: \begin{displaymath} Alice\Rightarrow Bob: enc(pk(Bob),
-	symmetricKey) \end{displaymath} where $enc$ is the standard asymmetric
-	encryption operator that encrypts the message $symmetricKey$ with the
-	public key of Bob $pk(Bob)$ (see, e.g.,
-	\autocite{Rocchetto2017interpolation} for a detailed formalization).
-	The function $f$ in Definition~\ref{def:infosec-c}, represents any
-	function used to enforce confidentiality on information.  In this
-	example, $f$ is identified with $enc$ (i.e.
-	$enc(pvt(Bob),symmetricKey)=symmetricKey$), the information is
-	$\information{Alice}{[enc(pk(Bob),symmetricKey)]}$ and the data, i.e.
-	$\varphi$ in Definition~\ref{def:infosec-c}, is $\varphi=symmetricKey$.
-	In the perfect cryptography assumption, and assuming for simplicity
-	that the logic of the whole protocol preserves confidentiality, the
-	message is confidential. In fact, if $Ag={Alice, Bob}$ and $\eq{symmetricKey}{Conf}$:
-	\begin{align*}
-		\world^0\models\belief{Alice}{symmetricKey},\\
-		\world^1\models\information{Alice}{symmetricKey}, \text{and}\\
-		\world^2\models\belief{Bob}{symmetricKey} ~\text{if} \\
-		enc(pvt(Bob), \information{Alice}{symmetricKey}=symmetricKey)=symmetricKey\\
-		(i.e. f=enc ~\text{and}~ \information{Alice}{symmetricKey}=enc(pub(Bob),symmetricKey))\\
-	\end{align*}
-\end{example}
-
-\begin{definition}{\bf Agent-Confidentiality --}\label{def:confidentiality}
-An agent preserves the property of confidentiality iff 
-\end{definition}
-
-\begin{definition}{\bf System-Confidentiality --}\label{def:confidentiality}
-	The property of confidentiality holds in a system when its information
-	preserves confidentiality.
-\end{definition}
-
+The quality of the confidentiality of information (Assertions or Beliefs depending on 
+the subsystem considered) are inversely proportional to the number of 
+integrity issues of the subsystem.
 
 \fix{mr}{
-Confidentiality: the information is accessible only to authorised individuals.
-A set of rules that limits access to information.  The information can be
-accessed by X if and only if X is authorized to access it = X has the right
-attributes (i.e. keys, password) to access it.
-
-Integrity: the information is trustworthy and accurate (i.e. uncorrupted and
-unaltered). Protects data from modification or deletion by unauthorized sources
-and the ability to undo any damage done.  (for data at rest) If the information
-X is written, A will always be read. If information X is modified to
-information X', information X can always be recovered.  (for data in transit)
-If the information X is sent, A will be received. If information X is modified
-to information X', information X can always be recovered.
-
-Availability: the information is accessible and usable when required. Guarantee
-of reliable access to the information by authorized people If the information X
-needs to be accessed, information X can be retrieved. If
-
 Authenticity: assurance that the information is from the source it claims to be
 from. Authenticity involves proof of identity. Authenticity is verified through
 authentication.  If information X arrives from A to B, A sent information X and
