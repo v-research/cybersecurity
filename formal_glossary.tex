@@ -12,17 +12,17 @@ The syntax is defined as follows.
 	\varphi := P~|~\neg\varphi~|~\varphi\wedge\varphi~|~\varphi\vee\varphi~|~\varphi\Rightarrow\varphi'~|~\forall P.~\varphi~|~\exists P.~\varphi
 \end{displaymath}
 where $\wedge$, $\neg$, $\vee$, and $\Rightarrow$ are connectives representing
-conjunction, negation, disjunction, and (material) implication respectively; while
-$\forall$ and $\exists$ represent the standard universal and existential
-quantifiers (resp.). Finally, the symbol ``$.$'' is just syntactic sugar. 
-We consider $\interpretation\subset\Phi\times\{\top,\bot\}$ as the interpretation
-function, where $\Phi$ is any collection of sentences in $\follang$ 
-and $\top$ and $\bot$ represent the concepts of ``Tautology/True''
-and ``Contradiction/False'' respectively.
+conjunction, negation, disjunction, and (material) implication respectively;
+while $\forall$ and $\exists$ represent the standard universal and existential
+quantifiers (resp.). Finally, the symbol ``$.$'' is just syntactic sugar.  We
+consider $\interpretation\subset\Phi\times\{\top,\bot\}$ as the interpretation
+function, where $\Phi$ is any collection of sentences in $\follang$ and $\top$
+and $\bot$ represent the concepts of ``Tautology/True'' and
+``Contradiction/False'' respectively.
 
 Following Figure~\ref{fig:safety-security}, we start by formalizing the outermost term: Causality.
 
-\subsubsection{Causality Principle}\label{sec:causality}
+\subsection{Causality Principle}\label{sec:causality}
 We formalize the Causality Principle starting from a K modal
 logic\autocite{Garson2018modal} (i.e. without restrictions on the causality
 relation between worlds). The standard definition of K modal logic is given in
@@ -56,34 +56,26 @@ A K-frame is a frame $ \kframe=\langle \possibleworlds,\modalrelation \rangle $
 	where truth is defined as necessary with $\Box$ and possible with $\Diamond$.
 \end{definition}
 
-%\begin{definition}{\bf Causality --}\label{def:causality}
-%	The Causality principle is defined over a K Modal Logic (i.e. without
-%	restrictions on the causality relation between worlds) as in
-%	Definition~\ref{def:modallogic}, with the standard interpretation
-%	function defined in~\ref{def:modalinterpretation}
-%\end{definition}
+The causality principle has been defined in its generic form. In fact, the
+accessibility relation $\modalrelation$ is free from any axiomatic restriction
+(e.g. it's not reflexive nor anti-reflexive).  We will focus in
+Section~\ref{sec:engineering} (for our tests) on the application of our theory
+to CPS system engineering.  More detailed case studies (i.e. \fix{mr}{a CPS as
+a smart power-grid}) will be defined in Section~\ref{sec:engineering}, where
+the accessibility relation defines in details how the system itself evolves,
+due to causal relation (i.e. by restricting the causality principle only to
+those cause-effect that defines the system). Therefore, the definition of
+$\modalrelation$ will be specialized in a more strict way based on the
+application domains and case study.
 
-The causality principle has been defined in its
-generic form. In fact, the accessibility relation $\modalrelation$ is free from
-any axiomatic restriction (e.g. it's not reflexive nor anti-reflexive).  
-We will focus in Section~\ref{sec:process} (for our tests) on 
-the application of our theory to CPS system engineering.
-More detailed case studies (i.e. \fix{mr}{a CPS as a smart power-grid}) 
-will be defined in Section~\ref{sec:prototest}, where
-the accessibility relation defines in details how the system itself evolves, due to causal relation 
-(i.e. by restricting the causality principle only to those cause-effect that defines
-the system). Therefore, the definition of $\modalrelation$
-will be specialized in a more strict way based on the application domains and case study.
+We note that we have defined the Causality principle without considering it a
+\emph{threat source} since we lack the concept of intent and maliciousness.
+Similarly, in the next sections we won't discriminate between Nature and
+Mankind until we introduce the concepts of maliciousness in
+Section~\ref{sec:theory} and then formally define a threat agent in the same
+section.
 
-We note that we have defined the
-Causality principle without considering it a \emph{threat source} since 
-we lack the concept of intent and maliciousness. Similarly, in the 
-next sections we won't discriminate between Nature and Mankind until we introduce 
-the concepts of maliciousness in Section~\ref{sec:theory} 
-and then formally define a threat agent
-in the same section.
-
-\subsubsection{Agents: Mankind and Nature}\label{sec:mankind-nature}
+\subsection{Agents: Mankind and Nature}\label{sec:mankind-nature}
 \begin{table}[t]
 \centering
 \setlength{\tabcolsep}{3.5pt}
@@ -111,26 +103,25 @@ in the same section.
 \end{tabular}
 \end{table}
 
-Mankind and Nature are defined in Section~\ref{sec:problem} as two abstract
-agents, both as collections (i.e. an abstract type that does not imply a
+Mankind and Nature are considered as two abstract
+agents, both defined as collections (i.e. an abstract type that does not imply a
 specific implementation) of their sub-agents (i.e. humans for Mankind and
-plants, animals, \&c.  for Nature). Similarly to\autocite{Santaca2016abf}, 
-we define Mankind and Nature, and any
-other agent in the reminder of this article, as a meronomy (an hierarchy of
-Part-Whole relations) based on a standard definition of mereology, i.e. based
-on the definition of Parthood relation between \emph{Parts}.  
-However, shall 
-consider different types of Part; so, we extend the mereology to a
+plants, animals, \&c.  for Nature). Similarly to\autocite{Santaca2016abf}, we
+define Mankind and Nature, and any other agent in the reminder of this article,
+as a meronomy (an hierarchy of Part-Whole relations) based on a standard
+definition of mereology, i.e. based on the definition of Parthood relation
+between \emph{Parts}.  However, we consider different types of Part; so, we
+extend the mereology to a
 mereo-topology\autocite{Smith1996mereotopology,Varzi1994mereotopology,Rachavelpula2017mereotopology},
-to increase the number of different types considered and to generalize the relations between Parts (as
-in Table~\ref{tab:rcc358}).
-For the sake of readability, we use the term \emph{Region} both to refer to a
-mereological Part and to a topological Region.
-The choice of mereotopology is also correlated to the objective of defining a formal
-ontology, which we use to define the (formal) semantics of the terms (Parts) in
-Section~\ref{sec:problem}, and of the concepts of safety and security
-(whole). We aim at creating a meronomy instead of the taxonomies such as the one provided
-in\autocite{NIST2020NVD,MITRE2020CVE} or instead of the poorly justified 
+to increase the number of different types considered and to generalize the
+relations between Parts (as in Table~\ref{tab:rcc358}).  For the sake of
+readability, we use the term \emph{Region} both to refer to a mereological Part
+and to a topological Region.  The choice of mereotopology is also correlated to
+the objective of defining a formal ontology, which we use to define the
+(formal) semantics of the terms (Parts) in Section~\ref{sec:problem}, and of
+the concepts of safety and security (whole). We aim at creating a meronomy
+instead of the taxonomies such as the one provided
+in\autocite{NIST2020NVD,MITRE2020CVE} or instead of the poorly justified
 CVSS\autocite{Mell2007CVSS} scoring system.  
 
 A mereotopology, as defined e.g. in\autocite{Rachavelpula2017mereotopology},
@@ -145,37 +136,34 @@ Given any pair of mereotopological Regions $X$ and $Y$,
 	\end{enumerate}
 \end{definition}
 
-As later defined in Definition~\ref{def:agent}, 
-the Parthood relation orders a universe of agents $\agentuniverse$ by defining
-the so called \emph{Connects with} (see in Table~\ref{tab:rcc358}) relation 
-between Regions. We want this universe $\agentuniverse$ to be 
-expressible in FOL. In this way, we
-can reason both on the constituent of security (i.e. its terms and agents
-defining a system where security needs to be considered), and on 
-the evolution of those constituent w.r.t. cause-effects relations according
-to the modal structure of causality we defined in Section~\ref{sec:causality}.
-This will allow us (in Section~\ref{sec:process} and Section~\ref{sec:prototest})
-a better\fixnote{mr}{Can we prove this by construction?} 
-positioning w.r.t. risk assessment technologies
-(which most often reason on the constituent of a system design), and
-protocol verification tools (which requires some formalization of a cause-effect relation, e.g.
-in Linear Temporal Logic).
+The Parthood relation orders a universe of agents $\agentuniverse$ (later defined in
+Definition~\ref{def:mankind-nature}) by defining the so called
+\emph{Connects with} (see in Table~\ref{tab:rcc358}) relation between Regions.
+We want this universe $\agentuniverse$ to be expressible in FOL. In this way,
+we can reason both on the constituent of security, and on the evolution of
+those constituent w.r.t. cause-effects relations according to the modal
+structure of causality we defined.  This will allow us (in
+Section~\ref{sec:engineering} and Section~\ref{sec:tool}) a
+better\fixnote{mr}{Can we prove this by construction?} positioning w.r.t. risk
+assessment technologies (which most often reason on the constituent of a system
+design), and protocol verification tools (which requires some formalization of
+a cause-effect relation, e.g.  in Linear Temporal Logic).
 
-As we argued in Section~\ref{sec:problem}, we must correlate the definition of
-agent (i.e. Mankind and Nature) in Definition~\ref{def:mankind-nature} to the
-mathematical structure of the logic that defines them.  We express Mankind and
+In order to correlate the definition of
+agent (i.e. Mankind and Nature) to the
+mathematical structure of the logic that defines them, we express Mankind and
 Nature as formulas over the theory of mereology and then in terms of
 mereotopological Regions, extending the interpretation function
 $\interpretation$, to include a formal theory of mereotopology.  We use the
 Region Connection Calculus (RCC), as defined
 in~\cite{bennettLogics,improvingRCC}, to provide an axiomatization of the
-spatial concepts and relations in first-order logic to correlate the algebraic
+spatial concepts and relations in FOL to correlate the algebraic
 structure to mereology. In its broader definition, the RCC theory is composed
 by eight axioms, and is known as RCC8. In the text, for brevity, 
 we will often focus only on RCC5 (without
 loss of generality) by not considering tangential connections between spatial
 Regions. We discuss the choice of RCC5 in more detail in
-Appendix~\ref{app:rcc}. In Table~\ref{tab:rcc}, we
+Section~\ref{sec:engsystemstate}. In Table~\ref{tab:rcc}, we
 summarize the axioms of the Region Connection Calculus (see, e.g., \autocite{Grutter2008rcc}).
 
 \begin{definition}{\bf RCC axiomatization --}
@@ -195,17 +183,12 @@ summarize the axioms of the Region Connection Calculus (see, e.g., \autocite{Gru
 where $Z$ is a mereotopological Region.
 \end{definition}
 
-\begin{definition}{\bf Agent: Mankind or Nature --}\label{def:agent}
+\begin{definition}{\bf Agent: Mankind or Nature --}\label{def:mankind-nature}
 	An agent $\agent\in\agentuniverse$ is a tuple
 	$\langle\rcc(\region',\region''),\ldots,\rcc(\region^{n-1},\region^n)\rangle$
 	of RCC relations $\rcc$ over mereotopological Regions
 	${\region',\ldots,\region^n}\subseteq\Region$. 
 \end{definition}
-
-Currently, we do not distinguish between Mankind and Nature (since we still
-lack of the definition of ``malicious intent'', which is defined in
-Section~\ref{sec:theory}) and we have defined them as two generic
-agents.
 
 As depicted in Figure~\ref{fig:safety-security}, Causality, Mankind, and Nature
 have a dashed border representing their correlation in terms of cause-effect
@@ -214,8 +197,8 @@ Vulnerability, Defect, Incident, Accident, and Threat, similarly,
 are correlated (depicted as a solid border) in terms of underlying 
 formal structure: Mereotopology.
 
-\subsubsection{Regions: Vulnerability and Defect (and Weakness)}\label{sec:vulnerabilitydefect}
-As defined in Section~\ref{sec:problem}, a Vulnerability or a Defect is a
+\subsection{Regions: Vulnerability and Defect (and Weakness)}\label{sec:vulnerabilitydefect}
+As informally defined in Section~\ref{sec:problem}, a Vulnerability or a Defect is a
 \emph{Weakness}.  As an example, a categorization of weaknesses is given
 in\autocite{MITRE2020CWEresearch} with 808 weaknesses categorized as ``Research
 Concepts'', distributed as follows:
@@ -246,20 +229,19 @@ that one can consider weakness as a ground term and state that a
 vulnerability is caused by a weakness, i.e. 
 $\World,\Weakness\models\Diamond\Vulnerability\wedge\Weakness$ where
 $\Weakness,\Vulnerability$ are Regions of Weaknesses and Vulnerabilities (resp.);
-accepting the hierarchy in the CWE\autocite{CWE} as ground truth. 
-Similarly, we consider the CVE\autocite{CVE} (a database of Vulnerability) 
-or the CVE reported in the NVD as a ground truth. 
+accepting (for now) the hierarchy in the CWE\autocite{CWE} as ground truth. 
+Similarly, we consider the CVE\autocite{CVE} (a database of Vulnerability),
+or the CVE reported in the NVD, as a ground truth. 
 
 \begin{definition}{\bf Region: Weakness and Vulnerability --}\label{def:weakness}
-	A Region $\region\subseteq\agent$ of an agent
-	$\agent\in\agentuniverse$, is defined as Weakness $\Weakness$ (i.e.
-	representing a weakness introduced by the agent into any phase of
+	A Region $\Weakness\subseteq\agent$ of an agent
+	$\agent\in\agentuniverse$, is defined as Weakness\footnote{i.e.
+	representing an error introduced by the agent into any phase of
 	production, e.g.  of the secure process development life-cycle, of any
-	system or subsystem) iff there exists $\world\in\possibleworlds$ such
-	that $\world,\Weakness\models\Diamond\exists\Weakness',\Vulnerability'.~
-	\rcc(\Weakness',\Vulnerability')\wedge\neg\dr{\Weakness'}{\Vulnerability'}$, 
-	where $\Weakness'\subseteq\Weakness$, and
-	$\Vulnerability'\subseteq\Vulnerability$ is a Region of an agent $\agent'\in\agentuniverse$.
+	system or subsystem} iff there exists $\world\in\possibleworlds$ such
+	that $\world\models\Weakness$, $\world\models\Diamond\Vulnerability$,
+	and $\neg\dr{\Weakness}{\Vulnerability}$; where $\Vulnerability$ is a
+	Region of an agent $\agent\in\agentuniverse$.
 \end{definition}
 
 \begin{example}{CWE-116: Improper Encoding or Escaping of Output\autocite{CWE-116} --}
@@ -360,7 +342,7 @@ A region $\region\subseteq\agent$ of an agent $\agent\in\agentuniverse$ is
 	\emph{Defect} if the agent is referred to as Nature.
 \end{definition}
 
-\subsubsection{Process: Incidents and Accidents}\label{sec:incidentaccident}
+\subsection{Process: Incidents and Accidents}\label{sec:incidentaccident}
 In our informal definition depicted in Figure~\ref{fig:safety-security}, an
 Incident is generated through a process caused by a Vulnerability (which,
 in turn, is caused by a Weakness). Symmetrically, Nature has a process from Defect
@@ -537,7 +519,7 @@ Section (Section~\ref{sec:theory}). The formal definition of those
 processes shall:
 \begin{itemize}
 	\item in Section~\ref{sec:theory}, formally define a system as a structure of agents, and
-	\item in Section~\ref{sec:process}, correlate the formal definition of agents (i.e. the
+	\item in Section~\ref{sec:engineering}, correlate the formal definition of agents (i.e. the
 		Definition~\ref{def:agent}) with the Causality principle (i.e.
 		the formalization of the Kripke structure in
 		Definition~\ref{def:modallogic}). 

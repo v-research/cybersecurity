@@ -628,6 +628,21 @@ The quality of the confidentiality of information (Assertions or Beliefs dependi
 the subsystem considered) are inversely proportional to the number of 
 integrity issues of the subsystem.
 
+\begin{hypothesis}{\bf System Security Design --}\label{hyp:security}
+	A system security design is given by a system security specification, i.e. a set of
+	requirements on the integrity and availability over the physical and
+	functional architectures, that uniquely defines the designs built on
+	top of those requirements.
+\end{hypothesis}
+
+\begin{hypothesis}{\bf System Insecurity Design --}\label{hyp:insecurity}
+	If, given a system security specification as a collection of
+	requirements on the physical and functional architectures, there exist
+	a non-unique design that respect those requirements, the number of
+	equivalent designs that fullfills the requirements quantitatively
+	defines the magnitute of insecurity of a system design.
+\end{hypothesis}
+
 \fix{mr}{
 Authenticity: assurance that the information is from the source it claims to be
 from. Authenticity involves proof of identity. Authenticity is verified through
