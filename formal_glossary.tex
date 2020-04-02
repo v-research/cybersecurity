@@ -232,7 +232,14 @@ $\Weakness,\Vulnerability$ are Regions of Weaknesses and Vulnerabilities (resp.)
 accepting (for now) the hierarchy in the CWE\autocite{CWE} as ground truth. 
 Similarly, we consider the CVE\autocite{CVE} (a database of Vulnerability),
 or the CVE reported in the NVD, as a ground truth. 
+\fix{mr}{it needs to be stressed that without the formalization of
+the concept of error, we cannot properly formalize the concept of weakness
+which remains just a region as any other region with the only 
+constraint that it must be connected to another region called Vulnerability (which 
+in turn depend on the definition of error)}
 
+\fix{mr}{the following definition should be moved (and detailed)
+to section~\ref{engineering} when the concept of weakness is defined}
 \begin{definition}{\bf Region: Weakness and Vulnerability --}\label{def:weakness}
 	A Region $\Weakness\subseteq\agent$ of an agent
 	$\agent\in\agentuniverse$, is defined as Weakness\footnote{i.e.
@@ -325,7 +332,7 @@ inferred from the descriptions of the CWE-CVE.
 We can formally represent this link as the ONE connection in RCC3, depicted in 
 Figure~\ref{fig:rcc5_CWE-116}, or EC connection in RCC8 (Figure~\ref{fig:rcc8_CWE-116}).
 
-\fixnote{mr}{shouldn't we consider the agent who introduces the weakness as dishonest? don't we say this in part 1?}
+\fix{mr}{shouldn't we consider the agent who introduces the weakness as dishonest? don't we say this in part 1?}
 \end{example}
 
 It is interesting to note that the CWE-CVE relation expresses the correlation
@@ -336,6 +343,9 @@ This is related to the Weakness-Vulnerability-Incident process (i.e. to the
 details on the implementation/realization in Figure~\ref{fig:safety-security})
 that we analyze in the next section, Section~\ref{sec:incidentaccident}.
 
+\fix{mr}{similar to weakness and vuln, the following definition should be kept here just to show that
+it is impossible to defined those concept without the proper definition of the concept of error. and the definition should
+be introduced in section~\ref{engineering} when the concept of weakness is defined}
 \begin{definition}{\bf Region: Vulnerability and Defect --}\label{def:vulnerability-defect}
 A region $\region\subseteq\agent$ of an agent $\agent\in\agentuniverse$ is
 	called \emph{Vulnerability} if the agent $\agent$ is referred to as Mankind, 
@@ -520,7 +530,7 @@ processes shall:
 \begin{itemize}
 	\item in Section~\ref{sec:theory}, formally define a system as a structure of agents, and
 	\item in Section~\ref{sec:engineering}, correlate the formal definition of agents (i.e. the
-		Definition~\ref{def:agent}) with the Causality principle (i.e.
+		Definition~\ref{def:mankind-nature}) with the Causality principle (i.e.
 		the formalization of the Kripke structure in
 		Definition~\ref{def:modallogic}). 
 \end{itemize}
