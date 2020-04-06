@@ -1,8 +1,16 @@
-We now define a formalizations of the concepts described in
-Section~\ref{sec:problem} and depicted in Figure~\ref{fig:safety-security}. We
-base our formalization on first order logic (FOL) with the standard
-truth-value semantics. The choice of this logic is required by the 
-semantics of the concepts formalized afterwards in this section. 
+A formalization requires a formal logic and a formal language.  We base our
+formalization on first order logic (FOL) with the standard truth-value
+semantics. The choice of this logic is usefull for the fomal treatment of the
+theory we'll define in Section~\ref{sec:theory}.  We do not provide a proof
+that the choice of FOL doesn't impede the formulation of a correct security
+theory, nor that the semantics of English isn't an issue. So, we believe that
+this doesn't pose an issue for the formulation of the seucirty hypotheses since
+the hypothesis requires to be able to define \emph{an agent and its
+honest/dishonest behaviors in such a way that an agent can be used to define a
+system}. To the best of our knowledge, there is no result that shows that FOL
+cannot be used to do so; on the contrary, using classical logic such as FOL or
+Propositional logic is rather standard (along with Kripke structures for the
+definition of the underlying causality principle).
 
 We consider a first-order language $\follang$ over a
 signature $\Sigma_P$ where $P,P',\ldots,P^n$ represent terms, and
@@ -20,12 +28,15 @@ function, where $\Phi$ is any collection of sentences in $\follang$ and $\top$
 and $\bot$ represent the concepts of ``Tautology/True'' and
 ``Contradiction/False'' respectively.
 
+
 Following Figure~\ref{fig:safety-security}, we start by formalizing the outermost term: Causality.
 
 \subsection{Causality Principle}\label{sec:causality}
 We formalize the Causality Principle starting from a K modal
-logic\autocite{Garson2018modal} (i.e. without restrictions on the causality
-relation between worlds). The standard definition of K modal logic is given in
+logic\autocite{Garson2018modal} so that (i) we use a de-facto standard
+way of defining the Causality Principle, and (ii) we do not restrict the causality
+relation (between worlds) in any way (so we are as general and abstract as possible).
+The standard definition of K modal logic is given in
 Definition~\ref{def:modallogic} in terms of an interpretation function (which
 we named $\sigma$ with a slight abuse of notation) defined in
 Definition~\ref{def:modalinterpretation}. 
@@ -56,24 +67,22 @@ A K-frame is a frame $ \kframe=\langle \possibleworlds,\modalrelation \rangle $
 	where truth is defined as necessary with $\Box$ and possible with $\Diamond$.
 \end{definition}
 
-The causality principle has been defined in its generic form. In fact, the
-accessibility relation $\modalrelation$ is free from any axiomatic restriction
-(e.g. it's not reflexive nor anti-reflexive).  We will focus in
-Section~\ref{sec:engineering} (for our tests) on the application of our theory
-to CPS system engineering.  More detailed case studies (i.e. \fix{mr}{a CPS as
-a smart power-grid}) will be defined in Section~\ref{sec:engineering}, where
-the accessibility relation defines in details how the system itself evolves,
-due to causal relation (i.e. by restricting the causality principle only to
-those cause-effect that defines the system). Therefore, the definition of
-$\modalrelation$ will be specialized in a more strict way based on the
-application domains and case study.
+As mentioned before, the accessibility relation $\modalrelation$ is free from
+any axiomatic restriction (e.g. it's not reflexive nor anti-reflexive).  We
+note that we have defined the Causality principle without considering it a
+\emph{threat source} since, given that this is the first and outermost concept
+in Figure~\ref{fig:security-safety}, we lack the concept of intent and
+maliciousness (which are not inherent to the Causality Principle). 
+In other words, the Causality principle or the Kripke structure
+doesn't correlate cause-effect (or worlds) due to any other principle but
+causality itself; therefore, in order to distinguish nominal or honest cause-effects
+and non-nominal or dishonest ones we would need to add additional constraints, defining
+what honesty is in a factious way.
 
-We note that we have defined the Causality principle without considering it a
-\emph{threat source} since we lack the concept of intent and maliciousness.
-Similarly, in the next sections we won't discriminate between Nature and
-Mankind until we introduce the concepts of maliciousness in
-Section~\ref{sec:theory} and then formally define a threat agent in the same
-section.
+Similarly, in the next sections we won't be able to discriminate between Nature
+and Mankind due to their honesty. We argue that the concept of honesty, even if
+we do not state that it is not intrinsic to all the definition of Nature or
+Mankind, requires additional constraints or statements in order to be defined.
 
 \subsection{Agents: Mankind and Nature}\label{sec:mankind-nature}
 \begin{table}[t]
@@ -110,7 +119,7 @@ plants, animals, \&c.  for Nature). Similarly to\autocite{Santaca2016abf}, we
 define Mankind and Nature, and any other agent in the reminder of this article,
 as a meronomy (an hierarchy of Part-Whole relations) based on a standard
 definition of mereology, i.e. based on the definition of Parthood relation
-between \emph{Parts}.  However, we consider different types of Part; so, we
+between \emph{Parts}.  Due to the necessity of considering different types of Part (as we'll show afterwards) we
 extend the mereology to a
 mereo-topology\autocite{Smith1996mereotopology,Varzi1994mereotopology,Rachavelpula2017mereotopology},
 to increase the number of different types considered and to generalize the
@@ -197,6 +206,13 @@ Vulnerability, Defect, Incident, Accident, and Threat, similarly,
 are correlated (depicted as a solid border) in terms of underlying 
 formal structure: Mereotopology.
 
+We have now defined the concept of agent, and defined Mankind and Nature as
+agents. Given that, as we stated beforehand, they are defined by their
+subagents, and that we are not interested in a general definition of Mankind and
+Nature but in the one that serves our purpose (i.e. defining a security
+theory), in the following sections we focus on those terms identified in the
+literature review.
+
 \subsection{Regions: Vulnerability and Defect (and Weakness)}\label{sec:vulnerabilitydefect}
 As informally defined in Section~\ref{sec:problem}, a Vulnerability or a Defect is a
 \emph{Weakness}.  As an example, a categorization of weaknesses is given
@@ -231,24 +247,22 @@ $\World,\Weakness\models\Diamond\Vulnerability\wedge\Weakness$ where
 $\Weakness,\Vulnerability$ are Regions of Weaknesses and Vulnerabilities (resp.);
 accepting (for now) the hierarchy in the CWE\autocite{CWE} as ground truth. 
 Similarly, we consider the CVE\autocite{CVE} (a database of Vulnerability),
-or the CVE reported in the NVD, as a ground truth. 
-\fix{mr}{it needs to be stressed that without the formalization of
-the concept of error, we cannot properly formalize the concept of weakness
-which remains just a region as any other region with the only 
-constraint that it must be connected to another region called Vulnerability (which 
-in turn depend on the definition of error)}
+or the CVE reported in the NVD, as a ground truth in the case of Vulnerability. 
+It is then obvious that without the formalization of
+the concept of error,
+we cannot properly formalize the concepts of Weakness (and Vulnerability);
+which remains one of the sub-region of errors with the only constraint that it
+must be connected to another region called Vulnerability (which in turn depend
+on the definition of error).
 
-\fix{mr}{the following definition should be moved (and detailed)
-to section~\ref{engineering} when the concept of weakness is defined}
 \begin{definition}{\bf Region: Weakness and Vulnerability --}\label{def:weakness}
-	A Region $\Weakness\subseteq\agent$ of an agent
-	$\agent\in\agentuniverse$, is defined as Weakness\footnote{i.e.
+	A Region $\Weakness\subseteq\Error$ of a region $\Error$ of errors,
+	is defined as Weakness\footnote{i.e.
 	representing an error introduced by the agent into any phase of
 	production, e.g.  of the secure process development life-cycle, of any
 	system or subsystem} iff there exists $\world\in\possibleworlds$ such
 	that $\world\models\Weakness$, $\world\models\Diamond\Vulnerability$,
-	and $\neg\dr{\Weakness}{\Vulnerability}$; where $\Vulnerability$ is a
-	Region of an agent $\agent\in\agentuniverse$.
+	and $\world\models\Diamond\neg\dr{\Weakness}{\Vulnerability}$.
 \end{definition}
 
 \begin{example}{CWE-116: Improper Encoding or Escaping of Output\autocite{CWE-116} --}
@@ -331,8 +345,6 @@ the CVE, the description of the relation is not defined but it is supposed to be
 inferred from the descriptions of the CWE-CVE. 
 We can formally represent this link as the ONE connection in RCC3, depicted in 
 Figure~\ref{fig:rcc5_CWE-116}, or EC connection in RCC8 (Figure~\ref{fig:rcc8_CWE-116}).
-
-\fix{mr}{shouldn't we consider the agent who introduces the weakness as dishonest? don't we say this in part 1?}
 \end{example}
 
 It is interesting to note that the CWE-CVE relation expresses the correlation
@@ -341,11 +353,55 @@ can formalize all the relation as ONE in RCC3 or EC in RCC8.  To express a more
 complex relation between the two we shall analyze the definition of CWE-116.
 This is related to the Weakness-Vulnerability-Incident process (i.e. to the
 details on the implementation/realization in Figure~\ref{fig:safety-security})
-that we analyze in the next section, Section~\ref{sec:incidentaccident}.
+that we analyze in Section~\ref{sec:incidentaccident}.
 
-\fix{mr}{similar to weakness and vuln, the following definition should be kept here just to show that
-it is impossible to defined those concept without the proper definition of the concept of error. and the definition should
-be introduced in section~\ref{engineering} when the concept of weakness is defined}
+\Paragraph{Attacker as a Dis-honest Agent}
+As we mentioned in Section~\ref{sec:problem_statement} when we postulated the
+security hypothesis, Weaknesses and Vulnerability are the two core security
+concepts of the current understanding of what security is. However, we see two
+(opposed in terms of abstraction) possibility to better defined those concepts:
+defining how an agent (Mankind or Nature) can maliciously use Weaknesses to
+produce Vulnerability (and, in turn, Exploits), or how Errors can be defined
+(since Error is a term from which Weakness are, in turn, defined).  The former,
+in our current formalization, implies detailing and constraining the Causality
+Principle by introducing constraints on how agents acts. For example,
+introducing the concept of intentionality, motivation, or desire (see the BDI
+framework defined in \autocite{BDI} for a general overview of those concepts).
+The symbolic approach (also called Dolev-Yao model) in the formal verification
+of security and communication protocols, can be used in this spirit. The
+attacker can be seen as an additional agent (often identified with the network
+where the messages are exchanged) that sees the network traffic and manipulates
+it. The actions are generic (the attacker can combine two messages, split a
+message into its components, or decrypt/encrypt if it has the proper security
+key) but not something that a dishonest agent cannot do. The main difference is
+that an honest agent follows the nominal specification of the protocol while
+the attacker doesn't. The attacker non-deterministically opens as many new
+sessions as it wants and the causality structure in which this scenario
+(protocol + attacker) has been defined, is searched for a state that is
+considered erroneous with respect to some security requirements decided a
+priori. Therefore, as we mentioned in Section~\ref{sec:problem_statement}, the
+formal verification of the security of protocols can be considered a scientific
+security theory; the implementations resulting from the formalized (and
+verified) design can be tested against the formalized security requirements.
+So, it is not completely true that ``Thus, formal approaches offer no escape
+from our basic problem; only by making unfalsifiable assumptions (about what an
+attacker can do) will they allow derivation of a necessary condition'' (as
+Herley describes in\autocite{Herley2009so}) rather, the
+unfalsifiability-related issue seems to stem from how security conditions are
+defined, i.e. how security requirements are defined. One can easily see that
+this is not just an issue in the formal protocol verification community but the
+very foundations of the concept of Weakness and Vulnerability are defined in a
+way that makes it impossible (they are necessary conditions) to make a general
+security statement on any system (even if we tested every single Weakness on
+the CWE on our system it may be the case that a Weakness han yet to be
+discovered). Therefore, we hypothesize that a security theory should define in
+a complete way how errors (and then Weaknesses, Vulnerability, and Exploits)
+may be introduced.
+
+We now conclude (for completeness) the analysis of the various security-related terms we identified
+in the literature review, without formally defining what Errors are (which will be defined
+in the reminder of the paper).
+
 \begin{definition}{\bf Region: Vulnerability and Defect --}\label{def:vulnerability-defect}
 A region $\region\subseteq\agent$ of an agent $\agent\in\agentuniverse$ is
 	called \emph{Vulnerability} if the agent $\agent$ is referred to as Mankind, 
@@ -359,10 +415,20 @@ in turn, is caused by a Weakness). Symmetrically, Nature has a process from Defe
 to Accidents. We start by analyzing the process generated by Mankind, which is
 divided into the following phases (as shown in Figure~\ref{fig:cwe-nvd-capec}):
 \begin{enumerate}
-	\item An agent (Mankind or Nature) defines a system, e.g. by following an engineering process for creating a new system, or for redesigning or improving an existing system (e.g. a component or a collection of components) 
-	\item The dogmatic definition of a system contains a Weakness (i.e. the agent, Mankind or Nature, introduces an unintended behavior), for example as an un-intended behavior or as an architectural fallacy. The Weakness can be applied to the abstract definition of the system.
-	\item The Weakness can be defined as a malicious process for a system, called Vulnerability (or Defect for Nature)
-	\item The process expressed by the Vulnerability can be made operational for a specific implementation of the system (i.e. implemented by Mankind or realized by Nature) 
+	\item An agent (Mankind or Nature) defines a system, e.g. by following
+		an engineering process for creating a new system, or for
+		redesigning or improving an existing system (e.g. a component
+		or a collection of components) 
+	\item The axiomatic/dogmatic definition of a system contains a Weakness (i.e.
+		the agent, Mankind or Nature, introduces an unintended
+		behavior), for example as an un-intended behavior or as an
+		architectural fallacy, and this Weakness can be applied to the
+		abstract definition of the system.
+	\item The Weakness can be defined as a malicious process for a system,
+		called Vulnerability (or Defect for Nature)
+	\item The process expressed by the Vulnerability can be made
+		operational for a specific implementation of the system (i.e.
+		implemented by Mankind or realized by Nature) 
 \end{enumerate}
 Those additional details are depicted in Figure~\ref{fig:safety-security_2}, an update
 of Figure~\ref{fig:safety-security}.
@@ -405,7 +471,7 @@ analysts, developers, testers, and educators to advance community understanding
 and enhance defenses.''. We can extrapolate two major concepts: 
 \begin{itemize}
 	\item While understanding the exploitation process is the aim of the
-		CWE and CVE initiatives, understanding the hacking process is
+		CWE and CVE initiatives, understanding the malicious (or black-hat) hacking process is
 		the aim of the CAPEC initiative.
 	\item CAPEC provides a \emph{dictionary} of \emph{known} attack patterns.
 		As stated in details in Section~\ref{sec:problem}, this dictionary contains
@@ -433,11 +499,12 @@ Attacking the system with a malicious Hack, as follows.
 \begin{enumerate}
 \setcounter{enumi}{4}
 	\item An agent (Mankind\footnote{For the sake of readability we focus
-		only on Mankind as an agent}) the exploitation process can be
-		used to hack a system. We use the term hack (as hacking) to
-		stress that nothing prevents this process from being honest,
-		however, for the sake of simplicity, we focus on Attacks which
-		are malicious by definition.
+		only on Mankind as an agent}) starts the exploitation process
+		to hack a system. We use the term hack (as hacking) to stress
+		that nothing prevents this process from being honest (i.e. the
+		so called honest-but-curious attacker), however, for the sake
+		of simplicity, we focus on Attacks which are malicious by
+		definition.
 	\item An Attack is applied to a system with malicious intent by an
 		agent
 	\item The application of the attack results in an Incident which
@@ -534,3 +601,13 @@ processes shall:
 		the formalization of the Kripke structure in
 		Definition~\ref{def:modallogic}). 
 \end{itemize}
+
+The main outcome of this section is that there is no evidence that properly
+considering the malicious intent of an agent necessarily results in a security
+scientific theory.  On the other hand, the complete definition of Errors,
+predicted by a (sound w.r.t. Errors) security theory seems to be a proper
+research direction.  In other words, system \emph{in-security} and
+\emph{security} should not be searched on those events who maliciously produces
+negative effects on a systems (incidents), but in the potential designs and
+implementations due to vague specifications. Therefore, we will consider a
+security-by-design approach based on a requirement-based engineering process.
