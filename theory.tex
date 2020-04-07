@@ -1,41 +1,26 @@
-
-
-In order to address the problem raised by Herley, 
-we shall define how to distinguish between a secure and an insecure system.
-While most of the literature (and this paper so far) have
-correlated the problem of in-security to the maliciousness of
-agents interacting with the system, we show that security
-doesn't seem to stem from a malicious nature but, rather, insecurity 
-raises from the lack of well-defined security requirements for the
-design process of a system. We argue that the high number
-of security vulnerability reported today are simply the realization
-of potential system configurations, which deviate from the nominal
-behavior just because the \emph{intended behavior}\fixnote{mr}{maybe ``nominal'' instead of ``intended'' is better and behavior can be confused with the
-relation between assertions and beliefs which is not what we mean} of the system is not precisely 
-defined in the specification at the very early stages of the engineering process. 
-A reference engineering process (so called, system security lifecycle of a product)
-is described, in details, in Section~\ref{sec:process}. However,
-for the sake of simplicity, the reader can assume for this section that 
-we are currently dealing with just the relation between 
-the specification of a system and its design.
-
-Given that we apply our theory to \emph{systems engineering} and that
-the two foundational processes (exploitation and hacking) are based on the
-concept of a system, we shall begin by defining what a system is, in its
-abstract form.
-
+In order to address the problem raised by Herley, we shall define how to
+distinguish between a secure and an insecure system.  While most of the
+literature have correlated the problem of in-security
+to the maliciousness of agents interacting with the system, we show that
+security doesn't seem to stem from a malicious nature but, rather, insecurity
+raises from the lack of well-defined security requirements for the design
+process of a system. We argue that the high number of security vulnerability
+reported today are simply the realization of potential system configurations,
+which deviate from the nominal behavior just because the \emph{intended (or
+nominal) behavior} of the system is not precisely defined in the specification
+at the very early stages of the engineering process.   
 
 \subsection{A Reference Model for Cybersecurity Engineering}\label{sec:vmodel}
-In order to describe the $\abf$-theory we briefly introduce the 
-engineering concepts (detailed and extended in Section~\ref{sec:engineering})
-underlying the $\abf$-theory; namely, the first three stages of the, so called,
-engineering V-Model. Our definition is partial and we only use it for the 
-sake of simplicity and to better present the theory.
-
+A reference engineering process (so called, system security lifecycle of a
+product) is described, in Section~\ref{sec:engineering}.  For the sake of
+simplicity, we now give an high-level overview of a reference engineering model
+focusing on the first three stages of the, so called, engineering V-Model. Our
+definition is partial and we only use it for the sake of simplicity and to
+better present the theory.
 
 The development process of a new product (a CPS in our case) 
 should follow an engineering model. Our reference engineering process 
-(inspired by the waterfall V-Model\autocite{waterfallvmodel}), as depicted in
+(inspired by the waterfall V-Model), as depicted in
 Figure~\ref{fig:simplifiedvmodel}, is structured as the following ordered list
 of abstraction refinement steps.
 \begin{enumerate}
@@ -48,9 +33,9 @@ of abstraction refinement steps.
 		architectural aspects of a CPS such as the draft physical and
 		functional architectures.
 	\item The process then continues with the definition of a design where
-		the requirements of the previous phase holds; detailing the
-		logic of the physical (e.g. the physical-layer encoding of the
-		information) and functional architectures (e.g. the protocol
+		the requirements of the previous phase holds; structuring the
+		physical architecture along with its logic (e.g. the physical-layer encoding of the
+		information), and the functional architectures and its logic (e.g. the protocol
 		logic of communication over a number of potential sessions).
 	\item Finally, the design is implemented as hardware (HW) for the physical architecture
 		and software (SW) for the functional architecture.
@@ -63,6 +48,11 @@ of abstraction refinement steps.
 	\label{fig:simplifiedvmodel}
 \end{figure}
 
+Given that we apply our theory to \emph{systems engineering} and that
+the two foundational processes (exploitation and hacking) are based on the
+concept of a system, we shall begin by defining what a system is, in its
+abstract form.
+
 \subsection{Abstract System}\label{sec:systemstate}
 The ISO/IEC/IEEE 15288:2015 (System Life Cycle Processes) provides a definition
 of system as ``A combination of interacting elements organized to achieve one
@@ -70,9 +60,7 @@ or more stated purposes.''\autocite{ISO201515288}.  Therefore, a system can be
 considered as a single agent where its interacting elements are the
 constituents of the agent itself. For the sake of simplicity we first define a
 system as an agent and then extend the definition to a ``combination of
-interacting'' agents.  We use the same process of \autocite{Santaca2016abf} but
-over slightly different terms. The differences and commonalities with
-\autocite{Santaca2016abf} are described in Appendix~\ref{app:abf}. 
+interacting'' agents.  
 
 There is no agreement between the research communities (e.g.
 Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent
@@ -85,81 +73,65 @@ Some relevant examples for our objective are the following.
 		Beliefs can be formalized.
 	\item In \autocite{Hintikka1993Information}, Hintikka describes the concept
 		of Information and the difference with Knowledge and Belief.
-	\item In \autocite{Empiricus1990Pyrrhonism}, the author states: ``The
-		logical criterion also may be used in three senses -- of the
-		agent, or the instrument, or the ``according to what''; the
-		agent, for instance, may be a man, the instrument either sense
-		perception or intelligence, and the ``according to what'' the
-		application of the impression ``according to'' which the man
-		proceeds to judge by means of one of the aforesaid
-		instruments.'' 
+	%\item In \autocite{Empiricus1990Pyrrhonism}, the author states: ``The
+	%	logical criterion also may be used in three senses -- of the
+	%	agent, or the instrument, or the ``according to what''; the
+	%	agent, for instance, may be a man, the instrument either sense
+	%	perception or intelligence, and the ``according to what'' the
+	%	application of the impression ``according to'' which the man
+	%	proceeds to judge by means of one of the aforesaid
+	%	instruments.'' 
 	\item In \autocite{Santaca2016abf}, the authors defines an agent as a
 		tuple of Assertions, Beliefs, and Facts.
 \end{itemize}
 
-\fix{mr}{
 \Paragraph{Methodology}
-We now conclude this section by detailign the line of reasoning we want to
-apply to our investigation.
-The epistemologic concept of Knowledge can be equated to the
-concept of Truth.  Anything that is known is, therefore, also true. It is also
-believed that Knowledge, defined as we did, is supposed to be inapprehensible.
-In contrast, Beliefs are potentially true and leads new hypothesis. Due to the
-structure of deductive reasoning we can only start from hypothesis and test the
-deductive conclusions on the reality. Whatever a scientific-security-theory is,
-it must be defined starting from hypothesis.  A sound reasoning must lead to
-conclusion that shall be tested on a real system. Thefore, only at the end of
+Before going into the details of the various terms and their applications for
+the definition of our theory, we 
+detail our methodology.
+The concept of Knowledge \autocite{Hintikka1962knowledge} (from an
+epistemological point of view) can be defined as the way to get to the Truth.
+Anything that is known is considered true\footnote{It is also
+believed that Knowledge, defined as we did, is in-apprehensible \autocite{Empiricus1990Pyrrhonism}, but this shouldn't be an issue since it is a common problem to every scientific search}
+In contrast, Beliefs \autocite{Hintikka1962knowledge} are potentially true and
+leads to new hypothesis. Due to the
+structure of deductive reasoning we can only start from unproven hypothesis and test the
+deductive conclusions on the reality. Therefore, whatever a scientific-security-theory may be,
+it can only be defined starting from hypotheses.  A sound reasoning should lead to
+conclusion that shall be tested on a real system. Therefore, only at the end of
 the reasoning we will be able to test, and judge, the quality of the theory
-itself. The identification of hypothesis should start from probably true
-beliefs (which means from Information), and then from the state of the art.
-Instead of having a ``related work'' section, we review and cite the literature
-throughout the paper.
-If we consider \autocite{Empiricus1990Pyrrhonism}, the author applies a
-``logical criterion'' to an agent, for instance a man, for instance a device in
-a system (or a system) as in \autocite{Santaca2016abf}.  The instrument identified is sense
-perception, because a man is considered as example, but we can abstract from the
-concept of instrument and consider any received information, where information is
-considered as in \autocite{Hintikka1993Information}; which can be
-summarized by the following axiom: ``Information is specified by specifying
-which alternatives concerning the reality it admits and which alternatives
-excludes''. This means, for our argument, that considering a propositional
-variable, which admits the two alternatives True/False, its information is
-defined as Believed to be True/False and not Believed to be the opposite. 
-%Similarly, when reasoning on a
-%mereotopological region w.r.t. the RCC (e.g. RCC3 admits two regions to be
-%equal, disjoint, or overlapping) information on this region should exclude
-%some of the alternatives. 
-Finally, in \autocite{Empiricus1990Pyrrhonism}
-the author states that the logical criterium can be judged according to a frame of reference.
-For our argument, as in \autocite{Santaca2016abf}, we define this concept
-as Knowledge (or Facts); where knowledge is defined, as in \autocite{Steup2020epistemology}, as
-a set of proposition known by an agent, such that: (i) knowledge requires belief,
-(ii) knowledge require truth, (iii) knowledge must be \emph{properly justified}.
-}
+itself. The identification of hypotheses should start from probably true
+beliefs (e.g. from Information \autocite{Hintikka1993Information}), and then from the state of the art.
 
-Before detailing what ``properly justified'' means, we discuss the mentioned
-relation between agent and belief and we introduce a more formal definition
-of knowledge and belief. For our argument, the only objective of
-Information is to exchange beliefs between agents.
+For our argument, 
+as in \autocite{Santaca2016abf}, an agent is composed by its knowledge, beliefs, and the information or assertions
+it provides; where knowledge is defined, as in \autocite{Steup2020epistemology}, as
+a set of proposition known by an agent, such that: (i) knowledge requires belief,
+(ii) knowledge require truth, (iii) knowledge must be \emph{properly justified}, and
+the only objective of Information is to exchange beliefs between agents.
+As defined in \autocite{Hintikka1993Information}, ``Information is specified by specifying
+which alternatives concerning the reality it admits and which alternatives
+excludes''. This means that if we consider a propositional
+variable (which admits the two alternatives True/False) its information is
+defined as Believed to be True/False and not Believed to be the opposite. 
 Due to the definition of Information and then with its relation to the probabilistic
 correlation to truth/reality, we consider
 information in relation with an agent's beliefs. Similarly, we consider
-beliefs to define the actual behavior of an agent or a system. On the other hand,
-Knowledge drives the nominal behavior of an agent or a system. This view
-is not considered in most (if not all) the approaches to protocol verification
-and the Dolev-Yao theory is usually applied to a representation/abstraction
+beliefs to define the actual behavior of an agent or a system. On the 
+contrary, this view is not considered in most (if not all) the approaches to formal protocol verification
+in the symbolic model. In fact, the security reasoning is usually applied to a representation/abstraction
 of a protocol that only considers knowledge and transfer of knowledge (i.e.
 if an agent sends a message, the recipient knows that message). However,
-the security of a system is tightly related to the difference between
-the nominal behavior and the actual (e.g. the implemented) one.
+we believe that the security of a system is tightly related to the differences between
+the nominal behavior and the actual (e.g. the implemented) one and only in the
+nominal one (as hypothetical) one should consider agent's knowledge.
 
 \begin{definition}{\bf System State and State-Space --}\label{def:system}
-	The state of a system (or a sub-system) $s$ is identified with an
-	instance of an agent state (see Definition~\ref{def:agent}) such that
+	The state of a system (or a sub-system or an agent) $s$ is defined as the tuple 
 	$s=\langle\rcc(\knowledgeRegion,\beliefRegion),\rcc(\knowledgeRegion,\informationRegion),\rcc(\beliefRegion,\informationRegion)\rangle$,
 	where $\knowledgeRegion,\beliefRegion,\informationRegion$ are Regions
 	of Knowledge, Beliefs, and Information respectively, and $\rcc$ is a
-	specific relation between the Regions it predicates on.  The
+	specific relation between Regions.  The
 	state-space of a system is then defined by the different $\rcc$
 	relations between the three pairs of Regions defining the system and
 	all the sub-systems.
@@ -167,7 +139,7 @@ the nominal behavior and the actual (e.g. the implemented) one.
 Therefore, a system state space can be seen as a superposition of multiple agent states where knowledge,
 beliefs, and information are related between each other (in a mereotopological
 space) through all the admissible RCC relations. 
-\fixnote{mr}{are the next lines redundant?}A \emph{system state} (as an instance of the system state space)
+A \emph{system state} (as an instance of the system state space)
 is a specific configuration of
 the $\rcc$ relations between the three regions. Therefore, a collection of 
 system states defines a collection of choices for those $\rcc$ relations.
@@ -213,7 +185,7 @@ Definition~\ref{def:modallogic}; similarly for Belief.
 Given an abstract collection of Agents $Ag$, and the modal operator
 	$\knows{a}{}$ (where $a\in Ag$), Knowledge is defined as a region 
 	of predicates known by an agent $\knowledge{a}=\bigcup_\Phi \knows{a}{\varphi}$ 
-	(where $\Phi$ is the collection of all the propositions known by $a$).
+	(for all $\varphi\in\Phi$ where $\Phi$ is the collection of all the propositions known by $a$).
 	Given a proposition $P$, we extend the semantics of the Causality structure with:
 	\begin{enumerate}[noitemsep]
 		\item[$(\interpretation16)$] $\world\models\knows{a}{P}$ iff
@@ -257,7 +229,8 @@ Given an abstract collection of Agents $Ag$, and the modal operator
 When dealing with a specification of a system (i.e. the design if the system
 for a specific operation (as a generic operating/operational system),
 considering abstract and general concepts such as knowledge, belief, or
-information may result to be too abstract for the objectives of the overall engineering
+information may result to be too abstract 
+for the objectives of the overall engineering
 process (e.g. verification and validation).
 As an example, we are usually not
 interested in information in abstract but to the transfer of that
@@ -294,7 +267,7 @@ of CPS.
 			\item The physical/structural (HW/SW) architecture of each
 				subsystem of agents and agent within a
 				subsystem
-			\item Other important aspects of the system that we
+			\item Other aspects of the system, related to the two previous points, that we
 				describe afterwards in this paper, such as
 				the assets and security properties 
 		\end{itemize}
@@ -313,7 +286,7 @@ Beliefs flow).
 \end{figure}
 
 \begin{definition}{\bf Assertion -- }\label{def:assertion}
-	An assertion (\fix{mr}{subtype of Information}) of  is an intended transfer of beliefs between
+	An assertion is an intended transfer of beliefs between
 	two agents $a$ and $b$ such that
 	\begin{enumerate}[noitemsep]
 		\item[$(\interpretation19)$] $\world\models\rassert{a}{b}{P}$ iff
@@ -325,20 +298,19 @@ Beliefs flow).
 \end{definition}
 
 \begin{definition}{\bf Behavior -- }\label{def:behavior}
-	The behavior (\fix{mr}{subtype of Beliefs}) of an agent is defined as the transformation process (e.g. defined as a
+	The behavior of an agent is defined as the transformation process (e.g. defined as a
 	protocol, or a functional architecture) that determines the
 	output-beliefs based on input-beliefs and vice versa (where input-beliefs and
 	output-beliefs are beliefs taken as input or output respectively).
 	\begin{enumerate}[noitemsep]
-		\item[$(\interpretation20)$] $\world\models\bigcup_{\Phi}\believe{s}{\varphi}$ and $\world\models\behave{a}{[\bigcup_{s\in S}\believe{s}{P_{s}}]}$ iff
-			$\world\models\belief{a}{P'}$, 
-			
-		where $a$ is an agent, $S$ is a set of agents such that $a\neg\in S$, and the calculation of $P'$ is deteministic.
+		\item[$(\interpretation20)$] $\world\models\bigcup\behaviorRegion(\beliefRegion_I,\beliefRegion_O)$ and 
+			$\world\models\beliefRegion_I\wedge\beliefRegion_O$,
+		where $a$ is an agent, $\beliefRegion_I$ and $\beliefRegion_O$ are input and output-beliefs respectively.
 	\end{enumerate}
 \end{definition}
 
 \begin{definition}{\bf Fact -- }\label{def:fact}
-	Facts are a \fix{mr}{sub-region/subtype} of Knowledge $\factRegion = \bigcup_\Phi \knows{a}{\varphi}$
+	Facts are defined as $\factRegion = \bigcup_\Phi \knows{a}{\varphi}$
 	that predicate in a factive way, e.g.
 	if $a$ knows that $P$ then $P$, and the region of facts is monotone (no revision).
 	\begin{enumerate}[noitemsep]
@@ -348,8 +320,7 @@ Beliefs flow).
 \end{definition}
 
 \begin{definition}{\bf Operational System State --}\label{def:opsystem}
-	An operational system (or a sub-system) is represented as an agent (see Definition~\ref{def:agent}) and then defined by the resulting state space,
-	such that
+	An operational system (or a sub-system) state is defined as the tuple
 	$s=\langle\rcc(\factRegion,\behaviorRegion),\rcc(\factRegion,\assertionRegion),\rcc(\behaviorRegion,\assertionRegion)\rangle$,
 	where $\assertionRegion,\behaviorRegion,\factRegion$, are regions of assertions, behavior (i.e. the beliefs generated by the behavior), and facts respectively.
 \end{definition}
@@ -395,8 +366,9 @@ implement or diverge from the intended nominal behavior. We note
 that, the numbers reported here do not consider the details of the
 engineering process and should be considered a limit of an abstract 
 representation of the system. In Section~\ref{sec:engineering} we
-detail this numeric evaluation to faitfully represent the
-number of insecurity configurations.
+detail this numeric evaluation to faithfully represent the
+number of insecurity configurations, while in this section we consider
+the general abstract definition given in Defintion~\ref{def:opsystem}.
 
 \begin{figure}[t]
 	\centering
@@ -410,7 +382,7 @@ the functional and the physical architecture of an agent, but Assets and
 security properties are defined as Facts, i.e. true. Given that understanding
 why an Asset is considered as such by the user doesn't necessarily allow
 us to better qualify an Asset, we consider the fact of ``being an asset'' as
-a predicate \fix{mr}{(or a true function)} of a component of a system. 
+a predicate of a component of a system. 
 
 \begin{definition}{\bf Asset --}\label{def:asset}
 For any agent $a\in Ag$ in a collection of Agents $Ag$, an agent is considered an asset iff 
@@ -422,20 +394,17 @@ For any agent $a\in Ag$ in a collection of Agents $Ag$, an agent is considered a
 
 The definition of the security properties is given in Section~\ref{sec:properties}
 
-\subsection{Qualitative Evaluation of Agent Space in $\abf$}\label{sec:agentspace}
+\subsection{Qualitative Evaluation of Agent Space in $\abftheory$}\label{sec:agentspace}
 While a quantitative analysis reveals how many possible configurations of an
-agent (i.e. a system) exist w.r.t. the $\abf$ theory (i.e. $54/125$ in RCC5), a
+agent (i.e. a system) exist w.r.t. the $\abftheory$ theory (i.e. $54/125$ in RCC5), a
 qualitative analysis of the different configurations describes
-the configurations allowed by the $\abf$ theory, and how those configurations can be
+the configurations allowed by the $\abftheory$ theory, and how those configurations can be
 categorized.  In Table~\ref{tab:5com} we provide the generic composition table
 of RCC5 over 3 regions instantiated over $\abf$, which shows the whole state
 space for a single agent. The color coding of the table represents the 
 risk function as a risk matrix as we detail afterwards in this section.
 
-A detailed qualitative categorization of agents over a theory similar to the
-$\abf$ one, is presented in this article and described in
-\autocite{Santaca2016abf}. The differences in the formalization and of the
-application requires another in-depth analysis. As depicted in
+As depicted in
 Figure~\ref{fig:soundness}, the relation between Facts, and Assertions and Behavior
 defines the soundness of the design (admissible configurations of Assertions,
 Behaviors and, in turn, Beliefs) w.r.t. the specification (what the
@@ -444,9 +413,10 @@ architectural models). We categorize agents by first analyzing the relations
 between each pair of Regions defining an agent (i.e. $\abf$), and then we
 categorize the different agents as tuple of the three Regions.
 For the sake of simplicity, soundness is opposed to non-soundness in the following, however,
-with the RCC we consider different ``degrees'' of soundness. For example,
+with the RCC one should consider different ``degrees'' of non-soundness. For example,
 in RCC5, if we consider EQ between two Regions as representing soundness, DR over the same Regions
-represents non-soundness while PP, PO, PPi represents the different degrees of soundness.
+represents non-soundness; while PP, PO, PPi represents the different degrees of non-soundness.
+A similar argument can be done for completeness.
 
 \begin{figure}[t]
 	\centering
@@ -479,7 +449,7 @@ change of relations always involves a change of quality.'' --  Ellis J. McTaggar
 		the expected inputs, defines the functional behavior of an
 		ideal system.  If all the inputs (Assertions) are correctly
 		handled in the functional specification (behavior) the
-		specification is sound. 
+		specification is complete. 
 
 	\item \Rcc{$\assertionRegion_{a\rightarrow r}$}{$\behaviorRegion$},
 		where the relation between behavior and outputs describes the
@@ -494,9 +464,8 @@ change of relations always involves a change of quality.'' --  Ellis J. McTaggar
 While Assertions and Beliefs generated by the Behavior determines how a system should work, and the
 relation between the two defines the quality (i.e. the completeness w.r.t the specification) of the agent, the relation of
 Assertions and Behavior with Facts determines the quality with respect to the
-nominal (specified) system.  Given that Facts defines what is true in the
-system (e.g. the level of water in a tank may be considered as a Fact, while
-the reading of a sensor as a Belief), the relation of Assertions an Facts
+nominal (specified) system.  Given that Facts defines what must be true in the
+system, the relation of Assertions an Facts
 determines the degree of quality between the information circulating in a
 system (or within an agent) and reality\fixnote{mr}{assertions are reality
 while facts are dogmatic assertions at specification level, i.e. requirements}.
@@ -504,22 +473,20 @@ Since the transfer of information through Assertions
 generates Beliefs, a dishonest agent may circulate false information,
 generating false Beliefs.  We note that it is often implied that the intention behind
 circulating false information discerns a dishonest and an incompetent agent,
-however, we consider honesty related to truth rather than related to what is
-true\footnote{``[\ldots] truth exists only in the good man, but the true in the bad
-man as well; for it is possible for the bad man to utter something true.''
-Sextus Empiricus, Outlines of Pyrrhonism, II-83\autocite{Empiricus1990Pyrrhonism}}.  This implies that the
-relation between Beliefs and Facts determines the competence (on the subjected
+however, we consider honesty related to sharing truths\footnote{``[\ldots] truth
+exists only in the good man, but the true in the bad man as well; for it is
+possible for the bad man to utter something true.''
+Sextus Empiricus, Outlines of Pyrrhonism, II-83\autocite{Empiricus1990Pyrrhonism}}.  The
+relation between Beliefs and Facts determines the competence (on the subjects
 defined by the Facts) of an agent (i.e. the more competent an agent is, the
 more likely a Belief of that agent is true).
 
-
-
-\subsubsection{$\abf$ Security Enumeration (SE)} The following security requirement for a CPS specification can be summarized:
+\subsubsection{$\abftheory$ Security Enumeration (SE)} The following security requirement for a CPS specification can be summarized:
 \begin{enumerate}
-	\item[SE-$1$] Proper interaction between multiple correctly-behaving agents (in
+	\item[SE-$1$] Proper interaction between correctly-behaving agents (in
 		contrast with the ``Improper Interaction Between Multiple
 		Correctly-Behaving Entities'' defined by the CWE--$435$ as one of the top ``view'' of the ``research concepts'' in
-		\autocite{MITRE2020CWEresearch}) is defined as $\eq{\assertionRegion_a}{\behaviorRegion_a}$ for an agent $a$
+		\autocite{MITRE2020CWEresearch}) is defined as $\eq{\assertionRegion_a}{\behaviorRegion_a}$ for an agent $a$ while can be detailed as follows when multiple agents are considered.
 	\begin{enumerate}
 		\item[SE-$1.1$] The equality relation $\eq{\assertionRegion_{s\rightarrow a}}{\behaviorRegion_a}$
 			describes the intended secure behavior as: the beliefs generated by the behavior of the functional architecture
@@ -539,10 +506,10 @@ more likely a Belief of that agent is true).
 		Calculation'' defined by MITRE in the CWE--$682$ as one of the
 		top ``view'' of the ``research concepts''
 		in\autocite{MITRE2020CWEresearch}) is defined as
-		$\eq{\beliefRegion}{\factRegion}$.
+		$\eq{\behaviorRegion}{\factRegion}$.
 \end{enumerate}
 
-We are now in the position to define what a secure system (with respect to the $\abf$-theory) is
+We are now in the position to define what a secure system is (with respect to the $\abftheory$-theory) 
 and, based on that definition, what the security risk is and how to quantify it in a risk matrix.
 \begin{definition}{\bf Security of a System or an Agent --}\label{def:security}
 	A secure system is a system where SE-$1$, SE-$2$, and SE-$3$ holds for each 
@@ -553,9 +520,9 @@ both of positive and negative consequences of uncertainty. Accordingly, we consi
 risk as follows. 
 \begin{definition}{\bf Risk --}
 The whole space of potential designs of a specification with respect to the
-$\abf$-theory.
+$\abftheory$-theory.
 \end{definition}
-The definition of Risk leads to the risk matrix in Figure~\autoref{fig:quantitative}, defined as follows.
+The definition of Risk leads to the risk matrix in Figure~\ref{fig:quantitative}, defined as follows.
 \begin{definition}{\bf Risk Matrix --}
 	The risk matrix is a function between the three relations 
 	$s=\langle\rcc(\factRegion,\behaviorRegion),\rcc(\factRegion,\assertionRegion),\rcc(\behaviorRegion,\assertionRegion)\rangle$,
