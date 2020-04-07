@@ -30,12 +30,13 @@ stages. The overall process start with the specification of the architectural (b
 and functional) requirements from which the Weaknesses are automatically identified.
 Based on the Assets, architectures, and the Weaknesses the cybersecurity risk is
 calculated based on the $\abftheory$-theory. An iterative process between 
-the user (e.g. the engineer) and the \secramod module of the \abftool allows the user to move to the design phase
+the user (e.g. the engineer) and the \secramod{} module of the \abftool{} allows the user to move to the design phase
 when the risk level is considered acceptable. The design phase starts by automatically mapping
-the Weaknesses into Vulnerabilities which are, in turn, fed into the \designverifmod
+the Weaknesses into Vulnerabilities which are, in turn, fed into the \designverifmod{}
 module along with the final specification. The Module returns a list of Vulnerabilities and
 potential Mitigations. The user then procees in implementing the CPS and the SW/HW choices
-can be tested by the \atgmod. 
+can be tested by the \atgmod. \fix{mr}{While we have described the overall view, from
+specificaiton to implementation, in this text we only consider the process from specificaiton to design.}
 
 \begin{figure}[t]
 	\centering
@@ -50,16 +51,24 @@ In order to explain in details the SPDL, we use the following running example.
 	(a small part of a subprocess of the SwAT testbed \autocite{Mathur2016swat}), shows
 	\begin{itemize}[noitemsep]
 		\item a tank that is filled with raw water coming from the inlet pipe 
-		\item a motorized valve (a valve with an actuator) that regulates that
+		\item a motorized valve (a valve with an actuator) such that:
 			\begin{itemize}
 				\item if opened, allows the raw water to flow into the tank
 				\item if closed, stops the raw water to flow into the tank
 			\end{itemize}
 		\item a sensor that reads the meters of raw water in the tank
-		\item a PLC controller, connected to the sensor and the actuator, that receives the readings from the sensor and regulates the quantity of water in the tank by communicating a change in the state of the actuator based on the following logi
+		\item a PLC controller, connected to the sensor and the
+			actuator, that receives the readings from the sensor
+			and regulates the quantity of water in the tank by
+			communicating a change in the state of the actuator
+			based on the following logic
 			\begin{itemize}
-				\item if the readings from the sensor reports a water level in the tank above (or equal) to 10m, the actuator shall close the valve
-				\item if th readings are below 10m the actuator shall open the valve.
+				\item if the readings from the sensor reports a
+					water level in the tank above (or
+					equal) to 10m, the actuator shall close
+					the valve
+				\item if the readings are below 10m the actuator
+					shall open the valve.
 			\end{itemize}
 	\end{itemize}
 
@@ -79,7 +88,7 @@ In order to explain in details the SPDL, we use the following running example.
 	\label{fig:spec}
 \end{figure}
 The first step of the SPDL is the definition of the requirements and then, for
-the purpose of this paper of the (i) security requirements, (ii) architectural
+the purpose of this paper, of (i) security requirements, (ii) architectural
 (physical and functional) requirements.  Our focus in mainly on security
 requirements but they are necessarily intertwined with the architectural
 requirements, as we will show afterwards in this section.  A complete study on
@@ -97,8 +106,8 @@ Figure~\ref{fig:spec}.  In the use case, the communication flow is as follows:
 \begin{enumerate}
 	\item the sensor reads the level of water in the tank ($\text{tank}\rightarrow \text{sensor}$) \footnote{this communication depends on the technology in use for the readings. We assume a unidirectional communication without loss of generality}
 	\item the sensor communicates the readings to the controller ($\text{sensor}\rightarrow \text{controller}$)
-	\item the controller calculates the valve state and communicates it to the actuator ($\text{controller}\rightarrow \text{actuator}$)
-	\item the actuator translates (digital to analog) the states received and communicates\footnote{we do not distinguish, for the sake of simplicity between different types of channels and assume that communicating to the valve produces the expected change of physical state} it to the valve
+	\item the controller calculates the state of the valve and communicates it to the actuator ($\text{controller}\rightarrow \text{actuator}$)
+	\item the actuator translates (digital to analog) the state received and communicates\footnote{we do not distinguish, for the sake of simplicity between different types of channels and assume that communicating to the valve produces the expected change of physical state} it to the valve
 \end{enumerate}
 Each agent has an input or output port from which it communicates with other
 agents.  It is also composed by the functional blocks that defines its
@@ -159,7 +168,7 @@ channel can be considered as the union of two unidirectional channels. A
 mono-directional channel is defined by the assertions sent or received (over
 the channel). 
 
-\Paragraph{Input and Output Ports}
+\subsubsection{Input and Output Ports}
 Since the $\abftheory$-theory is a theory of agents, we consider ports as agents that
 allows the exchange of information between a channel and another
 agent.  However, a port must be considered as a special type of agent to avoid
@@ -175,13 +184,15 @@ between the outside of the port to the inside of itself.
 \end{definition}
 The \emph{quality of a port} is determined by the $\rcc$ relation between the 
 assertions received or sent and the belief, i.e. $\Rcc{\assertionRegion_s}{\beliefRegion_a}$ for the input-port
-or $\Rcc{\assertionRegion_r}{\beliefRegion_a}$.
+or $\Rcc{\assertionRegion_r}{\beliefRegion_a}$. We only define secure input port but the
+definition of a secure output port is symmetrical.
 
 \begin{definition}{\bf Secure Input Port --}\label{def:secport}
-	A secure input port allows information as incoming assertions to flow
+	A secure input port ($s\secureport a$) allows information as incoming assertions to flow
 	from a sender $s$ to the behavior of the recipient $a$ (agent).  If $p_I$ is a secure input port,
-	$\world\models\varphi$, and $\varphi\in\assertionRegion_s$ where $s$
-	has the only input port $p_I$, $\world'\models\beliefRegion_a$ and $\varphi\in\beliefRegion_a$.
+	$\world\models\varphi$, $\varphi\in\rassert{s}{a}$, and $a$
+	has the only input port $p_I$, $\world'\models\beliefRegion_a$ and $\varphi\in\beliefRegion_a$ for any
+	$\world\modalrelation\world'$.
 \end{definition}
 
 \Paragraph{Port Weaknesses}
@@ -276,7 +287,7 @@ An input port is, in the $\abftheory$-theory, defined secure as long as the rela
 	\end{itemize}
 \end{proof}
 
-\Paragraph{Communication Channels}
+\subsubsection{Communication Channels}
 We start by considering the difference between a (communication)
 mono-directional channel (channel from now on) and an agent, as we did for the
 ports, since the $\abftheory$-theory is a theory of agents.  In fact, if a channel
@@ -312,61 +323,61 @@ side; and we exclude the configuration with $2$ secure types as input
 and ouput, $-2$); where only 43 are possible.
 
 \begin{enumerate}[start=5, label={W\arabic*)}]
-	\item \emph{secure input port} and \emph{output drop port} ($s\sdcom r$), 
-	\item \emph{secure input port} and \emph{output insertion port} ($s\sicom r$), 
-	\item \emph{secure input port} and \emph{output injection port} ($s\sjcom r$), 
-	\item \emph{secure input port} and \emph{output selective drop port} ($s\ssdcom r$), 
-	\item \emph{secure input port} and \emph{output selective insertion port} ($s\ssicom r$), 
-	\item \emph{secure input port} and \emph{output selective injection port} ($s\ssjcom r$), 
+	\item \emph{secure output port} and \emph{input drop port} ($s\sdcom r$), 
+	\item \emph{secure output port} and \emph{input insertion port} ($s\sicom r$), 
+	\item \emph{secure output port} and \emph{input injection port} ($s\sjcom r$), 
+	\item \emph{secure output port} and \emph{input selective drop port} ($s\ssdcom r$), 
+	\item \emph{secure output port} and \emph{input selective insertion port} ($s\ssicom r$), 
+	\item \emph{secure output port} and \emph{input selective injection port} ($s\ssjcom r$), 
 
-	\item \emph{input drop port} and \emph{output drop port} ($s\ddcom r$)
-	\item \emph{input drop port} and \emph{output insertion port} ($s\dicom r$)
-	\item \emph{input drop port} and \emph{output secure port} ($s\dscom r$)
+	\item \emph{output drop port} and \emph{input drop port} ($s\ddcom r$)
+	\item \emph{output drop port} and \emph{input insertion port} ($s\dicom r$)
+	\item \emph{output drop port} and \emph{input secure port} ($s\dscom r$)
 
-	\item \emph{input insert port} and \emph{output drop port} ($s\idcom r$)
-	\item \emph{input insert port} and \emph{output insert port} ($s\iicom r$)
-	\item \emph{input insert port} and \emph{output injection port} ($s\ijcom r$)
-	\item \emph{input insert port} and \emph{output selective drop port} ($s\isdcom r$)
-	\item \emph{input insert port} and \emph{output selective insertion port} ($s\isicom r$)
-	\item \emph{input insert port} and \emph{output selective injection port} ($s\isjcom r$)
-	\item \emph{input insert port} and \emph{output secure port} ($s\iscom r$)
+	\item \emph{output insert port} and \emph{input drop port} ($s\idcom r$)
+	\item \emph{output insert port} and \emph{input insert port} ($s\iicom r$)
+	\item \emph{output insert port} and \emph{input injection port} ($s\ijcom r$)
+	\item \emph{output insert port} and \emph{input selective drop port} ($s\isdcom r$)
+	\item \emph{output insert port} and \emph{input selective insertion port} ($s\isicom r$)
+	\item \emph{output insert port} and \emph{input selective injection port} ($s\isjcom r$)
+	\item \emph{output insert port} and \emph{input secure port} ($s\iscom r$)
 
-	\item \emph{input injection port} and \emph{output drop port} ($s\jdcom r$)
-	\item \emph{input injection port} and \emph{output insertion port} ($s\jicom r$)
-	\item \emph{input injection port} and \emph{output injection port} ($s\jjcom r$)
-	\item \emph{input injection port} and \emph{output selective drop port} ($s\jsdcom r$)
-	\item \emph{input injection port} and \emph{output selective insertion port} ($s\jsicom r$)
-	\item \emph{input injection port} and \emph{output selective injection port} ($s\jsjcom r$)
-	\item \emph{input injection port} and \emph{output secure port} ($s\jscom r$)
+	\item \emph{output injection port} and \emph{input drop port} ($s\jdcom r$)
+	\item \emph{output injection port} and \emph{input insertion port} ($s\jicom r$)
+	\item \emph{output injection port} and \emph{input injection port} ($s\jjcom r$)
+	\item \emph{output injection port} and \emph{input selective drop port} ($s\jsdcom r$)
+	\item \emph{output injection port} and \emph{input selective insertion port} ($s\jsicom r$)
+	\item \emph{output injection port} and \emph{input selective injection port} ($s\jsjcom r$)
+	\item \emph{output injection port} and \emph{input secure port} ($s\jscom r$)
 
-	\item \emph{input selective drop port} and \emph{output drop port} ($s\sddcom r$)
-	\item \emph{input selective drop port} and \emph{output insertion port} ($s\sdicom r$)
-	\item \emph{input selective drop port} and \emph{output injection port} ($s\sdjcom r$)
-	\item \emph{input selective drop port} and \emph{output selective drop port} ($s\sdsdcom r$)
-	\item \emph{input selective drop port} and \emph{output selective insertion port} ($s\sdsicom r$)
-	\item \emph{input selective drop port} and \emph{output selective injection port} ($s\sdsjcom r$)
-	\item \emph{input selective drop port} and \emph{output secure port} ($s\sdscom r$)
+	\item \emph{output selective drop port} and \emph{input drop port} ($s\sddcom r$)
+	\item \emph{output selective drop port} and \emph{input insertion port} ($s\sdicom r$)
+	\item \emph{output selective drop port} and \emph{input injection port} ($s\sdjcom r$)
+	\item \emph{output selective drop port} and \emph{input selective drop port} ($s\sdsdcom r$)
+	\item \emph{output selective drop port} and \emph{input selective insertion port} ($s\sdsicom r$)
+	\item \emph{output selective drop port} and \emph{input selective injection port} ($s\sdsjcom r$)
+	\item \emph{output selective drop port} and \emph{input secure port} ($s\sdscom r$)
 
-	\item \emph{input selective insertion port} and \emph{output drop port} ($s\sidcom r$)
-	\item \emph{input selective insertion port} and \emph{output insertion port} ($s\siicom r$)
-	\item \emph{input selective insertion port} and \emph{output injection port} ($s\sijcom r$)
-	\item \emph{input selective insertion port} and \emph{output selective drop port} ($s\sisdcom r$)
-	\item \emph{input selective insertion port} and \emph{output selective insertion port} ($s\sisicom r$)
-	\item \emph{input selective insertion port} and \emph{output selective injection port} ($s\sisjcom r$)
-	\item \emph{input selective insertion port} and \emph{output secure port} ($s\siscom r$)
+	\item \emph{output selective insertion port} and \emph{input drop port} ($s\sidcom r$)
+	\item \emph{output selective insertion port} and \emph{input insertion port} ($s\siicom r$)
+	\item \emph{output selective insertion port} and \emph{input injection port} ($s\sijcom r$)
+	\item \emph{output selective insertion port} and \emph{input selective drop port} ($s\sisdcom r$)
+	\item \emph{output selective insertion port} and \emph{input selective insertion port} ($s\sisicom r$)
+	\item \emph{output selective insertion port} and \emph{input selective injection port} ($s\sisjcom r$)
+	\item \emph{output selective insertion port} and \emph{input secure port} ($s\siscom r$)
 
-	\item \emph{input selective injection port} and \emph{output drop port} ($s\sjdcom r$)
-	\item \emph{input selective injection port} and \emph{output insertion port} ($s\sjicom r$)
-	\item \emph{input selective injection port} and \emph{output injection port} ($s\sjjcom r$)
-	\item \emph{input selective injection port} and \emph{output selective drop port} ($s\sjsdcom r$)
-	\item \emph{input selective injection port} and \emph{output selective insertion port} ($s\sjsicom r$)
-	\item \emph{input selective injection port} and \emph{output selective injection port} ($s\sjsjcom r$)
-	\item \emph{input selective injection port} and \emph{output secure port}  ($s\sjcom r$)
+	\item \emph{output selective injection port} and \emph{input drop port} ($s\sjdcom r$)
+	\item \emph{output selective injection port} and \emph{input insertion port} ($s\sjicom r$)
+	\item \emph{output selective injection port} and \emph{input injection port} ($s\sjjcom r$)
+	\item \emph{output selective injection port} and \emph{input selective drop port} ($s\sjsdcom r$)
+	\item \emph{output selective injection port} and \emph{input selective insertion port} ($s\sjsicom r$)
+	\item \emph{output selective injection port} and \emph{input selective injection port} ($s\sjsjcom r$)
+	\item \emph{output selective injection port} and \emph{input secure port}  ($s\sjcom r$)
 \end{enumerate}
 In Appendix~\ref{app:insecurecom}, we report the proof which is exhaustive on all
 possible combinations. 
 
-\Paragraph{Functional Block}
+\subsubsection{Functional Block}
 A Functional Architecture, as already described beforehand, takes Information as input-Beliefs
 and transforms the Information into output-Beliefs. Those transformations 
 occurs within the Functional Architecture, where Functional Blocks transforms Beliefs into 
@@ -386,7 +397,7 @@ necessarily known in details in the specification phase. In order to
 define the quality of functional block we first need to introduce the engineering concept of
 Facts.
 
-\Paragraph{Facts}
+\Paragraph{Requirements as Facts}
 During the specification phase, for any agent, channel, port, functional block
 and architecture, there exist a Fact predicating over them.
 In other words, any requirement is defined as a Fact since they must be true in
@@ -397,10 +408,8 @@ be insecure.
 
 The quality of a Functional Block is determined by the relation between the
 input-Beliefs formulas and the symmetric formulas in the Fact region
-(equivalently for output-Beliefs). Therefore, the quality of the functional
-architecture is not a purely architectural property but relies on the logic
-implemented in the functional blocks (which we abstract away at this stage of
-the engineering model).
+(equivalently for output-Beliefs).
+
 \begin{definition}{\bf Secure Functional Block and Architecture --}\label{def:secfun}
 	A functional block is secure if the input beliefs and output beliefs
 	are in $EQ$ relation with the corresponding Facts mandated by requirements.
@@ -411,17 +420,60 @@ the engineering model).
 Therefore, there exists the following weaknesses in the functional
 architecture, where $\beliefRegion_I$ and $\beliefRegion_O$ are input and
 output Beliefs respectively, and $\factRegion_I$ and $\factRegion_O$ are
-the corresponding Facts (i.e. what really happens).
-\begin{enumerate}
-	\item $\dr{\beliefRegion_I}{\factRegion_I}$ and
-		$\dr{\beliefRegion_O}{\factRegion_O}$, the input beliefs are
-		misinterpreted and this result in the complete alteration of the
-		output beliefs
-	\item \fix{mr}{TBD}
-\end{enumerate}
+the corresponding Facts (i.e. what really happens). 
+\begin{itemize}
+	\item $\eq{\beliefRegion_I}{\factRegion_I}$ and then only specified
+		inputs can be fed to the functional block but:
+	\begin{enumerate}[start=49, label={W\arabic*)}]
+		\item $\dr{\beliefRegion_O}{\factRegion_O}$, not all the specified
+			outputs are produced
+		\item $\po{\beliefRegion_O}{\factRegion_O}$ , only some but not all of the specified
+			outputs are produced along with some non-specified output are produced
+		\item $\pp{\beliefRegion_O}{\factRegion_O}$ , not all the specified outputs are produced 
+		\item $\ppi{\beliefRegion_O}{\factRegion_O}$ , not all the output have been specified
+	\end{enumerate}
+	\item $\po{\beliefRegion_I}{\factRegion_I}$, not all the specified inputs can be fed into the functional block
+	\begin{enumerate}[start=53, label={W\arabic*)}]
+		\item $\dr{\beliefRegion_O}{\factRegion_O}$
+		\item $\po{\beliefRegion_O}{\factRegion_O}$
+		\item $\pp{\beliefRegion_O}{\factRegion_O}$
+		\item $\ppi{\beliefRegion_O}{\factRegion_O}$
+		\item $\eq{\beliefRegion_O}{\factRegion_O}$ this case implies
+			that somehow there is no input that generates an
+			non-specified output but this is not because the inputs
+			are secure 
+	\end{enumerate}
+	\item $\pp{\beliefRegion_I}{\factRegion_I}$, not all the specified
+		inputs can be fed into the block
+	\begin{enumerate}[start=58, label={W\arabic*)}]
+		\item $\dr{\beliefRegion_O}{\factRegion_O}$
+		\item $\po{\beliefRegion_O}{\factRegion_O}$
+		\item $\pp{\beliefRegion_O}{\factRegion_O}$
+		\item $\ppi{\beliefRegion_O}{\factRegion_O}$
+		\item $\eq{\beliefRegion_O}{\factRegion_O}$
+	\end{enumerate}
+	\item $\ppi{\beliefRegion_I}{\factRegion_I}$, not all the inputs that
+		can be fed into the functional block follows the specification
+	\begin{enumerate}[start=63, label={W\arabic*)}]
+		\item $\dr{\beliefRegion_O}{\factRegion_O}$
+		\item $\po{\beliefRegion_O}{\factRegion_O}$
+		\item $\pp{\beliefRegion_O}{\factRegion_O}$
+		\item $\ppi{\beliefRegion_O}{\factRegion_O}$
+		\item $\eq{\beliefRegion_O}{\factRegion_O}$
+	\end{enumerate}
+	\item $\dr{\beliefRegion_I}{\factRegion_I}$, no specified inputs can be
+		fed into the functional block
+	\begin{enumerate}[start=68, label={W\arabic*)}]
+		\item $\dr{\beliefRegion_O}{\factRegion_O}$
+		\item $\po{\beliefRegion_O}{\factRegion_O}$
+		\item $\pp{\beliefRegion_O}{\factRegion_O}$
+		\item $\ppi{\beliefRegion_O}{\factRegion_O}$
+		\item $\eq{\beliefRegion_O}{\factRegion_O}$
+	\end{enumerate}
+\end{itemize}
 
 
-\Paragraph{Security Requirements} 
+\subsubsection{Security Requirements} 
 While standards (such
 as IEC62443-1-3\fixnote{mr}{check the correct version}) defines requirements as
 ``information in transit/at-rest should be encrypted'' we believe that, at
@@ -493,7 +545,7 @@ We now want to generalize the CIA triad to agents and not just
 information and map it to the $\abftheory$-theory. For the sake of simplicity,
 we revert the order and start from availability.
 
-\subsubsection{Availability and Integrity (Architecture Security)}
+\Paragraph{Availability and Integrity (Architecture Security)}
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{client-server.pdf}
@@ -591,7 +643,7 @@ in $\abftheory$-theory? Confidentiality (and Availability) is based on the conce
 of secrecy so we shall first start from describing what secrecy is and how it
 can be used to guarantee confidentiality in a system.
 
-\subsubsection{Secrecy, Authenticity, and Key Agreement (Cryptographic Security)}\label{sec:encryption}
+\Paragraph{Secrecy, Authenticity, and Key Agreement (Cryptographic Security)}\label{sec:encryption}
 As Maurer puts it (\autocite{Maurer1999information}), there exist two types of
 cryptographic security (i.e. scientific theories aiming at guaranteeing
 security through the use of cryptographic functions): `` The  security  of a
