@@ -1,2 +1,1 @@
-# Experiment Alpha
-Research and Development for Cybersecurity Engineering
+# Research and Development for Cybersecurity Engineering
