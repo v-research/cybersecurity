@@ -5,4 +5,9 @@
 \item the \emph{functional architecture} is linked to the agents and defined as nested/inner object diagrams
 \item the information flow between functional or physical components is explicit 
 \end{itemize}
+\item port to socket must exist and have the same name
+\item socket to port may not (case loopback)
+\item a base defines the granularity. if a base is a bit, it faithfully? represents information. This is important 
+	for the definitino of Vulnerability. If a port has all the weaknesses but only 1 base is transferred over that port,
+		then ony the DR can be exploited into a vulnerability since a PO would be equal to EQ
 \end{itemize}
