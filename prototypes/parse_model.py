@@ -1,5 +1,7 @@
+#!/usr/bin/python3
+#author: Marco Rocchetto @V-Research
+
 import sys
-import pprint
 import re 
 import xml.etree.ElementTree as ET
 
@@ -26,9 +28,14 @@ def get_components_from_xmi(cps_spec_name,abf_theory_package="ABFTheory",schema=
         if(child.tag == "packagedElement"):
             if(child.attrib[schema+'type'] == "uml:Package" and child.attrib['name'] == abf_theory_package):
                 for elem in child:
-                    if(elem.attrib['name'] == "Base"):
+                    if(elem.attrib['name'] == "Fact"):
+                        ID[elem.attrib[schema+'id']]='Fact'
+                    elif(elem.attrib['name'] == "Belief"):
+                        ID[elem.attrib[schema+'id']]='Belief'
+                    elif(elem.attrib['name'] == "Assertion"):
+                        ID[elem.attrib[schema+'id']]='Assertion'
+                    elif(elem.attrib['name'] == "Base"):
                         ID[elem.attrib[schema+'id']]='Base'
-                        break
             elif(child.attrib[schema+'type'] == "uml:Class"):
                 if(child.attrib['name'] == "InputPort"):
                     ID[child.attrib[schema+'id']]='InputPort'
@@ -72,6 +79,12 @@ def get_components_from_xmi(cps_spec_name,abf_theory_package="ABFTheory",schema=
                                     components[attribute.attrib[schema+'id']]['type']='funblock'
                                 elif(ID[attribute.attrib['type']]=="Base"):
                                     components[attribute.attrib[schema+'id']]['type']='base'
+                                elif(ID[attribute.attrib['type']]=="Fact"):
+                                    components[attribute.attrib[schema+'id']]['type']='fact'
+                                elif(ID[attribute.attrib['type']]=="Belief"):
+                                    components[attribute.attrib[schema+'id']]['type']='belief'
+                                elif(ID[attribute.attrib['type']]=="Assertion"):
+                                    components[attribute.attrib[schema+'id']]['type']='assertion'
                                 else:
                                     print("DEBUG Attribute not supported")
                                     print("DEBUG name: ",attribute.attrib['name'])
@@ -82,13 +95,18 @@ def get_components_from_xmi(cps_spec_name,abf_theory_package="ABFTheory",schema=
                         else:
                             flows[innerchild.attrib['informationSource']]=[innerchild.attrib['informationTarget']]
     
-    
-    #we createa channel per each flow between ports
+    #we create a channel per each flow between ports, and we remove the flow
+    flow2del={}
     for f1k,f1v in flows.items():
         if(components[f1k]['type']=="outputport"):
             for target in f1v:
                 if(components[target]['type']=="inputport"):
-                    components[f1k+target]={'name':components[f1k]['name']+"2"+components[target]['name'],'owner':"root",'type':"channel"}
+                    components[f1k+target]={'name':components[f1k]['name']+"2"+components[target]['name'],'owner':"root",'type':"channel",'source':f1k,'target':target}
+                    flow2del[f1k]=target
+    for f2dk,f2dv in flow2del.items():
+        flows[f2dk].remove(f2dv)
+        if(len(flows[f2dk])==0):
+            del flows[f2dk]
     
     #we create a "fake flow" from port-socket 
     #for each port there must be a socket, the opposite may not be true
@@ -128,32 +146,26 @@ def dot(cps_spec_name, components, flows):
             for k2,v2 in components.items():
                 if(v2['owner']==v['name'] and v2['type']!="inputport" and v2['type']!="outputport"):
                     f.write("\n\t\t%s_%s"%(v2['name'],v2['type']))
-                    if(v2['type']=="base"):
+                    if(v2['type']=="fact"):
                         f.write(" [style=dashed]")
+                    elif(v2['type']=="base"):
+                        f.write(" [style=dashed]")
+                    elif(v2['type']=="belief"):
+                        f.write(" [style=dotted]")
+                    elif(v2['type']=="assertion"):
+                        f.write(" [style=dotted]")
                     f.write(";")
             f.write("\n\t}")
+        elif(v['type']=="channel"):
+            f.write("\n%s_%s -> %s_%s"%(components[v['source']]['name'],components[v['source']]['type'],components[v['target']]['name'],components[v['target']]['type']))
+            f.write(" [penwidth=5, arrowhead=none];")
 
     for f1,f2 in flows.items():
         for e in f2:
-            if(components[f1]['type']=="outputport" and components[e]['type']=="inputport"):
-                f.write("\n%s_%s -> %s_%s"%(components[f1]['name'],components[f1]['type'],components[e]['name'],components[e]['type']))
-                f.write(" [penwidth=5, arrowhead=none];")
-            else:
-                f.write("\n%s_%s -> %s_%s"%(components[f1]['name'],components[f1]['type'],components[e]['name'],components[e]['type']))
-                f.write(" [color=gray40];")
+            f.write("\n%s_%s -> %s_%s"%(components[f1]['name'],components[f1]['type'],components[e]['name'],components[e]['type']))
+            f.write(" [color=gray40];")
     f.write(("\n}"))
     f.close()
-
-
-#TODO
-# generate Regions
-# change IDs in components structure (but keep a map?) so that we can generate regions with a decent name (e.g. A_1, B_2 etc)
-# foreach agent a
-#   create(A_a and B_a)
-#   foreach funblock (we can fogive about sockets? maybe not) f in a
-#     create(B_fi and B_fo) subsets of B_a
-#   foreach channel that has a port p in a
-#     create(A_p) subset of A_a
 
 def test_this_file():
     spec="UC1-CPS"
@@ -161,11 +173,12 @@ def test_this_file():
     components=components_flows['components']
     flows=components_flows['flows']
     
+    import pprint
     pp=pprint.PrettyPrinter(indent=0)
     pp.pprint(components)
     pp.pprint(flows)
     
     dot(spec, components, flows)
 
-#if __name__ == "__main__":
-#    test_this_file()
+if __name__ == "__main__":
+    test_this_file()
