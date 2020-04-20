@@ -152,83 +152,82 @@ def rcc_five(solver, regions_and_subregions, C, P, O, EQ, PP, PO, PPi, DR):
 #input
 # -spec: string with the name of the package of the spec
 #output
-# -region_mapping is a dictionary with two entries:
-# --regions (assertions, beliefs, and facts)
-# --map containing the mapping between components and regions
+# -component_constraints is a dictionary with two entries:
+# --components updated with regions (assertions, beliefs, and facts)
 # --constraints defining an equality constraint between the LHS and RHS of each flow, except for the flow in the channel
 def create_regions_from_xmi(spec):
     components_flows=get_components_from_xmi(spec)
     components=components_flows['components']
     flows=components_flows['flows']
 
-    #DEBUG
-    import pprint
-    pp=pprint.PrettyPrinter(indent=0)
-    pp.pprint(components)
-    pp.pprint(flows)
-
+    region2components={}
     region_id=0
-    region2components={}    
-    regions={}
     for ck,cv in components.items():
         if(cv['type']=="agent"):
             region2components[ck]=region_id
-            regions["A"+str(region_id)]=Const("A"+str(region_id),Region)
-            regions["B"+str(region_id)]=Const("B"+str(region_id),Region)
-            regions["F"+str(region_id)]=Const("F"+str(region_id),Region)
-        elif(cv['type']=="inputport" or cv['type']=="outputport"):
+            cv['regions']={}
+            cv['regions']['assertion']=Const("A"+str(region_id),Region)
+            cv['regions']['belief']=Const("B"+str(region_id),Region)
+            cv['regions']['fact']=Const("F"+str(region_id),Region)
+        elif(cv['type']=="inputport"):
             region2components[ck]=region_id
-            regions["A"+str(region_id)]=Const("A"+str(region_id),Region)
-            regions["B"+str(region_id)]=Const("B"+str(region_id),Region)
+            cv['regions']={}
+            cv['regions']['input']=Const("A"+str(region_id),Region)
+            cv['regions']['output']=Const("B"+str(region_id),Region)
+        elif(cv['type']=="outputport"):
+            region2components[ck]=region_id
+            cv['regions']={}
+            cv['regions']['input']=Const("B"+str(region_id),Region)
+            cv['regions']['output']=Const("A"+str(region_id),Region)
         elif(cv['type']=="funblock" or cv['type']=="inputsocket" or cv['type']=="outputsocket"):
             region2components[ck]=region_id
-            regions["Bi"+str(region_id)]=Const("Bi"+str(region_id),Region)
-            regions["Bo"+str(region_id)]=Const("Bo"+str(region_id),Region)
+            cv['regions']={}
+            cv['regions']['input']=Const("Bi"+str(region_id),Region)
+            cv['regions']['output']=Const("Bo"+str(region_id),Region)
         elif(cv['type']=="channel"):
             region2components[ck]=region_id
-            regions["Ai"+str(region_id)]=Const("Ai"+str(region_id),Region)
-            regions["Ao"+str(region_id)]=Const("Ao"+str(region_id),Region)
-        elif(cv['type']=="belief"):
-            region2components[ck]=region_id
-            regions["B"+str(region_id)]=Const("B"+str(region_id),Region)
-        elif(cv['type']=="fact"):
-            region2components[ck]=region_id
-            regions["F"+str(region_id)]=Const("F"+str(region_id),Region)
-        elif(cv['type']=="assertion"):
-            region2components[ck]=region_id
-            regions["A"+str(region_id)]=Const("A"+str(region_id),Region)
+            cv['regions']={}
+            cv['regions']['input']=Const("Ai"+str(region_id),Region)
+            cv['regions']['output']=Const("Ao"+str(region_id),Region)
+
+        #we do not support assertions, beliefs, or facts in the spec
+        #elif(cv['type']=="belief"):
+        #    region2components[ck]=region_id
+        #    cv['regions']={}
+        #    cv['regions']['belief']=Const("B"+str(region_id),Region)
+        #elif(cv['type']=="fact"):
+        #    region2components[ck]=region_id
+        #    cv['regions']={}
+        #    cv['regions']['fact']=Const("F"+str(region_id),Region)
+        #elif(cv['type']=="assertion"):
+        #    region2components[ck]=region_id
+        #    cv['regions']={}
+        #    cv['regions']['assertion']=Const("A"+str(region_id),Region)
+
+        #each base is considered to be an input fact and an output belief
         elif(cv['type']=="base"):
             region2components[ck]=region_id
-            regions["B"+str(region_id)]=Const("B"+str(region_id),Region)
-            regions["F"+str(region_id)]=Const("F"+str(region_id),Region)
+            cv['regions']={}
+            cv['regions']['output']=Const("B"+str(region_id),Region)
+            cv['regions']['input']=Const("F"+str(region_id),Region)
         else:
             continue
 
         region_id+=1
 
-    print(regions,len(regions))
-    print(region2components)
+    #DEBUG
+    import pprint
+    pp=pprint.PrettyPrinter(indent=0)
+    pp.pprint(components)
 
     constraints=[]    
     #each flow equates beliefs
     for fk,fv in flows.items():
         for r in fv: #fk->r is a flow
-            print(components[fk]['name'],components[fk]['type'],components[r]['name'],components[r]['type'])
-            if(components[fk]['type']=="funblock" or components[fk]['type']=="inputsocket" or components[fk]['type']=="outputsocket"):
-                lhs="Bo"+str(region2components[fk])
-            elif(components[fk]['type']=="channel"):
-                lhs="Ao"+str(region2components[fk])
-            elif(components[fk]['type']=="base" or components[fk]['type']=="inputport"): 
-                lhs="B"+str(region2components[fk])
-
-            if(components[r]['type']=="channel"):
-                rhs="Ai"+str(region2components[r])
-            elif(components[r]['type']=="funblock" or components[r]['type']=="inputsocket" or components[r]['type']=="outputsocket"):
-                rhs="Bi"+str(region2components[r])
-            elif(components[fk]['type']=="outputport"):
-                rhs="B"+str(region2components[r])
-
-            constraints.append(regions[lhs]==regions[rhs])
+            #print(components[fk]['name'],components[fk]['type'],components[r]['name'],components[r]['type'])
+            #print(components[fk]['regions']['output']==components[r]['regions']['input'])
+            #print()
+            constraints.append(components[fk]['regions']['output']==components[r]['regions']['input'])
 
     #each agent's beliefs encompass the beliefs resulting from its components and the assertions of its ports
     #each channel_lhs_A == outputport_A and channel_rhs_A == inputport_A
@@ -237,9 +236,7 @@ def create_regions_from_xmi(spec):
     #        constraints.append(
 
     print(constraints)
-    return {'regions':regions,'map':region2components}
-
-
+    return {'components':components,'constraints':constraints}
 
 
 spec="UC1-CPS"
@@ -257,7 +254,7 @@ PO = Function('PO', Region, Region, BoolSort())
 PP = Function('PP', Region, Region, BoolSort())
 PPi= Function('Pi', Region, Region, BoolSort())
 
-create_regions_from_xmi(spec)
+components_constraints=create_regions_from_xmi(spec)
 sys.exit(1)
 
 Asr = Const('Asr', Region)

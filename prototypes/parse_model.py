@@ -95,18 +95,22 @@ def get_components_from_xmi(cps_spec_name,abf_theory_package="ABFTheory",schema=
                         else:
                             flows[innerchild.attrib['informationSource']]=[innerchild.attrib['informationTarget']]
     
-    #we create a channel per each flow between ports, and we remove the flow
+    #we create a channel per each flow between ports, and we update the flow f1->f2 to f1->channel channel->f2
     flow2del={}
+    #flow2add={}
     for f1k,f1v in flows.items():
         if(components[f1k]['type']=="outputport"):
             for target in f1v:
                 if(components[target]['type']=="inputport"):
-                    components[f1k+target]={'name':components[f1k]['name']+"2"+components[target]['name'],'owner':"root",'type':"channel",'source':f1k,'target':target}
+                    components[f1k+target]={'name':components[f1k]['name']+"2"+components[target]['name'],'owner':"root",'type':"channel"}#,'source':f1k,'target':target}
                     flow2del[f1k]=target
+                    #flow2add[f1k]=f1k+target
+                    #flow2add[f1k+target]=target
+
     for f2dk,f2dv in flow2del.items():
         flows[f2dk].remove(f2dv)
-        if(len(flows[f2dk])==0):
-            del flows[f2dk]
+        flows[f2dk].append(f2dk+f2dv)
+        flows[f2dk+f2dv]=[f2dv]
     
     #we create a "fake flow" from port-socket 
     #for each port there must be a socket, the opposite may not be true
@@ -156,9 +160,9 @@ def dot(cps_spec_name, components, flows):
                         f.write(" [style=dotted]")
                     f.write(";")
             f.write("\n\t}")
-        elif(v['type']=="channel"):
-            f.write("\n%s_%s -> %s_%s"%(components[v['source']]['name'],components[v['source']]['type'],components[v['target']]['name'],components[v['target']]['type']))
-            f.write(" [penwidth=5, arrowhead=none];")
+        #elif(v['type']=="channel"):
+        #    f.write("\n%s_%s -> %s_%s"%(components[v['source']]['name'],components[v['source']]['type'],components[v['target']]['name'],components[v['target']]['type']))
+        #    f.write(" [penwidth=5, arrowhead=none];")
 
     for f1,f2 in flows.items():
         for e in f2:
