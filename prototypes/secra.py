@@ -233,8 +233,6 @@ print("add rcc5")
 rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR)
 print("done")
 
-sys.exit(1)
-
 ################################
 # AGENT
 ################################
