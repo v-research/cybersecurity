@@ -181,7 +181,8 @@ def create_regions_from_xmi(spec):
     #each flow equates beliefs
     for fk,fv in flows.items():
         for r in fv: #fk->r is a flow
-            constraints.append(components[fk]['regions']['output']==components[r]['regions']['input'])
+            #constraints.append(components[fk]['regions']['output']==components[r]['regions']['input'])
+            components[fk]['regions']['output']=components[r]['regions']['input']
 
     #each agent's beliefs encompass the beliefs resulting from its components and the assertions of its ports
     for c in components.values():
@@ -193,6 +194,27 @@ def create_regions_from_xmi(spec):
 
     return {'components':components,'constraints':constraints}
 
+# Print iterations progress
+def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = printEnd)
+    # Print New Line on Complete
+    if iteration == total:
+        print()
 
 spec="UC1-CPS"
 solver=Solver()
@@ -208,15 +230,19 @@ PO = Function('PO', Region, Region, BoolSort())
 PP = Function('PP', Region, Region, BoolSort())
 PPi= Function('Pi', Region, Region, BoolSort())
 
-print("parse package %s in XMI and calculate Regions",spec)
+print("parse package %s in XMI and calculate Regions"%spec)
 components_constraints=create_regions_from_xmi(spec)
 print("done")
 
+# create list of unique regions (and subregions) of the spec
 # as a (time) speedup this can be an output of create_regions_from_xmi()
-regions=[]
+regions=set()
 for c in components_constraints['components'].values():
     for r in c['regions'].values():
-        regions.append(r)
+        regions.add(r)
+#this may not be the most elegant solution...
+regions=list(regions)
+print("there are %s different Regions in %s"%(len(regions),spec))
 
 print("add constraints on regions")
 for c in components_constraints['constraints']:
@@ -233,29 +259,35 @@ print("add rcc5")
 rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR)
 print("done")
 
-################################
-# AGENT
-################################
-
-#from array of regions generates pairs of regions
-#pairs_regions=[[A, B], [B, F], [A, F]]
+#generates all the possible pairs of regions 
 pairs_regions=[]
 for i in range(len(regions)):
     for j in range(i+1,len(regions)):
         pairs_regions.append([regions[i],regions[j]])
 
-#generates all the agents
+print(len(pairs_regions))
+
+#create a list of rcc5 relation per each pair of regions
 rcc5=[EQ,PP,PPi,PO,DR]
 itertables = []
 for i in pairs_regions:
     itertables.append(rcc5)
+
+#import pprint
+#pp=pprint.PrettyPrinter(indent=0)
+#pp.pprint(itertables)
 
 counter=1
 counter_sat=0
 counter_unsat=0
 counter_unknown=0
 
+print("pairs of regions: ",len(pairs_regions))
+print("possible scenarios: ",len(itertables)**len(rcc5))
+#itertools creates the cartesian product on the vector of rcc5 relations
+#total_scenarios=len(list(itertools.product(*itertables)))
 for t in itertools.product(*itertables):
+    printProgressBar(counter,len(itertables)**len(rcc5),decimals=12)
     array_agent=[]
     for i in range(len(t)):
         array_agent.append(t[i](pairs_regions[i]))
@@ -278,7 +310,7 @@ for t in itertools.product(*itertables):
         #    print(solver.unsat_core())
         counter_sat+=1
 
-    print("%d %s %s %s %s"%(counter, offregion1, check, offregion2, str(agent).replace('\n','')))
+    #print("%d %s %s %s %s"%(counter, offregion1, check, offregion2, str(agent).replace('\n','')))
     solver.pop()
 
     counter+=1
