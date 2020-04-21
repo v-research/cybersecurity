@@ -195,6 +195,8 @@ def create_regions_from_xmi(spec):
     return {'components':components,'constraints':constraints}
 
 # Print iterations progress
+# taken from (thanks Greenstick):
+# https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
     """
     Call in a loop to create terminal progress bar
@@ -232,7 +234,7 @@ PPi= Function('Pi', Region, Region, BoolSort())
 
 print("parse package %s in XMI and calculate Regions"%spec)
 components_constraints=create_regions_from_xmi(spec)
-print("done")
+print("done\n")
 
 # create list of unique regions (and subregions) of the spec
 # as a (time) speedup this can be an output of create_regions_from_xmi()
@@ -247,25 +249,24 @@ print("there are %s different Regions in %s"%(len(regions),spec))
 print("add constraints on regions")
 for c in components_constraints['constraints']:
     solver.add(c)
-print("done")
+    print(c)
+print("done\n")
 
 # add topology to solver
 print("add topology")
 topology(solver, regions, P)
-print("done")
+print("done\n")
 
 # add rcc5 to solver
 print("add rcc5")
 rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR)
-print("done")
+print("done\n")
 
 #generates all the possible pairs of regions 
 pairs_regions=[]
 for i in range(len(regions)):
     for j in range(i+1,len(regions)):
         pairs_regions.append([regions[i],regions[j]])
-
-print(len(pairs_regions))
 
 #create a list of rcc5 relation per each pair of regions
 rcc5=[EQ,PP,PPi,PO,DR]
@@ -286,15 +287,19 @@ print("pairs of regions: ",len(pairs_regions))
 print("possible scenarios: ",len(itertables)**len(rcc5))
 #itertools creates the cartesian product on the vector of rcc5 relations
 #total_scenarios=len(list(itertools.product(*itertables)))
+f=open(spec+".out","w+")
+f.write("spec: %s\n"%spec)
+f.write("pairs of regions: %s\n"%str(len(pairs_regions)))
+f.write("possible scenarios: %s\n\n"%str(len(itertables)**len(rcc5)))
 for t in itertools.product(*itertables):
     printProgressBar(counter,len(itertables)**len(rcc5),decimals=12)
-    array_agent=[]
+    array_scenario=[]
     for i in range(len(t)):
-        array_agent.append(t[i](pairs_regions[i]))
-    agent=And(array_agent)
+        array_scenario.append(t[i](pairs_regions[i]))
+    scenario=And(array_scenario)
 
     solver.push()
-    solver.add(agent)
+    solver.add(scenario)
     check=solver.check()
 
     if(check == unsat):
@@ -302,24 +307,26 @@ for t in itertools.product(*itertables):
     if(check == unknown):
         counter_unknown+=1
     if(check == sat):
-        offregion1=' '*(5-len(str(counter)))
-        offregion2=' '*(12-len(str(check)))
         #if(check == sat):
         #    print(solver.model())
         #else:
         #    print(solver.unsat_core())
         counter_sat+=1
 
-    #print("%d %s %s %s %s"%(counter, offregion1, check, offregion2, str(agent).replace('\n','')))
+    #TODO 
+    #https://stackoverflow.com/questions/14628279/z3-convert-z3py-expression-to-smt-lib2/14629021#14629021
+    #https://stackoverflow.com/questions/19569431/z3py-print-large-formula-with-144-variables
+    f.write("%d %s\n %s\n\n"%(counter, check, str(scenario).replace('\n','')))
     solver.pop()
 
     counter+=1
 
-statistics="\n********\nSTATISTICS\n\nagents=%d\nsat=%d\nunsat=%d"%(counter-1,counter_sat,counter_unsat)
+statistics="\n********\nSTATISTICS\n\nscenarios=%d\nsat=%d\nunsat=%d"%(counter-1,counter_sat,counter_unsat)
 if(counter_unknown != 0):
     statistics+="\nunknown=%d"%unknown
 
-print(statistics)
+f.write("\n",statistics)
+f.close()
 
 #print("\nPrint solver?[y/n]")
 #answer=input()
