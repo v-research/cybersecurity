@@ -55,43 +55,11 @@ def topology(solver, regions_and_subregions, P):
                #solver.add(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)))
                solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)), str("transitivity(%s,%s,%s)"%(s1,s2,s3)))
 
-################################
-# with mereotopology we first define connects with and then part of
-################################
-def mereotopology(solver, regions_and_subregions, C, P):
-    ################################
-    # CONNECTS WITH
-    # define here the relation C (primitive binary relation called connects with)  
-    # which is reflexive and symmetric 
-    ################################
-    
-    for s in regions_and_subregions:
-        #solver.add(C(s,s))
-        solver.assert_and_track(C(s,s), str("riflexivity(%s,%s)"%(s,s)))
-    
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
-            #solver.add(C(s1,s2)==C(s2,s1))
-            solver.assert_and_track(C(s1,s2)==C(s2,s1), str("symmetry(%s,%s)"%(s1,s2)))
-    
-    ################################
-    # PART OF
-    # P(X,Y) : forall Z C(Z,X) => C(Z,Y)
-    ################################
-    
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
-            array=[]
-            for s3 in regions_and_subregions:
-                array.append(Implies(C(s3,s1), C(s3,s2)))
-            #solver.add(P(s1,s2) == Implies(C(s3,s1), C(s3,s2))) 
-            solver.assert_and_track(P(s1,s2) == And(array), str("P(%s,%s) and Z=%s"%(s1,s2,s3))) 
-
 
 ################################
 # add the 5 relation of rcc5 to the solver
 ################################
-def rcc_five(solver, regions_and_subregions, C, P, O, EQ, PP, PO, PPi, DR):
+def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
     ################################
     # OVERLAPS 
     # O(X,Y) : exists Z P(Z, X) /\ P(Z, Y) 
@@ -149,64 +117,58 @@ def rcc_five(solver, regions_and_subregions, C, P, O, EQ, PP, PO, PPi, DR):
             #solver.add(PPi(s1,s2) == PP(s2, s1)) #  And(P(s2,s1), Not(P(s1,s2))))
             solver.assert_and_track(PPi(s1,s2) == PP(s2, s1), str("PPi(%s,%s)"%(s1,s2))) #  And(P(s2,s1), Not(P(s1,s2))))
 
+
+def get_region_type(region):
+    if(str(region).startswith("A")):
+        regiontype="assertion"
+    elif(str(region).startswith("B")):
+        regiontype="belief"
+    elif(str(region).startswith("F")):
+        regiontype="fact"
+    else:
+        regiontype="unknown"
+    return regiontype
+
 #input
 # -spec: string with the name of the package of the spec
 #output
-# -component_constraints is a dictionary with two entries:
+# -component_constraints is a dictionary with entries:
 # --components updated with regions (assertions, beliefs, and facts)
-# --constraints defining an equality constraint between the LHS and RHS of each flow, except for the flow in the channel
+# --constraints defining an equality constraint between the LHS and RHS of each
+#       flow (there is a flow from the out/input port to/from the channel) and
+#       sub-regions of components owned by an agent
 def create_regions_from_xmi(spec):
     components_flows=get_components_from_xmi(spec)
     components=components_flows['components']
     flows=components_flows['flows']
 
-    region2components={}
     region_id=0
     for ck,cv in components.items():
         if(cv['type']=="agent"):
-            region2components[ck]=region_id
             cv['regions']={}
             cv['regions']['assertion']=Const("A"+str(region_id),Region)
             cv['regions']['belief']=Const("B"+str(region_id),Region)
             cv['regions']['fact']=Const("F"+str(region_id),Region)
         elif(cv['type']=="inputport"):
-            region2components[ck]=region_id
             cv['regions']={}
             cv['regions']['input']=Const("A"+str(region_id),Region)
             cv['regions']['output']=Const("B"+str(region_id),Region)
         elif(cv['type']=="outputport"):
-            region2components[ck]=region_id
             cv['regions']={}
             cv['regions']['input']=Const("B"+str(region_id),Region)
             cv['regions']['output']=Const("A"+str(region_id),Region)
         elif(cv['type']=="funblock" or cv['type']=="inputsocket" or cv['type']=="outputsocket"):
-            region2components[ck]=region_id
             cv['regions']={}
-            cv['regions']['input']=Const("Bi"+str(region_id),Region)
-            cv['regions']['output']=Const("Bo"+str(region_id),Region)
+            cv['regions']['input']=Const("B"+str(region_id),Region)
+            region_id+=1
+            cv['regions']['output']=Const("B"+str(region_id),Region)
         elif(cv['type']=="channel"):
-            region2components[ck]=region_id
             cv['regions']={}
-            cv['regions']['input']=Const("Ai"+str(region_id),Region)
-            cv['regions']['output']=Const("Ao"+str(region_id),Region)
-
-        #we do not support assertions, beliefs, or facts in the spec
-        #elif(cv['type']=="belief"):
-        #    region2components[ck]=region_id
-        #    cv['regions']={}
-        #    cv['regions']['belief']=Const("B"+str(region_id),Region)
-        #elif(cv['type']=="fact"):
-        #    region2components[ck]=region_id
-        #    cv['regions']={}
-        #    cv['regions']['fact']=Const("F"+str(region_id),Region)
-        #elif(cv['type']=="assertion"):
-        #    region2components[ck]=region_id
-        #    cv['regions']={}
-        #    cv['regions']['assertion']=Const("A"+str(region_id),Region)
-
+            cv['regions']['input']=Const("A"+str(region_id),Region)
+            region_id+=1
+            cv['regions']['output']=Const("A"+str(region_id),Region)
         #each base is considered to be an input fact and an output belief
         elif(cv['type']=="base"):
-            region2components[ck]=region_id
             cv['regions']={}
             cv['regions']['output']=Const("B"+str(region_id),Region)
             cv['regions']['input']=Const("F"+str(region_id),Region)
@@ -215,27 +177,20 @@ def create_regions_from_xmi(spec):
 
         region_id+=1
 
-    #DEBUG
-    import pprint
-    pp=pprint.PrettyPrinter(indent=0)
-    pp.pprint(components)
-
     constraints=[]    
     #each flow equates beliefs
     for fk,fv in flows.items():
         for r in fv: #fk->r is a flow
-            #print(components[fk]['name'],components[fk]['type'],components[r]['name'],components[r]['type'])
-            #print(components[fk]['regions']['output']==components[r]['regions']['input'])
-            #print()
             constraints.append(components[fk]['regions']['output']==components[r]['regions']['input'])
 
     #each agent's beliefs encompass the beliefs resulting from its components and the assertions of its ports
-    #each channel_lhs_A == outputport_A and channel_rhs_A == inputport_A
-    #for c in components:
-    #    if(c['type']=="channel"):
-    #        constraints.append(
+    for c in components.values():
+        if(c['type']=="agent"):
+            for c1 in components.values():
+                if(c1['owner']==c['name']):
+                    for r in c1['regions'].values():
+                        constraints.append(P(c['regions'][get_region_type(r)],r))
 
-    print(constraints)
     return {'components':components,'constraints':constraints}
 
 
@@ -245,7 +200,6 @@ z3.set_param('parallel.enable', True)
 z3.set_param('parallel.threads.max', 32)
 Region = DeclareSort('Region')
 
-C  = Function('C', Region, Region, BoolSort())
 P  = Function('P', Region, Region, BoolSort())
 O  = Function('O', Region, Region, BoolSort())
 EQ = Function('EQ', Region, Region, BoolSort())
@@ -254,29 +208,32 @@ PO = Function('PO', Region, Region, BoolSort())
 PP = Function('PP', Region, Region, BoolSort())
 PPi= Function('Pi', Region, Region, BoolSort())
 
+print("parse package %s in XMI and calculate Regions",spec)
 components_constraints=create_regions_from_xmi(spec)
+print("done")
+
+# as a (time) speedup this can be an output of create_regions_from_xmi()
+regions=[]
+for c in components_constraints['components'].values():
+    for r in c['regions'].values():
+        regions.append(r)
+
+print("add constraints on regions")
+for c in components_constraints['constraints']:
+    solver.add(c)
+print("done")
+
+# add topology to solver
+print("add topology")
+topology(solver, regions, P)
+print("done")
+
+# add rcc5 to solver
+print("add rcc5")
+rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR)
+print("done")
+
 sys.exit(1)
-
-Asr = Const('Asr', Region)
-Ars = Const('Ars', Region)
-Bs = Const('Bs', Region)
-Br = Const('Br', Region)
-F = Const('F', Region)
-
-regions=[Asr,Ars,Bs,Br,F]
-
-regions_and_subregions=regions + calculate_regions(regions, Region)
-
-# add partOf to solver
-if(mereo_topology=="mereotopology"):
-    print("MEREOTOPOLOGY")
-    mereotopology(solver, regions_and_subregions, C, P)
-elif(mereo_topology=="topology"):
-    print("TOPOLOGY")
-    topology(solver, regions_and_subregions, P)
-
-# add rcc5 to the solver
-rcc_five(solver, regions_and_subregions, C, P, O, EQ, PP, PO, PPi, DR)
 
 ################################
 # AGENT
