@@ -177,13 +177,14 @@ def create_regions_from_xmi(spec):
 
         region_id+=1
 
-    constraints=[]    
     #each flow equates beliefs
     for fk,fv in flows.items():
         for r in fv: #fk->r is a flow
             #constraints.append(components[fk]['regions']['output']==components[r]['regions']['input'])
             components[fk]['regions']['output']=components[r]['regions']['input']
 
+    poset_graph={}
+    constraints=[]    
     #each agent's beliefs encompass the beliefs resulting from its components and the assertions of its ports
     for c in components.values():
         if(c['type']=="agent"):
@@ -191,8 +192,15 @@ def create_regions_from_xmi(spec):
                 if(c1['owner']==c['name']):
                     for r in c1['regions'].values():
                         constraints.append(P(c['regions'][get_region_type(r)],r))
+                        #DEBUG
+                        if(c['regions'][get_region_type(r)] in poset_graph):
+                            poset_graph[c['regions'][get_region_type(r)]].add(r)
+                        else:
+                            s=set()
+                            s.add(r)
+                            poset_graph[c['regions'][get_region_type(r)]]=s
 
-    return {'components':components,'constraints':constraints}
+    return {'components':components,'constraints':constraints,'poset':poset_graph}
 
 # Print iterations progress
 # taken from (thanks Greenstick):
@@ -217,6 +225,25 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     # Print New Line on Complete
     if iteration == total:
         print()
+
+def print_poset(regions,poset):
+    f=open("poset.dot","w+")
+    f.write("digraph G {\n")
+
+    for r in regions:
+        if(r in poset.keys()):
+            continue
+        elif(r in poset.items()):
+            continue
+        else:
+            f.write("%s\n"%r)
+
+    for k,v in poset.items():
+        for v1 in v:
+            f.write("%s -> %s\n"%(k,v1))
+
+    f.write("\n}")
+    f.close()
 
 spec="UC1-CPS"
 solver=Solver()
@@ -245,6 +272,11 @@ for c in components_constraints['components'].values():
 #this may not be the most elegant solution...
 regions=list(regions)
 print("there are %s different Regions in %s"%(len(regions),spec))
+
+#import pprint
+#pprint.pprint(components_constraints)
+#print_poset(regions,components_constraints['poset'])
+#sys.exit(1)
 
 print("add constraints on regions")
 for c in components_constraints['constraints']:
