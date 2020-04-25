@@ -67,10 +67,10 @@ def get_components_from_xmi(cps_spec_name,abf_theory_package="ABFTheory",schema=
                                     components[attribute.attrib[schema+'id']]['type']='inputport'
                                 elif(ID[attribute.attrib['type']]=="OutputPort"):
                                     components[attribute.attrib[schema+'id']]['type']='outputport'
-                                components[attribute.attrib[schema+'id']]['owner']=innerchild.attrib['name']
+                                components[attribute.attrib[schema+'id']]['owner']=innerchild.attrib[schema+'id']
                             elif(attribute.attrib[schema+'type'] == "uml:Property"):
                                 components[attribute.attrib[schema+'id']]={'name':attribute.attrib['name']}
-                                components[attribute.attrib[schema+'id']]['owner']=innerchild.attrib['name']
+                                components[attribute.attrib[schema+'id']]['owner']=innerchild.attrib[schema+'id']
                                 if(ID[attribute.attrib['type']]=="InputPort"):
                                     components[attribute.attrib[schema+'id']]['type']='inputsocket'
                                 elif(ID[attribute.attrib['type']]=="OutputPort"):
@@ -148,7 +148,7 @@ def dot(cps_spec_name, components, flows):
         if(v['type']=="agent"):
             f.write("\n\tsubgraph cluster_%s {\n\t\tlabel=\"%s\";\n\t\tlabeljust=\"l\""%(v['name'],v['name']))
             for k2,v2 in components.items():
-                if(v2['owner']==v['name'] and v2['type']!="inputport" and v2['type']!="outputport"):
+                if(v2['owner']==k and v2['type']!="inputport" and v2['type']!="outputport"):
                     f.write("\n\t\t%s_%s"%(v2['name'],v2['type']))
                     if(v2['type']=="fact"):
                         f.write(" [style=dashed]")

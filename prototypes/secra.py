@@ -9,6 +9,8 @@ from z3 import *
 import scipy.special
 import itertools
 from parse_model import get_components_from_xmi
+#DEBUG
+import pprint
 
 ################################
 # since we unfold the quantifiers we have to calculate
@@ -23,17 +25,17 @@ from parse_model import get_components_from_xmi
 # otherwise download wheel from https://pypi.python.org/pypi/scipy
 # and install it with pip install <downloaded-file>
 ################################
-def calculate_regions(regions, Region):
-    region_of_subregions=[]
-    for k in range(1,len(regions)):
-        counter=0
-        for i in range(int(scipy.special.binom(len(regions), (k+1)))):
-            subregion="subregion_%s_%d"%((k+1), counter)
-            region_of_subregions.append(Const(subregion, Region))
-            #print("%d - (%d %d)=%d"%(i,len(regions),(k+1),int(scipy.special.binom(len(regions), (k+1)))))
-            counter+=1
-        
-    return region_of_subregions
+#def calculate_regions(regions, Base):
+#    region_of_subregions=[]
+#    for k in range(1,len(regions)):
+#        counter=0
+#        for i in range(int(scipy.special.binom(len(regions), (k+1)))):
+#            subregion="subregion_%s_%d"%((k+1), counter)
+#            region_of_subregions.append(Const(subregion, Base))
+#            #print("%d - (%d %d)=%d"%(i,len(regions),(k+1),int(scipy.special.binom(len(regions), (k+1)))))
+#            counter+=1
+#        
+#    return region_of_subregions
 
 def topology(solver, regions_and_subregions, P):
     ################################
@@ -117,24 +119,26 @@ def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
             #solver.add(PPi(s1,s2) == PP(s2, s1)) #  And(P(s2,s1), Not(P(s1,s2))))
             solver.assert_and_track(PPi(s1,s2) == PP(s2, s1), str("PPi(%s,%s)"%(s1,s2))) #  And(P(s2,s1), Not(P(s1,s2))))
 
-
-def get_region_type(region):
-    if(str(region).startswith("A")):
-        regiontype="assertion"
-    elif(str(region).startswith("B")):
-        regiontype="belief"
-    elif(str(region).startswith("F")):
-        regiontype="fact"
+#should we create objects with method returning a constant for Z3 of type Base? Maybe... maybe not
+def get_base_type(base):
+    if(str(base).startswith("A")):
+        basetype="assertion"
+    elif(str(base).startswith("B")):
+        basetype="belief"
+    elif(str(base).startswith("F")):
+        basetype="fact"
     else:
-        regiontype="unknown"
-    return regiontype
+        basetype="unknown"
+    return basetype
 
 #input
 # -spec: string with the name of the package of the spec
 #output
 # -component_constraints is a dictionary with entries:
 # --components updated with regions (assertions, beliefs, and facts)
-# --constraints defining an equality constraint between the LHS and RHS of each
+
+# components are created with the following constraints 
+# -- defining an equality constraint between the LHS and RHS of each
 #       flow (there is a flow from the out/input port to/from the channel) and
 #       sub-regions of components owned by an agent
 def create_regions_from_xmi(spec):
@@ -146,61 +150,65 @@ def create_regions_from_xmi(spec):
     for ck,cv in components.items():
         if(cv['type']=="agent"):
             cv['regions']={}
-            cv['regions']['assertion']=Const("A"+str(region_id),Region)
-            cv['regions']['belief']=Const("B"+str(region_id),Region)
-            cv['regions']['fact']=Const("F"+str(region_id),Region)
+            cv['regions']['assertion']=set()
+            cv['regions']['belief']=set()
         elif(cv['type']=="inputport"):
             cv['regions']={}
-            cv['regions']['input']=Const("A"+str(region_id),Region)
-            cv['regions']['output']=Const("B"+str(region_id),Region)
+            cv['regions']['input']=Const("A"+str(region_id),Base)
+            cv['regions']['output']=Const("B"+str(region_id),Base)
         elif(cv['type']=="outputport"):
             cv['regions']={}
-            cv['regions']['input']=Const("B"+str(region_id),Region)
-            cv['regions']['output']=Const("A"+str(region_id),Region)
+            cv['regions']['input']=Const("B"+str(region_id),Base)
+            cv['regions']['output']=Const("A"+str(region_id),Base)
         elif(cv['type']=="funblock" or cv['type']=="inputsocket" or cv['type']=="outputsocket"):
             cv['regions']={}
-            cv['regions']['input']=Const("B"+str(region_id),Region)
+            cv['regions']['input']=Const("B"+str(region_id),Base)
             region_id+=1
-            cv['regions']['output']=Const("B"+str(region_id),Region)
+            cv['regions']['output']=Const("B"+str(region_id),Base)
         elif(cv['type']=="channel"):
             cv['regions']={}
-            cv['regions']['input']=Const("A"+str(region_id),Region)
+            cv['regions']['input']=Const("A"+str(region_id),Base)
             region_id+=1
-            cv['regions']['output']=Const("A"+str(region_id),Region)
-        #each base is considered to be an input fact and an output belief
+            cv['regions']['output']=Const("A"+str(region_id),Base)
+        #bases are beliefs related to blocks and facts related to root
         elif(cv['type']=="base"):
             cv['regions']={}
-            cv['regions']['output']=Const("B"+str(region_id),Region)
-            cv['regions']['input']=Const("F"+str(region_id),Region)
+            cv['regions']['belief']=Const("B"+str(region_id),Base)
         else:
             continue
 
         region_id+=1
 
+    pprint.pprint(flows)
     #each flow equates beliefs
     for fk,fv in flows.items():
-        for r in fv: #fk->r is a flow
-            #constraints.append(components[fk]['regions']['output']==components[r]['regions']['input'])
-            components[fk]['regions']['output']=components[r]['regions']['input']
+            for r in fv: #fk->r is a flow
+                if(components[fk]['type']=="base"):
+                    components[fk]['regions']['belief']=components[r]['regions']['input']
+                if(components[r]['type']=="base"):
+                    components[fk]['regions']['output']=components[r]['regions']['belief']
+                else:
+                    components[fk]['regions']['output']=components[r]['regions']['input']
 
-    poset_graph={}
-    constraints=[]    
-    #each agent's beliefs encompass the beliefs resulting from its components and the assertions of its ports
-    for c in components.values():
-        if(c['type']=="agent"):
-            for c1 in components.values():
-                if(c1['owner']==c['name']):
-                    for r in c1['regions'].values():
-                        constraints.append(P(c['regions'][get_region_type(r)],r))
-                        #DEBUG
-                        if(c['regions'][get_region_type(r)] in poset_graph):
-                            poset_graph[c['regions'][get_region_type(r)]].add(r)
-                        else:
-                            s=set()
-                            s.add(r)
-                            poset_graph[c['regions'][get_region_type(r)]]=s
+    #we create the agent root as a common knowledge
+    common_knowledge={'name':"root",'owner':"root",'type':"root",'regions':{'fact':set()}}
+    #TODO we assume no inner-components in Object diagrams
+    #each agent's belief encompasses the beliefs of its components and the assertions of its ports
+    #each region has a corresponding fact (which may be dr or eq)
+    for cv in components.values():
+        if(cv['type']=="base"):
+            common_knowledge['regions']['fact'].add(Const("F_"+str(cv['regions']['belief']),Base))
+            if(cv['owner']!="root"):
+                components[cv['owner']]['regions']['belief'].add(cv['regions']['output'])
+        elif(cv['type']!="agent"):
+            common_knowledge['regions']['fact'].add(Const("F_"+str(cv['regions']['input']),Base))
+            common_knowledge['regions']['fact'].add(Const("F_"+str(cv['regions']['output']),Base))
+            if(cv['owner']!="root"):
+                components[cv['owner']]['regions'][get_base_type(cv['regions']['input'])].add(cv['regions']['input'])
+                components[cv['owner']]['regions'][get_base_type(cv['regions']['output'])].add(cv['regions']['output'])
+    components['root']=common_knowledge
 
-    return {'components':components,'constraints':constraints,'poset':poset_graph}
+    return components
 
 # Print iterations progress
 # taken from (thanks Greenstick):
@@ -226,75 +234,119 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     if iteration == total:
         print()
 
-def print_poset(regions,poset):
+def get_base_by_name(name,components):
+
+    for c in components.values():
+        if(name.startswith("A") or name.startswith("B")):
+            if(c['type']=="agent"):
+                for r in c['regions']['assertion']:
+                    if(name==str(r)):
+                        return r
+                for r in c['regions']['belief']:
+                    if(name==str(r)):
+                        return r
+        elif(name.startswith("F")):
+            if(c['type']=="root"):
+                for r in c['regions']['fact']:
+                    if(name==str(r)):
+                        return r
+    return None
+
+#generates all the possible pairs of regions 
+# - (F,B) (F,A) a pair per each association fact-belief/assertion
+# - (B,A) another per each port_I-port_O
+# - (F,A) another per each chan_I-chan_O
+# dot files contains 3 types of links:
+# - flows [directional gray]
+# - ownership [directional dotted]
+# - pair relation (A,B), (B,F), or (A,F) [red/green/blue no-arrow]
+# and the following nodes:
+# - F:facts, B:beliefs, A:assertions, name:agents
+def print_graph_and_calculate_pairs(components):
+
     f=open("poset.dot","w+")
     f.write("digraph G {\n")
+    pairs=[]
 
-    for r in regions:
-        if(r in poset.keys()):
-            continue
-        elif(r in poset.items()):
-            continue
-        else:
-            f.write("%s\n"%r)
-
-    for k,v in poset.items():
-        for v1 in v:
-            f.write("%s -> %s\n"%(k,v1))
-
+    for c in components.values():
+        if(c['name']=="root"):
+            for fact in c['regions']['fact']:
+                f.write("%s -> %s [style=dotted]\n"%("root",str(fact)))
+                if(str(fact)[2:].startswith("A")):
+                    f.write("%s -> %s [arrowhead=none, penwidth=2, label=AF, color=\"blue\"]\n"%(str(fact),str(fact)[2:]))
+                else:
+                    f.write("%s -> %s [arrowhead=none, penwidth=2, label=BF, color=\"green\"]\n"%(str(fact),str(fact)[2:]))
+                pairs.append([fact,get_base_by_name(str(fact)[2:],components)])
+        elif(c['type']=="agent"):
+            for r in c['regions']['assertion']:
+                f.write("%s -> %s [style=dotted]\n"%(c['name'],str(r)))
+            for r in c['regions']['belief']:
+                f.write("%s -> %s [style=dotted]\n"%(c['name'],str(r)))
+        elif(c['type']!="base"):
+        #elif(c['type']=="inputport" or c['type']=="outputport" or c['type']=="channel"):
+            f.write("%s -> %s [label=%s_%s, color=gray40]\n"%(c['regions']['input'],c['regions']['output'],c['name'],c['type']))
+            if(c['type']=="inputport" or c['type']=="outputport"):
+                f.write("%s -> %s [arrowhead=none, penwidth=2, label=AB, color=\"red\"]\n"%(c['regions']['input'],c['regions']['output']))
+                pairs.append([c['regions']['input'],c['regions']['output']])
+    
     f.write("\n}")
     f.close()
+    return pairs
 
 spec="UC1-CPS"
 solver=Solver()
 z3.set_param('parallel.enable', True)
 z3.set_param('parallel.threads.max', 32)
-Region = DeclareSort('Region')
+#Z3 doesn't (nor any other SMT solver) support sub-sorting
+#https://stackoverflow.com/questions/36933174/sort-inheritance-in-z3
+#this may be of interest:
+#https://stackoverflow.com/questions/12253088/how-to-check-if-a-const-in-z3-is-a-variable-or-a-value
+Base = DeclareSort('Base')
 
-P  = Function('P', Region, Region, BoolSort())
-O  = Function('O', Region, Region, BoolSort())
-EQ = Function('EQ', Region, Region, BoolSort())
-DR = Function('DR', Region, Region, BoolSort())
-PO = Function('PO', Region, Region, BoolSort())
-PP = Function('PP', Region, Region, BoolSort())
-PPi= Function('Pi', Region, Region, BoolSort())
+P  = Function('P', Base, Base, BoolSort())
+O  = Function('O', Base, Base, BoolSort())
+EQ = Function('EQ', Base, Base, BoolSort())
+DR = Function('DR', Base, Base, BoolSort())
+PO = Function('PO', Base, Base, BoolSort())
+PP = Function('PP', Base, Base, BoolSort())
+PPi= Function('Pi', Base, Base, BoolSort())
 
-print("parse package %s in XMI and calculate Regions"%spec)
-components_constraints=create_regions_from_xmi(spec)
+print("parse package %s in XMI and calculate Bases"%spec)
+components=create_regions_from_xmi(spec)
 print("done\n")
+
+print("calculate pairs and generate graph")
+pprint.pprint(components)
+pairs=print_graph_and_calculate_pairs(components)
+print("there are %d insecure configurations\n"%(2**(len(pairs))-1))
 
 # create list of unique regions (and subregions) of the spec
 # as a (time) speedup this can be an output of create_regions_from_xmi()
-regions=set()
-for c in components_constraints['components'].values():
-    for r in c['regions'].values():
-        regions.add(r)
-#this may not be the most elegant solution...
-regions=list(regions)
-print("there are %s different Regions in %s"%(len(regions),spec))
+#regions=set()
+#for c in components.values():
+#    for r in c['regions'].values():
+#        regions.add(r)
+##this may not be the most elegant solution...
+#regions=list(regions)
+#print("there are %s different Bases in %s"%(len(regions),spec))
 
-#import pprint
-#pprint.pprint(components_constraints)
-#print_poset(regions,components_constraints['poset'])
-#sys.exit(1)
+#print("add constraints on regions")
+#for c in components_constraints['constraints']:
+#    solver.add(c)
+#    print(c)
+#print("done\n")
+#
+## add topology to solver
+#print("add topology")
+#topology(solver, regions, P)
+#print("done\n")
+#
+## add rcc5 to solver
+#print("add rcc5")
+#rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR)
+#print("done\n")
 
-print("add constraints on regions")
-for c in components_constraints['constraints']:
-    solver.add(c)
-    print(c)
-print("done\n")
 
-# add topology to solver
-print("add topology")
-topology(solver, regions, P)
-print("done\n")
-
-# add rcc5 to solver
-print("add rcc5")
-rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR)
-print("done\n")
-
-#generates all the possible pairs of regions 
 pairs_regions=[]
 for i in range(len(regions)):
     for j in range(i+1,len(regions)):
