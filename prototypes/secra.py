@@ -25,7 +25,7 @@ import pprint
 # otherwise download wheel from https://pypi.python.org/pypi/scipy
 # and install it with pip install <downloaded-file>
 ################################
-#def calculate_regions(regions, Base):
+#def calculate_subregions(regions, Base):
 #    region_of_subregions=[]
 #    for k in range(1,len(regions)):
 #        counter=0
@@ -36,6 +36,31 @@ import pprint
 #            counter+=1
 #        
 #    return region_of_subregions
+
+# each region in a pair needs to have
+# a subregion to share and one to keep
+# to be able to use RCC5. This would not
+# be necessary if we didn't unfold quantifiers;
+# but unfolding prevents Z3 from unswering unknown 
+# instead of sat/unsat
+def add_minimal_subregions(pairs,solver):
+    subregion=0
+    regions=set()
+    for p1,p2 in pairs:
+        s="S"+str(p1)+"_"+str(subregion)
+        solver.assert_and_track(P(Const(s,Base),p1), str("subregion(%s,%s)"%(s,p1)))
+        subregion+=1
+        s="S"+str(p1)+"_"+str(subregion)
+        solver.assert_and_track(P(Const(s,Base),p1), str("subregion(%s,%s)"%(s,p1)))
+        subregion+=1
+
+        s="S"+str(p2)+"_"+str(subregion)
+        solver.assert_and_track(P(Const(s,Base),p2), str("subregion(%s,%s)"%(s,p2)))
+        subregion+=1
+        s="S"+str(p2)+"_"+str(subregion)
+        solver.assert_and_track(P(Const(s,Base),p2), str("subregion(%s,%s)"%(s,p2)))
+        subregion+=1
+    return subregion
 
 def topology(solver, regions_and_subregions, P):
     ################################
@@ -174,6 +199,7 @@ def create_regions_from_xmi(spec):
         elif(cv['type']=="base"):
             cv['regions']={}
             cv['regions']['belief']=Const("B"+str(region_id),Base)
+            #cv['regions']['fact']=Const("F"+str(region_id),Base)
         else:
             continue
 
@@ -185,7 +211,7 @@ def create_regions_from_xmi(spec):
             for r in fv: #fk->r is a flow
                 if(components[fk]['type']=="base"):
                     components[fk]['regions']['belief']=components[r]['regions']['input']
-                if(components[r]['type']=="base"):
+                elif(components[r]['type']=="base"):
                     components[fk]['regions']['output']=components[r]['regions']['belief']
                 else:
                     components[fk]['regions']['output']=components[r]['regions']['input']
@@ -199,9 +225,8 @@ def create_regions_from_xmi(spec):
         if(cv['type']=="base"):
             common_knowledge['regions']['fact'].add(Const("F_"+str(cv['regions']['belief']),Base))
             if(cv['owner']!="root"):
-                components[cv['owner']]['regions']['belief'].add(cv['regions']['output'])
-        elif(cv['type']!="agent"):
-            common_knowledge['regions']['fact'].add(Const("F_"+str(cv['regions']['input']),Base))
+                components[cv['owner']]['regions']['belief'].add(cv['regions']['belief'])
+        elif(cv['type']=="funblock" or cv['type']=="inputsocket" or cv['type']=="outputsocket"):
             common_knowledge['regions']['fact'].add(Const("F_"+str(cv['regions']['output']),Base))
             if(cv['owner']!="root"):
                 components[cv['owner']]['regions'][get_base_type(cv['regions']['input'])].add(cv['regions']['input'])
@@ -272,10 +297,11 @@ def print_graph_and_calculate_pairs(components):
         if(c['name']=="root"):
             for fact in c['regions']['fact']:
                 f.write("%s -> %s [style=dotted]\n"%("root",str(fact)))
-                if(str(fact)[2:].startswith("A")):
-                    f.write("%s -> %s [arrowhead=none, penwidth=2, label=AF, color=\"blue\"]\n"%(str(fact),str(fact)[2:]))
-                else:
-                    f.write("%s -> %s [arrowhead=none, penwidth=2, label=BF, color=\"green\"]\n"%(str(fact),str(fact)[2:]))
+                #if(str(fact)[2:].startswith("A")):
+                #    f.write("%s -> %s [arrowhead=none, penwidth=2, label=AF, color=\"blue\"]\n"%(str(fact),str(fact)[2:]))
+                #else:
+                #    f.write("%s -> %s [arrowhead=none, penwidth=2, label=BF, color=\"green\"]\n"%(str(fact),str(fact)[2:]))
+                f.write("%s -> %s [arrowhead=none, penwidth=2, label=BF, color=\"green\"]\n"%(str(fact),str(fact)[2:]))
                 pairs.append([fact,get_base_by_name(str(fact)[2:],components)])
         elif(c['type']=="agent"):
             for r in c['regions']['assertion']:
@@ -288,6 +314,9 @@ def print_graph_and_calculate_pairs(components):
             if(c['type']=="inputport" or c['type']=="outputport"):
                 f.write("%s -> %s [arrowhead=none, penwidth=2, label=AB, color=\"red\"]\n"%(c['regions']['input'],c['regions']['output']))
                 pairs.append([c['regions']['input'],c['regions']['output']])
+            elif(c['type']=="channel"):
+                pairs.append([c['regions']['input'],c['regions']['output']])
+                f.write("%s -> %s [arrowhead=none, penwidth=2, label=AA, color=\"blue\"]\n"%(c['regions']['input'],c['regions']['output']))
     
     f.write("\n}")
     f.close()
@@ -311,6 +340,8 @@ PO = Function('PO', Base, Base, BoolSort())
 PP = Function('PP', Base, Base, BoolSort())
 PPi= Function('Pi', Base, Base, BoolSort())
 
+# create list of unique regions (and subregions) of the spec
+# as a (time) speedup this can be an output of create_regions_from_xmi()
 print("parse package %s in XMI and calculate Bases"%spec)
 components=create_regions_from_xmi(spec)
 print("done\n")
@@ -318,35 +349,29 @@ print("done\n")
 print("calculate pairs and generate graph")
 pprint.pprint(components)
 pairs=print_graph_and_calculate_pairs(components)
-print("there are %d insecure configurations\n"%(2**(len(pairs))-1))
+print("%d pairs of regions\n%d configurations\n"%(len(pairs),5**(len(pairs))))
 
-# create list of unique regions (and subregions) of the spec
-# as a (time) speedup this can be an output of create_regions_from_xmi()
-#regions=set()
-#for c in components.values():
-#    for r in c['regions'].values():
-#        regions.add(r)
-##this may not be the most elegant solution...
-#regions=list(regions)
-#print("there are %s different Bases in %s"%(len(regions),spec))
+print("add constraints on regions for RCC5")
+regions_subregions=add_minimal_subregions(pairs,solver)
+print("addedd %d subregions"%subregions)
 
 #print("add constraints on regions")
 #for c in components_constraints['constraints']:
 #    solver.add(c)
 #    print(c)
 #print("done\n")
-#
-## add topology to solver
-#print("add topology")
-#topology(solver, regions, P)
-#print("done\n")
-#
-## add rcc5 to solver
-#print("add rcc5")
-#rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR)
-#print("done\n")
 
+# add topology to solver
+print("add topology")
+topology(solver, regions, P)
+print("done\n")
 
+# add rcc5 to solver
+print("add rcc5")
+rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR)
+print("done\n")
+
+sys.exit(1)
 pairs_regions=[]
 for i in range(len(regions)):
     for j in range(i+1,len(regions)):
