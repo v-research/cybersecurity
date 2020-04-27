@@ -5,12 +5,37 @@
 # 1) z3 python API (https://github.com/Z3Prover/z3/blob/master/README.md)
 
 import sys
+import time
 from z3 import *
 import scipy.special
 import itertools
 from parse_model import get_components_from_xmi
 #DEBUG
 import pprint
+
+# Print iterations progress
+# taken from (thanks Greenstick):
+# https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
+def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = printEnd)
+    # Print New Line on Complete
+    if iteration == total:
+        print()
 
 ################################
 # since we unfold the quantifiers we have to calculate
@@ -44,57 +69,76 @@ import pprint
 # but unfolding prevents Z3 from unswering unknown 
 # instead of sat/unsat
 def add_minimal_subregions(pairs,solver):
-    subregion=0
+    num_subreg=0
     regions=set()
+    subregions=set()
     for p1,p2 in pairs:
-        s="S"+str(p1)+"_"+str(subregion)
-        solver.assert_and_track(P(Const(s,Base),p1), str("subregion(%s,%s)"%(s,p1)))
-        subregion+=1
-        s="S"+str(p1)+"_"+str(subregion)
-        solver.assert_and_track(P(Const(s,Base),p1), str("subregion(%s,%s)"%(s,p1)))
-        subregion+=1
 
-        s="S"+str(p2)+"_"+str(subregion)
-        solver.assert_and_track(P(Const(s,Base),p2), str("subregion(%s,%s)"%(s,p2)))
-        subregion+=1
-        s="S"+str(p2)+"_"+str(subregion)
-        solver.assert_and_track(P(Const(s,Base),p2), str("subregion(%s,%s)"%(s,p2)))
-        subregion+=1
-    return subregion
+        regions.add(p1)
+        for i in range(2):
+            s_name="S"+str(p1)+"_"+str(num_subreg)
+            s=Const(s_name,Base)
+            subregions.add(s)
+            solver.assert_and_track(P(s,p1), str("subregion(%s,%s)"%(s,p1)))
+            num_subreg+=1
+
+        regions.add(p2)
+        for i in range(2):
+            s_name="S"+str(p2)+"_"+str(num_subreg)
+            s=Const(s_name,Base)
+            subregions.add(s)
+            solver.assert_and_track(P(s,p2), str("subregion(%s,%s)"%(s,p2)))
+            num_subreg+=1
+    return {'regions':regions,'subregions':subregions}
 
 def topology(solver, regions_and_subregions, P):
     ################################
     # PART OF
     ################################
     
-    for s in regions_and_subregions:
-        #solver.add(P(s,s))
-        solver.assert_and_track(P(s,s), str("reflexivity(%s)"%s))
-    
+    counter=0
+    l=len(regions_and_subregions)
+    tot=l**3
     for s1 in regions_and_subregions:
+        #solver.add(P(s,s))
+        solver.assert_and_track(P(s1,s1), str("reflexivity(%s1)"%s1))
         for s2 in regions_and_subregions:
             #solver.add(Implies(And(P(s1,s2),P(s2,s1)), s1==s2))
             solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s1)), s1==s2), str("asymmetry(%s,%s)"%(s1,s2)))
-    
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
             for s3 in regions_and_subregions:
-               #solver.add(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)))
-               solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)), str("transitivity(%s,%s,%s)"%(s1,s2,s3)))
+                #solver.add(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)))
+                solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)), str("transitivity(%s,%s,%s)"%(s1,s2,s3)))
+                printProgressBar(counter,tot,decimals=2)
+                counter+=1
+
+    #for s in regions_and_subregions:
+    #    #solver.add(P(s,s))
+    #    solver.assert_and_track(P(s,s), str("reflexivity(%s)"%s))
+    #
+    #for s1 in regions_and_subregions:
+    #    for s2 in regions_and_subregions:
+    #        #solver.add(Implies(And(P(s1,s2),P(s2,s1)), s1==s2))
+    #        solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s1)), s1==s2), str("asymmetry(%s,%s)"%(s1,s2)))
+    #
+    #for s1 in regions_and_subregions:
+    #    for s2 in regions_and_subregions:
+    #        for s3 in regions_and_subregions:
+    #           #solver.add(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)))
+    #           solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)), str("transitivity(%s,%s,%s)"%(s1,s2,s3)))
 
 
 ################################
 # add the 5 relation of rcc5 to the solver
 ################################
-def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
+def rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR):
     ################################
     # OVERLAPS 
     # O(X,Y) : exists Z P(Z, X) /\ P(Z, Y) 
     ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
+    for s1 in regions:
+        for s2 in regions:
             array=[]
-            for s3 in regions_and_subregions:
+            for s3 in regions:
                 array.append(And(P(s3,s1),P(s3,s2)))
             #solver.add(O(s1,s2) == Or(array)) 
             solver.assert_and_track(O(s1,s2) == Or(array), str("O(%s,%s) and Z=%s"%(s1,s2,s3))) 
@@ -103,8 +147,8 @@ def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
     # EQUAL TO 
     # EQ(X,Y) : P(X, Y) /\ P(Y, X) 
     ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
+    for s1 in regions:
+        for s2 in regions:
             #solver.add(EQ(s1,s2) == And(P(s1,s2), P(s2,s1)))
             solver.assert_and_track(EQ(s1,s2) == And(P(s1,s2), P(s2,s1)), str("EQ(%s,%s)"%(s1,s2)))
     
@@ -112,8 +156,8 @@ def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
     # DISCRETE FROM
     # DR(X,Y) : not O(X,Y)
     ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
+    for s1 in regions:
+        for s2 in regions:
             #solver.add(DR(s1,s2) == Not(O(s1,s2)))
             solver.assert_and_track(DR(s1,s2) == Not(O(s1,s2)), str("DR(%s,%s)"%(s1,s2)))
     
@@ -121,8 +165,8 @@ def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
     # PARTIAL OVERLAP
     # PO(X,Y) : O(X, Y) /\ (not P(X, Y)) /\ (not P(Y, X))
     ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
+    for s1 in regions:
+        for s2 in regions:
             #solver.add(PO(s1,s2) == And(O(s1,s2), Not(P(s1,s2)), Not(P(s2,s1))))
             solver.assert_and_track(PO(s1,s2) == And(O(s1,s2), Not(P(s1,s2)), Not(P(s2,s1))), str("PO(%s,%s)"%(s1,s2)))
     
@@ -130,8 +174,8 @@ def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
     # PROPER PART OF 
     # PP(X,Y) : P(X, Y) /\ (not P(Y, X)) 
     ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
+    for s1 in regions:
+        for s2 in regions:
             #solver.add(PP(s1,s2) == And(P(s1,s2), Not(P(s2,s1))))
             solver.assert_and_track(PP(s1,s2) == And(P(s1,s2), Not(P(s2,s1))), str("PP(%s,%s)"%(s1,s2)))
     
@@ -139,8 +183,8 @@ def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
     # INVERSE OF PROPER PART OF 
     # PPi(X,Y) : P(Y, X) /\ (not P(X, Y)) 
     ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
+    for s1 in regions:
+        for s2 in regions:
             #solver.add(PPi(s1,s2) == PP(s2, s1)) #  And(P(s2,s1), Not(P(s1,s2))))
             solver.assert_and_track(PPi(s1,s2) == PP(s2, s1), str("PPi(%s,%s)"%(s1,s2))) #  And(P(s2,s1), Not(P(s1,s2))))
 
@@ -235,32 +279,8 @@ def create_regions_from_xmi(spec):
 
     return components
 
-# Print iterations progress
-# taken from (thanks Greenstick):
-# https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
-def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
-    """
-    Call in a loop to create terminal progress bar
-    @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
-        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
-    """
-    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-    filledLength = int(length * iteration // total)
-    bar = fill * filledLength + '-' * (length - filledLength)
-    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = printEnd)
-    # Print New Line on Complete
-    if iteration == total:
-        print()
 
 def get_base_by_name(name,components):
-
     for c in components.values():
         if(name.startswith("A") or name.startswith("B")):
             if(c['type']=="agent"):
@@ -353,58 +373,59 @@ print("%d pairs of regions\n%d configurations\n"%(len(pairs),5**(len(pairs))))
 
 print("add constraints on regions for RCC5")
 regions_subregions=add_minimal_subregions(pairs,solver)
-print("addedd %d subregions"%subregions)
+print("addedd %d subregions"%len(regions_subregions['subregions']))
 
-#print("add constraints on regions")
-#for c in components_constraints['constraints']:
-#    solver.add(c)
-#    print(c)
-#print("done\n")
-
-# add topology to solver
-print("add topology")
-topology(solver, regions, P)
+# add topology theory to solver
+print("create topology [it may take a while]")
+topology(solver, regions_subregions['regions'].union(regions_subregions['subregions']), P)
 print("done\n")
 
-# add rcc5 to solver
+# add rcc5 theory over regions to solver
 print("add rcc5")
-rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR)
+rcc_five(solver, regions_subregions['regions'], P, O, EQ, PP, PO, PPi, DR)
 print("done\n")
-
-sys.exit(1)
-pairs_regions=[]
-for i in range(len(regions)):
-    for j in range(i+1,len(regions)):
-        pairs_regions.append([regions[i],regions[j]])
 
 #create a list of rcc5 relation per each pair of regions
 rcc5=[EQ,PP,PPi,PO,DR]
 itertables = []
-for i in pairs_regions:
+for i in pairs:
     itertables.append(rcc5)
-
-#import pprint
-#pp=pprint.PrettyPrinter(indent=0)
-#pp.pprint(itertables)
 
 counter=1
 counter_sat=0
 counter_unsat=0
 counter_unknown=0
 
-print("pairs of regions: ",len(pairs_regions))
-print("possible scenarios: ",len(itertables)**len(rcc5))
+num_pairs=len(pairs)
+num_scenarios=5**len(itertables)
+print("pairs of regions: ",num_pairs)
+print("possible scenarios: ",num_scenarios)
 #itertools creates the cartesian product on the vector of rcc5 relations
 #total_scenarios=len(list(itertools.product(*itertables)))
 f=open(spec+".out","w+")
 f.write("spec: %s\n"%spec)
-f.write("pairs of regions: %s\n"%str(len(pairs_regions)))
-f.write("possible scenarios: %s\n\n"%str(len(itertables)**len(rcc5)))
+f.write("pairs of regions: %s\n"%str(num_pairs))
+f.write("possible scenarios: %s\n\n"%str(num_scenarios))
+avg_time=0.00000
+sum_time=0.00000
+
+#TODO restart from 
+# save pairs and restart from that iteration
+# https://stackoverflow.com/questions/36802314/python-itertools-product-start-from-certain
 for t in itertools.product(*itertables):
-    printProgressBar(counter,len(itertables)**len(rcc5),decimals=12)
+
+    start = time.time()
+
+    sec_avg=str(avg_time).split('.')[0]
+    dec_avg=str(avg_time).split('.')[1]
+    sec_sum=str(sum_time).split('.')[0]
+    dec_sum=str(sum_time).split('.')[1]
+    end=avg_time*(num_scenarios-counter)
+    end_estimation=str(end).split('.')[0]
+    printProgressBar(counter,num_scenarios,suffix="avg:"+sec_avg+"."+dec_avg[:5]+"s tot:"+sec_sum+"."+dec_sum[:2]+"s"+" end:"+end_estimation+"s",decimals=5)
     array_scenario=[]
     for i in range(len(t)):
-        array_scenario.append(t[i](pairs_regions[i]))
+        array_scenario.append(t[i](pairs[i]))
     scenario=And(array_scenario)
 
     solver.push()
@@ -413,14 +434,18 @@ for t in itertools.product(*itertables):
 
     if(check == unsat):
         counter_unsat+=1
+        f.write("UNSAT CORE\n")
+        core=solver.unsat_core()
+        for k in core:
+            f.write('%s=%s\n'%(k, core[k]))
     if(check == unknown):
         counter_unknown+=1
     if(check == sat):
-        #if(check == sat):
-        #    print(solver.model())
-        #else:
-        #    print(solver.unsat_core())
         counter_sat+=1
+        #f.write("MODEL\n")
+        #model=solver.model()
+        #for k in model:
+        #    f.write('%s=%s\n'%(k, model[k]))
 
     #TODO 
     #https://stackoverflow.com/questions/14628279/z3-convert-z3py-expression-to-smt-lib2/14629021#14629021
@@ -429,6 +454,10 @@ for t in itertools.product(*itertables):
     solver.pop()
 
     counter+=1
+
+    end = time.time()
+    sum_time+=(end - start)
+    avg_time=(sum_time/counter)
 
 statistics="\n********\nSTATISTICS\n\nscenarios=%d\nsat=%d\nunsat=%d"%(counter-1,counter_sat,counter_unsat)
 if(counter_unknown != 0):
