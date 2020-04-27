@@ -72,24 +72,26 @@ def add_minimal_subregions(pairs,solver):
     num_subreg=0
     regions=set()
     subregions=set()
-    for p1,p2 in pairs:
+    pairs_array=[]
+    for p1,l in pairs.items():
+        for p2 in l:
+            regions.add(p1)
+            pairs_array.append([p1,p2])
+            for i in range(2):
+                s_name="S"+str(p1)+"_"+str(num_subreg)
+                s=Const(s_name,Base)
+                subregions.add(s)
+                solver.assert_and_track(P(s,p1), str("subregion(%s,%s)"%(s,p1)))
+                num_subreg+=1
 
-        regions.add(p1)
-        for i in range(2):
-            s_name="S"+str(p1)+"_"+str(num_subreg)
-            s=Const(s_name,Base)
-            subregions.add(s)
-            solver.assert_and_track(P(s,p1), str("subregion(%s,%s)"%(s,p1)))
-            num_subreg+=1
-
-        regions.add(p2)
-        for i in range(2):
-            s_name="S"+str(p2)+"_"+str(num_subreg)
-            s=Const(s_name,Base)
-            subregions.add(s)
-            solver.assert_and_track(P(s,p2), str("subregion(%s,%s)"%(s,p2)))
-            num_subreg+=1
-    return {'regions':regions,'subregions':subregions}
+            regions.add(p2)
+            for i in range(2):
+                s_name="S"+str(p2)+"_"+str(num_subreg)
+                s=Const(s_name,Base)
+                subregions.add(s)
+                solver.assert_and_track(P(s,p2), str("subregion(%s,%s)"%(s,p2)))
+                num_subreg+=1
+    return {'regions':regions,'subregions':subregions,'pairs_array':pairs_array}
 
 def topology(solver, regions_and_subregions, P):
     ################################
@@ -130,15 +132,15 @@ def topology(solver, regions_and_subregions, P):
 ################################
 # add the 5 relation of rcc5 to the solver
 ################################
-def rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR):
+def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
     ################################
     # OVERLAPS 
     # O(X,Y) : exists Z P(Z, X) /\ P(Z, Y) 
     ################################
-    for s1 in regions:
-        for s2 in regions:
+    for s1 in regions_and_subregions:
+        for s2 in regions_and_subregions:
             array=[]
-            for s3 in regions:
+            for s3 in regions_and_subregions:
                 array.append(And(P(s3,s1),P(s3,s2)))
             #solver.add(O(s1,s2) == Or(array)) 
             solver.assert_and_track(O(s1,s2) == Or(array), str("O(%s,%s) and Z=%s"%(s1,s2,s3))) 
@@ -147,8 +149,8 @@ def rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR):
     # EQUAL TO 
     # EQ(X,Y) : P(X, Y) /\ P(Y, X) 
     ################################
-    for s1 in regions:
-        for s2 in regions:
+    for s1 in regions_and_subregions:
+        for s2 in regions_and_subregions:
             #solver.add(EQ(s1,s2) == And(P(s1,s2), P(s2,s1)))
             solver.assert_and_track(EQ(s1,s2) == And(P(s1,s2), P(s2,s1)), str("EQ(%s,%s)"%(s1,s2)))
     
@@ -156,8 +158,8 @@ def rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR):
     # DISCRETE FROM
     # DR(X,Y) : not O(X,Y)
     ################################
-    for s1 in regions:
-        for s2 in regions:
+    for s1 in regions_and_subregions:
+        for s2 in regions_and_subregions:
             #solver.add(DR(s1,s2) == Not(O(s1,s2)))
             solver.assert_and_track(DR(s1,s2) == Not(O(s1,s2)), str("DR(%s,%s)"%(s1,s2)))
     
@@ -165,8 +167,8 @@ def rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR):
     # PARTIAL OVERLAP
     # PO(X,Y) : O(X, Y) /\ (not P(X, Y)) /\ (not P(Y, X))
     ################################
-    for s1 in regions:
-        for s2 in regions:
+    for s1 in regions_and_subregions:
+        for s2 in regions_and_subregions:
             #solver.add(PO(s1,s2) == And(O(s1,s2), Not(P(s1,s2)), Not(P(s2,s1))))
             solver.assert_and_track(PO(s1,s2) == And(O(s1,s2), Not(P(s1,s2)), Not(P(s2,s1))), str("PO(%s,%s)"%(s1,s2)))
     
@@ -174,8 +176,8 @@ def rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR):
     # PROPER PART OF 
     # PP(X,Y) : P(X, Y) /\ (not P(Y, X)) 
     ################################
-    for s1 in regions:
-        for s2 in regions:
+    for s1 in regions_and_subregions:
+        for s2 in regions_and_subregions:
             #solver.add(PP(s1,s2) == And(P(s1,s2), Not(P(s2,s1))))
             solver.assert_and_track(PP(s1,s2) == And(P(s1,s2), Not(P(s2,s1))), str("PP(%s,%s)"%(s1,s2)))
     
@@ -183,8 +185,8 @@ def rcc_five(solver, regions, P, O, EQ, PP, PO, PPi, DR):
     # INVERSE OF PROPER PART OF 
     # PPi(X,Y) : P(Y, X) /\ (not P(X, Y)) 
     ################################
-    for s1 in regions:
-        for s2 in regions:
+    for s1 in regions_and_subregions:
+        for s2 in regions_and_subregions:
             #solver.add(PPi(s1,s2) == PP(s2, s1)) #  And(P(s2,s1), Not(P(s1,s2))))
             solver.assert_and_track(PPi(s1,s2) == PP(s2, s1), str("PPi(%s,%s)"%(s1,s2))) #  And(P(s2,s1), Not(P(s1,s2))))
 
@@ -279,7 +281,6 @@ def create_regions_from_xmi(spec):
 
     return components
 
-
 def get_base_by_name(name,components):
     for c in components.values():
         if(name.startswith("A") or name.startswith("B")):
@@ -311,7 +312,8 @@ def print_graph_and_calculate_pairs(components):
 
     f=open("poset.dot","w+")
     f.write("digraph G {\n")
-    pairs=[]
+    pairs={}
+    num_pairs=0
 
     for c in components.values():
         if(c['name']=="root"):
@@ -322,7 +324,13 @@ def print_graph_and_calculate_pairs(components):
                 #else:
                 #    f.write("%s -> %s [arrowhead=none, penwidth=2, label=BF, color=\"green\"]\n"%(str(fact),str(fact)[2:]))
                 f.write("%s -> %s [arrowhead=none, penwidth=2, label=BF, color=\"green\"]\n"%(str(fact),str(fact)[2:]))
-                pairs.append([fact,get_base_by_name(str(fact)[2:],components)])
+                if(fact in pairs):
+                    pairs[fact].append(get_base_by_name(str(fact)[2:],components))
+                elif(get_base_by_name(str(fact)[2:],components) in pairs):
+                    pairs[get_base_by_name(str(fact)[2:],components)].append(fact)
+                else:
+                    pairs[fact]=[get_base_by_name(str(fact)[2:],components)]
+                num_pairs+=1
         elif(c['type']=="agent"):
             for r in c['regions']['assertion']:
                 f.write("%s -> %s [style=dotted]\n"%(c['name'],str(r)))
@@ -333,14 +341,26 @@ def print_graph_and_calculate_pairs(components):
             f.write("%s -> %s [label=%s_%s, color=gray40]\n"%(c['regions']['input'],c['regions']['output'],c['name'],c['type']))
             if(c['type']=="inputport" or c['type']=="outputport"):
                 f.write("%s -> %s [arrowhead=none, penwidth=2, label=AB, color=\"red\"]\n"%(c['regions']['input'],c['regions']['output']))
-                pairs.append([c['regions']['input'],c['regions']['output']])
+                if(c['regions']['input'] in pairs):
+                    pairs[c['regions']['input']].append(c['regions']['output'])
+                elif(c['regions']['output'] in pairs):
+                    pairs[c['regions']['output']].append(c['regions']['input'])
+                else:
+                    pairs[c['regions']['input']]=[c['regions']['output']]
+                num_pairs+=1
             elif(c['type']=="channel"):
-                pairs.append([c['regions']['input'],c['regions']['output']])
+                if(c['regions']['input'] in pairs):
+                    pairs[c['regions']['input']].append(c['regions']['output'])
+                elif(c['regions']['output'] in pairs):
+                    pairs[c['regions']['output']].append(c['regions']['input'])
+                else:
+                    pairs[c['regions']['input']]=[c['regions']['output']]
+                num_pairs+=1
                 f.write("%s -> %s [arrowhead=none, penwidth=2, label=AA, color=\"blue\"]\n"%(c['regions']['input'],c['regions']['output']))
     
     f.write("\n}")
     f.close()
-    return pairs
+    return {'pairs':pairs,'num_pairs':num_pairs}
 
 spec="UC1-CPS"
 solver=Solver()
@@ -368,27 +388,46 @@ print("done\n")
 
 print("calculate pairs and generate graph")
 pprint.pprint(components)
-pairs=print_graph_and_calculate_pairs(components)
-print("%d pairs of regions\n%d configurations\n"%(len(pairs),5**(len(pairs))))
+pairs_num=print_graph_and_calculate_pairs(components)
+print("%d pairs of regions\n%d configurations\n"%(pairs_num['num_pairs'],5**(pairs_num['num_pairs'])))
+
+f=open(spec+".out","w+")
+f.write("spec: %s\n"%spec)
+f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
+
+pprint.pprint(pairs_num['pairs'])
+simple_scenarios={}
+for k,v in pairs_num['pairs'].items():
+    if(len(v)==1):
+       simple_scenarios[k]=v 
+for k in simple_scenarios:
+    del pairs_num['pairs'][k]
+
+counter=0
+f.write("\nSIMPLE SUBGRAPHS (Any relation in RCC5 holds and do not affect the rest of the model)\n")
+for k,v in simple_scenarios.items():
+    f.write("%d R(%s,%s)\n"%(counter, str(k),str(v[0])))
+    counter+=1
 
 print("add constraints on regions for RCC5")
-regions_subregions=add_minimal_subregions(pairs,solver)
-print("addedd %d subregions"%len(regions_subregions['subregions']))
+regions_subregions_pairs=add_minimal_subregions(pairs_num['pairs'],solver)
+print("addedd %d subregions"%len(regions_subregions_pairs['subregions']))
 
 # add topology theory to solver
 print("create topology [it may take a while]")
-topology(solver, regions_subregions['regions'].union(regions_subregions['subregions']), P)
+topology(solver, regions_subregions_pairs['regions'].union(regions_subregions_pairs['subregions']), P)
 print("done\n")
 
 # add rcc5 theory over regions to solver
 print("add rcc5")
-rcc_five(solver, regions_subregions['regions'], P, O, EQ, PP, PO, PPi, DR)
+rcc_five(solver, regions_subregions_pairs['regions'].union(regions_subregions_pairs['subregions']), P, O, EQ, PP, PO, PPi, DR)
 print("done\n")
 
 #create a list of rcc5 relation per each pair of regions
 rcc5=[EQ,PP,PPi,PO,DR]
 itertables = []
-for i in pairs:
+pairs_array=regions_subregions_pairs['pairs_array']
+for i in pairs_array:
     itertables.append(rcc5)
 
 counter=1
@@ -396,16 +435,12 @@ counter_sat=0
 counter_unsat=0
 counter_unknown=0
 
-num_pairs=len(pairs)
+num_pairs=pairs_num['num_pairs']
 num_scenarios=5**len(itertables)
-print("pairs of regions: ",num_pairs)
-print("possible scenarios: ",num_scenarios)
+f.write("\nCOMPLEX SUBGRAPHS\n")
+f.write("possible complex scenarios: %s\n\n"%str(num_scenarios))
 #itertools creates the cartesian product on the vector of rcc5 relations
 #total_scenarios=len(list(itertools.product(*itertables)))
-f=open(spec+".out","w+")
-f.write("spec: %s\n"%spec)
-f.write("pairs of regions: %s\n"%str(num_pairs))
-f.write("possible scenarios: %s\n\n"%str(num_scenarios))
 avg_time=0.00000
 sum_time=0.00000
 
@@ -425,7 +460,7 @@ for t in itertools.product(*itertables):
     printProgressBar(counter,num_scenarios,suffix="avg:"+sec_avg+"."+dec_avg[:5]+"s tot:"+sec_sum+"."+dec_sum[:2]+"s"+" end:"+end_estimation+"s",decimals=5)
     array_scenario=[]
     for i in range(len(t)):
-        array_scenario.append(t[i](pairs[i]))
+        array_scenario.append(t[i](pairs_array[i]))
     scenario=And(array_scenario)
 
     solver.push()
@@ -463,10 +498,5 @@ statistics="\n********\nSTATISTICS\n\nscenarios=%d\nsat=%d\nunsat=%d"%(counter-1
 if(counter_unknown != 0):
     statistics+="\nunknown=%d"%unknown
 
-f.write("\n",statistics)
+f.write("%s\n"%statistics)
 f.close()
-
-#print("\nPrint solver?[y/n]")
-#answer=input()
-#if(answer == 'y'):
-#    print(solver)
