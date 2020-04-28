@@ -9,7 +9,7 @@ import time
 from z3 import *
 import scipy.special
 import itertools
-from parse_model import get_components_from_xmi
+from parse_model import get_components_from_xmi, create_model_dot
 #DEBUG
 import pprint
 
@@ -97,7 +97,6 @@ def topology(solver, regions_and_subregions, P):
     ################################
     # PART OF
     ################################
-    
     counter=0
     l=len(regions_and_subregions)
     tot=l**3
@@ -113,83 +112,41 @@ def topology(solver, regions_and_subregions, P):
                 printProgressBar(counter,tot,decimals=2)
                 counter+=1
 
-    #for s in regions_and_subregions:
-    #    #solver.add(P(s,s))
-    #    solver.assert_and_track(P(s,s), str("reflexivity(%s)"%s))
-    #
-    #for s1 in regions_and_subregions:
-    #    for s2 in regions_and_subregions:
-    #        #solver.add(Implies(And(P(s1,s2),P(s2,s1)), s1==s2))
-    #        solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s1)), s1==s2), str("asymmetry(%s,%s)"%(s1,s2)))
-    #
-    #for s1 in regions_and_subregions:
-    #    for s2 in regions_and_subregions:
-    #        for s3 in regions_and_subregions:
-    #           #solver.add(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)))
-    #           solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)), str("transitivity(%s,%s,%s)"%(s1,s2,s3)))
-
-
 ################################
 # add the 5 relation of rcc5 to the solver
 ################################
 def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
     ################################
-    # OVERLAPS 
-    # O(X,Y) : exists Z P(Z, X) /\ P(Z, Y) 
+    # OVERLAPS          O(X,Y) : exists Z P(Z, X) /\ P(Z, Y) 
+    # EQUAL             EQ(X,Y) : P(X, Y) /\ P(Y, X) 
+    # DESCRETE FROM     DR(X,Y) : not O(X,Y)
+    # PARTIAL OVERLAP   PO(X,Y) : O(X, Y) /\ (not P(X, Y)) /\ (not P(Y, X))
+    # PROPER PART       PP(X,Y) : P(X, Y) /\ (not P(Y, X)) 
+    # PP INVERSE        PPi(X,Y) : P(Y, X) /\ (not P(X, Y)) 
     ################################
+    counter=0
+    l=len(regions_and_subregions)
+    tot=l**3
     for s1 in regions_and_subregions:
         for s2 in regions_and_subregions:
             array=[]
+            #solver.add(EQ(s1,s2) == And(P(s1,s2), P(s2,s1)))
+            solver.assert_and_track(EQ(s1,s2) == And(P(s1,s2), P(s2,s1)), str("EQ(%s,%s)"%(s1,s2)))
+            #solver.add(DR(s1,s2) == Not(O(s1,s2)))
+            solver.assert_and_track(DR(s1,s2) == Not(O(s1,s2)), str("DR(%s,%s)"%(s1,s2)))
+            #solver.add(PO(s1,s2) == And(O(s1,s2), Not(P(s1,s2)), Not(P(s2,s1))))
+            solver.assert_and_track(PO(s1,s2) == And(O(s1,s2), Not(P(s1,s2)), Not(P(s2,s1))), str("PO(%s,%s)"%(s1,s2)))
+            #solver.add(PP(s1,s2) == And(P(s1,s2), Not(P(s2,s1))))
+            solver.assert_and_track(PP(s1,s2) == And(P(s1,s2), Not(P(s2,s1))), str("PP(%s,%s)"%(s1,s2)))
+            #solver.add(PPi(s1,s2) == PP(s2, s1)) #  And(P(s2,s1), Not(P(s1,s2))))
+            solver.assert_and_track(PPi(s1,s2) == PP(s2, s1), str("PPi(%s,%s)"%(s1,s2))) #  And(P(s2,s1), Not(P(s1,s2))))
             for s3 in regions_and_subregions:
                 array.append(And(P(s3,s1),P(s3,s2)))
+                printProgressBar(counter,tot,decimals=2)
+                counter+=1
             #solver.add(O(s1,s2) == Or(array)) 
             solver.assert_and_track(O(s1,s2) == Or(array), str("O(%s,%s) and Z=%s"%(s1,s2,s3))) 
     
-    ################################
-    # EQUAL TO 
-    # EQ(X,Y) : P(X, Y) /\ P(Y, X) 
-    ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
-            #solver.add(EQ(s1,s2) == And(P(s1,s2), P(s2,s1)))
-            solver.assert_and_track(EQ(s1,s2) == And(P(s1,s2), P(s2,s1)), str("EQ(%s,%s)"%(s1,s2)))
-    
-    ################################
-    # DISCRETE FROM
-    # DR(X,Y) : not O(X,Y)
-    ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
-            #solver.add(DR(s1,s2) == Not(O(s1,s2)))
-            solver.assert_and_track(DR(s1,s2) == Not(O(s1,s2)), str("DR(%s,%s)"%(s1,s2)))
-    
-    ################################
-    # PARTIAL OVERLAP
-    # PO(X,Y) : O(X, Y) /\ (not P(X, Y)) /\ (not P(Y, X))
-    ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
-            #solver.add(PO(s1,s2) == And(O(s1,s2), Not(P(s1,s2)), Not(P(s2,s1))))
-            solver.assert_and_track(PO(s1,s2) == And(O(s1,s2), Not(P(s1,s2)), Not(P(s2,s1))), str("PO(%s,%s)"%(s1,s2)))
-    
-    ################################
-    # PROPER PART OF 
-    # PP(X,Y) : P(X, Y) /\ (not P(Y, X)) 
-    ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
-            #solver.add(PP(s1,s2) == And(P(s1,s2), Not(P(s2,s1))))
-            solver.assert_and_track(PP(s1,s2) == And(P(s1,s2), Not(P(s2,s1))), str("PP(%s,%s)"%(s1,s2)))
-    
-    ################################
-    # INVERSE OF PROPER PART OF 
-    # PPi(X,Y) : P(Y, X) /\ (not P(X, Y)) 
-    ################################
-    for s1 in regions_and_subregions:
-        for s2 in regions_and_subregions:
-            #solver.add(PPi(s1,s2) == PP(s2, s1)) #  And(P(s2,s1), Not(P(s1,s2))))
-            solver.assert_and_track(PPi(s1,s2) == PP(s2, s1), str("PPi(%s,%s)"%(s1,s2))) #  And(P(s2,s1), Not(P(s1,s2))))
-
 #should we create objects with method returning a constant for Z3 of type Base? Maybe... maybe not
 def get_base_type(base):
     if(str(base).startswith("A")):
@@ -214,6 +171,7 @@ def get_base_type(base):
 #       sub-regions of components owned by an agent
 def create_regions_from_xmi(spec):
     components_flows=get_components_from_xmi(spec)
+    create_model_dot(path, spec, components_flows['components'], components_flows['flows'])
     components=components_flows['components']
     flows=components_flows['flows']
 
@@ -251,7 +209,6 @@ def create_regions_from_xmi(spec):
 
         region_id+=1
 
-    pprint.pprint(flows)
     #each flow equates beliefs
     for fk,fv in flows.items():
             for r in fv: #fk->r is a flow
@@ -278,7 +235,6 @@ def create_regions_from_xmi(spec):
                 components[cv['owner']]['regions'][get_base_type(cv['regions']['input'])].add(cv['regions']['input'])
                 components[cv['owner']]['regions'][get_base_type(cv['regions']['output'])].add(cv['regions']['output'])
     components['root']=common_knowledge
-
     return components
 
 def get_base_by_name(name,components):
@@ -308,9 +264,9 @@ def get_base_by_name(name,components):
 # - pair relation (A,B), (B,F), or (A,F) [red/green/blue no-arrow]
 # and the following nodes:
 # - F:facts, B:beliefs, A:assertions, name:agents
-def print_graph_and_calculate_pairs(components):
+def generate_graph(components):
 
-    f=open("poset.dot","w+")
+    f=open(os.path.join(path,spec+"_graph.dot"),"w+")
     f.write("digraph G {\n")
     pairs={}
     num_pairs=0
@@ -362,6 +318,12 @@ def print_graph_and_calculate_pairs(components):
     f.close()
     return {'pairs':pairs,'num_pairs':num_pairs}
 
+def analyze_graph():
+    return True
+
+path = os.path.join("./","secra_output")
+if not os.path.exists(path):
+    os.mkdir(path)
 spec="UC1-CPS"
 solver=Solver()
 z3.set_param('parallel.enable', True)
@@ -382,20 +344,19 @@ PPi= Function('Pi', Base, Base, BoolSort())
 
 # create list of unique regions (and subregions) of the spec
 # as a (time) speedup this can be an output of create_regions_from_xmi()
-print("parse package %s in XMI and calculate Bases"%spec)
+print("1. Parse package %s in XMI and calculate Bases"%spec)
 components=create_regions_from_xmi(spec)
-print("done\n")
 
-print("calculate pairs and generate graph")
-pprint.pprint(components)
-pairs_num=print_graph_and_calculate_pairs(components)
-print("%d pairs of regions\n%d configurations\n"%(pairs_num['num_pairs'],5**(pairs_num['num_pairs'])))
+print("2. Calculate pairs and generate graph")
+pairs_num=generate_graph(components)
 
-f=open(spec+".out","w+")
+print("3. Analyze graph")
+f=open(os.path.join(path,spec+".out"),"w+")
 f.write("spec: %s\n"%spec)
 f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 
-pprint.pprint(pairs_num['pairs'])
+#decompose in disconnected subgraph
+#extract cycles
 simple_scenarios={}
 for k,v in pairs_num['pairs'].items():
     if(len(v)==1):
@@ -409,19 +370,22 @@ for k,v in simple_scenarios.items():
     f.write("%d R(%s,%s)\n"%(counter, str(k),str(v[0])))
     counter+=1
 
-print("add constraints on regions for RCC5")
+cycles=analyze_graph()
+
+#TODO on cycles call:
+print("Add constraints on regions (for the unfolding of quantifiers)")
 regions_subregions_pairs=add_minimal_subregions(pairs_num['pairs'],solver)
-print("addedd %d subregions"%len(regions_subregions_pairs['subregions']))
+#print("addedd %d subregions"%len(regions_subregions_pairs['subregions']))
 
 # add topology theory to solver
-print("create topology [it may take a while]")
+print("Create quantifier-free Topological structure")
 topology(solver, regions_subregions_pairs['regions'].union(regions_subregions_pairs['subregions']), P)
-print("done\n")
+print()
 
 # add rcc5 theory over regions to solver
-print("add rcc5")
+print("Create quantifier-free RCC5 theory for Z3 SMT solver")
 rcc_five(solver, regions_subregions_pairs['regions'].union(regions_subregions_pairs['subregions']), P, O, EQ, PP, PO, PPi, DR)
-print("done\n")
+print()
 
 #create a list of rcc5 relation per each pair of regions
 rcc5=[EQ,PP,PPi,PO,DR]

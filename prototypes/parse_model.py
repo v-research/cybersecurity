@@ -2,6 +2,7 @@
 #author: Marco Rocchetto @V-Research
 
 import sys
+import os
 import re 
 import xml.etree.ElementTree as ET
 
@@ -137,8 +138,8 @@ def get_components_from_xmi(cps_spec_name,abf_theory_package="ABFTheory",schema=
     components_flows['flows']=flows
     return components_flows
 
-def dot(cps_spec_name, components, flows):
-    f=open(cps_spec_name+".dot","w+")
+def create_model_dot(path, cps_spec_name, components, flows):
+    f=open(os.path.join(path,cps_spec_name+"_model.dot"),"w+")
     f.write("digraph %s {"%re.sub('[^A-Za-z0-9]+', '', cps_spec_name))
     f.write("\n\tnode [shape=record];")
     for k,v in components.items():
@@ -172,6 +173,9 @@ def dot(cps_spec_name, components, flows):
     f.close()
 
 def test_this_file():
+    path = os.path.join("./","secra_output")
+    if not os.path.exists(path):
+        os.mkdir(path)
     spec="UC1-CPS"
     components_flows=get_components_from_xmi(cps_spec_name=spec)
     components=components_flows['components']
@@ -182,7 +186,7 @@ def test_this_file():
     pp.pprint(components)
     pp.pprint(flows)
     
-    dot(spec, components, flows)
+    create_model_dot(path, spec, components, flows)
 
 if __name__ == "__main__":
     test_this_file()
