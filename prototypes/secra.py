@@ -343,31 +343,12 @@ f=open(os.path.join(path,spec+".out"),"w+")
 f.write("spec: %s\n"%spec)
 f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 
-cycles=[]
 #decompose in disconnected subgraph
-#extract cycles
-# the data structure (pairs_num['pairs']) is a list of pairs optimized as an adjacence list
-# but contains either A-B or B-A not both so we add those missing elements to have a
-# list properly representing the graph
-pprint.pprint(pairs_num['pairs'])
-#graph=[]
-#for k,v in pairs_num['pairs'].items():
-#    graph.append([k,v])
-#    for e in v:
-#        if(e not in pairs_num['pairs'].keys()):
-#            toadd=[k]
-#            for v1 in pairs_num['pairs'].values():
-#                for e1 in v1:
-#                    if(e1 == e):
-#                        toadd.append(
-#                    
-#print(graph)
-#sys.exit(1)
-
+#and extract cycles
 #implement a DFS and detect all disconnected subgraph
-# and per each one detect if they contain cycles
+#and per each one detect if they contain cycles
 
-#DEBUG just to test cycles -- remove code below
+#DEBUG the following code is just to test cycles -- remove code below
 #pair_to_add=[]
 #for k in pairs_num['pairs'].keys():
 #    if(str(k)=="A1"):
@@ -375,10 +356,8 @@ pprint.pprint(pairs_num['pairs'])
 #    elif(str(k)=="B17"):
 #        pair_to_add.append(k)
 #
-#print(pair_to_add)
 #pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
-#print("MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
-#print(pairs_num['pairs'])
+#print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
 # DEBUG REMOVE code above
 
 # the data structure (pairs_num['pairs']) is a 
@@ -429,12 +408,11 @@ for n,adj in pairs_num['pairs'].items():
         subgraphs['acycle'].append(connected_nodes)
     connected_nodes=[]
 
-print(subgraphs)
 counter=0
 risk_level=0
 
 if(subgraphs['cycle']!=[]):
-    print("FOUND %d SIMPLE (ACYCLICAL) STRUCTURE(S)\n"%len(subgraphs['acycle']))
+    print("FOUND %d SIMPLE (ACYCLICAL) STRUCTURE(S)"%len(subgraphs['acycle']))
 for s in subgraphs['acycle']:
     risk_level+=(len(s)-1)*5 #IF RCC5
     f.write("\nSIMPLE ACYCLIC SUBGRAPHS (Any relation in RCC5 holds and do not affect the rest of the model)\n")
@@ -442,21 +420,20 @@ for s in subgraphs['acycle']:
         if(node in pairs_num['pairs'].keys()):
             f.write("%d [%s,%s]\n"%(counter, str(node),str(pairs_num['pairs'][node])))
     counter+=1
-print("Analysis concluded and reported\n")
+print("Analysis on simple structures concluded and reported\n")
 
 if(subgraphs['cycle']!=[]):
     print("FOUND %d COMPLEX (CYCLICAL) STRUCTURE(S)\n"%len(subgraphs['cycle']))
 
-cyclic_struct_counter=0
+cyclic_struct_counter=1
 for s in subgraphs['cycle']:
-    f.write("ANALYZE STRUCTURE %d\n"%cyclic_struct_counter)
-    print("ANALYZE STRUCTURE %d\n"%cyclic_struct_counter)
+    f.write("Analyze structure %d\n"%cyclic_struct_counter)
+    print("Analyze structure %d\n"%cyclic_struct_counter)
 
     sub_pairs_num={}
     for node in s:
         if(node in pairs_num['pairs'].keys()):
             sub_pairs_num[node]=pairs_num['pairs'][node]
-    pprint.pprint(sub_pairs_num)
 
     print("Add constraints on regions (for the unfolding of quantifiers)")
     regions_subregions_pairs=add_minimal_subregions(sub_pairs_num,solver)
@@ -546,6 +523,6 @@ for s in subgraphs['cycle']:
     risk_level+=counter_sat
     cyclic_struct_counter+=1
 
-f.write("TOTAL RISK LEVEL: %d"%risk_level)
+f.write("\nTOTAL RISK LEVEL: %d"%risk_level)
 f.close()
 print("TOTAL RISK LEVEL: %d"%risk_level)
