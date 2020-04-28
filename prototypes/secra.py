@@ -10,7 +10,6 @@ from z3 import *
 import scipy.special
 import itertools
 from parse_model import get_components_from_xmi, create_model_dot
-#DEBUG
 import pprint
 
 # Print iterations progress
@@ -93,25 +92,6 @@ def add_minimal_subregions(pairs,solver):
                 num_subreg+=1
     return {'regions':regions,'subregions':subregions,'pairs_array':pairs_array}
 
-def topology(solver, regions_and_subregions, P):
-    ################################
-    # PART OF
-    ################################
-    counter=0
-    l=len(regions_and_subregions)
-    tot=l**3
-    for s1 in regions_and_subregions:
-        #solver.add(P(s,s))
-        solver.assert_and_track(P(s1,s1), str("reflexivity(%s1)"%s1))
-        for s2 in regions_and_subregions:
-            #solver.add(Implies(And(P(s1,s2),P(s2,s1)), s1==s2))
-            solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s1)), s1==s2), str("asymmetry(%s,%s)"%(s1,s2)))
-            for s3 in regions_and_subregions:
-                #solver.add(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)))
-                solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)), str("transitivity(%s,%s,%s)"%(s1,s2,s3)))
-                printProgressBar(counter,tot,decimals=2)
-                counter+=1
-
 ################################
 # add the 5 relation of rcc5 to the solver
 ################################
@@ -128,8 +108,11 @@ def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
     l=len(regions_and_subregions)
     tot=l**3
     for s1 in regions_and_subregions:
+        #solver.add(P(s,s))
+        solver.assert_and_track(P(s1,s1), str("reflexivity(%s1)"%s1))
         for s2 in regions_and_subregions:
-            array=[]
+            #solver.add(Implies(And(P(s1,s2),P(s2,s1)), s1==s2))
+            solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s1)), s1==s2), str("asymmetry(%s,%s)"%(s1,s2)))
             #solver.add(EQ(s1,s2) == And(P(s1,s2), P(s2,s1)))
             solver.assert_and_track(EQ(s1,s2) == And(P(s1,s2), P(s2,s1)), str("EQ(%s,%s)"%(s1,s2)))
             #solver.add(DR(s1,s2) == Not(O(s1,s2)))
@@ -140,7 +123,11 @@ def rcc_five(solver, regions_and_subregions, P, O, EQ, PP, PO, PPi, DR):
             solver.assert_and_track(PP(s1,s2) == And(P(s1,s2), Not(P(s2,s1))), str("PP(%s,%s)"%(s1,s2)))
             #solver.add(PPi(s1,s2) == PP(s2, s1)) #  And(P(s2,s1), Not(P(s1,s2))))
             solver.assert_and_track(PPi(s1,s2) == PP(s2, s1), str("PPi(%s,%s)"%(s1,s2))) #  And(P(s2,s1), Not(P(s1,s2))))
+            array=[]
             for s3 in regions_and_subregions:
+                #solver.add(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)))
+                solver.assert_and_track(Implies(And(P(s1,s2),P(s2,s3)), P(s1,s3)), str("transitivity(%s,%s,%s)"%(s1,s2,s3)))
+                #for OVERLAP
                 array.append(And(P(s3,s1),P(s3,s2)))
                 printProgressBar(counter,tot,decimals=2)
                 counter+=1
@@ -318,9 +305,6 @@ def generate_graph(components):
     f.close()
     return {'pairs':pairs,'num_pairs':num_pairs}
 
-def analyze_graph():
-    return True
-
 path = os.path.join("./","secra_output")
 if not os.path.exists(path):
     os.mkdir(path)
@@ -346,6 +330,10 @@ PPi= Function('Pi', Base, Base, BoolSort())
 # as a (time) speedup this can be an output of create_regions_from_xmi()
 print("1. Parse package %s in XMI and calculate Bases"%spec)
 components=create_regions_from_xmi(spec)
+#TODO this is not in json format
+f=open(os.path.join(path,spec+"_model.json"),"w+")
+pprint.pprint(components,f)
+f.close()
 
 print("2. Calculate pairs and generate graph")
 pairs_num=generate_graph(components)
@@ -355,112 +343,209 @@ f=open(os.path.join(path,spec+".out"),"w+")
 f.write("spec: %s\n"%spec)
 f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 
+cycles=[]
 #decompose in disconnected subgraph
 #extract cycles
-simple_scenarios={}
-for k,v in pairs_num['pairs'].items():
-    if(len(v)==1):
-       simple_scenarios[k]=v 
-for k in simple_scenarios:
-    del pairs_num['pairs'][k]
+# the data structure (pairs_num['pairs']) is a list of pairs optimized as an adjacence list
+# but contains either A-B or B-A not both so we add those missing elements to have a
+# list properly representing the graph
+pprint.pprint(pairs_num['pairs'])
+#graph=[]
+#for k,v in pairs_num['pairs'].items():
+#    graph.append([k,v])
+#    for e in v:
+#        if(e not in pairs_num['pairs'].keys()):
+#            toadd=[k]
+#            for v1 in pairs_num['pairs'].values():
+#                for e1 in v1:
+#                    if(e1 == e):
+#                        toadd.append(
+#                    
+#print(graph)
+#sys.exit(1)
 
+#implement a DFS and detect all disconnected subgraph
+# and per each one detect if they contain cycles
+
+#DEBUG just to test cycles -- remove code below
+#pair_to_add=[]
+#for k in pairs_num['pairs'].keys():
+#    if(str(k)=="A1"):
+#        pair_to_add.append(k)
+#    elif(str(k)=="B17"):
+#        pair_to_add.append(k)
+#
+#print(pair_to_add)
+#pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
+#print("MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
+#print(pairs_num['pairs'])
+# DEBUG REMOVE code above
+
+# the data structure (pairs_num['pairs']) is a 
+# list of pairs implemented as an adjacence list of a directed graph
+# but contains either [A,[B]] or [B[A]], not both 
+found=[]
+connected_nodes=[]
+stack=[]
+subgraphs={}
+subgraphs['acycle']=[]
+subgraphs['cycle']=[]
+for n,adj in pairs_num['pairs'].items():
+    # we should use a deque for performance
+    # https://realpython.com/how-to-implement-python-stack/
+    if(len(stack)!=0):
+        print("ERROR")
+        sys.exit(0)
+    if(n not in found):
+        stack.append(n)
+    else:
+        continue
+    #print("n:",n)
+    #print("stack:",stack)
+    #print("found:",found)
+    #print()
+    cycle=False
+    while(len(stack) != 0):
+        current=stack.pop()
+        if(current not in found):
+            found.append(current)
+        if(current not in connected_nodes):
+            connected_nodes.append(current)
+        else: 
+            #print("cycle",current)
+            #print(connected_nodes)
+            cycle=True
+        if(current in pairs_num['pairs'].keys()):
+            for adj_node in pairs_num['pairs'][current]:
+                stack.append(adj_node)
+        #print("current:",current)
+        #print("stack:",stack)
+        #print("found:",found)
+        #print()
+    #print("cn ",connected_nodes)
+    if(cycle):
+        subgraphs['cycle'].append(connected_nodes)
+    else:
+        subgraphs['acycle'].append(connected_nodes)
+    connected_nodes=[]
+
+print(subgraphs)
 counter=0
-f.write("\nSIMPLE SUBGRAPHS (Any relation in RCC5 holds and do not affect the rest of the model)\n")
-for k,v in simple_scenarios.items():
-    f.write("%d R(%s,%s)\n"%(counter, str(k),str(v[0])))
+risk_level=0
+
+if(subgraphs['cycle']!=[]):
+    print("FOUND %d SIMPLE (ACYCLICAL) STRUCTURE(S)\n"%len(subgraphs['acycle']))
+for s in subgraphs['acycle']:
+    risk_level+=(len(s)-1)*5 #IF RCC5
+    f.write("\nSIMPLE ACYCLIC SUBGRAPHS (Any relation in RCC5 holds and do not affect the rest of the model)\n")
+    for node in s:
+        if(node in pairs_num['pairs'].keys()):
+            f.write("%d [%s,%s]\n"%(counter, str(node),str(pairs_num['pairs'][node])))
     counter+=1
+print("Analysis concluded and reported\n")
 
-cycles=analyze_graph()
+if(subgraphs['cycle']!=[]):
+    print("FOUND %d COMPLEX (CYCLICAL) STRUCTURE(S)\n"%len(subgraphs['cycle']))
 
-#TODO on cycles call:
-print("Add constraints on regions (for the unfolding of quantifiers)")
-regions_subregions_pairs=add_minimal_subregions(pairs_num['pairs'],solver)
-#print("addedd %d subregions"%len(regions_subregions_pairs['subregions']))
+cyclic_struct_counter=0
+for s in subgraphs['cycle']:
+    f.write("ANALYZE STRUCTURE %d\n"%cyclic_struct_counter)
+    print("ANALYZE STRUCTURE %d\n"%cyclic_struct_counter)
 
-# add topology theory to solver
-print("Create quantifier-free Topological structure")
-topology(solver, regions_subregions_pairs['regions'].union(regions_subregions_pairs['subregions']), P)
-print()
+    sub_pairs_num={}
+    for node in s:
+        if(node in pairs_num['pairs'].keys()):
+            sub_pairs_num[node]=pairs_num['pairs'][node]
+    pprint.pprint(sub_pairs_num)
 
-# add rcc5 theory over regions to solver
-print("Create quantifier-free RCC5 theory for Z3 SMT solver")
-rcc_five(solver, regions_subregions_pairs['regions'].union(regions_subregions_pairs['subregions']), P, O, EQ, PP, PO, PPi, DR)
-print()
+    print("Add constraints on regions (for the unfolding of quantifiers)")
+    regions_subregions_pairs=add_minimal_subregions(sub_pairs_num,solver)
+    
+    # add topology theory to solver
+    print("Create Topological structure, RCC5 Theory + unfolding quantifiers")
+    rcc_five(solver, regions_subregions_pairs['regions'].union(regions_subregions_pairs['subregions']), P, O, EQ, PP, PO, PPi, DR)
+    print()
+    
+    #create a list of rcc5 relation per each pair of regions
+    rcc5=[EQ,PP,PPi,PO,DR]
+    itertables = []
+    pairs_array=regions_subregions_pairs['pairs_array']
+    for i in pairs_array:
+        itertables.append(rcc5)
+    
+    counter=1
+    counter_sat=0
+    counter_unsat=0
+    counter_unknown=0
+    
+    num_pairs=0
+    for v in sub_pairs_num.values():
+        num_pairs+=len(v)
+    num_scenarios=5**len(itertables)
+    f.write("possible scenarios: %s\n\n"%str(num_scenarios))
+    #itertools creates the cartesian product on the vector of rcc5 relations
+    #total_scenarios=len(list(itertools.product(*itertables)))
+    avg_time=0.00000
+    sum_time=0.00000
+    
+    #TODO restart from 
+    # save pairs and restart from that iteration
+    # https://stackoverflow.com/questions/36802314/python-itertools-product-start-from-certain
+    for t in itertools.product(*itertables):
+    
+        start = time.time()
+    
+        sec_avg=str(avg_time).split('.')[0]
+        dec_avg=str(avg_time).split('.')[1]
+        sec_sum=str(sum_time).split('.')[0]
+        dec_sum=str(sum_time).split('.')[1]
+        end=avg_time*(num_scenarios-counter)
+        end_estimation=str(end).split('.')[0]
+        printProgressBar(counter,num_scenarios,suffix="avg:"+sec_avg+"."+dec_avg[:5]+"s tot:"+sec_sum+"."+dec_sum[:2]+"s"+" end:"+end_estimation+"s",decimals=5)
+        array_scenario=[]
+        for i in range(len(t)):
+            array_scenario.append(t[i](pairs_array[i]))
+        scenario=And(array_scenario)
+    
+        solver.push()
+        solver.add(scenario)
+        check=solver.check()
+    
+        if(check == unsat):
+            counter_unsat+=1
+            f.write("UNSAT CORE\n")
+            core=solver.unsat_core()
+            for k in core:
+                f.write('%s=%s\n'%(k, core[k]))
+        if(check == unknown):
+            counter_unknown+=1
+        if(check == sat):
+            counter_sat+=1
+            #f.write("MODEL\n")
+            #model=solver.model()
+            #for k in model:
+            #    f.write('%s=%s\n'%(k, model[k]))
+    
+        #TODO 
+        #https://stackoverflow.com/questions/14628279/z3-convert-z3py-expression-to-smt-lib2/14629021#14629021
+        #https://stackoverflow.com/questions/19569431/z3py-print-large-formula-with-144-variables
+        f.write("%d %s\n %s\n\n"%(counter, check, str(scenario).replace('\n','')))
+        solver.pop()
+    
+        counter+=1
+    
+        end = time.time()
+        sum_time+=(end - start)
+        avg_time=(sum_time/counter)
+    
+    statistics="\n********\nSTATISTICS\n\nscenarios=%d\nsat=%d\nunsat=%d"%(counter-1,counter_sat,counter_unsat)
+    if(counter_unknown != 0):
+        #This should never happen
+        statistics+="\nUNKNOWN=%d"%unknown
+    f.write("%s\n"%statistics)
+    risk_level+=counter_sat
+    cyclic_struct_counter+=1
 
-#create a list of rcc5 relation per each pair of regions
-rcc5=[EQ,PP,PPi,PO,DR]
-itertables = []
-pairs_array=regions_subregions_pairs['pairs_array']
-for i in pairs_array:
-    itertables.append(rcc5)
-
-counter=1
-counter_sat=0
-counter_unsat=0
-counter_unknown=0
-
-num_pairs=pairs_num['num_pairs']
-num_scenarios=5**len(itertables)
-f.write("\nCOMPLEX SUBGRAPHS\n")
-f.write("possible complex scenarios: %s\n\n"%str(num_scenarios))
-#itertools creates the cartesian product on the vector of rcc5 relations
-#total_scenarios=len(list(itertools.product(*itertables)))
-avg_time=0.00000
-sum_time=0.00000
-
-#TODO restart from 
-# save pairs and restart from that iteration
-# https://stackoverflow.com/questions/36802314/python-itertools-product-start-from-certain
-for t in itertools.product(*itertables):
-
-    start = time.time()
-
-    sec_avg=str(avg_time).split('.')[0]
-    dec_avg=str(avg_time).split('.')[1]
-    sec_sum=str(sum_time).split('.')[0]
-    dec_sum=str(sum_time).split('.')[1]
-    end=avg_time*(num_scenarios-counter)
-    end_estimation=str(end).split('.')[0]
-    printProgressBar(counter,num_scenarios,suffix="avg:"+sec_avg+"."+dec_avg[:5]+"s tot:"+sec_sum+"."+dec_sum[:2]+"s"+" end:"+end_estimation+"s",decimals=5)
-    array_scenario=[]
-    for i in range(len(t)):
-        array_scenario.append(t[i](pairs_array[i]))
-    scenario=And(array_scenario)
-
-    solver.push()
-    solver.add(scenario)
-    check=solver.check()
-
-    if(check == unsat):
-        counter_unsat+=1
-        f.write("UNSAT CORE\n")
-        core=solver.unsat_core()
-        for k in core:
-            f.write('%s=%s\n'%(k, core[k]))
-    if(check == unknown):
-        counter_unknown+=1
-    if(check == sat):
-        counter_sat+=1
-        #f.write("MODEL\n")
-        #model=solver.model()
-        #for k in model:
-        #    f.write('%s=%s\n'%(k, model[k]))
-
-    #TODO 
-    #https://stackoverflow.com/questions/14628279/z3-convert-z3py-expression-to-smt-lib2/14629021#14629021
-    #https://stackoverflow.com/questions/19569431/z3py-print-large-formula-with-144-variables
-    f.write("%d %s\n %s\n\n"%(counter, check, str(scenario).replace('\n','')))
-    solver.pop()
-
-    counter+=1
-
-    end = time.time()
-    sum_time+=(end - start)
-    avg_time=(sum_time/counter)
-
-statistics="\n********\nSTATISTICS\n\nscenarios=%d\nsat=%d\nunsat=%d"%(counter-1,counter_sat,counter_unsat)
-if(counter_unknown != 0):
-    statistics+="\nunknown=%d"%unknown
-
-f.write("%s\n"%statistics)
+f.write("TOTAL RISK LEVEL: %d"%risk_level)
 f.close()
+print("TOTAL RISK LEVEL: %d"%risk_level)
