@@ -12,8 +12,8 @@ import itertools
 from parse_model import get_components_from_xmi, create_model_dot
 import pprint
 
-spec_package="TwoGuysTalking"
-xmi_filename="TwoCybGuysTalking.xmi"
+spec_package="UC1-CPS"
+xmi_filename="Engineering.xmi"
 
 # Print iterations progress
 # taken from (thanks Greenstick):
