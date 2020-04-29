@@ -12,6 +12,9 @@ import itertools
 from parse_model import get_components_from_xmi, create_model_dot
 import pprint
 
+spec_package="TwoGuysTalking"
+xmi_filename="TwoCybGuysTalking.xmi"
+
 # Print iterations progress
 # taken from (thanks Greenstick):
 # https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
@@ -147,7 +150,7 @@ def get_base_type(base):
     return basetype
 
 #input
-# -spec: string with the name of the package of the spec
+# -spec_package: string with the name of the package of the spec
 #output
 # -component_constraints is a dictionary with entries:
 # --components updated with regions (assertions, beliefs, and facts)
@@ -156,9 +159,9 @@ def get_base_type(base):
 # -- defining an equality constraint between the LHS and RHS of each
 #       flow (there is a flow from the out/input port to/from the channel) and
 #       sub-regions of components owned by an agent
-def create_regions_from_xmi(spec):
-    components_flows=get_components_from_xmi(spec)
-    create_model_dot(path, spec, components_flows['components'], components_flows['flows'])
+def create_regions_from_xmi(spec_package,xmi_filename):
+    components_flows=get_components_from_xmi(spec_package,xmi=xmi_filename)
+    create_model_dot(path, spec_package, components_flows['components'], components_flows['flows'])
     components=components_flows['components']
     flows=components_flows['flows']
 
@@ -253,7 +256,7 @@ def get_base_by_name(name,components):
 # - F:facts, B:beliefs, A:assertions, name:agents
 def generate_graph(components):
 
-    f=open(os.path.join(path,spec+"_graph.dot"),"w+")
+    f=open(os.path.join(path,spec_package+"_graph.dot"),"w+")
     f.write("digraph G {\n")
     pairs={}
     num_pairs=0
@@ -308,7 +311,6 @@ def generate_graph(components):
 path = os.path.join("./","secra_output")
 if not os.path.exists(path):
     os.mkdir(path)
-spec="UC1-CPS"
 solver=Solver()
 z3.set_param('parallel.enable', True)
 z3.set_param('parallel.threads.max', 32)
@@ -328,10 +330,10 @@ PPi= Function('Pi', Base, Base, BoolSort())
 
 # create list of unique regions (and subregions) of the spec
 # as a (time) speedup this can be an output of create_regions_from_xmi()
-print("1. Parse package %s in XMI and calculate Bases"%spec)
-components=create_regions_from_xmi(spec)
+print("1. Parse package %s in %s and calculate Bases"%(spec_package,xmi_filename))
+components=create_regions_from_xmi(spec_package,xmi_filename)
 #TODO this is not in json format
-f=open(os.path.join(path,spec+"_model.json"),"w+")
+f=open(os.path.join(path,spec_package+"_model.json"),"w+")
 pprint.pprint(components,f)
 f.close()
 
@@ -339,8 +341,8 @@ print("2. Calculate pairs and generate graph")
 pairs_num=generate_graph(components)
 
 print("3. Analyze graph")
-f=open(os.path.join(path,spec+".out"),"w+")
-f.write("spec: %s\n"%spec)
+f=open(os.path.join(path,spec_package+".out"),"w+")
+f.write("spec: %s\n"%spec_package)
 f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 
 #decompose in disconnected subgraph

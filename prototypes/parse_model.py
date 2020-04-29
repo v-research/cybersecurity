@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 # 2. flows: {ID: [ID1, ID2, ...]}
 def get_components_from_xmi(cps_spec_name,abf_theory_package="ABFTheory",schema="{http://schema.omg.org/spec/XMI/2.1}",xmi="Engineering.xmi"):
     components_flows={}
-    tree = ET.parse('Engineering.xmi')
+    tree = ET.parse(xmi)
     root = tree.getroot()
     #{id:{name,type}} for agents, ports, and functional blocks
     components={}
@@ -176,7 +176,7 @@ def test_this_file():
     path = os.path.join("./","secra_output")
     if not os.path.exists(path):
         os.mkdir(path)
-    spec="UC1-CPS"
+    spec="TwoGuysTalking"
     components_flows=get_components_from_xmi(cps_spec_name=spec)
     components=components_flows['components']
     flows=components_flows['flows']
