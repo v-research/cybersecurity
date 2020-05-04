@@ -407,7 +407,7 @@ def write_report(path,spec_package,risk_structure,components):
                             weak_component=c['name']
                             weak_comp_type=c['type']
                             if(rel == "all"):
-                                for sem_val in weak_semantics['port'].values():
+                                for sem_val in weak_semantics[comp_type_tmp].values():
                                     weak_weakness=sem_val['weakness']
                                     weak_mitigation=sem_val['mitigation']
                                     weak_sheet.write(weak_id, 0, weak_id)
@@ -418,8 +418,8 @@ def write_report(path,spec_package,risk_structure,components):
                                     weak_sheet.write(weak_id, 5, weak_mitigation)
                                     weak_id+=1
                             else:
-                                weak_weakness=weak_semantics['port'][rel]['weakness']
-                                weak_mitigation=weak_semantics['port'][rel]['mitigation']
+                                weak_weakness=weak_semantics[comp_type_tmp][rel]['weakness']
+                                weak_mitigation=weak_semantics[comp_type_tmp][rel]['mitigation']
                                 weak_sheet.write(weak_id, 0, weak_id)
                                 weak_sheet.write(weak_id, 1, weak_agent)
                                 weak_sheet.write(weak_id, 2, weak_component)
