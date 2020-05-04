@@ -442,7 +442,13 @@ def write_report(path,spec_package,risk_structure,components):
                                 weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
                                 weak_id+=1
 
-    weak_sheet.data_validation(0,6,weak_id,6,{'validate': 'list', 'source': ['open', 'mitigated']})
+    status_position=0
+    for i in first_row:
+        if(i!="Status"):
+            status_position+=1
+        else:
+            break
+    weak_sheet.data_validation(0,status_position,weak_id,status_position,{'validate': 'list', 'source': ['open', 'mitigated']})
     workbook.close()
 
 path = os.path.join("./","secra_output")
