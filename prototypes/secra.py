@@ -330,8 +330,6 @@ def write_report(path,spec_package,risk_structure,components):
     for i in range(len(first_row)):
         weak_sheet.write_string(0, i, first_row[i], cell_format['first_weak']) 
     
-    pprint.pprint(components) 
-
     # Relations2Weakness
     # port (input/output): R(A,B) where B:input or B:output
     #   EQ: correctly forwards inputs as outputs
@@ -340,15 +338,12 @@ def write_report(path,spec_package,risk_structure,components):
     # channel: R(A,A') where A:input, A':output
     #   EQ: correctly tranfers information
     weak_semantics={}
-    weak_semantics['port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m5"} }
-    weak_semantics['block']={ 'po':{'weakness':"the component has a Byzantine behavior where occasionally outputs the expected output given the correct inputs. However, not all the inputs are handled properly, nor all the expected outputs are generated when correct inputs are given.",'mitigation':"m6"}, 'pp':{'weakness':"part of the expected outputs are not generated in response to the correct inputs",'mitigation':"m7"}, 'ppi':{'weakness':"the components correctly performs the expected behavior when the correct inputs are provided but is vulnerable to input injections",'mitigation':"m8"}, 'dr':{'weakness':"the component never performs the expected behavior (e.g. physical damage)",'mitigation':"m9"} }
-    weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m5"} }
-    pprint.pprint(weak_semantics)
+    weak_semantics['port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
+    weak_semantics['block']={ 'po':{'weakness':"the component has a Byzantine behavior where occasionally outputs the expected output given the correct inputs. However, not all the inputs are handled properly, nor all the expected outputs are generated when correct inputs are given.",'mitigation':"m7"}, 'pp':{'weakness':"part of the expected outputs are not generated in response to the correct inputs",'mitigation':"m8"}, 'ppi':{'weakness':"the components correctly performs the expected behavior when the correct inputs are provided but is vulnerable to input injections",'mitigation':"m9"}, 'dr':{'weakness':"the component never performs the expected behavior (e.g. physical damage)",'mitigation':"m10"} }
+    weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
 
     weak_id=1
-
     for rel,pairs in risk_structure.items():
-
         for pair in pairs:
             weak_agent=""
             weak_component=""
@@ -367,80 +362,71 @@ def write_report(path,spec_package,risk_structure,components):
             elif(left=="assertion" and right=="assertion"): #channel
                 comp_type_tmp="channel"
 
+            #this loop can be merged with the one after
             for c in components.values():
                 if(c['type']=="agent" and (comp_type_tmp=="port" or comp_type_tmp=="block")):
                     #check if the belief is owned by this agent
-                    print(c)
                     if(pair[0] in c['regions']['belief'] or pair[1] in c['regions']['belief']): #this checks the hash of the two objects
                         weak_agent=c['name']
-                        print("weak_agent: ",c['name'])
                         break
                 elif(c['type']=="channel" and comp_type_tmp=="channel"):
-                    print("CHANNEL")
                     if((pair[0]==c['regions']['input'] and pair[1]==c['regions']['output']) or (pair[1]==c['regions']['input'] and pair[0]==c['regions']['output'])): 
                         weak_agent=c['name']
-                        print("weak_agent: ",c['name'])
                         break
 
             for c in components.values():
-                if(c['type']!="agent" and c['type']!="root" and c['type']!="base"):
-                  if(comp_type_tmp=="channel" or comp_type_tmp=="port"):
-                      if((pair[0]==c['regions']['input'] and pair[1]==c['regions']['output']) or (pair[1]==c['regions']['input'] and pair[0]==c['regions']['output'])): 
-                          weak_component=c['name']
-                          weak_comp_type=c['type']
-                          print("weak_component: ",c['name'])
-                          #if all
-                          for sem_val in weak_semantics['port'].values():
-                              weak_weakness=sem_val['weakness']
-                              weak_mitigation=sem_val['mitigation']
-                              print("weak_weakness: ",sem_val['weakness'])
-                              print("weak_mitigation: ",sem_val['mitigation'])
-                              weak_sheet.write(weak_id, 0, weak_id)
-                              weak_sheet.write(weak_id, 1, weak_agent)
-                              weak_sheet.write(weak_id, 2, weak_component)
-                              weak_sheet.write(weak_id, 3, weak_comp_type)
-                              weak_sheet.write(weak_id, 4, weak_weakness)
-                              weak_sheet.write(weak_id, 5, weak_mitigation)
-                              weak_id+=1
-                  elif(comp_type_tmp=="block"):
-                      if(pair[0]==c['regions']['output'] or pair[1]==c['regions']['output']):
-                          weak_component=c['name']
-                          weak_comp_type=c['type']
-                          print("weak_component: ",c['name'])
-                          #if all
-                          for sem_val in weak_semantics['port'].values():
-                              weak_weakness=sem_val['weakness']
-                              weak_mitigation=sem_val['mitigation']
-                              print("weak_weakness: ",sem_val['weakness'])
-                              print("weak_mitigation: ",sem_val['mitigation'])
-                              weak_sheet.write(weak_id, 0, weak_id)
-                              weak_sheet.write(weak_id, 1, weak_agent)
-                              weak_sheet.write(weak_id, 2, weak_component)
-                              weak_sheet.write(weak_id, 3, weak_comp_type)
-                              weak_sheet.write(weak_id, 4, weak_weakness)
-                              weak_sheet.write(weak_id, 5, weak_mitigation)
-                              weak_id+=1
-                        
-
-#                print("weak_id: ",weak_id)
-#        elif(rel == "eq"):
-#            #TODO
-#        elif(rel == "po"):
-#            #TODO
-#        elif(rel == "pp"):
-#            #TODO
-#        elif(rel == "pp"):
-#            #TODO
-#        elif(rel == "dr"):
-#            #TODO
-#        elif(rel == "ppb0"):
-#            #TODO
-#        elif(rel == "ppia0"):
-#            #TODO
-#        else:
-#            print("ERROR - relation not currenlty handled")
-#            print(risk_structure)
-#            sys.exit(1)
+                if(c['type']=="inputport" or c['type']=="outputport" or c['type']=="channel" or c['type']=="inputsocket" or c['type']=="outputsocket" or c['type']=="funblock"):
+                    if(comp_type_tmp=="channel" or comp_type_tmp=="port"):
+                        if((pair[0]==c['regions']['input'] and pair[1]==c['regions']['output']) or (pair[1]==c['regions']['input'] and pair[0]==c['regions']['output'])): 
+                            weak_component=c['name']
+                            weak_comp_type=c['type']
+                            if(rel == "all"):
+                                for sem_val in weak_semantics[comp_type_tmp].values():
+                                    weak_weakness=sem_val['weakness']
+                                    weak_mitigation=sem_val['mitigation']
+                                    weak_sheet.write(weak_id, 0, weak_id)
+                                    weak_sheet.write(weak_id, 1, weak_agent)
+                                    weak_sheet.write(weak_id, 2, weak_component)
+                                    weak_sheet.write(weak_id, 3, weak_comp_type)
+                                    weak_sheet.write(weak_id, 4, weak_weakness)
+                                    weak_sheet.write(weak_id, 5, weak_mitigation)
+                                    weak_id+=1
+                            else:
+                                weak_weakness=weak_semantics[comp_type_tmp][rel]['weakness']
+                                weak_mitigation=weak_semantics[comp_type_tmp][rel]['mitigation']
+                                weak_sheet.write(weak_id, 0, weak_id)
+                                weak_sheet.write(weak_id, 1, weak_agent)
+                                weak_sheet.write(weak_id, 2, weak_component)
+                                weak_sheet.write(weak_id, 3, weak_comp_type)
+                                weak_sheet.write(weak_id, 4, weak_weakness)
+                                weak_sheet.write(weak_id, 5, weak_mitigation)
+                                weak_id+=1
+                              
+                    elif(comp_type_tmp=="block"):
+                        if(pair[0]==c['regions']['output'] or pair[1]==c['regions']['output']):
+                            weak_component=c['name']
+                            weak_comp_type=c['type']
+                            if(rel == "all"):
+                                for sem_val in weak_semantics['port'].values():
+                                    weak_weakness=sem_val['weakness']
+                                    weak_mitigation=sem_val['mitigation']
+                                    weak_sheet.write(weak_id, 0, weak_id)
+                                    weak_sheet.write(weak_id, 1, weak_agent)
+                                    weak_sheet.write(weak_id, 2, weak_component)
+                                    weak_sheet.write(weak_id, 3, weak_comp_type)
+                                    weak_sheet.write(weak_id, 4, weak_weakness)
+                                    weak_sheet.write(weak_id, 5, weak_mitigation)
+                                    weak_id+=1
+                            else:
+                                weak_weakness=weak_semantics['port'][rel]['weakness']
+                                weak_mitigation=weak_semantics['port'][rel]['mitigation']
+                                weak_sheet.write(weak_id, 0, weak_id)
+                                weak_sheet.write(weak_id, 1, weak_agent)
+                                weak_sheet.write(weak_id, 2, weak_component)
+                                weak_sheet.write(weak_id, 3, weak_comp_type)
+                                weak_sheet.write(weak_id, 4, weak_weakness)
+                                weak_sheet.write(weak_id, 5, weak_mitigation)
+                                weak_id+=1
     workbook.close()
 
 path = os.path.join("./","secra_output")
@@ -462,14 +448,14 @@ EQ = Function('EQ', Base, Base, BoolSort())
 DR = Function('DR', Base, Base, BoolSort())
 PO = Function('PO', Base, Base, BoolSort())
 PP = Function('PP', Base, Base, BoolSort())
-PPi= Function('Pi', Base, Base, BoolSort())
+PPi= Function('PPi', Base, Base, BoolSort())
 
 # create list of unique regions (and subregions) of the spec
 # as a (time) speedup this can be an output of create_regions_from_xmi()
 print("1. Parse package %s in %s and calculate Bases"%(spec_package,xmi_filename))
 components=create_regions_from_xmi(spec_package,xmi_filename)
-#TODO this is not in json format
-f=open(os.path.join(path,spec_package+"_model.json"),"w+")
+#TODO generate a json  
+f=open(os.path.join(path,spec_package+"_model.out"),"w+")
 pprint.pprint(components,f)
 f.close()
 
@@ -487,15 +473,15 @@ f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 #and per each one detect if they contain cycles
 
 #DEBUG the following code is just to test cycles -- remove code below
-#pair_to_add=[]
-#for k in pairs_num['pairs'].keys():
-#    if(str(k)=="A1"):
-#        pair_to_add.append(k)
-#    elif(str(k)=="B17"):
-#        pair_to_add.append(k)
-#
-#pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
-#print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
+pair_to_add=[]
+for k in pairs_num['pairs'].keys():
+    if(str(k)=="A1"):
+        pair_to_add.append(k)
+    elif(str(k)=="B17"):
+        pair_to_add.append(k)
+
+pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
+print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
 # DEBUG REMOVE code above
 
 # the data structure (pairs_num['pairs']) is a 
@@ -547,13 +533,11 @@ for n,adj in pairs_num['pairs'].items():
     connected_nodes=[]
 
 counter=0
-risk_level=0
-risk_structure={"eq":[],"po":[],"pp":[],"ppi":[],"dr":[],"all":[]}
+risk_structure={"po":[],"pp":[],"ppi":[],"dr":[],"all":[]}
 
 if(subgraphs['acycle']!=[]):
     print("FOUND %d SIMPLE (ACYCLICAL) STRUCTURE(S)"%len(subgraphs['acycle']))
 for s in subgraphs['acycle']:
-    risk_level+=(len(s)-1)*5 #IF RCC5
     f.write("\nSIMPLE ACYCLIC SUBGRAPHS (Any relation in RCC5 holds and do not affect the rest of the model)\n")
     for node in s:
         if(node in pairs_num['pairs'].keys()):
@@ -563,9 +547,6 @@ for s in subgraphs['acycle']:
     counter+=1
 print("Analysis on simple structures concluded and reported\n")
 
-pprint.pprint(risk_structure)
-write_report(path,spec_package,risk_structure,components)
-sys.exit(1)
 
 if(subgraphs['cycle']!=[]):
     print("FOUND %d COMPLEX (CYCLICAL) STRUCTURE(S)\n"%len(subgraphs['cycle']))
@@ -585,8 +566,7 @@ for s in subgraphs['cycle']:
     
     # add topology theory to solver
     print("Create Topological structure, RCC5 Theory + unfolding quantifiers")
-    #DEBUG uncomment row below
-    #rcc_five(solver, regions_subregions_pairs['regions'].union(regions_subregions_pairs['subregions']), P, O, EQ, PP, PO, PPi, DR)
+    rcc_five(solver, regions_subregions_pairs['regions'].union(regions_subregions_pairs['subregions']), P, O, EQ, PP, PO, PPi, DR)
     print()
     
     #create a list of rcc5 relation per each pair of regions
@@ -615,7 +595,7 @@ for s in subgraphs['cycle']:
     # save pairs and restart from that iteration
     # https://stackoverflow.com/questions/36802314/python-itertools-product-start-from-certain
     for t in itertools.product(*itertables):
-    
+        risk_tmp=[]
         start = time.time()
     
         sec_avg=str(avg_time).split('.')[0]
@@ -626,8 +606,11 @@ for s in subgraphs['cycle']:
         end_estimation=str(end).split('.')[0]
         printProgressBar(counter,num_scenarios,suffix="avg:"+sec_avg+"."+dec_avg[:5]+"s tot:"+sec_sum+"."+dec_sum[:2]+"s"+" end:"+end_estimation+"s",decimals=5)
         array_scenario=[]
+
         for i in range(len(t)):
             array_scenario.append(t[i](pairs_array[i]))
+            if(t[i]!=EQ):
+                risk_tmp.append([str(t[i]).lower(),pairs_array[i]])
 
         scenario=And(array_scenario)
     
@@ -645,17 +628,16 @@ for s in subgraphs['cycle']:
             counter_unknown+=1
         if(check == sat):
             counter_sat+=1
+            if(t[i]!=EQ):
+                for r in risk_tmp:
+                    if(r[1] not in risk_structure[r[0]]):
+                        risk_structure[r[0]].append(r[1])
                 
             #f.write("MODEL\n")
             #model=solver.model()
             #for k in model:
             #    f.write('%s=%s\n'%(k, model[k]))
     
-        #DEBUG
-        pprint.pprint(risk_structure)
-        write_report(path,spec_package,risk_structure,components)
-        sys.exit(1)
-        
         #TODO 
         #https://stackoverflow.com/questions/14628279/z3-convert-z3py-expression-to-smt-lib2/14629021#14629021
         #https://stackoverflow.com/questions/19569431/z3py-print-large-formula-with-144-variables
@@ -674,11 +656,10 @@ for s in subgraphs['cycle']:
         #This should never happen
         statistics+="\nUNKNOWN=%d"%unknown
     f.write("%s\n"%statistics)
-    risk_level+=counter_sat
     cyclic_struct_counter+=1
 
-f.write("\nTOTAL RISK LEVEL: %d"%risk_level)
 f.close()
 
-
-print("TOTAL RISK LEVEL: %d"%risk_level)
+pprint.pprint(risk_structure)
+print("Write Excel Report")
+write_report(path,spec_package,risk_structure,components)
