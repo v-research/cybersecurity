@@ -473,15 +473,15 @@ f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 #and per each one detect if they contain cycles
 
 #DEBUG the following code is just to test cycles -- remove code below
-pair_to_add=[]
-for k in pairs_num['pairs'].keys():
-    if(str(k)=="A1"):
-        pair_to_add.append(k)
-    elif(str(k)=="B17"):
-        pair_to_add.append(k)
-
-pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
-print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
+#pair_to_add=[]
+#for k in pairs_num['pairs'].keys():
+#    if(str(k)=="A1"):
+#        pair_to_add.append(k)
+#    elif(str(k)=="B17"):
+#        pair_to_add.append(k)
+#
+#pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
+#print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
 # DEBUG REMOVE code above
 
 # the data structure (pairs_num['pairs']) is a 
@@ -660,6 +660,5 @@ for s in subgraphs['cycle']:
 
 f.close()
 
-pprint.pprint(risk_structure)
 print("Write Excel Report")
 write_report(path,spec_package,risk_structure,components)
