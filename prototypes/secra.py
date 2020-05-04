@@ -12,6 +12,7 @@ import itertools
 from parse_model import get_components_from_xmi, create_model_dot
 import pprint
 import xlsxwriter
+import pydot
 
 spec_package="UC1-CPS"
 xmi_filename="Engineering.xmi"
@@ -317,15 +318,24 @@ def generate_graph(components):
 def write_report(path,spec_package,risk_structure,components):
     workbook = xlsxwriter.Workbook(os.path.join(path,spec_package+"_securityAssessment.xlsx"))
 
-    #WEAKNESSES sheet
-    # ID, agent, component, type, weakness, mitigation, assegnee
-    first_row=["ID","Agent","Component","Comp. Type","Weakness","Mitigation","Assegnee"]
+    #ARCHITECTURE (HW/SW requirements) sheet
+    #create png and add to 
+    architecture_sheet = workbook.add_worksheet("Architecture")
+    (graph,) = pydot.graph_from_dot_file(os.path.join(path,spec_package+"_model.dot"))
+    graph.write_png(os.path.join(path,spec_package+"_model.png"))
+    architecture_sheet.insert_image('B2', os.path.join(path,spec_package+"_model.png"))
 
-    weak_sheet = workbook.add_worksheet("weaknesses")
+    #WEAKNESSES sheet
+    first_row=["ID","Agent","Component","Comp. Type","Weakness","Mitigation","Status","Assegnee"]
+
+    weak_sheet = workbook.add_worksheet("Weaknesses")
+
+    #weak_sheet.write_row(0, len(first_row)+2, ['List data', 'open', 'mitigated'])
+
     weak_sheet.set_column(1, 8, 30)
     cell_format={}
     cell_format['first_weak']=workbook.add_format({'bold': True, 'font_size': 14})
-    cell_format['all_weak']=workbook.add_format({'bold': False, 'font_size': 12})
+    cell_format['all_weak']=workbook.add_format({'bold': False, 'font_size': 12}) #'text_wrap': True 
 
     for i in range(len(first_row)):
         weak_sheet.write_string(0, i, first_row[i], cell_format['first_weak']) 
@@ -384,22 +394,24 @@ def write_report(path,spec_package,risk_structure,components):
                                 for sem_val in weak_semantics[comp_type_tmp].values():
                                     weak_weakness=sem_val['weakness']
                                     weak_mitigation=sem_val['mitigation']
-                                    weak_sheet.write(weak_id, 0, weak_id)
-                                    weak_sheet.write(weak_id, 1, weak_agent)
-                                    weak_sheet.write(weak_id, 2, weak_component)
-                                    weak_sheet.write(weak_id, 3, weak_comp_type)
-                                    weak_sheet.write(weak_id, 4, weak_weakness)
-                                    weak_sheet.write(weak_id, 5, weak_mitigation)
+                                    weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
                                     weak_id+=1
                             else:
                                 weak_weakness=weak_semantics[comp_type_tmp][rel]['weakness']
                                 weak_mitigation=weak_semantics[comp_type_tmp][rel]['mitigation']
-                                weak_sheet.write(weak_id, 0, weak_id)
-                                weak_sheet.write(weak_id, 1, weak_agent)
-                                weak_sheet.write(weak_id, 2, weak_component)
-                                weak_sheet.write(weak_id, 3, weak_comp_type)
-                                weak_sheet.write(weak_id, 4, weak_weakness)
-                                weak_sheet.write(weak_id, 5, weak_mitigation)
+                                weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
                                 weak_id+=1
                               
                     elif(comp_type_tmp=="block"):
@@ -410,23 +422,27 @@ def write_report(path,spec_package,risk_structure,components):
                                 for sem_val in weak_semantics[comp_type_tmp].values():
                                     weak_weakness=sem_val['weakness']
                                     weak_mitigation=sem_val['mitigation']
-                                    weak_sheet.write(weak_id, 0, weak_id)
-                                    weak_sheet.write(weak_id, 1, weak_agent)
-                                    weak_sheet.write(weak_id, 2, weak_component)
-                                    weak_sheet.write(weak_id, 3, weak_comp_type)
-                                    weak_sheet.write(weak_id, 4, weak_weakness)
-                                    weak_sheet.write(weak_id, 5, weak_mitigation)
+                                    weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
+                                    weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
                                     weak_id+=1
                             else:
                                 weak_weakness=weak_semantics[comp_type_tmp][rel]['weakness']
                                 weak_mitigation=weak_semantics[comp_type_tmp][rel]['mitigation']
-                                weak_sheet.write(weak_id, 0, weak_id)
-                                weak_sheet.write(weak_id, 1, weak_agent)
-                                weak_sheet.write(weak_id, 2, weak_component)
-                                weak_sheet.write(weak_id, 3, weak_comp_type)
-                                weak_sheet.write(weak_id, 4, weak_weakness)
-                                weak_sheet.write(weak_id, 5, weak_mitigation)
+                                weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
+                                weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
                                 weak_id+=1
+
+    weak_sheet.data_validation(0,6,weak_id,6,{'validate': 'list', 'source': ['open', 'mitigated']})
     workbook.close()
 
 path = os.path.join("./","secra_output")
