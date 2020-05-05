@@ -383,6 +383,9 @@ def write_report(path,spec_package,risk_structure,components):
     weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
 
     weak_id=1
+
+    #TODO check risk_structure if two relations (B,F) and (B',F') refers to 
+    # 2 inputs of the same funblock/socket/outputport
     for rel,pairs in risk_structure.items():
         for pair in pairs:
             weak_agent=""
@@ -538,7 +541,7 @@ def write_report(path,spec_package,risk_structure,components):
             status_position+=1
         else:
             break
-    weak_sheet.data_validation(0,status_position,weak_id,status_position,{'validate': 'list', 'source': ['open', 'mitigated']})
+    weak_sheet.data_validation(1,status_position,weak_id,status_position,{'validate': 'list', 'source': ['open', 'mitigated']})
     workbook.close()
 
 path = os.path.join("./","secra_output")
@@ -587,9 +590,9 @@ f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 #DEBUG the following code is just to test cycles -- remove code below
 #pair_to_add=[]
 #for k in pairs_num['pairs'].keys():
-#    if(str(k)=="A1"):
+#    if(str(k)=="A22"):
 #        pair_to_add.append(k)
-#    elif(str(k)=="B17"):
+#    elif(str(k)=="B29"):
 #        pair_to_add.append(k)
 #
 #pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
@@ -703,8 +706,7 @@ for s in subgraphs['cycle']:
     avg_time=0.00000
     sum_time=0.00000
     
-    #TODO restart from 
-    # save pairs and restart from that iteration
+    # TODO save pairs and restart from that iteration
     # https://stackoverflow.com/questions/36802314/python-itertools-product-start-from-certain
     for t in itertools.product(*itertables):
         risk_tmp=[]
@@ -744,7 +746,6 @@ for s in subgraphs['cycle']:
                 for r in risk_tmp:
                     if(r[1] not in risk_structure[r[0]]):
                         risk_structure[r[0]].append(r[1])
-                
             #f.write("MODEL\n")
             #model=solver.model()
             #for k in model:
