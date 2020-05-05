@@ -169,13 +169,11 @@ def create_regions_from_xmi(spec_package,xmi_filename):
     flows=components_flows['flows']
 
     region_id=0
-    #TODO handle multiple inputs/outputs
     # Each port and block has a list of inputs and a list of outputs
     # no internal structure of a block is allowed (no association between I-O) and their semantics
     # will be defined as requirements (as Z3 formulas) over facts.
     # - Channels are still unidirectional with a single flow (i.e. a channel per each information flow)
     # - Bases are also singleton
-
     for ck,cv in components.items():
         if(cv['type']=="agent"):
             cv['regions']={}
@@ -183,17 +181,17 @@ def create_regions_from_xmi(spec_package,xmi_filename):
             cv['regions']['belief']=set()
         elif(cv['type']=="inputport"):
             cv['regions']={}
-            cv['regions']['input']=[]#Const("A"+str(region_id),Base)
-            cv['regions']['output']=[]#Const("B"+str(region_id),Base)
+            cv['regions']['input']=set()#Const("A"+str(region_id),Base)
+            cv['regions']['output']=set()#Const("B"+str(region_id),Base)
         elif(cv['type']=="outputport"):
             cv['regions']={}
-            cv['regions']['input']=[]#Const("B"+str(region_id),Base)
-            cv['regions']['output']=[]#Const("A"+str(region_id),Base)
+            cv['regions']['input']=set()#Const("B"+str(region_id),Base)
+            cv['regions']['output']=set()#Const("A"+str(region_id),Base)
         elif(cv['type']=="funblock" or cv['type']=="inputsocket" or cv['type']=="outputsocket"):
             cv['regions']={}
-            cv['regions']['input']=[]#Const("B"+str(region_id),Base)
+            cv['regions']['input']=set()#Const("B"+str(region_id),Base)
             region_id+=1
-            cv['regions']['output']=[]#Const("B"+str(region_id),Base)
+            cv['regions']['output']=set()#Const("B"+str(region_id),Base)
         elif(cv['type']=="channel"):
             cv['regions']={}
             cv['regions']['input']=Const("A"+str(region_id),Base)
@@ -209,25 +207,32 @@ def create_regions_from_xmi(spec_package,xmi_filename):
     #each flow equates beliefs and add constants representing 
     #inputs/outputs in the components structures
     # you cannot have flows from agents or to agents
+    multiple_outflows={}
     for fk,fv in flows.items():
-            for r in fv: #fk->r is a flow
-                if(components[fk]['type']=="outputport" and components[r]['type']=="channel"):
-                    components[fk]['regions']['output'].append(components[r]['regions']['input'])
-                elif(components[fk]['type']=="channel" and components[r]['type']=="inputport"):
-                    components[r]['regions']['input'].append(components[fk]['regions']['output'])
-                elif((components[fk]['type']=="funblock" or components[fk]['type']=="inputsocket" or components[fk]['type']=="outputsocket" or components[fk]['type']=="inputport") and (components[r]['type']=="funblock" or components[r]['type']=="outputsocket" or components[r]['type']=="inputsocket" or components[r]['type']=="outputport" or components[r]['type']=="inputport")):
+        tmp_belief=None
+        for r in fv: #fk->r is a flow
+            if(components[fk]['type']=="outputport" and components[r]['type']=="channel"):
+                components[fk]['regions']['output'].add(components[r]['regions']['input'])
+                if(len(fv)>1):
+                    print("ERROR cannot have multiple flows from port %s to channel"%components[fk]['name'])
+            elif(components[fk]['type']=="channel" and components[r]['type']=="inputport"):
+                components[r]['regions']['input'].add(components[fk]['regions']['output'])
+                if(len(fv)>1):
+                    print("ERROR cannot have multiple flows from channel %s to port"%components[fk]['name'])
+            elif((components[fk]['type']=="funblock" or components[fk]['type']=="inputsocket" or components[fk]['type']=="outputsocket" or components[fk]['type']=="inputport") and (components[r]['type']=="funblock" or components[r]['type']=="outputsocket" or components[r]['type']=="inputsocket" or components[r]['type']=="outputport" or components[r]['type']=="inputport")):
+                if(tmp_belief is None):
                     tmp_belief=Const("B"+str(region_id),Base)
-                    components[fk]['regions']['output'].append(tmp_belief)
-                    components[r]['regions']['input'].append(tmp_belief)
                     region_id+=1
-                elif(components[fk]['type']=="base"):
-                    components[r]['regions']['input'].append(components[fk]['regions']['belief'])
-                elif(components[r]['type']=="base"):
-                    components[fk]['regions']['input'].append(components[r]['regions']['belief'])
-                else:
-                    print("ERROR in parsing data-flow structure")
-                    print("%s[%s] -> %s[%s] not supported"%(components[fk]['name'],components[fk]['type'],components[r]['name'],components[r]['type']))
-                    sys.exit(0)
+                components[fk]['regions']['output'].add(tmp_belief)
+                components[r]['regions']['input'].add(tmp_belief)
+            elif(components[fk]['type']=="base"):
+                components[r]['regions']['input'].add(components[fk]['regions']['belief'])
+            elif(components[r]['type']=="base"):
+                components[fk]['regions']['input'].add(components[r]['regions']['belief'])
+            else:
+                print("ERROR in parsing data-flow structure")
+                print("%s[%s] -> %s[%s] not supported"%(components[fk]['name'],components[fk]['type'],components[r]['name'],components[r]['type']))
+                sys.exit(0)
                         
     #we create the agent root as a common knowledge
     common_knowledge={'name':"root",'owner':"root",'type':"root",'regions':{'fact':set()}}
@@ -354,8 +359,6 @@ def write_report(path,spec_package,risk_structure,components):
     first_row=["ID","Agent","Component","Comp. Type","Weakness","Mitigation","Status","Assegnee"]
 
     weak_sheet = workbook.add_worksheet("Weaknesses")
-
-    #weak_sheet.write_row(0, len(first_row)+2, ['List data', 'open', 'mitigated'])
 
     weak_sheet.set_column(1, 8, 30)
     cell_format={}
