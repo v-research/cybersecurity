@@ -15,6 +15,7 @@ import xlsxwriter
 import pydot
 
 spec_package="UC1-CPS"
+#spec_package="TwoGuysTalking"
 xmi_filename="Engineering.xmi"
 
 # Print iterations progress
@@ -168,6 +169,7 @@ def create_regions_from_xmi(spec_package,xmi_filename):
     flows=components_flows['flows']
 
     region_id=0
+    #TODO handle multiple inputs/outputs
     for ck,cv in components.items():
         if(cv['type']=="agent"):
             cv['regions']={}
@@ -291,7 +293,7 @@ def generate_graph(components):
                 f.write("%s -> %s [style=dotted]\n"%(c['name'],str(r)))
         elif(c['type']!="base"):
         #elif(c['type']=="inputport" or c['type']=="outputport" or c['type']=="channel"):
-            f.write("%s -> %s [label=%s_%s, color=gray40]\n"%(c['regions']['input'],c['regions']['output'],c['name'],c['type']))
+            f.write("%s -> %s [label=%s_%s, color=black]\n"%(c['regions']['input'],c['regions']['output'],c['name'],c['type']))
             if(c['type']=="inputport" or c['type']=="outputport"):
                 f.write("%s -> %s [arrowhead=none, penwidth=2, label=AB, color=\"red\"]\n"%(c['regions']['input'],c['regions']['output']))
                 if(c['regions']['input'] in pairs):
@@ -348,9 +350,11 @@ def write_report(path,spec_package,risk_structure,components):
     # channel: R(A,A') where A:input, A':output
     #   EQ: correctly tranfers information
     weak_semantics={}
-    weak_semantics['port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
+    #weak_semantics['port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
+    weak_semantics['port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
     weak_semantics['block']={ 'po':{'weakness':"the component has a Byzantine behavior where occasionally outputs the expected output given the correct inputs. However, not all the inputs are handled properly, nor all the expected outputs are generated when correct inputs are given.",'mitigation':"m7"}, 'pp':{'weakness':"part of the expected outputs are not generated in response to the correct inputs",'mitigation':"m8"}, 'ppi':{'weakness':"the components correctly performs the expected behavior when the correct inputs are provided but is vulnerable to input injections",'mitigation':"m9"}, 'dr':{'weakness':"the component never performs the expected behavior (e.g. physical damage)",'mitigation':"m10"} }
-    weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
+    #weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
+    weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
 
     weak_id=1
     for rel,pairs in risk_structure.items():
@@ -413,7 +417,6 @@ def write_report(path,spec_package,risk_structure,components):
                                 weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
                                 weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
                                 weak_id+=1
-                              
                     elif(comp_type_tmp=="block"):
                         if(pair[0]==c['regions']['output'] or pair[1]==c['regions']['output']):
                             weak_component=c['name']
@@ -441,7 +444,6 @@ def write_report(path,spec_package,risk_structure,components):
                                 weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
                                 weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
                                 weak_id+=1
-
     status_position=0
     for i in first_row:
         if(i!="Status"):
