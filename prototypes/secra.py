@@ -368,13 +368,6 @@ def write_report(path,spec_package,risk_structure,components):
     for i in range(len(first_row)):
         weak_sheet.write_string(0, i, first_row[i], cell_format['first_weak']) 
     
-    # Relations2Weakness
-    # port (input/output): R(A,B) where B:input or B:output
-    #   EQ: correctly forwards inputs as outputs
-    # block (funblock/socket): R(B,F) where B:output
-    #   EQ: correctly implements its behavior
-    # channel: R(A,A') where A:input, A':output
-    #   EQ: correctly tranfers information
     weak_semantics={}
     #weak_semantics['port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
     #weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
@@ -534,15 +527,15 @@ f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 #and per each one detect if they contain cycles
 
 #DEBUG the following code is just to test cycles -- remove code below
-pair_to_add=[]
-for k in pairs_num['pairs'].keys():
-    if(str(k)=="A23"):
-        pair_to_add.append(k)
-    elif(str(k)=="B31"):
-        pair_to_add.append(k)
-
-pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
-print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
+#pair_to_add=[]
+#for k in pairs_num['pairs'].keys():
+#    if(str(k)=="A23"):
+#        pair_to_add.append(k)
+#    elif(str(k)=="B31"):
+#        pair_to_add.append(k)
+#
+#pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
+#print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
 # DEBUG REMOVE code above
 
 # the data structure (pairs_num['pairs']) is a 
