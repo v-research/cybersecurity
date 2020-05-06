@@ -377,164 +377,110 @@ def write_report(path,spec_package,risk_structure,components):
     #   EQ: correctly tranfers information
     weak_semantics={}
     #weak_semantics['port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
-    weak_semantics['port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
-    weak_semantics['block']={ 'po':{'weakness':"the component has a Byzantine behavior where occasionally outputs the expected output given the correct inputs. However, not all the inputs are handled properly, nor all the expected outputs are generated when correct inputs are given.",'mitigation':"m5"}, 'pp':{'weakness':"part of the expected outputs are not generated in response to the correct inputs",'mitigation':"m6"}, 'ppi':{'weakness':"the components correctly performs the expected behavior when the correct inputs are provided but is vulnerable to input injections",'mitigation':"m7"}, 'dr':{'weakness':"the component never performs the expected behavior (e.g. physical damage)",'mitigation':"m8"} }
     #weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
-    weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
+    weak_semantics['weak_port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
+    weak_semantics['weak_channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
+    weak_semantics['weak_out_block']={ 'po':{'weakness':"the component has a Byzantine behavior where occasionally outputs the expected output given the correct inputs. However, not all the inputs are handled properly, nor all the expected outputs are generated when correct inputs are given.",'mitigation':"m5"}, 'pp':{'weakness':"part of the expected outputs are not generated in response to the correct inputs",'mitigation':"m6"}, 'ppi':{'weakness':"the components correctly performs the expected behavior when the correct inputs are provided but is vulnerable to input injections",'mitigation':"m7"}, 'dr':{'weakness':"the component never performs the expected behavior (e.g. physical damage)",'mitigation':"m8"} }
+    weak_semantics['weak_in_block']={ 'po':{'weakness':"po",'mitigation':"m5"}, 'pp':{'weakness':"pp",'mitigation':"m6"}, 'ppi':{'weakness':"ppi",'mitigation':"m7"}, 'dr':{'weakness':"dr",'mitigation':"m8"} }
 
+    # if R(left,right)=R(B,F) or R(F,B)
+    #   in=None
+    #   out=False
+    #   forall c in Comp:
+    #     if B is Out(c):
+    #         weakness_semantics(c,R,weak_output_of_block)
+    #         out=True
+    #         break
+    #     if B is In(c):
+    #         in=c
+    #   if(out==False):
+    #     weakness_semantics(in,R,weak_input_of_block)
+    # elif R(left,right)=R(A,B) or R(B,A)
+    #   forall c in Comp:
+    #      if A is In(c) and B is Out(c) or viceversa:
+    #           weakness_semantics(c,R,weak_port)
+    #           break
+    # elif R(left,right)=R(A1,A2)
+    #   forall c in Comp:
+    #       if A1 is In(c) and A2 is Out(c) or viceversa:
+    #           weakness_semantics(c,R,weak_channel)
     weak_id=1
-
-    #TODO check risk_structure if two relations (B,F) and (B',F') refers to 
-    # 2 inputs of the same funblock/socket/outputport
     for rel,pairs in risk_structure.items():
         for pair in pairs:
-            weak_agent=""
-            weak_component=""
-            weak_comp_type=""
-            weak_weakness=""
-            weak_mitigation=""
+            left=pair[0]
+            right=pair[1]
+            left_type=get_base_type(pair[0])
+            right_type=get_base_type(pair[1])
+            weakness={'component':None,'relation':rel,'semantics':None,'agent':None}
 
-            left=get_base_type(pair[0])
-            right=get_base_type(pair[1])
+            if((left_type=="belief" and right_type=="assertion") or (right_type=="belief" and left_type=="assertion")): #ab
+                for k,v in components.items():
+                    if(v['type'] in {"inputport","outputport"}):
+                        for i in v['regions']['input']:
+                            for o in v['regions']['output']:
+                                if((i==left and o==right) or (i==right and o==left)):
+                                    weakness['component']=k
+                                    weakness['relation']=rel
+                                    weakness['semantics']="weak_port"
+                                    break
 
-            comp_type_tmp=""
-            if((left=="belief" and right=="assertion") or (right=="belief" and left=="assertion")): #port
-                comp_type_tmp="port"
-            elif((left=="belief" and right=="fact") or (right=="belief" and left=="fact")): #block
-                comp_type_tmp="block"
-            elif(left=="assertion" and right=="assertion"): #channel
-                comp_type_tmp="channel"
+            elif((left_type=="belief" and right_type=="fact") or (right_type=="belief" and left_type=="fact")): #bf
+                comp_tmp=None
+                out_comp=False
+                for k,v in components.items():
+                    if(v['type'] in {"inputsocket","outputsocket","funblock"}):
+                        for o in v['regions']['output']:
+                            if((left_type=="belief" and o==left) or (right_type=="belief" and o==right)):
+                                out_comp=True
+                                weakness['component']=k
+                                weakness['relation']=rel
+                                weakness['semantics']="weak_out_block"
+                                break
+                        for i in v['regions']['input']:
+                            if((left_type=="belief" and i==left) or (right_type=="belief" and i==right)):
+                                comp_tmp=k
+                if(not out_comp):
+                    weakness['component']=comp_tmp
+                    weakness['relation']=rel
+                    weakness['semantics']="weak_in_block"
 
-            #the following loop can be merged with the one after
-            # however the following code has been rewritten so many times that
-            # it became a horrible collage. It must be rewritten entirely... one day
-            for c in components.values():
-                if(c['type']=="agent" and (comp_type_tmp=="port" or comp_type_tmp=="block")):
-                    #check if the belief is owned by this agent
-                    if(pair[0] in c['regions']['belief'] or pair[1] in c['regions']['belief']): #this checks the hash of the two objects
-                        weak_agent=c['name']
-                        break
-                elif(c['type']=="channel" and comp_type_tmp=="channel"):
-                    if((pair[0]==c['regions']['input'] and pair[1]==c['regions']['output']) or (pair[1]==c['regions']['input'] and pair[0]==c['regions']['output'])): 
-                        weak_agent=c['name']
-                        break
+            elif(left_type=="assertion" and right_type=="assertion"): #aa
+                for k,v in components.items():
+                    if(v['type'] == "channel"):
+                        if((v['regions']['input']==left and v['regions']['output']==right) or (v['regions']['input']==right and v['regions']['output']==left)):
+                            weakness['component']=k
+                            weakness['relation']=rel
+                            weakness['semantics']="weak_channel"
 
-            for c in components.values():
-                if(c['type']=="inputport" or c['type']=="outputport" or c['type']=="channel" or c['type']=="inputsocket" or c['type']=="outputsocket" or c['type']=="funblock"):
-                    if(comp_type_tmp=="channel" or comp_type_tmp=="port"):
-                        if(c['type']=="channel"):
-                            if((pair[0]==c['regions']['input'] and pair[1]==c['regions']['output']) or (pair[1]==c['regions']['input'] and pair[0]==c['regions']['output'])): 
-                                weak_component=c['name']
-                                weak_comp_type=c['type']
-                                if(rel == "all"):
-                                    for sem_val in weak_semantics[comp_type_tmp].values():
-                                        weak_weakness=sem_val['weakness']
-                                        weak_mitigation=sem_val['mitigation']
-                                        weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
-                                        weak_id+=1
-                                else:
-                                    weak_weakness=weak_semantics[comp_type_tmp][rel]['weakness']
-                                    weak_mitigation=weak_semantics[comp_type_tmp][rel]['mitigation']
-                                    weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
-                                    weak_id+=1
-                        else:
-                            for i in c['regions']['input']:
-                                for o in c['regions']['output']:
-                                    if((pair[0]==i and pair[1]==o) or (pair[1]==i and pair[0]==o)): 
-                                        weak_component=c['name']
-                                        weak_comp_type=c['type']
-                                        if(rel == "all"):
-                                            for sem_val in weak_semantics[comp_type_tmp].values():
-                                                weak_weakness=sem_val['weakness']
-                                                weak_mitigation=sem_val['mitigation']
-                                                weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
-                                                weak_id+=1
-                                        else:
-                                            weak_weakness=weak_semantics[comp_type_tmp][rel]['weakness']
-                                            weak_mitigation=weak_semantics[comp_type_tmp][rel]['mitigation']
-                                            weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
-                                            weak_id+=1
-                    elif(comp_type_tmp=="block"):
-                        if(c['type']=="channel"):
-                            if(pair[0]==c['regions']['output'] or pair[1]==c['regions']['output']):
-                                weak_component=c['name']
-                                weak_comp_type=c['type']
-                                if(rel == "all"):
-                                    for sem_val in weak_semantics[comp_type_tmp].values():
-                                        weak_weakness=sem_val['weakness']
-                                        weak_mitigation=sem_val['mitigation']
-                                        weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
-                                        weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
-                                        weak_id+=1
-                                else:
-                                    weak_weakness=weak_semantics[comp_type_tmp][rel]['weakness']
-                                    weak_mitigation=weak_semantics[comp_type_tmp][rel]['mitigation']
-                                    weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
-                                    weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
-                                    weak_id+=1
-                        else:
-                            for i in c['regions']['input']:
-                                for o in c['regions']['output']:
-                                    if(pair[0]==o or pair[1]==o):
-                                        weak_component=c['name']
-                                        weak_comp_type=c['type']
-                                        if(rel == "all"):
-                                            for sem_val in weak_semantics[comp_type_tmp].values():
-                                                weak_weakness=sem_val['weakness']
-                                                weak_mitigation=sem_val['mitigation']
-                                                weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
-                                                weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
-                                                weak_id+=1
-                                        else:
-                                            weak_weakness=weak_semantics[comp_type_tmp][rel]['weakness']
-                                            weak_mitigation=weak_semantics[comp_type_tmp][rel]['mitigation']
-                                            weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 1, weak_agent, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 2, weak_component, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 3, weak_comp_type, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 4, weak_weakness, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 5, weak_mitigation, cell_format['all_weak'])
-                                            weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
-                                            weak_id+=1
+            owner_tmp=None
+            while(True):
+                owner_tmp=components[components[weakness['component']]['owner']]
+                if(owner_tmp['type']=="agent" or owner_tmp['type']=="root" ):
+                    weakness['agent']=owner_tmp['name']
+                    break
+
+            if(weakness['relation'] == "all"):
+                for sem_val in weak_semantics[weakness['semantics']].values():
+                    weak_weakness=sem_val['weakness']
+                    weak_mitigation=sem_val['mitigation']
+                    weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
+                    weak_sheet.write(weak_id, 1, weakness['agent'], cell_format['all_weak'])
+                    weak_sheet.write(weak_id, 2, components[weakness['component']]['name'], cell_format['all_weak'])
+                    weak_sheet.write(weak_id, 3, components[weakness['component']]['type'], cell_format['all_weak'])
+                    weak_sheet.write(weak_id, 4, sem_val['weakness'], cell_format['all_weak'])
+                    weak_sheet.write(weak_id, 5, sem_val['mitigation'], cell_format['all_weak'])
+                    weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
+                    weak_id+=1
+            else:
+                weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
+                weak_sheet.write(weak_id, 1, weakness['agent'], cell_format['all_weak'])
+                weak_sheet.write(weak_id, 2, components[weakness['component']]['name'], cell_format['all_weak'])
+                weak_sheet.write(weak_id, 3, components[weakness['component']]['type'], cell_format['all_weak'])
+                weak_sheet.write(weak_id, 4, weak_semantics[weakness['semantics']][weakness['relation']]['weakness'], cell_format['all_weak'])
+                weak_sheet.write(weak_id, 5, weak_semantics[weakness['semantics']][weakness['relation']]['mitigation'], cell_format['all_weak'])
+                weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
+                weak_id+=1
+
     status_position=0
     for i in first_row:
         if(i!="Status"):
@@ -588,15 +534,15 @@ f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 #and per each one detect if they contain cycles
 
 #DEBUG the following code is just to test cycles -- remove code below
-#pair_to_add=[]
-#for k in pairs_num['pairs'].keys():
-#    if(str(k)=="A22"):
-#        pair_to_add.append(k)
-#    elif(str(k)=="B29"):
-#        pair_to_add.append(k)
-#
-#pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
-#print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
+pair_to_add=[]
+for k in pairs_num['pairs'].keys():
+    if(str(k)=="A23"):
+        pair_to_add.append(k)
+    elif(str(k)=="B31"):
+        pair_to_add.append(k)
+
+pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
+print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
 # DEBUG REMOVE code above
 
 # the data structure (pairs_num['pairs']) is a 
