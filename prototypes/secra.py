@@ -356,7 +356,7 @@ def write_report(path,spec_package,risk_structure,components):
     architecture_sheet.insert_image('B2', os.path.join(path,spec_package+"_model.png"))
 
     #WEAKNESSES sheet
-    first_row=["ID","Agent","Component","Comp. Type","Weakness","Mitigation","Status","Assegnee"]
+    first_row=["ID","Agent","Component","Comp. Type","Weakness","Mitigation","Weight","Status","Assegnee"]
 
     weak_sheet = workbook.add_worksheet("Weaknesses")
 
@@ -398,8 +398,8 @@ def write_report(path,spec_package,risk_structure,components):
     #       if A1 is In(c) and A2 is Out(c) or viceversa:
     #           weakness_semantics(c,R,weak_channel)
     weak_id=1
-    for rel,pairs in risk_structure.items():
-        for pair in pairs:
+    for rel,pairs_weight in risk_structure.items():
+        for pair,weight in pairs_weight.items():
             left=pair[0]
             right=pair[1]
             left_type=get_base_type(pair[0])
@@ -458,33 +458,18 @@ def write_report(path,spec_package,risk_structure,components):
                     weakness['agent']=owner_tmp['name']
                     break
 
-            if(weakness['relation'] == "all"):
-                for sem_val in weak_semantics[weakness['semantics']].values():
-                    weak_weakness=sem_val['weakness']
-                    weak_mitigation=sem_val['mitigation']
-                    weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
-                    weak_sheet.write(weak_id, 1, weakness['agent'], cell_format['all_weak'])
-                    if(weakness['input']!=None):
-                        weak_sheet.write(weak_id, 2, components[weakness['component']]['name']+"["+weakness['input']+"]", cell_format['all_weak'])
-                    else:
-                        weak_sheet.write(weak_id, 2, components[weakness['component']]['name'], cell_format['all_weak'])
-                    weak_sheet.write(weak_id, 3, components[weakness['component']]['type'], cell_format['all_weak'])
-                    weak_sheet.write(weak_id, 4, sem_val['weakness'], cell_format['all_weak'])
-                    weak_sheet.write(weak_id, 5, sem_val['mitigation'], cell_format['all_weak'])
-                    weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
-                    weak_id+=1
+            weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
+            weak_sheet.write(weak_id, 1, weakness['agent'], cell_format['all_weak'])
+            if(weakness['input']!=None):
+                weak_sheet.write(weak_id, 2, components[weakness['component']]['name']+"["+weakness['input']+"]", cell_format['all_weak'])
             else:
-                weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
-                weak_sheet.write(weak_id, 1, weakness['agent'], cell_format['all_weak'])
-                if(weakness['input']!=None):
-                    weak_sheet.write(weak_id, 2, components[weakness['component']]['name']+"["+weakness['input']+"]", cell_format['all_weak'])
-                else:
-                    weak_sheet.write(weak_id, 2, components[weakness['component']]['name'], cell_format['all_weak'])
-                weak_sheet.write(weak_id, 3, components[weakness['component']]['type'], cell_format['all_weak'])
-                weak_sheet.write(weak_id, 4, weak_semantics[weakness['semantics']][weakness['relation']]['weakness'], cell_format['all_weak'])
-                weak_sheet.write(weak_id, 5, weak_semantics[weakness['semantics']][weakness['relation']]['mitigation'], cell_format['all_weak'])
-                weak_sheet.write(weak_id, 6, "open", cell_format['all_weak'])
-                weak_id+=1
+                weak_sheet.write(weak_id, 2, components[weakness['component']]['name'], cell_format['all_weak'])
+            weak_sheet.write(weak_id, 3, components[weakness['component']]['type'], cell_format['all_weak'])
+            weak_sheet.write(weak_id, 4, weak_semantics[weakness['semantics']][weakness['relation']]['weakness'], cell_format['all_weak'])
+            weak_sheet.write(weak_id, 5, weak_semantics[weakness['semantics']][weakness['relation']]['mitigation'], cell_format['all_weak'])
+            weak_sheet.write(weak_id, 6, weight, cell_format['all_weak'])
+            weak_sheet.write(weak_id, 7, "open", cell_format['all_weak'])
+            weak_id+=1
 
     status_position=0
     for i in first_row:
@@ -493,6 +478,10 @@ def write_report(path,spec_package,risk_structure,components):
         else:
             break
     weak_sheet.data_validation(1,status_position,weak_id,status_position,{'validate': 'list', 'source': ['open', 'mitigated']})
+
+    #RISK sheet
+    risk_sheet = workbook.add_worksheet("Risk")
+
     workbook.close()
 
 path = os.path.join("./","secra_output")
@@ -599,7 +588,18 @@ for n,adj in pairs_num['pairs'].items():
     connected_nodes=[]
 
 counter=0
-risk_structure={"po":[],"pp":[],"ppi":[],"dr":[],"all":[]}
+#risk_structure{ relation:{pairs:weight} }
+risk_structure={'po':{},'pp':{},'ppi':{},'dr':{}}
+
+#suppose rcc5
+# Cyclic and acyclic sub-graphs CG_1,...,CG_n,AG_1,...,AG_n do not affect each others.
+# We can see them as independet parts of a combination. If each sub-graph had only 5 configurations
+# representing a sub-part of a scenario, the number of possible scenarios would be 5^{#sub-graphs}=5^{2n}.
+# When a subgraph is removed, to calculate the new number of possible scenarios 1 needs to be
+# removed at the exponent (e.g. removing 1 sub-graph results in 5^{2n-1}.
+# If each acyclic sub-graph has M relations of arity 5, those relations are independent (do not affect each other)
+# therefore, the number of combination 5^M. With N acyclic sub-graphs, each with M relations with arity 5 we have
+# 5^M^N=5^{M*N} scenarios; removing 1 relation would result in 5^{(M*N)-1} scenarios
 
 if(subgraphs['acycle']!=[]):
     print("FOUND %d SIMPLE (ACYCLICAL) STRUCTURE(S)"%len(subgraphs['acycle']))
@@ -609,10 +609,15 @@ for s in subgraphs['acycle']:
         if(node in pairs_num['pairs'].keys()):
             f.write("%d [%s,%s]\n"%(counter, str(node),str(pairs_num['pairs'][node])))
             for i in pairs_num['pairs'][node]:
-                risk_structure['all'].append([node,i])
+                risk_structure['po'][node,i]=5
+                risk_structure['pp'][node,i]=5
+                risk_structure['pp'][node,i]=5
+                risk_structure['dr'][node,i]=5
     counter+=1
 print("Analysis on simple structures concluded and reported\n")
 
+#in the case of cyclical structures we need to calculate the number of scenarios in which
+# a relation appears
 
 if(subgraphs['cycle']!=[]):
     print("FOUND %d COMPLEX (CYCLICAL) STRUCTURE(S)\n"%len(subgraphs['cycle']))
@@ -695,8 +700,9 @@ for s in subgraphs['cycle']:
             counter_sat+=1
             if(t[i]!=EQ):
                 for r in risk_tmp:
-                    if(r[1] not in risk_structure[r[0]]):
-                        risk_structure[r[0]].append(r[1])
+                    if(r[1] in risk_structure[r[0]].getKeys()):
+                        #risk_structure[r[0]].append({r[1]:n})
+                        risk_structure[r[0]][r[1]]+=1
             #f.write("MODEL\n")
             #model=solver.model()
             #for k in model:
