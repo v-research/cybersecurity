@@ -373,7 +373,7 @@ def write_report(path,spec_package,risk_structure,components):
     #weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
     weak_semantics['weak_port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
     weak_semantics['weak_channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
-    weak_semantics['weak_out_block']={ 'po':{'weakness':"the component has a Byzantine behavior where occasionally outputs the expected output given the correct inputs. However, not all the inputs are handled properly, nor all the expected outputs are generated when correct inputs are given.",'mitigation':"m5"}, 'pp':{'weakness':"part of the expected outputs are not generated in response to the correct inputs",'mitigation':"m6"}, 'ppi':{'weakness':"the components correctly performs the expected behavior when the correct inputs are provided but is vulnerable to input injections",'mitigation':"m7"}, 'dr':{'weakness':"the component never performs the expected behavior (e.g. physical damage)",'mitigation':"m8"} }
+    weak_semantics['weak_out_block']={ 'po':{'weakness':"the component has a Byzantine behavior where occasionally outputs the expected output given the correct inputs. Not all the inputs are handled properly, nor all the expected outputs are always generated when correct inputs are given.",'mitigation':"m5"}, 'pp':{'weakness':"part of the expected outputs are not generated in response to the correct inputs",'mitigation':"m6"}, 'ppi':{'weakness':"the components correctly performs the expected behavior when the correct inputs are provided but is subject to input injections",'mitigation':"m7"}, 'dr':{'weakness':"the component never performs the expected behavior (e.g. physical damage)",'mitigation':"m8"} }
     weak_semantics['weak_in_block']={ 'po':{'weakness':"po",'mitigation':"m5"}, 'pp':{'weakness':"pp",'mitigation':"m6"}, 'ppi':{'weakness':"ppi",'mitigation':"m7"}, 'dr':{'weakness':"dr",'mitigation':"m8"} }
 
     # if R(left,right)=R(B,F) or R(F,B)
@@ -404,7 +404,7 @@ def write_report(path,spec_package,risk_structure,components):
             right=pair[1]
             left_type=get_base_type(pair[0])
             right_type=get_base_type(pair[1])
-            weakness={'component':None,'relation':rel,'semantics':None,'agent':None}
+            weakness={'component':None,'input':None,'relation':rel,'semantics':None,'agent':None}
 
             if((left_type=="belief" and right_type=="assertion") or (right_type=="belief" and left_type=="assertion")): #ab
                 for k,v in components.items():
@@ -420,6 +420,7 @@ def write_report(path,spec_package,risk_structure,components):
             elif((left_type=="belief" and right_type=="fact") or (right_type=="belief" and left_type=="fact")): #bf
                 comp_tmp=None
                 out_comp=False
+                input_tmp=None
                 for k,v in components.items():
                     if(v['type'] in {"inputsocket","outputsocket","funblock"}):
                         for o in v['regions']['output']:
@@ -432,7 +433,12 @@ def write_report(path,spec_package,risk_structure,components):
                         for i in v['regions']['input']:
                             if((left_type=="belief" and i==left) or (right_type=="belief" and i==right)):
                                 comp_tmp=k
+                                input_tmp=i
                 if(not out_comp):
+                    for c in components.values():
+                        if(c['type']=="base" and c['regions']['belief']==input_tmp):
+                            weakness['input']=c['name']
+                            break
                     weakness['component']=comp_tmp
                     weakness['relation']=rel
                     weakness['semantics']="weak_in_block"
@@ -458,7 +464,10 @@ def write_report(path,spec_package,risk_structure,components):
                     weak_mitigation=sem_val['mitigation']
                     weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
                     weak_sheet.write(weak_id, 1, weakness['agent'], cell_format['all_weak'])
-                    weak_sheet.write(weak_id, 2, components[weakness['component']]['name'], cell_format['all_weak'])
+                    if(weakness['input']!=None):
+                        weak_sheet.write(weak_id, 2, components[weakness['component']]['name']+"["+weakness['input']+"]", cell_format['all_weak'])
+                    else:
+                        weak_sheet.write(weak_id, 2, components[weakness['component']]['name'], cell_format['all_weak'])
                     weak_sheet.write(weak_id, 3, components[weakness['component']]['type'], cell_format['all_weak'])
                     weak_sheet.write(weak_id, 4, sem_val['weakness'], cell_format['all_weak'])
                     weak_sheet.write(weak_id, 5, sem_val['mitigation'], cell_format['all_weak'])
@@ -467,7 +476,10 @@ def write_report(path,spec_package,risk_structure,components):
             else:
                 weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
                 weak_sheet.write(weak_id, 1, weakness['agent'], cell_format['all_weak'])
-                weak_sheet.write(weak_id, 2, components[weakness['component']]['name'], cell_format['all_weak'])
+                if(weakness['input']!=None):
+                    weak_sheet.write(weak_id, 2, components[weakness['component']]['name']+"["+weakness['input']+"]", cell_format['all_weak'])
+                else:
+                    weak_sheet.write(weak_id, 2, components[weakness['component']]['name'], cell_format['all_weak'])
                 weak_sheet.write(weak_id, 3, components[weakness['component']]['type'], cell_format['all_weak'])
                 weak_sheet.write(weak_id, 4, weak_semantics[weakness['semantics']][weakness['relation']]['weakness'], cell_format['all_weak'])
                 weak_sheet.write(weak_id, 5, weak_semantics[weakness['semantics']][weakness['relation']]['mitigation'], cell_format['all_weak'])
