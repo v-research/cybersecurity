@@ -528,15 +528,15 @@ f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 #and per each one detect if they contain cycles
 
 #DEBUG the following code is just to test cycles -- remove code below
-#pair_to_add=[]
-#for k in pairs_num['pairs'].keys():
-#    if(str(k)=="A23"):
-#        pair_to_add.append(k)
-#    elif(str(k)=="B31"):
-#        pair_to_add.append(k)
-#
-#pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
-#print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
+pair_to_add=[]
+for k in pairs_num['pairs'].keys():
+    if(str(k)=="B31"):
+        pair_to_add.append(k)
+    elif(str(k)=="A23"):
+        pair_to_add.append(k)
+
+pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
+print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
 # DEBUG REMOVE code above
 
 # the data structure (pairs_num['pairs']) is a 
@@ -609,10 +609,10 @@ for s in subgraphs['acycle']:
         if(node in pairs_num['pairs'].keys()):
             f.write("%d [%s,%s]\n"%(counter, str(node),str(pairs_num['pairs'][node])))
             for i in pairs_num['pairs'][node]:
-                risk_structure['po'][node,i]=5
-                risk_structure['pp'][node,i]=5
-                risk_structure['pp'][node,i]=5
-                risk_structure['dr'][node,i]=5
+                risk_structure['po'][(node,i)]=5
+                risk_structure['pp'][(node,i)]=5
+                risk_structure['pp'][(node,i)]=5
+                risk_structure['dr'][(node,i)]=5
     counter+=1
 print("Analysis on simple structures concluded and reported\n")
 
@@ -700,9 +700,11 @@ for s in subgraphs['cycle']:
             counter_sat+=1
             if(t[i]!=EQ):
                 for r in risk_tmp:
-                    if(r[1] in risk_structure[r[0]].getKeys()):
-                        #risk_structure[r[0]].append({r[1]:n})
-                        risk_structure[r[0]][r[1]]+=1
+                    if(tuple(r[1]) in risk_structure[r[0]]):
+                        risk_structure[r[0]][tuple(r[1])]+=1
+                    else:
+                        risk_structure[r[0]][tuple(r[1])]=1
+
             #f.write("MODEL\n")
             #model=solver.model()
             #for k in model:
