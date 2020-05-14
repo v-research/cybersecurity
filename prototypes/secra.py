@@ -532,7 +532,6 @@ f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 #DEBUG the following code is just to test cycles -- remove code below
 pair_to_add=[]
 for k in pairs_num['pairs'].keys():
-    print(k)
     if(str(k)=="B31" or str(k)=="A23"):# or str(k)=="F_B21"):
         pair_to_add.append(k)
 
@@ -596,7 +595,7 @@ for n,adj in pairs_num['pairs'].items():
 counter=0
 #risk_structure{ relation:{pair:weight} }
 risk_structure={'po':{},'pp':{},'ppi':{},'dr':{}}
-#in_subgraph={ pair:subgraph }
+#in_subgraph={ subgraph : pair }
 in_subgraph={}
 #subgraph_scenarios={ subgraph:{num_scenarios, type:acyclic/cyclic}}
 subgraph_scenarios={}
@@ -636,16 +635,17 @@ for s in subgraphs['acycle']:
             f.write("%d [%s,%s]\n"%(counter, str(node), str(pairs_num['pairs'][node])))
             for i in pairs_num['pairs'][node]:
                 num_of_relations+=1
-                tmp_risk_structure['po'][(node,i)]  = None 
-                tmp_risk_structure['pp'][(node,i)]  = None 
-                tmp_risk_structure['ppi'][(node,i)] = None 
-                tmp_risk_structure['dr'][(node,i)]  = None 
+                tmp_risk_structure['po'][(node,i)]  = {'direct_weight':None, 'type':"acyclic"}
+                tmp_risk_structure['pp'][(node,i)]  = {'direct_weight':None, 'type':"acyclic"} 
+                tmp_risk_structure['ppi'][(node,i)] = {'direct_weight':None, 'type':"acyclic"} 
+                tmp_risk_structure['dr'][(node,i)]  = {'direct_weight':None, 'type':"acyclic"} 
                 in_subgraph[(node,i)]=subgraph_id
     if(subgraph_id not in subgraph_scenarios.keys()):
         subgraph_scenarios[subgraph_id]={'num_scenarios':INSECURITY_CONFIGURATIONS**(num_of_relations),'type':"acyclic"}
     for k,v in tmp_risk_structure.items():
         for k1,v1 in v.items():
-            risk_structure[k][k1]=(INSECURITY_CONFIGURATIONS**(num_of_relations-1))
+            risk_structure[k][k1]=tmp_risk_structure[k][k1]
+            risk_structure[k][k1]['direct_weight']=(INSECURITY_CONFIGURATIONS**(num_of_relations-1))
 
     counter+=1
 
@@ -654,13 +654,38 @@ print("Analysis on simple structures concluded and reported\n")
 #in the case of cyclical structures we need to calculate the number of scenarios in which
 # a relation appears
 
+#The calculation of the associated risk is more complex
+# for acyclic subgraphs, mitigating a relation (e.g. DR(A1,B1)) means DIRECTLY reducing the number of possible scenarios.
+# The weight is then based on the total number of combinations of that relation in the subgraph.
+# For cyclic subgraphs, we need to calculate the INDIRECT weight of a relation (e.g. DR(A1,B1))
+# on the total number of configurations of the subgraph.
+
+# for a scenario such as DR(A23, B28), DR(A23, A22), PO(A23, B31), DR(B31, A22), PPi(B31, F_B31)
+# we store the following info
+# DR(A23, B28): {DR(A23, B28):1, DR(A23, A22):1, PO(A23, B31):1, DR(B31, A22):1, PPi(B31, F_B31):1}
+# DR(A23, A22): {DR(A23, B28):1, DR(A23, A22):1, PO(A23, B31):1, DR(B31, A22):1, PPi(B31, F_B31):1}
+# PO(A23, B31): {DR(A23, B28):1, DR(A23, A22):1, PO(A23, B31):1, DR(B31, A22):1, PPi(B31, F_B31):1}
+# DR(B31, A22): {DR(A23, B28):1, DR(A23, A22):1, PO(A23, B31):1, DR(B31, A22):1, PPi(B31, F_B31):1}
+# PPi(B31, F_B31): {DR(A23, B28):1, DR(A23, A22):1, PO(A23, B31):1, DR(B31, A22):1, PPi(B31, F_B31):1}
+
+# in a structure like the following:
+
+# dr: {(A23, B28): +1, indirect_weight: {
+#           (A23, A22):{'dr':+1, pp ... }
+#           (A23, B31):{'po':+1, ...}
+#           (B31, A22):{'dr':+1, ...}
+#           (B31, F_B31):{'ppi':+1, ...},
+#      (A23, B28): +1, indirect_weight{
+
+# if I mitigate dr(A23, B28) I reduce to 0 its (direct) weight but also
+#  reduce the weight of all the other relations in indirect_weight
+
 if(subgraphs['cycle']!=[]):
     print("FOUND %d COMPLEX (CYCLICAL) STRUCTURE(S)\n"%len(subgraphs['cycle']))
     f.write("\nCYCLYC SUBGRAPHS\n")
 
 cyclic_struct_counter=1
 for s in subgraphs['cycle']:
-    tmp_risk_structure={'po':{},'pp':{},'ppi':{},'dr':{}}
     total_insecure_configurations=0
     f.write("Analyze structure %d\n"%cyclic_struct_counter)
     print("Analyze structure %d\n"%cyclic_struct_counter)
@@ -739,12 +764,20 @@ for s in subgraphs['cycle']:
 
             if(risk_tmp != []):
                 total_insecure_configurations+=1
-            for r in risk_tmp:
-                if(tuple(r[1]) in tmp_risk_structure[r[0]]):
-                    tmp_risk_structure[r[0]][tuple(r[1])]+=1
-                else:
-                    tmp_risk_structure[r[0]][tuple(r[1])]=1
-                in_subgraph[tuple(r[1])]=str(s)
+            for r1 in risk_tmp:
+                if(tuple(r1[1]) not in risk_structure[r1[0]]):
+                    risk_structure[r1[0]][tuple(r1[1])]={}
+                    risk_structure[r1[0]][tuple(r1[1])]['direct_weight']=0
+                    risk_structure[r1[0]][tuple(r1[1])]['type']="cyclic"
+                    risk_structure[r1[0]][tuple(r1[1])]['indirect_weight']={}
+                risk_structure[r1[0]][tuple(r1[1])]['direct_weight']+=1
+                for r2 in risk_tmp:
+                    if(r1[1] != r2[1]):
+                        if(tuple(r2[1]) not in risk_structure[r1[0]][tuple(r1[1])]['indirect_weight'].keys()):
+                            risk_structure[r1[0]][tuple(r1[1])]['indirect_weight'][tuple(r2[1])]={'dr':0,'pp':0,'ppi':0,'po':0}
+                        risk_structure[r1[0]][tuple(r1[1])]['indirect_weight'][tuple(r2[1])][r2[0]]+=1
+                #TODO
+                #in_subgraph[str(array_scenario)]=tuple(r[1])
 
             #f.write("MODEL\n")
             #model=solver.model()
@@ -766,20 +799,6 @@ for s in subgraphs['cycle']:
 
     statistics="\n********\nSTATISTICS\n\nscenarios=%d\nsat=%d\nunsat=%d"%(counter-1,counter_sat,counter_unsat)
     subgraph_scenarios[str(s)]={'num_scenarios':total_insecure_configurations,'type':"cyclic"}
-    
-    tmp_weight={}
-    for k,v in tmp_risk_structure.items():
-        print(k)
-        for k1,v1 in v.items():
-            if(k1 in tmp_weight):
-                tmp_weight[k1]+=v1
-            else:
-                tmp_weight[k1]=v1
-            print(k1)
-            print(v1)
-            #risk_structure[k][k1]=(INSECURITY_CONFIGURATIONS**(num_of_relations-1))
-    print(tmp_weight)
-    
 
     if(counter_unknown != 0):
         #This should never happen
