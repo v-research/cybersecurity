@@ -173,7 +173,7 @@ def create_model_dot(path, cps_spec_name, components, flows):
     f.close()
 
 def test_this_file():
-    path = os.path.join("./","secra_output")
+    path = os.path.join("./","output_secra")
     if not os.path.exists(path):
         os.mkdir(path)
     spec="TwoGuysTalking"
