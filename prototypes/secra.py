@@ -358,7 +358,7 @@ def write_report(path,spec_package,risk_structure,components):
     architecture_sheet.insert_image('B2', os.path.join(path,spec_package+"_model.png"))
 
     #WEAKNESSES sheet
-    first_row=["ID","Agent","Component","Comp. Type","Weakness","Mitigation","Weight","Status","Assegnee"]
+    first_row=["ID","Agent","Component","Comp. Type","Weakness","Mitigation","Weight","Indirect Weight","Status","Assegnee"]
 
     weak_sheet = workbook.add_worksheet("Weaknesses")
 
@@ -454,6 +454,14 @@ def write_report(path,spec_package,risk_structure,components):
                             weakness['semantics']="weak_channel"
 
             owner_tmp=None
+            requirement=weakness.get('component')
+
+            #TODO DEBUG
+            if(not requirement):
+                print("ALIEN edge (or requirement) identified")
+                continue
+            # DEBUG
+
             while(True):
                 owner_tmp=components[components[weakness['component']]['owner']]
                 if(owner_tmp['type']=="agent" or owner_tmp['type']=="root" ):
@@ -469,7 +477,10 @@ def write_report(path,spec_package,risk_structure,components):
             weak_sheet.write(weak_id, 3, components[weakness['component']]['type'], cell_format['all_weak'])
             weak_sheet.write(weak_id, 4, weak_semantics[weakness['semantics']][weakness['relation']]['weakness'], cell_format['all_weak'])
             weak_sheet.write(weak_id, 5, weak_semantics[weakness['semantics']][weakness['relation']]['mitigation'], cell_format['all_weak'])
-            weak_sheet.write(weak_id, 6, weight, cell_format['all_weak'])
+            if(weight['type']=="acyclic"):
+                weak_sheet.write(weak_id, 6, weight['direct_weight'], cell_format['all_weak'])
+            elif(weight['type']=="cyclic"):
+                weak_sheet.write(weak_id, 6, weight['direct_weight'], cell_format['all_weak'])
             weak_sheet.write(weak_id, 7, "open", cell_format['all_weak'])
             weak_id+=1
 
@@ -530,14 +541,14 @@ f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 #and per each one detect if they contain cycles
 
 #DEBUG the following code is just to test cycles -- remove code below
-pair_to_add=[]
-for k in pairs_num['pairs'].keys():
-    if(str(k)=="B31" or str(k)=="A23"):# or str(k)=="F_B21"):
-        pair_to_add.append(k)
-
-pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
-#pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[2])
-print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
+#pair_to_add=[]
+#for k in pairs_num['pairs'].keys():
+#    if(str(k)=="B31" or str(k)=="A23"):# or str(k)=="F_B21"):
+#        pair_to_add.append(k)
+#
+#pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
+##pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[2])
+#print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
 # DEBUG REMOVE code above
 
 # the data structure (pairs_num['pairs']) is a 
@@ -595,10 +606,6 @@ for n,adj in pairs_num['pairs'].items():
 counter=0
 #risk_structure{ relation:{pair:weight} }
 risk_structure={'po':{},'pp':{},'ppi':{},'dr':{}}
-#in_subgraph={ subgraph : pair }
-in_subgraph={}
-#subgraph_scenarios={ subgraph:{num_scenarios, type:acyclic/cyclic}}
-subgraph_scenarios={}
 
 #suppose rcc5
 # Cyclic and acyclic sub-graphs CG_1,...,CG_n,AG_1,...,AG_n do not affect each others.
@@ -635,13 +642,10 @@ for s in subgraphs['acycle']:
             f.write("%d [%s,%s]\n"%(counter, str(node), str(pairs_num['pairs'][node])))
             for i in pairs_num['pairs'][node]:
                 num_of_relations+=1
-                tmp_risk_structure['po'][(node,i)]  = {'direct_weight':None, 'type':"acyclic"}
-                tmp_risk_structure['pp'][(node,i)]  = {'direct_weight':None, 'type':"acyclic"} 
-                tmp_risk_structure['ppi'][(node,i)] = {'direct_weight':None, 'type':"acyclic"} 
-                tmp_risk_structure['dr'][(node,i)]  = {'direct_weight':None, 'type':"acyclic"} 
-                in_subgraph[(node,i)]=subgraph_id
-    if(subgraph_id not in subgraph_scenarios.keys()):
-        subgraph_scenarios[subgraph_id]={'num_scenarios':INSECURITY_CONFIGURATIONS**(num_of_relations),'type':"acyclic"}
+                tmp_risk_structure['po'][(node,i)]  = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id}}
+                tmp_risk_structure['pp'][(node,i)]  = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id}} 
+                tmp_risk_structure['ppi'][(node,i)] = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id}} 
+                tmp_risk_structure['dr'][(node,i)]  = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id}} 
     for k,v in tmp_risk_structure.items():
         for k1,v1 in v.items():
             risk_structure[k][k1]=tmp_risk_structure[k][k1]
@@ -718,7 +722,7 @@ for s in subgraphs['cycle']:
     num_pairs=0
     for v in sub_pairs_num.values():
         num_pairs+=len(v)
-    num_scenarios=5**len(itertables)
+    num_scenarios=RCC_CONFIGURATIONS**len(itertables)
     f.write("possible scenarios: %s\n\n"%str(num_scenarios))
     #itertools creates the cartesian product on the vector of rcc5 relations
     #total_scenarios=len(list(itertools.product(*itertables)))
@@ -776,8 +780,6 @@ for s in subgraphs['cycle']:
                         if(tuple(r2[1]) not in risk_structure[r1[0]][tuple(r1[1])]['indirect_weight'].keys()):
                             risk_structure[r1[0]][tuple(r1[1])]['indirect_weight'][tuple(r2[1])]={'dr':0,'pp':0,'ppi':0,'po':0}
                         risk_structure[r1[0]][tuple(r1[1])]['indirect_weight'][tuple(r2[1])][r2[0]]+=1
-                #TODO
-                #in_subgraph[str(array_scenario)]=tuple(r[1])
 
             #f.write("MODEL\n")
             #model=solver.model()
@@ -798,7 +800,6 @@ for s in subgraphs['cycle']:
         avg_time=(sum_time/counter)
 
     statistics="\n********\nSTATISTICS\n\nscenarios=%d\nsat=%d\nunsat=%d"%(counter-1,counter_sat,counter_unsat)
-    subgraph_scenarios[str(s)]={'num_scenarios':total_insecure_configurations,'type':"cyclic"}
 
     if(counter_unknown != 0):
         #This should never happen
@@ -809,7 +810,5 @@ for s in subgraphs['cycle']:
 f.close()
 
 pprint.pprint(risk_structure)
-pprint.pprint(in_subgraph)
-pprint.pprint(subgraph_scenarios)
 print("Write Excel Report")
 write_report(path,spec_package,risk_structure,components)
