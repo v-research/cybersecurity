@@ -481,7 +481,7 @@ def write_report(path,spec_package,risk_structure,components):
                 weak_sheet.write(weak_id, 6, weight['direct_weight'], cell_format['all_weak'])
             elif(weight['type']=="cyclic"):
                 weak_sheet.write(weak_id, 6, weight['direct_weight'], cell_format['all_weak'])
-            weak_sheet.write(weak_id, 7, "open", cell_format['all_weak'])
+            weak_sheet.write(weak_id, 8, "open", cell_format['all_weak'])
             weak_id+=1
 
     status_position=0
