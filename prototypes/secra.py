@@ -399,6 +399,7 @@ def write_report(path,spec_package,risk_structure,components):
     #   forall c in Comp:
     #       if A1 is In(c) and A2 is Out(c) or viceversa:
     #           weakness_semantics(c,R,weak_channel)
+    risk_subgraphs={}
     weak_id=1
     for rel,pairs_weight in risk_structure.items():
         for pair,weight in pairs_weight.items():
@@ -479,8 +480,12 @@ def write_report(path,spec_package,risk_structure,components):
             weak_sheet.write(weak_id, 5, weak_semantics[weakness['semantics']][weakness['relation']]['mitigation'], cell_format['all_weak'])
             if(weight['type']=="acyclic"):
                 weak_sheet.write(weak_id, 6, weight['direct_weight'], cell_format['all_weak'])
+                weak_sheet.write(weak_id, 7, weight['indirect_weight']['subgraph'], cell_format['all_weak'])
+                if(weight['indirect_weight']['subgraph'] not in risk_subgraphs):
+                    risk_subgraphs[weight['indirect_weight']['subgraph']]={'tot_config':weight['indirect_weight']['tot_config']}
             elif(weight['type']=="cyclic"):
                 weak_sheet.write(weak_id, 6, weight['direct_weight'], cell_format['all_weak'])
+                weak_sheet.write(weak_id, 7, str(weight['indirect_weight']), cell_format['all_weak'])
             weak_sheet.write(weak_id, 8, "open", cell_format['all_weak'])
             weak_id+=1
 
@@ -494,6 +499,30 @@ def write_report(path,spec_package,risk_structure,components):
 
     #RISK sheet
     risk_sheet = workbook.add_worksheet("Risk")
+    first_row=["subgraph","initial risk", "current risk"]
+    risk_sheet.set_column(0, 4, 20)
+    cell_format={}
+    cell_format['first_risk']=workbook.add_format({'bold': True, 'font_size': 14})
+    cell_format['all_risk']=workbook.add_format({'bold': False, 'font_size': 12}) #'text_wrap': True 
+
+    for i in range(len(first_row)):
+        risk_sheet.write_string(0, i, first_row[i], cell_format['first_risk']) 
+
+    risk_id=1
+    for k,v in risk_subgraphs.items():
+        risk_sheet.write(risk_id, 0, k, cell_format['all_risk'])
+        risk_sheet.write(risk_id, 1, v['tot_config'], cell_format['all_risk'])
+        risk_id+=1
+
+    #for rel,pairs_weight in risk_structure.items():
+    #    for pair,weight in pairs_weight.items():
+    #        if(weight['type']=="acyclic"):
+    #            risk_sheet.write(risk_id, 0, weight['indirect_weight']['subgraph'], cell_format['all_risk'])
+    #            risk_sheet.write(risk_id, 1, weight['indirect_weight']['tot_config'], cell_format['all_risk'])
+    #        elif(weight['type']=="cyclic"):
+    #            risk_sheet.write(risk_id, 0, str(weight['indirect_weight']), cell_format['all_risk'])
+    #            risk_sheet.write(risk_id, 1, weight['direct_weight'], cell_format['all_risk'])
+    #        risk_id+=1
 
     workbook.close()
 
@@ -542,10 +571,12 @@ f.write("pairs of regions: %s\n"%str(pairs_num['num_pairs']))
 
 #DEBUG the following code is just to test cycles -- remove code below
 #pair_to_add=[]
+#print(pairs_num['pairs'])
 #for k in pairs_num['pairs'].keys():
 #    if(str(k)=="B31" or str(k)=="A23"):# or str(k)=="F_B21"):
 #        pair_to_add.append(k)
 #
+#print(pair_to_add)
 #pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[1])
 ##pairs_num['pairs'][pair_to_add[0]].append(pair_to_add[2])
 #print("****(DEBUG) MODIFIED STRUCTURE TO DEBUG CYCLE-FUN")
@@ -642,14 +673,15 @@ for s in subgraphs['acycle']:
             f.write("%d [%s,%s]\n"%(counter, str(node), str(pairs_num['pairs'][node])))
             for i in pairs_num['pairs'][node]:
                 num_of_relations+=1
-                tmp_risk_structure['po'][(node,i)]  = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id}}
-                tmp_risk_structure['pp'][(node,i)]  = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id}} 
-                tmp_risk_structure['ppi'][(node,i)] = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id}} 
-                tmp_risk_structure['dr'][(node,i)]  = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id}} 
+                tmp_risk_structure['po'][(node,i)]  = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id,'tot_config':None}}
+                tmp_risk_structure['pp'][(node,i)]  = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id,'tot_config':None}} 
+                tmp_risk_structure['ppi'][(node,i)] = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id,'tot_config':None}} 
+                tmp_risk_structure['dr'][(node,i)]  = {'direct_weight':None, 'type':"acyclic", 'indirect_weight':{'subgraph':subgraph_id,'tot_config':None}} 
     for k,v in tmp_risk_structure.items():
         for k1,v1 in v.items():
             risk_structure[k][k1]=tmp_risk_structure[k][k1]
             risk_structure[k][k1]['direct_weight']=(INSECURITY_CONFIGURATIONS**(num_of_relations-1))
+            risk_structure[k][k1]['indirect_weight']['tot_config']=(INSECURITY_CONFIGURATIONS**num_of_relations)
 
     counter+=1
 
