@@ -347,9 +347,9 @@ def generate_graph(components):
     f.close()
     return {'pairs':pairs,'num_pairs':num_pairs}
 
-def write_report(path,spec_package,risk_structure,components):
+def write_report(path,spec_package,risk_structure,cyclic_risk_struct,components):
     workbook = xlsxwriter.Workbook(os.path.join(path,spec_package+"_securityAssessment.xlsx"))
-
+    relation2row = {}
     #ARCHITECTURE (HW/SW requirements) sheet
     #create png and add to 
     architecture_sheet = workbook.add_worksheet("Architecture")
@@ -358,9 +358,10 @@ def write_report(path,spec_package,risk_structure,components):
     architecture_sheet.insert_image('B2', os.path.join(path,spec_package+"_model.png"))
 
     #WEAKNESSES sheet
-    first_row=["ID","Agent","Component","Comp. Type","Weakness","Mitigation","Weight","Indirect Weight","Status","Assegnee"]
+    first_row=["ID","Agent","Component","Comp. Type","Weakness","Mitigation","Weight","Status","Assegnee","Subgraph","Relation Type","Relation"]
 
-    weak_sheet = workbook.add_worksheet("Weaknesses")
+    weak_sheet_name="Weaknesses"
+    weak_sheet = workbook.add_worksheet(weak_sheet_name)
 
     weak_sheet.set_column(1, 8, 30)
     cell_format={}
@@ -399,8 +400,8 @@ def write_report(path,spec_package,risk_structure,components):
     #   forall c in Comp:
     #       if A1 is In(c) and A2 is Out(c) or viceversa:
     #           weakness_semantics(c,R,weak_channel)
-    risk_subgraphs={}
     weak_id=1
+    risk_sheet_struct={}
     for rel,pairs_weight in risk_structure.items():
         for pair,weight in pairs_weight.items():
             left=pair[0]
@@ -469,7 +470,9 @@ def write_report(path,spec_package,risk_structure,components):
                     weakness['agent']=owner_tmp['name']
                     break
 
-            weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
+            relation2row[str(rel).lower()+str(pair).lower()]=weak_id+1
+            #weak_sheet.write(weak_id, 0, weak_id, cell_format['all_weak'])
+            weak_sheet.write(weak_id, 0, str(rel)+str(pair), cell_format['all_weak'])
             weak_sheet.write(weak_id, 1, weakness['agent'], cell_format['all_weak'])
             if(weakness['input']!=None):
                 weak_sheet.write(weak_id, 2, components[weakness['component']]['name']+"["+weakness['input']+"]", cell_format['all_weak'])
@@ -480,13 +483,25 @@ def write_report(path,spec_package,risk_structure,components):
             weak_sheet.write(weak_id, 5, weak_semantics[weakness['semantics']][weakness['relation']]['mitigation'], cell_format['all_weak'])
             if(weight['type']=="acyclic"):
                 weak_sheet.write(weak_id, 6, weight['direct_weight'], cell_format['all_weak'])
-                weak_sheet.write(weak_id, 7, weight['indirect_weight']['subgraph'], cell_format['all_weak'])
-                if(weight['indirect_weight']['subgraph'] not in risk_subgraphs):
-                    risk_subgraphs[weight['indirect_weight']['subgraph']]={'tot_config':weight['indirect_weight']['tot_config']}
+                weak_sheet.write(weak_id, 9, weight['indirect_weight']['subgraph'], cell_format['all_weak'])
             elif(weight['type']=="cyclic"):
                 weak_sheet.write(weak_id, 6, weight['direct_weight'], cell_format['all_weak'])
-                weak_sheet.write(weak_id, 7, str(weight['indirect_weight']), cell_format['all_weak'])
-            weak_sheet.write(weak_id, 8, "open", cell_format['all_weak'])
+                weak_sheet.write(weak_id, 9, weight['indirect_weight']['subgraph'], cell_format['all_weak'])
+            weak_sheet.write(weak_id, 7, "open", cell_format['all_weak'])
+            weak_sheet.write(weak_id, 10, str(rel), cell_format['all_weak'])
+            weak_sheet.write(weak_id, 11, str(pair), cell_format['all_weak'])
+
+            #save related risk
+            if(weight['type']=="acyclic"):
+                if(weight['indirect_weight']['subgraph'] not in risk_sheet_struct.keys()):
+                    risk_sheet_struct[weight['indirect_weight']['subgraph']]={}
+                if(str(pair) not in risk_sheet_struct[weight['indirect_weight']['subgraph']]):
+                    risk_sheet_struct[weight['indirect_weight']['subgraph']][str(pair)]=[]
+                row_ref="'"+weak_sheet_name+"'!H"+str(weak_id+1)
+                risk_sheet_struct[weight['indirect_weight']['subgraph']][str(pair)].append("=IF("+row_ref+"=\"mitigated\", 0, 1)")
+            #elif(weight['type']=="cyclic"):
+            #    risk_sheet_struct[weight['indirect_weight']['subgraph']][str(pair)].append("=IF("+row_ref+"=\"mitigated\", 0,"+str(weight['direct_weight'])+")")
+
             weak_id+=1
 
     status_position=0
@@ -499,7 +514,7 @@ def write_report(path,spec_package,risk_structure,components):
 
     #RISK sheet
     risk_sheet = workbook.add_worksheet("Risk")
-    first_row=["subgraph","initial risk", "current risk"]
+    first_row=["Subgraph","All relations","Grouped-by Relation","Grouped-by Subgraph"]
     risk_sheet.set_column(0, 4, 20)
     cell_format={}
     cell_format['first_risk']=workbook.add_format({'bold': True, 'font_size': 14})
@@ -509,20 +524,41 @@ def write_report(path,spec_package,risk_structure,components):
         risk_sheet.write_string(0, i, first_row[i], cell_format['first_risk']) 
 
     risk_id=1
-    for k,v in risk_subgraphs.items():
+    for k,v in risk_sheet_struct.items():
         risk_sheet.write(risk_id, 0, k, cell_format['all_risk'])
-        risk_sheet.write(risk_id, 1, v['tot_config'], cell_format['all_risk'])
-        risk_id+=1
+        for relation in v.values():
+            relation_count=0
+            for i in relation:
+                risk_sheet.write_formula(risk_id, 1, i)
+                risk_id+=1
+                relation_count+=1
+            risk_sheet.write(risk_id-1,2,"=SUM(B"+str(risk_id)+":B"+str(risk_id-(relation_count-1)))
 
-    #for rel,pairs_weight in risk_structure.items():
-    #    for pair,weight in pairs_weight.items():
-    #        if(weight['type']=="acyclic"):
-    #            risk_sheet.write(risk_id, 0, weight['indirect_weight']['subgraph'], cell_format['all_risk'])
-    #            risk_sheet.write(risk_id, 1, weight['indirect_weight']['tot_config'], cell_format['all_risk'])
-    #        elif(weight['type']=="cyclic"):
-    #            risk_sheet.write(risk_id, 0, str(weight['indirect_weight']), cell_format['all_risk'])
-    #            risk_sheet.write(risk_id, 1, weight['direct_weight'], cell_format['all_risk'])
-    #        risk_id+=1
+    cyclic_sheet_id=0
+    for subgraph in cyclic_risk_struct.values():
+        cyclic_struct_sheet=workbook.add_worksheet("cyclic_"+str(cyclic_sheet_id))
+        row=0
+        for relations in subgraph:
+            col=0
+            for rel in relations:
+                if(str(rel).lower() in relation2row.keys()):
+                    #If status is mitigated 0, 1 oth.
+                    cyclic_struct_sheet.write(row,col,"=IF('"+weak_sheet_name+"'!H"+str(relation2row[str(rel).lower()])+"=\"mitigated\", 0, 1")
+                else:
+                    cyclic_struct_sheet.write(row,col,1)
+                col+=1
+            cyclic_struct_sheet.write_formula(row,col+1,"=PRODUCT(A"+str(row+1)+":"+chr(65+col)+str(row+1)+")")
+            row+=1
+        risk_id+=1
+        risk_sheet.write(risk_id-1,0,"cyclic_"+str(cyclic_sheet_id))
+        risk_sheet.write(risk_id-1,2,"=SUM('cyclic_"+str(cyclic_sheet_id)+"'!"+chr(65+col+1)+":"+chr(65+col+1)+")")
+        #=SUM($cyclic_0.G:G)
+        cyclic_sheet_id+=1
+
+    risk_id+=1
+    risk_sheet.write(risk_id+1, 0, "RISK", cell_format['first_risk'])
+    risk_sheet.write_formula(risk_id+1, 2, "=PRODUCT(C"+str(risk_id+1)+":C1)", cell_format['all_risk'])
+    risk_sheet.write(risk_id+2, 0, "The total risk is the total number of configurations of the system", cell_format['all_risk'])
 
     workbook.close()
 
@@ -690,38 +726,20 @@ print("Analysis on simple structures concluded and reported\n")
 #in the case of cyclical structures we need to calculate the number of scenarios in which
 # a relation appears
 
-#The calculation of the associated risk is more complex
-# for acyclic subgraphs, mitigating a relation (e.g. DR(A1,B1)) means DIRECTLY reducing the number of possible scenarios.
-# The weight is then based on the total number of combinations of that relation in the subgraph.
-# For cyclic subgraphs, we need to calculate the INDIRECT weight of a relation (e.g. DR(A1,B1))
-# on the total number of configurations of the subgraph.
-
-# for a scenario such as DR(A23, B28), DR(A23, A22), PO(A23, B31), DR(B31, A22), PPi(B31, F_B31)
-# we store the following info
-# DR(A23, B28): {DR(A23, B28):1, DR(A23, A22):1, PO(A23, B31):1, DR(B31, A22):1, PPi(B31, F_B31):1}
-# DR(A23, A22): {DR(A23, B28):1, DR(A23, A22):1, PO(A23, B31):1, DR(B31, A22):1, PPi(B31, F_B31):1}
-# PO(A23, B31): {DR(A23, B28):1, DR(A23, A22):1, PO(A23, B31):1, DR(B31, A22):1, PPi(B31, F_B31):1}
-# DR(B31, A22): {DR(A23, B28):1, DR(A23, A22):1, PO(A23, B31):1, DR(B31, A22):1, PPi(B31, F_B31):1}
-# PPi(B31, F_B31): {DR(A23, B28):1, DR(A23, A22):1, PO(A23, B31):1, DR(B31, A22):1, PPi(B31, F_B31):1}
-
-# in a structure like the following:
-
-# dr: {(A23, B28): +1, indirect_weight: {
-#           (A23, A22):{'dr':+1, pp ... }
-#           (A23, B31):{'po':+1, ...}
-#           (B31, A22):{'dr':+1, ...}
-#           (B31, F_B31):{'ppi':+1, ...},
-#      (A23, B28): +1, indirect_weight{
-
-# if I mitigate dr(A23, B28) I reduce to 0 its (direct) weight but also
-#  reduce the weight of all the other relations in indirect_weight
-
 if(subgraphs['cycle']!=[]):
     print("FOUND %d COMPLEX (CYCLICAL) STRUCTURE(S)\n"%len(subgraphs['cycle']))
     f.write("\nCYCLYC SUBGRAPHS\n")
 
+#in cyclic_risk_struct we explicitly save all the possible
+# configurations of the cyclic subgraphs
+# cyclic_risk_struct={subgraph_1 : [ [eq(a,b), eq(b,c), ...] ... [...]]}
+cyclic_risk_struct={}
+
 cyclic_struct_counter=1
 for s in subgraphs['cycle']:
+    subgraph_id=str(s)
+    cyclic_risk_struct[subgraph_id]=[]
+
     total_insecure_configurations=0
     f.write("Analyze structure %d\n"%cyclic_struct_counter)
     print("Analyze structure %d\n"%cyclic_struct_counter)
@@ -764,7 +782,6 @@ for s in subgraphs['cycle']:
     # TODO save pairs and restart from that iteration
     # https://stackoverflow.com/questions/36802314/python-itertools-product-start-from-certain
     for t in itertools.product(*itertables):
-        risk_tmp=[]
         start = time.time()
     
         sec_avg=str(avg_time).split('.')[0]
@@ -776,6 +793,7 @@ for s in subgraphs['cycle']:
         printProgressBar(counter,num_scenarios,suffix="avg:"+sec_avg+"."+dec_avg[:5]+"s tot:"+sec_sum+"."+dec_sum[:2]+"s"+" end:"+end_estimation+"s",decimals=5)
         array_scenario=[]
 
+        risk_tmp=[]
         for i in range(len(t)):
             array_scenario.append(t[i](pairs_array[i]))
             if(t[i]!=EQ):
@@ -800,18 +818,21 @@ for s in subgraphs['cycle']:
 
             if(risk_tmp != []):
                 total_insecure_configurations+=1
-            for r1 in risk_tmp:
-                if(tuple(r1[1]) not in risk_structure[r1[0]]):
-                    risk_structure[r1[0]][tuple(r1[1])]={}
-                    risk_structure[r1[0]][tuple(r1[1])]['direct_weight']=0
-                    risk_structure[r1[0]][tuple(r1[1])]['type']="cyclic"
-                    risk_structure[r1[0]][tuple(r1[1])]['indirect_weight']={}
-                risk_structure[r1[0]][tuple(r1[1])]['direct_weight']+=1
+                cyclic_risk_struct[subgraph_id].append(array_scenario)
+
+                for r1 in risk_tmp:
+                    if(tuple(r1[1]) not in risk_structure[r1[0]]):
+                        risk_structure[r1[0]][tuple(r1[1])]={}
+                        risk_structure[r1[0]][tuple(r1[1])]['direct_weight']=0
+                        risk_structure[r1[0]][tuple(r1[1])]['type']="cyclic"
+                        risk_structure[r1[0]][tuple(r1[1])]['indirect_weight']={'subgraph':subgraph_id}
+                    risk_structure[r1[0]][tuple(r1[1])]['direct_weight']+=1
                 for r2 in risk_tmp:
                     if(r1[1] != r2[1]):
                         if(tuple(r2[1]) not in risk_structure[r1[0]][tuple(r1[1])]['indirect_weight'].keys()):
                             risk_structure[r1[0]][tuple(r1[1])]['indirect_weight'][tuple(r2[1])]={'dr':0,'pp':0,'ppi':0,'po':0}
                         risk_structure[r1[0]][tuple(r1[1])]['indirect_weight'][tuple(r2[1])][r2[0]]+=1
+
 
             #f.write("MODEL\n")
             #model=solver.model()
@@ -840,7 +861,8 @@ for s in subgraphs['cycle']:
     cyclic_struct_counter+=1
 
 f.close()
-
-pprint.pprint(risk_structure)
+#pprint.pprint(risk_structure)
+#print("cyclyc risk struct")
+#pprint.pprint(cyclic_risk_struct)
 print("Write Excel Report")
-write_report(path,spec_package,risk_structure,components)
+write_report(path,spec_package,risk_structure,cyclic_risk_struct,components)
