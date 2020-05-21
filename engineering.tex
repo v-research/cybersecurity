@@ -36,7 +36,7 @@ the Weaknesses into Vulnerabilities which are, in turn, fed into the \designveri
 module along with the final specification. The Module returns a list of Vulnerabilities and
 potential Mitigations. The user then procees in implementing the CPS and the SW/HW choices
 can be tested by the \atgmod. \fix{mr}{While we have described the overall view, from
-specificaiton to implementation, in this text we only consider the process from specificaiton to design.}
+specification to implementation, in this text we only consider the process from specification to design.}
 
 \begin{figure}[t]
 	\centering
@@ -412,18 +412,41 @@ inputs and the resulting outputs (Beliefs).
 	takes a region of input-Beliefs and outputs a region of output-Beliefs. 
 	A functional architecture is an interconnected system of functional blocks.
 \end{definition}
-The quality of a functional block or architecture can be expressed as a
-relation between input and output belief, similarly to the quality of a channel
-but inverting the flow (input$\rightarrow$output instead of
-output$\rightarrow$input). In other words, we consider two properties:
-how inputs are interpreted, and how outputs are produced.
+It is evident that the quality of a functional block cannot be determined
+by the difference between its inputs and outputs (as we did for
+ports and channels). The behavior of a functional block
+cannot be determined in general; since any functional block will have 
+its own purpose based on functional requirements. 
+In other words, a functional block is a generic agent with no pre-defined general
+behavior (while ports and channels have a pre-defined behavior).
+Therefore, we can consider the relation between 
+the outputs of a functional block with respect to the requirements.
 One may, of course, argue that since there is a
 transformation process in the functional block the quality of that
 transformation process is what the theory should consider. This can
 be argued not just for functional blocks (Behaviors) but also for Channels
-(Assertions). \fix{mr}{The verification of the semantics of functional blocks and of the 
+(Assertions). The verification of the semantics of functional blocks and of the 
 protocols executed over the channels will be considered at design level while
-now we are still defining the specification}.
+now we are still defining the specification.
+
+\begin{itemize}
+	\item $\po{\behaviorRegion}{\factRegion}$ the component has a Byzantine behavior where occasionally outputs the expected
+	        output given the correct inputs. Not all the inputs are handled
+	        properly, nor all the expected outputs are always generated
+	        when correct inputs are given.
+	\item $\pp{\behaviorRegion}{\factRegion}$ part of the expected outputs are not
+	        generated in response to the correct
+	        inputs
+	\item $\ppi{\behaviorRegion}{\factRegion}$ the components
+	        correctly performs the expected behavior when the correct
+	        inputs are provided but is subject to input
+	        injections
+	\item $\dr{\behaviorRegion}{\factRegion}$ the component
+		never performs the expected behavior (e.g. physical
+		damage)
+\end{itemize}
+These weaknesses will be detailed afterwards in this section.
+
 As we detail afterwards, the relations considered so
 far revolves around the concept of integrity or availability, while the reminder of this section 
 will be focused on a broader analysis of security properties and requirements;
@@ -563,21 +586,6 @@ that we illustrate using a client-server paradigm (depicted in Figure~\ref{fig:c
 	\item The client is down, symmetric to Case~\ref{case:srv2}
 	\item The channel is down due to a drop related issue in one of the two channels 
 \end{enumerate}
-%All the cases but Case~\ref{case:srv1} and Case~\ref{case:srv3}, tell us how to map the
-%property of availability over the weaknesses of ports and communications.  The
-%Cases~\ref{case:srv1} and~\ref{case:srv3}, are exceptions because the formulas $res$ and $req$ 
-%detail the specification with a singleton instead of a region of formulas (or, better, $|res|$ is equal to the one of the
-%base).
-%In other words, a channel, a port, an entity, or a functional block are
-%Fact (stated in a factorial way) and not Beliefs; what they produce or 
-%their non-specified internals are Beliefs.  In fact, we never assume an
-%entity not to be in the design implementing the specification.  Similarly, when a
-%functional block produces some information it produces a Belief, unless this Belief if detailed in the specification.
-%For example, the server produces the Belief $res$ but the Belief given that can only be in $EQ$
-%relation with the Fact $res$ (in contrast other Belief may not); therefore, $res$ is not really a belief but a Fact. 
-%$res$ as a Fact is something that
-%exists in the specification, while the Belief of $res$ in one of the possible
-%designs may not exist. 
 We shall, then, distinguish between two cases, as we mentioned beforehand:
 agent (or system) and Information (which we call Infosec) availability. 
 \begin{definition}{\bf Agent-Availability --}\label{def:agent-a}
@@ -599,7 +607,7 @@ be expressed over an agent/system or a specific formula (i.e. element of a Regio
 when the property of integrity is expressed over
 	an agent or a system, the list of possible designs 
 	do not include those in which there exist: insert or inject ports, 
-	or inert or inject channels/functional-blocks. 
+	or insert or inject channels/functional-blocks. 
 \end{definition}
 \begin{definition}{\bf Infosec-Integrity --}\label{def:infosec-c}
 when the property of integrity is expressed
@@ -614,12 +622,12 @@ the physical or functional architecture), confidentiality is not.
 Confidentiality states that an information shall not be understood and not that
 the information shall not be retrieved. So, if a port leaks an entire message,
 there is no confidentiality issue in general, unless that message was not
-encrypted at all, in which case the confidentiality leakage is straightforward. 
+encrypted, in which case the confidentiality leakage is straightforward. 
 On the other hand, if the
 information is not provided or altered there is an availability or integrity
 issue. A similar argument can be proposed for integrity sub-properties such as
 authenticity or non-repudiation. No wonder why it is often stated that
-availability and integrity are the first properties to be considered in CPS
+availability and integrity are the first properties to be considered in CPS secure engineering
 while confidentiality takes the first place when dealing with security
 protocols. In fact, integrity is often assumed by pattern-matching (e.g. in
 AVANTSSAR \autocite{Armando2012avantssar}) and availability is hardly ever considered in
@@ -755,9 +763,21 @@ the corresponding Facts.
 	If, given a system security specification as a collection of
 	requirements on the system, there exist
 	a non-unique design that respect those requirements, the number of
-	equivalent designs that fullfills the requirements quantitatively
-	defines the magnitute of insecurity of a system design.
+	equivalent designs that fulfills the requirements quantitatively
+	defines the magnitude of insecurity of a system design.
 \end{hypothesis}
+
+Based on these hypothesis, security ($S$) can be expressed as the following equation.
+\begin{displaymath}
+	S=-((\prod_{a\in Ag} r^{\binom{n}{k}})-\delta_T)
+\end{displaymath}
+where $r^{\binom{n}{k}}$ represents the number of possible configurations (permutations) 
+of an agent based on the number $r$ of relations (e.g. EQ, DR, PO) with arity $k$ between
+$n$ diffrent sets in the $\abftheory$ theory. $\delta_T$ represents the 
+number of configurations which are not satisfiable with respect to the logical theory
+defining the 
+algebraic structure (topology) and constraints of the calculus (RCC). $Ag$ is the 
+set of all the agents in the system under evaluation.
 
 \subsection{Abstraction Level of a Specification in $\abftheory$-theory}
 The level of abstraction is always a concern when it comes to the definition of

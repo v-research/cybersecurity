@@ -81,11 +81,10 @@ approaches to the investigation of the security of systems, and the security of 
 formally verified protocol is indeed falsifiable (against the security properties verified).  For example, in the protocol
 verification community, security is often defined as a formalization of the
 high-level properties confidentiality, integrity, and availability. The problem
-in such approaches is not the definition of what cybersecurity is, but 
-the generality of the results since they takle a specific step (and not the first) of the engineering process (of system).
+in such approaches is not the definition of what cybersecurity is but 
+the generality of the results, since they takle a specific step (and not the first) of the engineering process (of system).
 Therefore, the theories underlying the verification are based on 
-assumptions which non-evidently apply to a general security theory (since, as mentioned before,
-there is no such a theory).
+assumptions which non-evidently apply to a general security theory.
 As an example, the so called Dolev-Yao attacker model\footnote{For the sake of
 simplicity, the Dolev-Yao attacker can be considered as an abstraction of an
 active attacker who controls the network but cannot break
@@ -197,9 +196,10 @@ the terms that structure our current understanding of safety and security.
 		which is expounded by me.'' -- Parmenides of Elea, On Nature
 		(circa 500 B.C.), fragments B7.1–8.2
 		\autocite{Hakim2016philosophy}} since they are partial results in nature) 
-		while a vulnerability should
-		be defined in a way that is empirically falsifiable. This means
-		that the term vulnerability should have a complete and sound
+		%while a vulnerability should
+		%be defined in a way that is empirically falsifiable. This means
+		%that 
+		On the other hand, the term vulnerability should have a complete and sound
 		definition, so that no other causes (e.g.  other sources) but
 		the ones in the definition are responsible for a vulnerability.
 		Furthermore, the term ``threat sources'' used in the definition
@@ -221,11 +221,24 @@ are based on empirical tests and measurements (therefore should be considered hy
 induction based on the empirical observation should be avoided, since it may
 easily lead to false beliefs, this approach is
 often justified by the supposed impossibility of defining a theory that
-correctly predicts failures which, in turn, pose hazards to a system. 
-To the best of our knowledge, and supported by\autocite{Herley2016unfalsifiability}, the
-correlation between predictability of environment and believed unpredictability
-of attackers has not been correlated to a theory on cybersecurity. 
-Therefore, inductive research efforts in
+correctly predicts failures.
+%which, in turn, pose hazards to a system. 
+To the best of our knowledge, and supported by\autocite{Herley2016unfalsifiability}, %the
+there is no scientific theory that defines what a secure system is.
+%correlation between predictability of environment and believed unpredictability
+%of attackers has not been correlated to a theory on cybersecurity. 
+Therefore, 
+(inductive\footnote{``So, whenever they argue ``Every man is an
+animal and Socrates is a man; therefore Socrates is an animal,'' proposing to
+deduce from the universal proposition ``every man is an animal'' the particular
+proposition ``Socrates therefore is an animal,'' which in fact goes (as we have
+mentioned) to enstablish by way of induction the universal proposition, the
+fall into the error of circular reasoning, since they are enstablishing the
+universal proposition inductively by means of each of the particulars and
+deducing the particular proposition from the universal syllogistically.''
+Sextus Empiricus, Outlines of Pyrrhonism II-195
+\autocite{Empiricus1990Pyrrhonism}})
+research efforts in
 predicting malicious effects are accepted (and published) in scientific
 conferences (e.g.~\autocite{Rocchetto2014CSRF}). A failure of a wire due to
 environment (e.g. due to humidity, dust, heat \&c) is defined from empirical
@@ -296,23 +309,23 @@ the terms that we used in this section and in Figure~\ref{fig:safety-security}.
 		harm''\autocite{iet2017glossary}.
 \end{itemize}
 
-Either a valid security hypothesis can be formulated based on one or more of
-the concepts reviewed (and depicted in Figure~\ref{fig:safety-security}) or it
-can't.  Since, in the next Section, we will define our security hypothesis (on
-top of which we'll deveop a security theory) on those terms, if the second case
-is true we will not formulate a valid security theory. However, while we want
-to highlight that the incompleteness of this review may be a potential issue;
-on the other hand, due to the nature of a literature review, it seems to us
-that only an inductive approach can be used and then any literature review will
-be incomplete.  If the first case applies, in one of those terms one shall find
-a valid ground on top of which formulate a security hypothesis (assuming that a
-valid security hypothesis exists). 
+%Either a valid security hypothesis can be formulated based on one or more of
+%the concepts reviewed (and depicted in Figure~\ref{fig:safety-security}) or it
+%can't.  Since, in the next Section, we will define our security hypothesis (on
+%top of which we'll develop a security theory) on those terms, if the second case
+%is true we will not formulate a valid security theory. However, while we want
+%to highlight that the incompleteness of this review may be a potential issue;
+%on the other hand, due to the nature of a literature review, it seems to us
+%that only an inductive approach can be used and then any literature review will
+%be incomplete.  If the first case applies, in one of those terms one shall find
+%a valid ground on top of which formulate a security hypothesis (assuming that a
+%valid security hypothesis exists). 
 
 Our literature review shows that most of the definitions relates insecurity to
 dis-honesty (also called maliciousness or adversarial) of an agent (often
-called adversary or attacker).  If those correlation are important for the
-insecurity of systems, it is plausible that they are important for the opposite
-concept, security.  Therefore, we define the following hypothesis.
+called adversary or attacker). We can synthesize this belief in the
+following hypothesis.
+
 \begin{hypothesis}{\bf Security as Honesty and Insecurity as Dishonesty --}
 	\begin{itemize}
 		\item a closed system can be considered \emph{secure} if there
@@ -327,7 +340,7 @@ concept, security.  Therefore, we define the following hypothesis.
 \end{hypothesis}
 As in the Dolev-Yao theory, we may correlate ``being dishonest'' to ``not
 following the intended behavior/rules''.  In the case of a generic system, a
-dishonest agent is therefore, any agent that doesn't follow the intended
+dishonest agent is, therefore, any agent that doesn't follow the intended
 behavior (or functionality or logic) of the system.  Given the generality of
 the definition, and its high level of abstraction, we may
 conclude that the hypothesis seems evident. For example, a software can be
@@ -337,7 +350,7 @@ un-testable conclusion that the dishonest behaviors of agents cannot be defined
 in general (e.g. due to the heterogeneity of agents and systems) 
 and that huge repository of dishonest behaviors should be kept as
 definition, such as CWE\autocite{MITRE2020CWEresearch}, CVE\autocite{CVE},
-CAPEC\autocite{MITRE2020CAPEC}, NVD\autocite{NIST2020NVD} and many many other;
+CAPEC\autocite{MITRE2020CAPEC}, NVD\autocite{NIST2020NVD};
 or that dishonesty of an agent with respect to a security protocol should be
 defined as a number of predefined actions as in
 \autocite{Turuani2006clatse,Basin2005ofmc,Armando2016satmc,Rocchetto2017interpolation}

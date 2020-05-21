@@ -86,9 +86,6 @@ Some relevant examples for our objective are the following.
 \end{itemize}
 
 \Paragraph{Methodology}
-Before going into the details of the various terms and their applications for
-the definition of our theory, we 
-detail our methodology.
 The concept of Knowledge \autocite{Hintikka1962knowledge} (from an
 epistemological point of view) can be defined as the way to get to the Truth.
 Anything that is known is considered true\footnote{It is also
@@ -267,9 +264,7 @@ of CPS.
 			\item The physical/structural (HW/SW) architecture of each
 				subsystem of agents and agent within a
 				subsystem
-			\item Other aspects of the system, related to the two previous points, that we
-				describe afterwards in this paper, such as
-				the assets and security properties 
+			\item Assets and security properties
 		\end{itemize}
 \end{enumerate}
 We give a graphical representation of (sub-)system and agent in Figure~\ref{fig:system-agent}.
@@ -402,7 +397,7 @@ the configurations allowed by the $\abftheory$ theory, and how those configurati
 categorized.  In Table~\ref{tab:5com} we provide the generic composition table
 of RCC5 over 3 regions instantiated over $\abf$, which shows the whole state
 space for a single agent. The color coding of the table represents the 
-risk function as a risk matrix as we detail afterwards in this section.
+security risk related to a generic agent. 
 
 As depicted in
 Figure~\ref{fig:soundness}, the relation between Facts, and Assertions and Behavior
@@ -531,9 +526,8 @@ The definition of Risk leads to the risk matrix in Figure~\ref{fig:quantitative}
 	minimum risk by the $EQ$ relation over the same Regions. In between the two extremes, the granularity
 	of possible intermediate configuration is defined by the calculus used (RCC5 in our case).
 \end{definition}
-We note that often the risk matrix is defined by the relation between likelihood and impact.
-We argue that the likelihood is related to the number of possible non secure (i.e. non maximum secure) 
-configurations of a system and, similarly, the impact.
+We note that often the risk matrix is defined by the relation between likelihood and impact which we
+discuss in the next section.
 
 \begin{table}[t]
 \centering

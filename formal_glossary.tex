@@ -1,16 +1,10 @@
 A formalization requires a formal logic and a formal language.  We base our
 formalization on first order logic (FOL) with the standard truth-value
-semantics. The choice of this logic is usefull for the fomal treatment of the
+semantics\footnote{The choice of this logic is usefull for the fomal treatment of the
 theory we'll define in Section~\ref{sec:theory}.  We do not provide a proof
 that the choice of FOL doesn't impede the formulation of a correct security
 theory, nor that the semantics of English isn't an issue. So, we believe that
-this doesn't pose an issue for the formulation of the seucirty hypotheses since
-the hypothesis requires to be able to define \emph{an agent and its
-honest/dishonest behaviors in such a way that an agent can be used to define a
-system}. To the best of our knowledge, there is no result that shows that FOL
-cannot be used to do so; on the contrary, using classical logic such as FOL or
-Propositional logic is rather standard (along with Kripke structures for the
-definition of the underlying causality principle).
+this doesn't pose an issue for the formulation of the security hypotheses.}.
 
 We consider a first-order language $\follang$ over a
 signature $\Sigma_P$ where $P,P',\ldots,P^n$ represent terms, and
@@ -42,7 +36,7 @@ we named $\sigma$ with a slight abuse of notation) defined in
 Definition~\ref{def:modalinterpretation}. 
 \begin{definition}{\bf K Modal Logic --}\label{def:modallogic}
 A K-frame is a frame $ \kframe=\langle \possibleworlds,\modalrelation \rangle $
-	in the K modal logic where $ \modalrelation $ is the binary relation
+	in the K modal logic where $ \modalrelation $ is a binary relation
 	(i.e. a set of ordered pairs) between possible worlds
 	$\modalrelation\subseteq\possibleworlds\times\possibleworlds$, where
 	$\possibleworlds$ represents the possible worlds, and
@@ -78,7 +72,6 @@ doesn't correlate cause-effect (or worlds) due to any other principle but
 causality itself; therefore, in order to distinguish nominal or honest cause-effects
 and non-nominal or dishonest ones we would need to add additional constraints, defining
 what honesty is in a factious way.
-
 Similarly, in the next sections we won't be able to discriminate between Nature
 and Mankind due to their honesty. We argue that the concept of honesty, even if
 we do not state that it is not intrinsic to all the definition of Nature or
@@ -123,8 +116,8 @@ definition of mereology, i.e. based on the definition of Parthood relation
 between \emph{Parts}.  Due to the necessity of considering different types of Part (as we'll show afterwards) we
 extend the mereology to a
 mereo-topology\autocite{Smith1996mereotopology,Varzi1994mereotopology,Rachavelpula2017mereotopology},
-to increase the number of different types considered and to generalize the
-relations between Parts (as in Table~\ref{tab:rcc358}).  For the sake of
+considering the relations in Table~\ref{tab:rcc358}.
+For the sake of
 readability, we use the term \emph{Region} both to refer to a mereological Part
 and to a topological Region.  The choice of mereotopology is also correlated to
 the objective of defining a formal ontology, which we use to define the
@@ -160,11 +153,11 @@ design), and protocol verification tools (which requires some formalization of
 a cause-effect relation, e.g.  in Linear Temporal Logic).
 
 In order to correlate the definition of
-agent (i.e. Mankind and Nature) to the
+agents (i.e. Mankind and Nature) to the
 mathematical structure of the logic that defines them, we express Mankind and
 Nature as formulas over the theory of mereology and then in terms of
 mereotopological Regions, extending the interpretation function
-$\interpretation$, to include a formal theory of mereotopology.  We use the
+$\interpretation$ to include a formal theory of mereotopology.  We use the
 Region Connection Calculus (RCC), as defined
 in~\cite{bennettLogics,improvingRCC}, to provide an axiomatization of the
 spatial concepts and relations in FOL to correlate the algebraic
@@ -374,11 +367,11 @@ attacker can be seen as an additional agent (often identified with the network
 where the messages are exchanged) that sees the network traffic and manipulates
 it. The actions are generic (the attacker can combine two messages, split a
 message into its components, or decrypt/encrypt if it has the proper security
-key) but not something that a dishonest agent cannot do. The main difference is
+key) but not something that an honest agent cannot do. The main difference is
 that an honest agent follows the nominal specification of the protocol while
 the attacker doesn't. The attacker non-deterministically opens as many new
 sessions as it wants and the causality structure in which this scenario
-(protocol + attacker) has been defined, is searched for a state that is
+(protocol + attacker) has been defined, can be analyzed for a state that is
 considered erroneous with respect to some security requirements decided a
 priori. Therefore, as we mentioned in Section~\ref{sec:problem}, the
 formal verification of the security of protocols can be considered a scientific

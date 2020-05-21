@@ -9,7 +9,7 @@ the same time period, the number of cybersecurity breaches increased
 exponentially''. The data reported by the NIST through the official CPE (Common
 Platform Enumeration) Dictionary Statistics on the NVD websites in
 \autocite{NIST2020CPEstatistics}, show that in 2016 the number of reported
-vulnerabilities reported where around $~6000$ while in 2019 the number of
+vulnerabilities were around $~6000$ while in 2019 the number of
 vulnerabilities was above $16000$.  The scientific community also reports
 seemingly unjustifiable findings.  In fact, in\autocite{Herley2009so}, Cormac
 Herley (Microsoft Research) shows how basic cybersecurity principles (such as
@@ -21,31 +21,29 @@ investments in cybersecurity and the number of reported vulnerabilities year
 after year, can be linked to the lack of a foundational theory on
 cybersecurity, as already highlighted by Cormac Herley
 in\autocite{Herley2016unfalsifiability}.  An important issue raised by Herley
-is that the methodology applied to by the security research community is quite
+is that the methodology applied by the security research community is quite
 often implicit and not always scientifically ``correct''. Herley equates
 correct to what Popper defined in \autocite{popper1962conjectures} even if, we
 believe, the comments made by Hintikka in \autocite{Hintikka1993Information}
-should be taken into account. Therefore, without discussing what correct and
-non-correct is, we start by explicitly mention our method of enquiry. 
+should be taken into account. Therefore, we start by explicitly mention our method of enquiry. 
 
 \Paragraph{Methodology} The method applied in our line of research follows what
 (to the best of our knowledge) the scientific method mandates. We start, in
 Section~\ref{sec:problem}, by detailing the problem statement, reporting a
 literature review on the main concepts and definitions related to security.  We
-formulate (inductively)\footnote{``So, whenever they argue ``Every man is an
-animal and Socrates is a man; therefore Socrates is an animal,'' proposing to
-deduce from the universal proposition ``every man is an animal'' the particular
-proposition ``Socrates therefore is an animal,'' which in fact goes (as we have
-mentioned) to enstablish by way of induction the universal proposition, the
-fall into the error of circular reasoning, since they are enstablishing the
-universal proposition inductively by means of each of the particulars and
-deducing the particular proposition from the universal syllogistically.''
-Sextus Empiricus, Outlines of Pyrrhonism II-195
-\autocite{Empiricus1990Pyrrhonism}} a security hypothesis, based on our review,
-in Section~\ref{sec:glossary}; which we use to propose a theory on system security in
-Section~\ref{sec:theory}. We apply our theory to an abstract and standard (i.e.
-based on standards) secure process development lifecycle, following the
-principle of requirement engineering in Section~\ref{sec:engineering} (with an
-ad-hoc running example, based on the SWaT testbed \autocite{Mathur2016swat}).
-We implement, in Section~\ref{sec:tool}, the theory in a prototype tool that can be used for the risk
-assessment of a design of cyber-physical systems.
+formulate 
+a security hypothesis %, based on our review,
+in Section~\ref{sec:glossary}; which we use to propose a theory on system
+security in Section~\ref{sec:theory}. In Section~\ref{sec:engineering}, we
+apply our theory to an abstract and standard (i.e.  based on standards) secure
+process development lifecycle, following the principle of requirement
+engineering  (with an ad-hoc running example, based on the SWaT testbed
+\autocite{Mathur2016swat}). This application shows how our theory can be used
+to predict all of the possible security weaknesses of a system, allowing the
+falsification of our theory.  In fact, if any security weaknesses were to be
+found in a system and not predicted by our theory, the theory could be declared
+incomplete.  Similarly, if a security weakness would be predicted by our theory
+but found to be impossible to have our theory could be declared as wrong.  In
+order to apply our theory we implemented, as described in
+Section~\ref{sec:tool}, the theory in a prototype tool that can be used for the
+risk assessment of a design of cyber-physical systems.
