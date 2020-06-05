@@ -309,35 +309,14 @@ the terms that we used in this section and in Figure~\ref{fig:safety-security}.
 		harm''\autocite{iet2017glossary}.
 \end{itemize}
 
-%Either a valid security hypothesis can be formulated based on one or more of
-%the concepts reviewed (and depicted in Figure~\ref{fig:safety-security}) or it
-%can't.  Since, in the next Section, we will define our security hypothesis (on
-%top of which we'll develop a security theory) on those terms, if the second case
-%is true we will not formulate a valid security theory. However, while we want
-%to highlight that the incompleteness of this review may be a potential issue;
-%on the other hand, due to the nature of a literature review, it seems to us
-%that only an inductive approach can be used and then any literature review will
-%be incomplete.  If the first case applies, in one of those terms one shall find
-%a valid ground on top of which formulate a security hypothesis (assuming that a
-%valid security hypothesis exists). 
-
 Our literature review shows that most of the definitions relates insecurity to
 dis-honesty (also called maliciousness or adversarial) of an agent (often
-called adversary or attacker). We can synthesize this belief in the
-following hypothesis.
-
-\begin{hypothesis}{\bf Security as Honesty and Insecurity as Dishonesty --}
-	\begin{itemize}
-		\item a closed system can be considered \emph{secure} if there
-			is no dishonest agent
-		\item a closed system can be considered \emph{insecure} if
-			there is a dishonest agent 
-	\end{itemize}
-	where an agent is any virtual or physical entity of the system or using
-	the system (e.g. a device, a software, or a human being) and dishonesty
-	is not necessarily related to malicious motivation but also to
-	incompetence or lack of skills.
-\end{hypothesis}
+called adversary or attacker). This, however, just moves the problem of
+defining what cybersecurity is as the problem of defining what an dishonest
+agent can or cannot do in a system\footnote{where an agent is any virtual or
+physical entity of the system or using the system (e.g. a device, a software,
+or a human being) and dishonesty is not necessarily related to malicious
+motivation but also to incompetence or lack of skills.}
 As in the Dolev-Yao theory, we may correlate ``being dishonest'' to ``not
 following the intended behavior/rules''.  In the case of a generic system, a
 dishonest agent is, therefore, any agent that doesn't follow the intended
@@ -355,6 +334,3 @@ or that dishonesty of an agent with respect to a security protocol should be
 defined as a number of predefined actions as in
 \autocite{Turuani2006clatse,Basin2005ofmc,Armando2016satmc,Rocchetto2017interpolation}
 (to name a few). 
-
-We now proceed with a more detailed analysis of the terms
-and with the re-formulation of the security hypothesis.
