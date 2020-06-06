@@ -1,16 +1,71 @@
 \documentclass[conference]{IEEEtran}
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[style=numeric]{biblatex}
+\usepackage{amsmath}
 \addbibresource{../literature.bib}% Syntax for version >= 1.2
 \usepackage{graphicx}
 \graphicspath{{../images/}}
+\usepackage{multirow}
 
+% circles
+\usepackage{wasysym}
+\newcommand{\Tdot}{$\CIRCLE$}
+\newcommand{\Thdot}{$\LEFTcircle$}
+\newcommand{\Twdot}{$\Circle$}
+
+% for fancy table with rotated column titles
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\newcolumntype{R}[2]{%
+    >{\adjustbox{angle=#1,lap=\width-(#2)}\bgroup}%
+    l%
+    <{\egroup}%
+}
+\newcommand*\rot{\multicolumn{1}{R{45}{0.01em}}}% no optional argument here, please!
+\newcommand*\rota{\multicolumn{1}{R{90}{0.01em}}}% no optional argument here, please!
+\def\hb{\hbox to 10.7 cm{}}
+
+%colors in tables
+\definecolor{abfred}{RGB}{255, 215, 215}
+\definecolor{abf-rg-1}{RGB}{251,213,242}
+\definecolor{abf-rg-2}{RGB}{243,212,249}
+\definecolor{abf-rg-3}{RGB}{213,210,245}
+\definecolor{abf-rg-4}{RGB}{208,231,242}
+\definecolor{abf-rg-5}{RGB}{206,238,223}
+\definecolor{abf-rg-6}{RGB}{205,236,210}
+\definecolor{abf-rg-7}{RGB}{211,234,204}
+\definecolor{abfgreen}{RGB}{221,232,203}
+\definecolor{abforange}{RGB}{255, 245, 206}
+
+%fix commands
 \newcommand{\fixnote}[2]{\textbf{\color{red}{FIX}}\footnote{{\bf #1:} #2}}
 \newcommand{\fix}[2]{{\color{red} {\bf tofix:} #2}}
 % \renewcommand{\fixnote}[2]{}
 % \renewcommand{\fix}[2]{}
+
+\newcommand{\assertionRegion}{\mathcal{A}}
+\newcommand{\beliefRegion}{\mathcal{B}}
+\newcommand{\factRegion}{\mathcal{F}}
+\newcommand{\rcc}{rcc}
+\newcommand{\agentuniverse}{Ag}
+\newcommand{\abf}{\assertionRegion,\beliefRegion,\factRegion}
+\newcommand{\Rcc}[2]{rcc(#1,#2)}
+\newcommand{\connects}[2]{C(#1,#2)}
+\newcommand{\disconnected}[2]{\neg C(#1,#2)}
+\newcommand{\partof}[2]{P(#1,#2)}
+\newcommand{\overlaps}[2]{O(#1,#2)}
+\newcommand{\eq}[2]{EQ(#1,#2)}
+\newcommand{\pp}[2]{PP(#1,#2)}
+\newcommand{\po}[2]{PO(#1,#2)}
+\newcommand{\ppi}[2]{PPi(#1,#2)}
+\newcommand{\dr}[2]{DR(#1,#2)}
+\newcommand{\all}[2]{T(#1,#2)}
+\newcommand{\rassert}[3]{\mathcal{A}_{#1\rightarrow #2}#3}
+\newcommand{\lassert}[3]{\mathcal{A}_{#1\leftarrow #2}#3}
+
+\newtheorem{definition}{Definition}%[section]
 
 \begin{document}
 \title{On Etiology of Cybersecurity}
@@ -141,7 +196,7 @@ but found to be impossible to have our theory could be declared as wrong.
 \section{Literature Review}\label{sec:literature}
 \begin{figure*}[t]
 	\centering
-	\includegraphics[width=\textwidth]{safety-security_3.pdf}
+	\includegraphics[width=.9\textwidth]{safety-security_3.pdf}
 	\caption{Overview of keywords related to security and safety}
 	\label{fig:safety-security}
 \end{figure*}
@@ -264,7 +319,6 @@ the terms that structure our current understanding of security.
 		and Mankind, not differentiating between safety and security.
 \end{itemize}
 
-
 As depicted in Figure~\ref{fig:safety-security}, a vulnerability does not
 necessarily become a threat for the system, unless exploited ``through a
 channel that allows the violation of the security policy
@@ -344,6 +398,13 @@ by a weakness.
 		harm''\cite{iet2017glossary}.
 \end{itemize}
 
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=.7\columnwidth]{causality.pdf}
+	\caption{Etiology of cybersecurity}
+	\label{fig:causality}
+\end{figure}
+
 Our literature review shows that most of the definitions relates insecurity to
 dis-honesty (also called maliciousness or adversarial) of an agent (often
 called adversary or attacker). This, however, just moves the problem of
@@ -351,36 +412,568 @@ defining what cybersecurity is as the problem of defining what an dishonest
 agent can or cannot do in a system\footnote{where an agent is any virtual or
 physical entity of the system or using the system (e.g. a device, a software,
 or a human being) and dishonesty is not necessarily related to malicious
-motivation but also to incompetence or lack of skills.}
-As in the Dolev-Yao theory, we may correlate ``being dishonest'' to ``not
-following the intended behavior/rules''.  In the case of a generic system, a
-dishonest agent is, therefore, any agent that doesn't follow the intended
-behavior (or functionality or logic) of the system.  Given the generality of
-the definition, and its high level of abstraction, we may
-conclude that the hypothesis seems evident. For example, a software can be
-considered an agent of the system and whenever it has a bug, it can be
-exploited causing an Incident. However, this hypothesis has lead to the
-un-testable conclusion that the dishonest behaviors of agents cannot be defined
-in general (e.g. due to the heterogeneity of agents and systems) 
-and that huge repository of dishonest behaviors should be kept as
-definition, such as 
-CAPEC\cite{MITRE2020CAPEC};
-or that dishonesty of an agent with respect to a security protocol should be
-defined as a number of predefined actions as in
+motivation but also to incompetence or lack of skills.} As in the Dolev-Yao
+theory, we may correlate ``being dishonest'' to ``not following the intended
+behavior/rules''.  In the case of a generic system, a dishonest agent is,
+therefore, any agent that doesn't follow the intended behavior (or
+functionality or logic) of the system.  Given the generality of the definition,
+and its high level of abstraction, we may conclude that the hypothesis seems
+evident. For example, a software can be considered an agent of the system and
+whenever it has a bug, it can be exploited causing an Incident. However, this
+hypothesis has lead to the un-testable conclusion that the dishonest behaviors
+of agents cannot be defined in general (e.g. due to the heterogeneity of agents
+and systems) and that huge repository of dishonest behaviors should be kept as
+definition, such as CAPEC\cite{MITRE2020CAPEC}; or that dishonesty of an agent
+with respect to a security protocol should be defined as a number of predefined
+actions as in
 \cite{Turuani2006clatse,Basin2005ofmc,Armando2016satmc,Rocchetto2017interpolation}
-(to name a few). In order to define a theory on cybersecurity and on 
-the malicious behaviors of agents we noticed that Attack Patterns (or Attacks)
-are caused-by the presence of Vulnerabilities in the system. Those 
-Vulnerabilities are, in turn, cause-by the presence of Weaknesses in the system.
-Weaknesses are Errors in the design or implementation of a system.
-Therefore, a theory on cybersecurity should first predict the Errors 
-in a system design.
+(to name a few). As depicted in Figure~\ref{fig:causality}, in order to define
+a theory on cybersecurity and on the malicious behaviors of agents we noticed
+that Attack Patterns (or Attacks) are caused-by the presence of Vulnerabilities
+in the system. Those Vulnerabilities are, in turn, cause-by the presence of
+Weaknesses in the system.  Weaknesses are Errors in the design or
+implementation of a system.  Therefore, a theory on cybersecurity should first
+predict the Errors in a system design.
 
 \section{Security Hypothesis -- ABF Theory of Agents}\label{sec:hypothesis}
-Hypothesis formulated by looking at the causality principle and CWE/CVE/CAPEC repositories.
-SUmmarize formal\_glossary justifying the choice of constituent of hyp.
+In order to address the problem raised by Herley, we shall define how to
+distinguish between a secure and an insecure system. While most of the
+literature have correlated the problem of in-security
+to the maliciousness of agents interacting with the system, we show that
+security doesn't seem to stem from a malicious nature but, rather, insecurity
+raises from the lack of well-defined security requirements for the development
+process of a system. We argue that the high number of security vulnerability
+reported today are simply the realization of potential system configurations,
+which deviate from the nominal behavior because the \emph{intended (or
+nominal) behavior} of the system is not precisely defined in the specification
+at the very early stages of the engineering process.
+
+As a reference, we consider the following steps of the engineering process
+and our objective is to be able to predict the security requirements
+instead of axiomatically assume them.
+\begin{enumerate}
+	\item \emph{System Specification}, where the \emph{functional and physical requirements} are defined
+	\item \emph{Architecture Design}, where the specification is structured into \emph{functional and physical architectures}
+	\item \emph{Security Risk Assessment}, where the potential \emph{weaknesses} (errors)
+		are identified and, consequently, \emph{security requirements} are
+		captured.
+	%\item \emph{Design Refinement}, where the physical and functional
+	%	architectures are extended with \emph{mitigations} for the
+	%	weaknesses. Mitigations at this step details the semantics of
+	%	the functional blocks (behaviors), the data flow, and communication logic.
+	%\item \emph{Verification of Security Requirements}, where the data flow, behaviors, and communication protocols are verified against the security requirements.
+\end{enumerate}
+Given that, in our investigation, we changed the focus from the attacker to the
+potential designs of a system, we start by defining a general framework for the definition
+of a system. On top of this framework we will identify system weaknesses as potential
+design errors.
+
+\subsection{Systems and Multi-Agent Systems}\label{sec:system}
+The ISO/IEC/IEEE 15288:2015 (System Life Cycle Processes) provides a definition
+of system as ``A combination of interacting elements organized to achieve one
+or more stated purposes.''\autocite{ISO201515288}.  Therefore, a system can be
+considered as a single agent where its interacting elements are the
+constituents of the agent itself. For the sake of simplicity we first define a
+system as an agent and then extend the definition to a ``combination of
+interacting'' agents.  
+
+There is no agreement between the research communities (e.g.
+Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent
+as a system. However, the same ideas revolved around for thousands of years.
+Some relevant examples for our objective are the following\footnote{
+It is interesting to notice that 
+in \autocite{Empiricus1990Pyrrhonism}, the author states: ``The
+ logical criterion also may be used in three senses -- of the
+ agent, or the instrument, or the ``according to what''; the
+ agent, for instance, may be a man, the instrument either sense
+ perception or intelligence, and the ``according to what'' the
+ application of the impression ``according to'' which the man
+ proceeds to judge by means of one of the aforesaid
+ instruments.''. The author than proceeds showing that
+ even in this framework, knowledge still is non-apprehensible.
+}.
+\begin{itemize}
+	\item In \autocite{Hintikka1962knowledge}, Hintikka describes the
+		difference between Knowledge and Belief (as epistemological
+		concepts), and the whole Doxastic logic defines in details how
+		Beliefs can be formalized.
+	\item In \autocite{Hintikka1993Information}, Hintikka describes the concept
+		of Information and the difference with Knowledge and Belief.
+	\item In \autocite{Santaca2016abf}, the authors defines an agent as a
+		tuple of Assertions, Beliefs, and Facts.
+\end{itemize}
+For our argument, as in \autocite{Santaca2016abf}, an agent is composed by its
+knowledge, beliefs, and the information or assertions it provides; where
+knowledge is defined, as in \autocite{Steup2020epistemology}, as a set of
+proposition known by an agent, such that: (i) knowledge requires belief, (ii)
+knowledge require truth, (iii) knowledge must be \emph{properly justified}, and
+the only objective of Information is to exchange beliefs between agents.  As
+defined in \autocite{Hintikka1993Information}, ``Information is specified by
+specifying which alternatives concerning the reality it admits and which
+alternatives excludes''. This means that if we consider a propositional
+variable (which admits the two alternatives True/False) its information is
+defined as Believed to be True/False and not Believed to be the opposite.  Due
+to the definition of Information and then with its relation to the
+probabilistic correlation to truth/reality, we consider information in relation
+with an agent's beliefs. Similarly, we consider beliefs to define the actual
+behavior of an agent or a system.
+
+The difference between Knowledge and Information as used by Hintikka and Facts
+and Assertions as used in \autocite{Santaca2016abf} are not precisely discussed
+in \autocite{Santaca2016abf}.  Furthermore, those epistemological concepts are
+difficult to define
+\autocite{Gettier2012knowledge}\footnote{``\emph{Theaetetus}: [\ldots] He said
+that knowledge was true opinion accompanied by reason, but that unreasoning
+true opinion was outside of the sphere of knowledge; and matters of which there
+is not a rational explanation are unknowable -- yes, that is what he called
+them -- and those of which there is are knowable. [\ldots] \emph{Socrates}:
+[\ldots] the primary elements of which we and all else are composed admit of no
+rational explanation; for each alone by itself can only be named, and no
+qualification can be added, neither that it is nor that it is not, for that
+would at once be adding to it existence or non-existence, whereas we must add
+nothing to it, if we are to speak of that itself alone.  [\ldots]'' Plato --
+Theaetetus 201 \autocite{Plato1914Plato}}.  For example, Hintikka in
+\autocite{Hintikka1993Information} states that ``A purely logical definition of
+information is impossible''. A detailed formalization of those concepts is out
+of the scope of this paper. We now define them abstractly, inspired by the
+ABF-theory  defined in \autocite{Santaca2016abf} and, in
+Section~\ref{sec:theory} we detail them as engineering concepts.
+\begin{enumerate}
+	\item We consider Information only when the intention of exchanging 
+		that Information is from a sender to 
+		recipient is defined; and we call it \emph{Assertion}  
+	\item Similarly, the portion of Beliefs we consider for system
+		engineering is the one that builds (input) or describes
+		(output) the behavior of an agent (strategy rules
+		\footnote{``The logical structure of information is one of the
+		most basic and one of the most basic and one of the simplest
+		thing in the wide and wonderful world of logical analysis. This
+		point can be put in a deeper perspective. A distinction
+		[\ldots] ought to be made [--] between two kinds of rules (or
+		principles) in any strategic activity like knowledge seeking.
+		On the one hand you have the rules that define the game, e.g.
+		how chessmen are moved on a board. The can be called
+		\emph{definitory} rules.  They must be distinguished from rules
+		[\ldots] that deal with what is better and what is worse in the
+		game in question.  Definitory rules do not say anything about
+		this subject. Rules which do can be called \emph{strategic
+		rules}'' -- Hintikka in \autocite{Hintikka1993Information}}),
+		and
+	\item We consider a set of axiomatic \emph{Facts} (definitory
+		rules\fixnote{mr}{facts are definitory rule, as they don't
+		define how a real system is finally implemented (currently) but
+		how it should, trough a series of requirements which may not be
+		respected, through insecurity, in the implemented system})
+		instead of considering the more general epistemic definition of
+		Knowledge. Specifically, Facts describes:
+		\begin{itemize}
+			\item The functional architecture of each agent
+			\item The physical/structural (HW/SW) architecture of each
+				subsystem of agents and agent within a
+				subsystem
+		\end{itemize}
+\end{enumerate}
+We give a graphical representation of (sub-)system and agent in Figure~\ref{fig:system-agent}
+\fixnote{mr}{remove ``functional behavior'' in the figure and leave only ``behavior''}.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=.9\columnwidth]{system-agent.pdf}
+	\caption{Example of system and agent structure}
+	\label{fig:system-agent}
+\end{figure}
+
+\subsection{Mereo-topological Reasoning}
+\begin{table*}[t]
+\centering
+\begin{tabular}{ccclll} 
+\rota{\textbf{RCC3}}&\rota{\textbf{RCC5}}&\rota{\textbf{RCC8}}&\textbf{Terminology} & \textbf{Notation} & \textbf{Definition} \\
+\hline
+&&&Connects with 			& $\mathit{C}(\mathit{X},\mathit{Y})$ 		& $\mathit{X}\subseteq \mathit{Y}$ \\
+&&&Disconnected from		& $\neg \mathit{C}(\mathit{X},\mathit{Y})$		& $\mathit{X}\not\subseteq \mathit{Y}$\\
+&&&Part of				& $\mathit{P}(\mathit{X},\mathit{Y})$		& $\forall \mathit{Z} ~\mathit{C}(\mathit{Z},\mathit{X}) \rightarrow \mathit{C}(\mathit{Z},\mathit{Y})$\\
+&&&Overlaps			& $\mathit{O}(\mathit{X},\mathit{Y})$		& $\exists \mathit{Z} ~\mathit{P}(\mathit{Z},\mathit{X})\wedge \mathit{P}(\mathit{Z},\mathit{Y})$\\
+\Tdot&&&  \textbf{Overlaps Not Equal} 	& $\mathit{ONE}(\mathit{X},\mathit{Y})$		& $\mathit{O}(\mathit{X},\mathit{Y}) \land \neg \mathit{EQ}(\mathit{X},\mathit{Y})$ \\
+\Tdot&\Tdot&\Tdot& \textbf{Equal to} 		& $\mathit{EQ}(\mathit{X},\mathit{Y})$  		& $\mathit{P}(\mathit{X},\mathit{Y}) \wedge \mathit{P}(\mathit{Y},\mathit{X})$\\
+\Tdot&\Tdot&\Tdot& \textbf{DiscRete from} 		& $\mathit{DR}(\mathit{X},\mathit{Y})$		& $\neg \mathit{O}(\mathit{X},\mathit{Y})$\\
+&\Tdot&\Tdot&\textbf{Partial-Overlap}	& $\mathit{PO}(\mathit{X},\mathit{Y})$ 		& $\mathit{O}(\mathit{X},\mathit{Y})\wedge \neg \mathit{P}(\mathit{X},\mathit{Y}) \wedge \neg \mathit{P}(\mathit{Y},\mathit{X})$\\ 
+&\Tdot&&\textbf{Proper-Part-of} 	& $\mathit{PP}(\mathit{X},\mathit{Y})$ 		& $\mathit{P}(\mathit{X},\mathit{Y})\wedge \neg \mathit{P}(\mathit{Y},\mathit{X})$\\ 
+	&\Tdot&&\textbf{Proper-Part-of-\textit{\textbf{i}}nverse} & $\mathit{PPi}(\mathit{X},\mathit{Y})$ 		& $\mathit{P}(\mathit{Y},\mathit{X}) \wedge \neg \mathit{P}(\mathit{X},\mathit{Y})$\\
+&&\Tdot&\textbf{Externally Connected} 	& $\mathit{EC}(\mathit{X},\mathit{Y})$ 		& $\mathit{C}(\mathit{X},\mathit{Y}) \wedge \neg\mathit{O}(\mathit{X},\mathit{Y})$\\ 
+&&\Tdot&\textbf{Tangential PP} 	& $\mathit{TPP}(\mathit{X},\mathit{Y})$ 		& $\mathit{PP}(\mathit{X},\mathit{Y})\wedge\exists\mathit{Z}~[\mathit{EC}(\mathit{Z},\mathit{X}),\mathit{EC}(\mathit{Z},\mathit{Y})]$\\ 
+&&\Tdot&\textbf{Tangential PPi} 	& $\mathit{TPPi}(\mathit{X},\mathit{Y})$ 		& $\mathit{TPP}(\mathit{Y},\mathit{X})$\\ 
+&&\Tdot&\textbf{Non-Tangential PP} 	& $\mathit{NTPP}(\mathit{X},\mathit{Y})$ 		& $\mathit{PP}(\mathit{X},\mathit{Y})\wedge\neg\exists\mathit{Z}~[\mathit{EC}(\mathit{Z},\mathit{X}),\mathit{EC}(\mathit{Z},\mathit{Y})]$\\ 
+&&\Tdot&\textbf{Non-Tangential PPi} 	& $\mathit{NTPPi}(\mathit{X},\mathit{Y})$ 		& $\mathit{NTPP}(\mathit{Y},\mathit{X})$\\ 
+\end{tabular}
+\caption{RCC3, RCC5, and RCC8 relations between Regions $X$, $Y$ and $Z$ ~\label{tab:rcc358}~\label{tab:rcc}}
+\end{table*}
+
+Similarly to\autocite{Santaca2016abf}, we define agents as a meronomy (an
+hierarchy of Part-Whole relations) over the constituent that we previously defined
+(assertions, beliefs, and facts), based on a standard definition of mereology,
+i.e. based on the definition of Parthood relation between \emph{Parts}.  Due to
+the necessity of considering different types of Part (as we'll show afterwards)
+we extend the mereology to a
+mereo-topology\autocite{Smith1996mereotopology,Varzi1994mereotopology,Rachavelpula2017mereotopology},
+considering the relations in Table~\ref{tab:rcc358}.  For the sake of
+readability, we use the term \emph{Region} both to refer to a mereological Part
+and to a topological Region.  Our aim is to create a meronomy
+instead of the taxonomies such as the one provided
+in\autocite{NIST2020NVD,MITRE2020CVE} with the
+CVSS\autocite{Mell2007CVSS} scoring system.  
+
+A mereotopology, as defined e.g. in\autocite{Rachavelpula2017mereotopology}, is
+an ordered mathematical structure where the basic relation between Regions is
+the reflexive and symmetric\fixnote{mr}{I guess it must be monotonic as defined
+in\autocite{Rachavelpula2017mereotopology} but I don't find it consistently in
+other papers.} \emph{Parthood} relation $\subseteq$.  
+\begin{definition}{\bf Parthood --}\label{def:parthood}
+Given any pair of mereotopological Regions $X$ and $Y$,
+	\begin{enumerate}[noitemsep]
+		\item Reflexivity: $\forall X.~ (X\subseteq X)$
+		\item Symmetry: $\forall X, Y.~ (X\subseteq Y \Rightarrow Y\subseteq X)$
+	\end{enumerate}
+\end{definition}
+
+The Parthood relation orders a universe of agents $\agentuniverse$ by defining the so called
+\emph{Connects with} (see in Table~\ref{tab:rcc358}) relation between Regions.
+We use the
+Region Connection Calculus (RCC), as defined
+in~\cite{bennettLogics,improvingRCC}, to provide an axiomatization of the
+mereo-topological concepts. In its broader definition, the RCC theory is composed
+by eight axioms, and is known as RCC8. In the text, for brevity, 
+we will often focus only on RCC5 (without
+loss of generality) by not considering tangential connections between spatial
+Regions. In Table~\ref{tab:rcc}, we
+summarize the axioms of the Region Connection Calculus (see, e.g., \autocite{Grutter2008rcc}).
+We can now define a system over the mereotopology using the RCC calculus, as follows.
+
+\begin{definition}{\bf System State --}\label{def:opsystem}
+	A CPS system (or a sub-system) state is defined as the tuple
+	$s=\langle\rcc(\factRegion,\beliefRegion),\rcc(\factRegion,\assertionRegion),\rcc(\beliefRegion,\assertionRegion)\rangle$,
+	where $\assertionRegion,\beliefRegion,\factRegion$, are regions of
+	assertions, beliefs (i.e. the beliefs generated by the behavior), and
+	facts expressed as requirements respectively.
+\end{definition}
+
+As already presented in \autocite{Santaca2016abf} it follows that, defining
+a system (or an operational system) with a fixed number of regions, there exist
+an upper-bound to the number of possible configuration of a system, defined by
+the possible relations between the different regions.
+For completeness, we report in the next paragraph 
+the calculation done in \autocite{Santaca2016abf}.
+
+\paragraph{Number of different configurations of a system}
+The general formula to calculate the number of different types of agents is
+$r^{\binom{n}{k}}$, where $r$ is the number of relations with arity $k$,
+between $n$ different sets, where $r^e$ is the number of permutation of $r$
+relations over $e$ elements with repetitions, with $e$ being the number of
+$k$-ary combinations of $n$ sets, $\binom{n}{k}$.
+In our case, $\binom{n}{k}=3$ since we consider $3$ sets
+($\assertionRegion,\beliefRegion,\factRegion$), and all the relations
+considered in the RCC are binary.  Hence, using RCC5 (with five different
+spatial relations) over three sets, we can theoretically define up to 125
+different type of agents. However, only 54 of the 125 (as showed in
+\cite{improvingRCC}) combinations are topologically correct with respect to
+the definition of the relations of RCC5. Generalizing to all the RCCs:
+
+\begin{itemize}%[nosep]
+\item \emph{RCC3} --- theoretical: $3^3=27$,  correct: 15 
+\item \emph{RCC5} --- theoretical: $5^3=125$, correct: 54
+\item \emph{RCC8} --- theoretical: $8^3=512$, correct: 193
+\end{itemize}
+
+Hence, even if considering a different number of sets than the three
+$\assertionRegion$, $\beliefRegion$ and $\factRegion$ exponentially affects
+the number of theoretical agents, the application of RCC downscales that number
+of a factor that ranges from 1.8 to 2.5. In addition, using RCC5 we consider
+3.6 times more (different) types of agents than RCC3, but using RCC8 would
+allow us to consider 3.5 times more different agents.
+In the quantitative evaluation of a single agent, depicted in Figure~\ref{fig:quantitative},
+we argue that only 1 configuration represents the nominal (expected) behavior 
+of the agent while the other configurations are either impossible to 
+implement or diverge from the intended nominal behavior. We note 
+that, the numbers reported here do not consider the details of the
+engineering process and should be considered a limit of an abstract 
+representation of the system.
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\columnwidth]{quantitative.pdf}
+	\caption{Cybersecurity risk for a single agent}
+	\label{fig:quantitative}
+\end{figure}
+
+\subsection{Qualitative Evaluation of Agent Space in $\abf$}\label{sec:agentspace}
+While a quantitative analysis reveals how many possible configurations of an
+agent (i.e. a system) exist w.r.t. the $\abf$ theory (i.e. $54/125$ in RCC5), a
+qualitative analysis of the different configurations describes the
+configurations allowed by the $\abf$ theory, and how those configurations can
+be categorized.  In Table~\ref{tab:5com}, we provide the generic composition
+table of RCC5 over 3 regions instantiated over $\abf$, which shows the whole
+state space for a single agent. The color coding of the table represents the
+security risk related to a generic agent. 
+
+As depicted in Figure~\ref{fig:soundness}, the relation between Facts, and
+Assertions and Behavior defines the soundness of the design (admissible
+configurations of Assertions, Behaviors and, in turn, Beliefs) w.r.t. the
+specification (what the specification mandates, such as by the nature of the
+physical/functional architectural models). We categorize agents by first
+analyzing the relations between each pair of Regions defining an agent (i.e.
+$\abf$), and then we categorize the different agents as tuple of the three
+Regions.  For the sake of simplicity, soundness is opposed to non-soundness in
+the following, however, with the RCC one should consider different ``degrees''
+of non-soundness. For example, in RCC5, if we consider EQ between two Regions
+as representing soundness, DR over the same Regions represents non-soundness;
+while PP, PO, PPi represents the different degrees of non-soundness.  A similar
+argument can be done for completeness.  \fix{mr}{it's missing the relation with
+equivalence. missing parallelism with knowledge-belief/assertion (see slide
+v-research-demo)}
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\columnwidth]{soundness.pdf}
+	\caption{Example relation between Facts, and Assertions and Beliefs}
+	\label{fig:soundness}
+\end{figure}
+
+\paragraph{\Rcc{$\assertionRegion$}{$\beliefRegion$} -- Collaboration} In order
+to reason on the relation between assertions and behavior we first need to
+consider that, by definition, assertions are defined as transfer of information
+between two agents, e.g., $a$ and $b$.  Therefore, as depicted in
+Figure~\ref{fig:system-agent}, an agent has two main categories of assertions,
+input and output assertions.  Given an agent $a$ and a collection of asserted
+predicates $\Phi$, the Input assertions are those received by $a$ from an agent
+$s$ acting as a sender, $\rassert{s}{a}{\Phi}$; similarly, output assertions
+are sent from $a$ to a receiver $r$, $\rassert{a}{r}{\Phi}$. We shall consider
+two pairs of regions\footnote{``I am not asserting, as Lotze did, that a
+relation between $X$ and $Y$ consists of a quality in $X$ and a quality in $Y$
+-- a view which I regard as quite indefensible. -- I assert that a relation $Z$
+between $X$ and $Y$ involves the existence in $X$ of the quality ``having the
+relation $Z$ to $Y$'' so that a difference of relations always involves a
+difference in quality, and a change of relations always involves a change of
+quality.'' --  Ellis J. McTaggart, The Unreality of
+Time\autocite{Mctaggart1908unreality}}: 
+\begin{itemize}
+	\item \Rcc{$\assertionRegion_{s\rightarrow a}$}{$\beliefRegion$},
+		where the relation between Input-assertions and behavior
+		describes the soundness of the execution of the functional
+		architecture w.r.t. input elicitation. With more details, the
+		ideal specification of the functional architecture, along with
+		the expected inputs, defines the functional behavior of an
+		ideal system.  If all the inputs (Assertions) are correctly
+		handled in the functional specification (behavior) the
+		specification is complete. 
+
+	\item \Rcc{$\assertionRegion_{a\rightarrow r}$}{$\beliefRegion$},
+		where the relation between behavior and outputs describes the
+		completeness of the behavior defined in the specification
+		w.r.t. the input elicitation.  With more details, if all the
+		outputs (assertions) of the functional architecture can be
+		produced, the functional architecture is complete.
+\end{itemize}
+
+
+\paragraph{\Rcc{$\assertionRegion$}{$\factRegion$} and
+\Rcc{$\beliefRegion$}{$\factRegion$} -- Honesty and Competence} While
+Assertions and Beliefs generated by the Behavior determines how a system should
+work, and the relation between the two defines the quality (i.e. the
+completeness w.r.t the specification) of the agent, the relation of Assertions
+and Behavior with Facts determines the quality with respect to the nominal
+(specified) system.  Given that Facts defines what must be true in the system,
+the relation of Assertions an Facts determines the degree of quality between
+the information circulating in a system (or within an agent) and
+reality\fixnote{mr}{assertions are reality while facts are dogmatic assertions
+at specification level, i.e. requirements}.  Since the transfer of information
+through Assertions generates Beliefs, a dishonest agent may circulate false
+information, generating false Beliefs.  We note that it is often implied that
+the intention behind circulating false information discerns a dishonest and an
+incompetent agent, however, we consider honesty related to sharing
+truths\footnote{``[\ldots] truth exists only in the good man, but the true in
+the bad man as well; for it is possible for the bad man to utter something
+true.'' Sextus Empiricus, Outlines of Pyrrhonism,
+II-83\autocite{Empiricus1990Pyrrhonism}}.  The relation between Beliefs and
+Facts determines the competence (on the subjects defined by the Facts) of an
+agent (i.e. the more competent an agent is, the more likely a Belief of that
+agent is true).
+
+\subsubsection{$\abf$ Security Enumeration (SE)} The following security
+requirement for a CPS specification can be summarized:
+\begin{enumerate}
+	\item[SE-$1$] Proper interaction between correctly-behaving agents (in
+		contrast with the ``Improper Interaction Between Multiple
+		Correctly-Behaving Entities'' defined by the CWE--$435$ as one
+		of the top ``view'' of the ``research concepts'' in
+		\autocite{MITRE2020CWEresearch}) is defined as
+		$\eq{\assertionRegion_a}{\beliefRegion_a}$ for an agent $a$
+		while can be detailed as follows when multiple agents are
+		considered.
+	\begin{enumerate}
+		\item[SE-$1.1$] The equality relation
+			$\eq{\assertionRegion_{s\rightarrow
+			a}}{\beliefRegion_a}$ describes the intended secure
+			behavior as: the beliefs generated by the behavior of
+			the functional architecture shall be complete w.r.t.
+			the specified inputs of the agent. Therefore, \emph{the
+			assertions received by an agent or a system shall be
+			compliant with the expected inputs of the functional
+			architecture}. For example, the inputs of the user of a
+			SW must be sanitized to exclude deviations w.r.t. the
+			expected inputs of the functions implemented in the SW.
+			Another example is the type checking between allowed
+			inputs and expected inputs.
+		\item[SE-$1.2$] Similarly, the equality relation
+			$\eq{\assertionRegion_{a\rightarrow
+			r}}{\beliefRegion_a}$ defines that the outputs of an
+			agent $a$ shall be the outputs of the functional
+			architecture.
+	\end{enumerate}
+	\item[SE-$2$]Sufficient Control Flow Management (in contrast with
+		the ``Insufficient Control Flow Management'' defined by MITRE
+		in the CWE--$691$ as one of the top ``view'' of the ``research
+		concepts'' in\autocite{MITRE2020CWEresearch}) is defined as
+		$\eq{\assertionRegion}{\factRegion}$.
+	\item[SE-$3$] Correct Calculation (in contrast with the ``Improper
+		Calculation'' defined by MITRE in the CWE--$682$ as one of the
+		top ``view'' of the ``research concepts''
+		in\autocite{MITRE2020CWEresearch}) is defined as
+		$\eq{\beliefRegion}{\factRegion}$.
+\end{enumerate}
+
+We are now in the position to define what a secure system is (with respect to
+the $\abf$-theory) and, based on that definition, what the security risk is and
+how to quantify it in a risk matrix.
+\begin{definition}{\bf Security of a System or an Agent --}\label{def:security}
+	A secure system is a system where SE-$1$, SE-$2$, and SE-$3$ holds for
+	each agent composing the system.
+\end{definition}
+The ISO 31000 consider risk as the ``effect of uncertainty on objectives'' and
+the refers both of positive and negative consequences of uncertainty.
+Accordingly, we consider risk as follows. 
+\begin{definition}{\bf Risk --}
+The whole space of potential designs of a specification with respect to the
+	$\abf$-theory.
+\end{definition}
+The definition of Risk leads to the risk matrix in
+Figure~\ref{fig:quantitative}, defined as follows.
+\begin{definition}{\bf Risk Matrix --}
+	The risk matrix is a function between the three relations
+	$s=\langle\rcc(\factRegion,\beliefRegion),\rcc(\factRegion,\assertionRegion),\rcc(\beliefRegion,\assertionRegion)\rangle$,
+	where the maximum risk is defined by the $DR$ relation between the
+	three groups of Regions, and the minimum risk by the $EQ$ relation over
+	the same Regions. In between the two extremes, the granularity of
+	possible intermediate configuration is defined by the calculus used
+	(RCC5 in our case).
+\end{definition}
+We note that often the risk matrix is defined by the relation between
+likelihood and impact which we discuss in the next section.
+
+\begin{table*}[t]
+\centering
+\begin{adjustbox}{width=.6\textwidth}
+\begin{tabular}{r||c|c|c|c|c} 
+& \dr{$\assertionRegion$}{$\beliefRegion$} & 
+	\po{$\assertionRegion$}{$\beliefRegion$}& 
+	\pp{$\assertionRegion$}{$\beliefRegion$} &
+	\ppi{$\assertionRegion$}{$\beliefRegion$} & 
+	\eq{$\assertionRegion$}{$\beliefRegion$} \\
+\hline
+\hline %dr
+ \multirow{3}{*}{\dr{$\beliefRegion$}{$\factRegion$}} & 
+	\cellcolor{abfred} & %dr
+	\cellcolor{abf-rg-1}\dr{$\assertionRegion$}{$\factRegion$} & %po
+	\cellcolor{abf-rg-2}\multirow{3}{*}{\dr{$\assertionRegion$}{$\factRegion$}} & %pp
+	\cellcolor{abf-rg-3} \dr{$\assertionRegion$}{$\factRegion$}& % ppi
+	 \cellcolor{abf-rg-4} \\ % eq
+& \cellcolor{abfred}\all{$\assertionRegion$}{$\factRegion$}& %dr
+	\cellcolor{abf-rg-1}\po{$\assertionRegion$}{$\factRegion$} & %po
+	\cellcolor{abf-rg-2}\dr{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-3}\po{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-4}\dr{$\assertionRegion$}{$\factRegion$}\\ % e q
+ & \cellcolor{abfred}& %dr
+	\cellcolor{abf-rg-1}\pp{$\assertionRegion$}{$\factRegion$} & %po
+	\cellcolor{abf-rg-2}  & %pp
+	\cellcolor{abf-rg-3}\pp{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-4} \\ %eq
+\hline %po
+ \multirow{3}{*}{\po{$\beliefRegion$}{$\factRegion$}} &
+	\cellcolor{abf-rg-1}\dr{$\assertionRegion$}{$\factRegion$} & %dr
+	\cellcolor{abf-rg-2} & %po
+	\cellcolor{abf-rg-3}\dr{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-4}\po{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-5} \\ %eq
+ & \cellcolor{abf-rg-1}\po{$\assertionRegion$}{$\factRegion$} & %dr
+	\cellcolor{abf-rg-2} \all{$\assertionRegion$}{$\factRegion$} & %po 
+	\cellcolor{abf-rg-3}\po{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-4}\ppi{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-5} \po{$\assertionRegion$}{$\factRegion$}\\%eq
+ & \cellcolor{abf-rg-1}\pp{$\assertionRegion$}{$\factRegion$} & %dr
+	\cellcolor{abf-rg-2} &  %po
+	\cellcolor{abf-rg-3}\pp{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-4}& %ppi
+	\cellcolor{abf-rg-5}\\ %eq
+\hline %pp
+ \multirow{4}{*}{\pp{$\beliefRegion$}{$\factRegion$}} &
+	\cellcolor{abf-rg-2}\dr{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-3}&
+	\cellcolor{abf-rg-4} & %pp
+	\cellcolor{abf-rg-5}\po{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-6}\\ %eq
+ & \cellcolor{abf-rg-2}\po{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-3}\po{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-4}\pp{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-5}\eq{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-6}\pp{$\assertionRegion$}{$\factRegion$} \\ %eq
+ & \cellcolor{abf-rg-2}\pp{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-3}\pp{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-4} & %pp
+	\cellcolor{abf-rg-5}\pp{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-6} \\ %eq
+ & \cellcolor{abf-rg-2}&
+ 	\cellcolor{abf-rg-3} & 
+	\cellcolor{abf-rg-4}& %pp
+	\cellcolor{abf-rg-5}\ppi{$\assertionRegion$}{$\factRegion$} & %ppi
+	\cellcolor{abf-rg-6} \\ %eq
+\hline %ppi
+ \multirow{3}{*}{\ppi{$\beliefRegion$}{$\factRegion$}} &
+ 	\cellcolor{abf-rg-3}\multirow{3}{*}{} &
+ 	\cellcolor{abf-rg-4}\dr{$\assertionRegion$}{$\factRegion$} &
+ 	\cellcolor{abf-rg-5}& %pp
+ 	\cellcolor{abf-rg-6}& %ppi
+ 	\cellcolor{abf-rg-7} \\ %eq
+& \cellcolor{abf-rg-3}\dr{$\assertionRegion$}{$\factRegion$} &
+ 	\cellcolor{abf-rg-4}\po{$\assertionRegion$}{$\factRegion$} & 
+ 	\cellcolor{abf-rg-5}\all{$\assertionRegion$}{$\factRegion$}& %pp
+ 	\cellcolor{abf-rg-6}\ppi{$\assertionRegion$}{$\factRegion$}& %ppi
+ 	\cellcolor{abf-rg-7}\ppi{$\assertionRegion$}{$\factRegion$}\\ %eq
+& \cellcolor{abf-rg-3} & 
+	\cellcolor{abf-rg-4}\ppi{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-5} & %pp
+	\cellcolor{abf-rg-6}& %ppi
+	\cellcolor{abf-rg-7}\\ %eq
+\hline %eq
+	\eq{$\beliefRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-4}\dr{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-5} \po{$\assertionRegion$}{$\factRegion$} & 
+	\cellcolor{abf-rg-6}\pp{$\assertionRegion$}{$\factRegion$} & %pp
+	\cellcolor{abf-rg-7} \ppi{$\assertionRegion$}{$\factRegion$} & %ppi 
+	\cellcolor{abfgreen} \eq{$\assertionRegion$}{$\factRegion$}  %eq
+\end{tabular}
+\end{adjustbox}
+\caption{RCC5 composition table over 3 regions. The results show that there
+exist 54 possible relations and the coloring anticipates the ideal risk matrix
+(green the secure state with low risk, red the high risk state, and a gradient
+of medium risk states). 
+\all{$\assertionRegion$}{$\factRegion$} = \{\dr{$\assertionRegion$}{$\factRegion$}, \po{$\assertionRegion$}{$\factRegion$}, \pp{$\assertionRegion$}{$\factRegion$}, \ppi{$\assertionRegion$}{$\factRegion$}, \eq{$\assertionRegion$}{$\factRegion$}\}
+\label{tab:5com}}
+\end{table*}
 
 \section{Prediction of Security Weaknesses}\label{sec:theory}
+\begin{figure*}[t]
+	\centering
+	\includegraphics[width=.9\textwidth]{mashyp.pdf}
+	\caption{asd}
+	\label{fig:mashyp}
+\end{figure*}
+
 \paragraph{Fun, Behavior, Channels}
 
 \section{Security Risk Assessment}\label{sec:secra}
@@ -390,6 +983,7 @@ SUmmarize formal\_glossary justifying the choice of constituent of hyp.
 \paragraph{Framework for Theory Falsification}
 \paragraph{SPDL, Testing, and Falsification}
 \paragraph{Relation with DY}
+\paragraph{Abstraction Level}
 
 \section{Conclusion and Future Works}
 \begin{itemize}
