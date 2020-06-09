@@ -1,6 +1,5 @@
-# prototypes
-Prototypes based on V-Research Cybersecurity Theory
--- agent_categorization contains formalizations of the ABF Theory published in: https://link.springer.com/chapter/10.1007%2F978-3-319-59294-7_21
+### (Alpha 0) Prototypes based on V-Research Cybersecurity Theory
+Contains formalizations of the ABF Theory published in: https://link.springer.com/chapter/10.1007%2F978-3-319-59294-7_21
 
-# known limitations
--- no agents in Object Diagrams
+### (Alpha 1) Cybersecurity Risk Assessment Tool
+Contains a tool-chain for the cybersecurity risk assessment based on the theory defined in [(paper 0)](../reports)
