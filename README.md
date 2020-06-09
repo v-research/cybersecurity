@@ -1,2 +1,2 @@
-## [V-Research] Research and Development for Cybersecurity Engineering
+## Research and Development for Cybersecurity Engineering
 With this repository we share our research reports and prototypes.
