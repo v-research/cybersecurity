@@ -203,7 +203,7 @@ The objective of this research is the development of a theory that defines (all
 \IEEEpeerreviewmaketitle
 
 \section{Introduction}\label{sec:intro}
-In \cite{Herley2016unfalsifiability}, Cormac Herley explores what he calls
+In \autocite{Herley2016unfalsifiability}, Cormac Herley explores what he calls
 ``an asymmetry in computer security'', which he defines as follows: ``Things
 can be declared insecure by observation, but not the reverse. There is no
 observation that allows us to declare an arbitrary system or technique
@@ -213,16 +213,16 @@ theory which is not falsifiable by an empirical experiment is well
 known\footnote{``A theory which is not refutable by any conceivable event is
 nonscientific. Irrefutability is not a virtue of a theory (as people often
 think) but a vice.'' -- Karl Popper, Conjectures and
-Refutations \cite{popper1962conjectures}} to be nonscientific (i.e.
+Refutations \autocite{popper1962conjectures}} to be nonscientific (i.e.
 unfalsifiability is a fallacy of a theory), Herley concludes that there is no
 scientific theory on cybersecurity; which means that cybersecurity lays in the
-realm of pseudo-sciences \cite{Herley2016usenixvideo}.  Herley, e.g.
-in \cite{Herley2017justifying}, discusses the implications of a
+realm of pseudo-sciences \autocite{Herley2016usenixvideo}.  Herley, e.g.
+in \autocite{Herley2017justifying}, discusses the implications of a
 nonscientific approach to cybersecurity, and highlights the tremendous impact on
 all the scientific research and engineering of systems; leading often to
 terrorism and wars, and wasting of resources in useless protections or
 overspending.  While the criticism is investigated
-in \cite{Herley2016unfalsifiability}, no solution is provided nor envisioned.  On the
+in \autocite{Herley2016unfalsifiability}, no solution is provided nor envisioned.  On the
 contrary, the goal of this work is to lay the foundations of a
 scientific cybersecurity theory. 
 
@@ -231,7 +231,7 @@ We consider the problem raised by Herley not confined to
 for any sound implementation such as networks, mechanical, cyber, or
 cyber-physical system, or even a single computer or a single device such as an
 hard-drive).  There is also an apparent inconsistency in
-\cite{Herley2016unfalsifiability} that we seek to clarify before following (as
+\autocite{Herley2016unfalsifiability} that we seek to clarify before following (as
 we agree) the scientific path draw by Herley: cybersecurity is defined as an
 abstract property in many formal approaches to the investigation of the
 security of systems, and the security of the design of a formally verified
@@ -245,7 +245,7 @@ the theories underlying the verification are based on assumptions which
 non-evidently apply to a general security theory.  As an example, the so called
 Dolev-Yao attacker model\footnote{For the sake of simplicity, the Dolev-Yao
 attacker can be considered as an abstraction of an active attacker who controls
-the network but cannot break cryptography.} \cite{Dolev1983security} only
+the network but cannot break cryptography.} \autocite{Dolev1983security} only
 applies to specific instances (often called scenarios) and abstraction of the
 protocol. This, in turn, creates a false sense of security since requires
 non-justifiable assumptions on the abstraction of the system of which security
@@ -255,16 +255,16 @@ needs to be defined by a modeler who chooses (among others): (i) a scope of the
 formalization (e.g.  excluding the server that distributes the public key is
 often done when verifying the security of authentication protocols), (ii) the
 number of sessions (even tough some approaches do reason on an infinite number
-of sessions such as \cite{Escobar2007maudenpa}), (iii) honesty/dishonesty of
-the peers (e.g.  in the ASLan++ language \cite{Oheimb2010aslan++}), and (iv)
+of sessions such as \autocite{Escobar2007maudenpa}), (iii) honesty/dishonesty of
+the peers (e.g.  in the ASLan++ language \autocite{Oheimb2010aslan++}), and (iv)
 the abstraction of the cryptographic primitives (e.g.  ProVerif vs CryptoVerif
-\cite{Blanchet2017symbolic}).  While many tools and theories improves those 
+\autocite{Blanchet2017symbolic}).  While many tools and theories improves those 
 issues, there is no agreement on which should be the definitive
 approach (if any). More importantly, some of the choices made by the
 modelers/engineers using those formal approaches may completely change the
 results of the formal verification of the system (an interesting example on how
 difficult it is to even just compare the approaches is given in
-\cite{Cremers2009comparing}). 
+\autocite{Cremers2009comparing}). 
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=.7\columnwidth]{protocol-example.pdf}
@@ -272,14 +272,14 @@ difficult it is to even just compare the approaches is given in
 	\label{fig:protocol-example}
 \end{figure}
 For example, in Figure~\ref{fig:protocol-example}, under the perfect
-cryptography assumption\footnote{As defined in \cite{Rocchetto2016cpdy}: ``In
+cryptography assumption\footnote{As defined in \autocite{Rocchetto2016cpdy}: ``In
 the so called perfect cryptography assumption, the security encryption scheme
 is suppose to be perfect, without any exploitable flaw, and so the only way for
 the attacker to decrypt a message is by using the proper key. That assumption
 is widely accepted in the security protocol community, and most of the formal
 reasoning tools for the analysis of security protocols abstract away the
 mathematical and implementation details of the encryption scheme
-\cite{Turuani2006clatse,Basin2005ofmc,Armando2016satmc,Rocchetto2017interpolation}''}
+\autocite{Turuani2006clatse,Basin2005ofmc,Armando2016satmc,Rocchetto2017interpolation}''}
 and assuming that no violation to any security property is done after message
 I), the freedom of choosing the scope
 determines that the flaws related to the dishonest impersonation of the Server
@@ -287,10 +287,11 @@ may or may not be considered in the verification process.  This choice has
 tremendous impact on the focus and findings of the verification of the security
 of the protocol.  While this may seem to turn upon minutiae and foreseeable,
 this highlights the false sense of security that may derive from a
-non-falsifiable theory of system security\footnote{``To the superficial
-observer, the analysis of these forms seems to turn upon minutiae. It does in
-fact deal with minutiae, but they are of the same order as those dealt with in
-microscopic anatomy.'' -- Karl Marx, Capital Volume 1, 1867}.
+non-falsifiable theory of system security
+%\footnote{``To the superficial
+%observer, the analysis of these forms seems to turn upon minutiae. It does in
+%fact deal with minutiae, but they are of the same order as those dealt with in
+%microscopic anatomy.'' -- Karl Marx, Capital Volume 1, 1867}.
 
 \paragraph{Structure} We start, in
 Section~\ref{sec:literature}, by detailing the problem statement, reporting a
@@ -299,12 +300,12 @@ formulate a security hypothesis in Section~\ref{sec:hypothesis}; which we use
 to propose a theory on system security in Section~\ref{sec:theory}. In
 Section~\ref{sec:secra}, we apply our theory for the tool-assisted security
 risk assessment of a CPS (with an ad-hoc example, based on the SWaT testbed
-\cite{Mathur2016swat}).  This application shows how our theory can be used to
+\autocite{Mathur2016swat}).  This application shows how our theory can be used to
 predict all of the possible security weaknesses of a system, allowing the
 falsification of our theory.  In fact, if any security weaknesses were to be
 found in a system and not predicted by our theory, the theory could be declared
 incomplete.  Similarly, if a security weakness would be predicted by our theory
-but found to be impossible to have our theory could be declared as wrong.
+but found to be impossible to realize, our theory could be declared as wrong.
 
 \section{Literature Review}\label{sec:literature}
 \begin{figure*}[t]
@@ -314,7 +315,6 @@ but found to be impossible to have our theory could be declared as wrong.
 	\label{fig:safety-security}
 \end{figure*}
 
-\fixnote{mr}{add weakness-error in picture and text}
 In most of the natural languages the concepts of safety
 and security are not syntactically differentiated and both terms (safety and
 security) are expressed by the same word, e.g. sicurezza in Italian.  A
@@ -329,9 +329,9 @@ attackers and bugs).  The fundamental difference between nature and mankind (and
 in turn, between safety and cybersecurity) is believed to be on the different
 intents\footnote{``The belief–desire–intention software model (BDI) is a
 software model developed for programming intelligent
-agents.''\cite{wiki-bdi}. In the BDI model, the intents represents the
+agents.''\autocite{wiki-bdi}. In the BDI model, the intents represents the
 deliberative state of an agent which determines the choice of that agent on
-what to do.} (accidents are unfortunate while incidents are not) of the causes
+what to do.} (incidents are intentional while accidents are not) of the causes
 that generates a threat; namely, nature is believed not to have malicious
 intents (but unfortunate causes-effects) while threats generated by mankind are
 malicious\footnote{Of course, logical flaws or bugs may be
@@ -341,28 +341,31 @@ afterwards in the article) malicious, and then we consider any vulnerability to
 be malicious even if due to the lack of skills.}.
 This conclusion seems to be against a general formulation of a cybersecurity theory;
 how can we define a theory that predicts what a human being will do?
-The cybersecurity attacks seems to be related to the creativity of the attacker
+Cybersecurity attacks seems to be related to the creativity of the attacker
 and then unpredictable. Currently, our understanding of cybersecurity is
 stored into a network of databases of weaknesses (e.g.
-CWE\cite{MITRE2020CWEresearch}), vulnerabilities (e.g. CVE\cite{CVE},
-NVD\cite{NIST2020NVD}),
-and attacks (e.g. CAPEC\cite{MITRE2020CAPEC}, ATTACK\cite{attack}). Systems are
+CWE\autocite{MITRE2020CWEresearch}), vulnerabilities (e.g. CVE\autocite{CVE},
+NVD\autocite{NIST2020NVD}),
+and attacks (e.g. CAPEC\autocite{MITRE2020CAPEC}, ATT\&CK\autocite{MITRE2020ATTACK}). Systems are
 nowadays tested against 
-known attacks ignoring the fact that the considering a system secure
-if no known attack is possible, defines an unfalsifiable claim.
+known attacks, ignoring that considering a system secure
+if no known attack is possible is against the scientific method.
 As an example, if we have a system which is secure against all of the
 vulnerabilities in the CVE we just need to wait for a month to have 1000+ more
-vulnerabilities to test \cite{newVulns}. If we suppose that one of those new vulnerabilities
-affects our system, that should be the falsification of the hypothesis that a
-system is secure if no known attacks apply. So, even tough the field 
-of security protocols is still lacking of a general cybersecurity theory
+vulnerabilities to test \autocite{NVD2020dashboard}. If even just one of those new vulnerabilities
+affects our system, that falsify the hypothesis that a
+system is secure if no known attacks apply. 
+We argue that this ``implement and test'' approach should be changed.
+Even tough the field 
+of security protocols is still lacking of a general cybersecurity theory,
 the secure-by-design approach they apply can be considered as going
 into the opposite direction of the ``implement and test'' approach.
 
+\subsection{Terminology}
 Most of the safety-preserving principles in the field of engineering of
 safety-critical cyber-physical systems (such as elevators and aircraft), upon
 which safety requirements are defined (e.g. in standards such as the IEC 61508
-or 61511\cite{IEC201761511}), are based on empirical tests and measurements
+or 61511\autocite{IEC201761511}), are based on empirical tests and measurements
 (therefore should be considered hypothesis and not definitions). While
 reasoning by induction\footnote{``So, whenever they argue ``Every man is an
 animal and Socrates is a man; therefore Socrates is an animal,'' proposing to
@@ -372,7 +375,7 @@ mentioned) to establish by way of induction the universal proposition, the
 fall into the error of circular reasoning, since they are establishing the
 universal proposition inductively by means of each of the particulars and
 deducing the particular proposition from the universal syllogistically.''
-Sextus Empiricus, Outlines of Pyrrhonism II-195 \cite{Empiricus1990Pyrrhonism}}
+Sextus Empiricus, Outlines of Pyrrhonism II-195 \autocite{Empiricus1990Pyrrhonism}}
 based on the empirical observation should be avoided, since it may easily lead
 to false beliefs, this approach is often justified by the supposed
 impossibility of defining a theory that correctly predicts failures.  A failure
@@ -388,10 +391,10 @@ Figure~\ref{fig:safety-security} and is used as a baseline for a definition of
 the terms that structure our current understanding of security. 
 \begin{itemize}
 	\item \emph{Mankind} ``refers collectively to humans''
-\cite{wiki-mankind}, while the concept of \emph{Nature} is
+\autocite{wiki-mankind}, while the concept of \emph{Nature} is
 		related ``to the intrinsic characteristics that plants,
 		animals, and other features of the world develop of their own
-		accord'' (e.g. the physical universe)\cite{wiki-nature}. 
+		accord'' (e.g. the physical universe)\autocite{wiki-nature}. 
 		\begin{itemize}
 			\item There exist several terms to refer to an
 				\emph{attacker}, i.e. threat agent or threat source,
@@ -406,36 +409,36 @@ the terms that structure our current understanding of security.
 	\item \emph{Vulnerability}\footnote{The term vulnerability is not
 		present in the Encyclopedia of Cryptography and Security, while
 		it is used in 12 entries (such as in the definition of
-		``penetration testing'' \cite{caddy2005pentest})
+		``penetration testing'' \autocite{caddy2005pentest})
 		highlighting how commonly this word is used without a proper
-		supporting semantics.}, as defined in \cite{cnssi20104009}
-		(and adopted in \cite{nist2013800-53}), is ``weakness in an
+		supporting semantics.}, as defined in \autocite{cnssi20104009}
+		(and adopted in \autocite{nist2013800-53}), is ``weakness in an
 		information system, system security procedures, internal
 		controls, or implementation that could be exploited by a threat
 		source''. On the one hand, the definition is broad to enclose
-		as much causes (that generates a vulnerability) as possible
-		On the other hand, the term vulnerability should have a complete and sound
+		as much causes (that generates a vulnerability) as possible,
+		on the other hand the term vulnerability should have a complete and sound
 		definition, so that no other causes (e.g.  other sources) but
 		the ones in the definition are responsible for a vulnerability
-		\footnote{``For this view, that
-		\emph{That Which Is Not} exists, can never predominate. You
-		must debar your thought from this way of search, nor let
-		ordinary experience in its variety force you along this way,
-		(namely, that of allowing) the eye, sightless as it is, and the
-		ear, full of sound, and the tongue, to rule; but (you must)
-		judge by means of the Reason (Logos) the much-contested proof
-		which is expounded by me.'' -- Parmenides of Elea, On Nature
-		(circa 500 B.C.), fragments B7.1–8.2
-		\cite{Hakim2016philosophy}}.
+		%\footnote{``For this view, that
+		%\emph{That Which Is Not} exists, can never predominate. You
+		%must debar your thought from this way of search, nor let
+		%ordinary experience in its variety force you along this way,
+		%(namely, that of allowing) the eye, sightless as it is, and the
+		%ear, full of sound, and the tongue, to rule; but (you must)
+		%judge by means of the Reason (Logos) the much-contested proof
+		%which is expounded by me.'' -- Parmenides of Elea, On Nature
+		%(circa 500 B.C.), fragments B7.1–8.2
+		%\autocite{Hakim2016philosophy}}.
 		Furthermore, the term ``threat sources'' used in the definition
-		in\cite{cnssi20104009} may be identified with both Nature
+		in\autocite{cnssi20104009} may be identified with both Nature
 		and Mankind, not differentiating between safety and security.
 \end{itemize}
 
 As depicted in Figure~\ref{fig:safety-security}, a vulnerability does not
 necessarily become a threat for the system, unless exploited ``through a
 channel that allows the violation of the security policy
-[\ldots]''\cite{cnssi20104009}. For example, a software or procedure that takes
+[\ldots]''\autocite{cnssi20104009}. For example, a software or procedure that takes
 advantage of the vulnerability causing an \emph{attack} to the system may
 result in several correlated incidents and threats.  The process of
 exploitation of a defect as a vulnerability is reported in
@@ -446,7 +449,7 @@ accident to incident).
 
 \begin{itemize}
 	\item \emph{Weakness}. The definition given by the MITRE
-		in \cite{MITRE2020CWEweakness} of weakness is: ``Software
+		in \autocite{MITRE2020CWEweakness} of weakness is: ``Software
 		weaknesses are errors that can lead to software
 		vulnerabilities. A software vulnerability, such as those
 		enumerated on the Common Vulnerabilities and Exposures (CVE)
@@ -464,7 +467,7 @@ by a weakness.
 
 \begin{itemize}
 	\item \emph{Causality} refers to the causality principle; defined
-		in\cite{Spirkin1983Dialectical} as ``Causality is a genetic
+		in\autocite{Spirkin1983Dialectical} as ``Causality is a genetic
 		connection of phenomena through which one thing (the cause)
 		under certain conditions gives rise to, causes something else
 		(the effect). The essence of causality is the generation and
@@ -474,13 +477,13 @@ by a weakness.
 		regularities of accompanying processes''. One can consider the
 		causality principle to be formalized by the K Modal Logic.
 	\item An \emph{Exploit}\footnote{We note that the term exploit is only
-		used as a verb in\cite{ISO2009information}} ``[\ldots]
+		used as a verb in\autocite{ISO2009information}} ``[\ldots]
 		(from the English verb to exploit, meaning to use something to
 		one’s own advantage) is a piece of software, a chunk of data,
 		or a sequence of commands that takes advantage of a bug or
 		vulnerability to cause unintended or unanticipated behavior to
 		occur on computer software, hardware, or something electronic
-		(usually computerized).''\cite{wiki-exploit}.
+		(usually computerized).''\autocite{wiki-exploit}.
 	\item An \emph{Attack}, as defined by the International Standard
 		ISO/IEC 27000 is an ``attempt to destroy, expose, alter,
 		disable, steal or gain unauthorized access to or make
@@ -491,8 +494,8 @@ by a weakness.
 		abstract organization (e.g. a company or a society).
 		We do not consider ethical hackers as attacking a system. 
 		In fact, we consider the term \emph{hack} as
-		non-malicious (as, e.g. in \cite{Stallman2002hacker}).
-	\item A \emph{Threat}, as defined in\cite{cnssi20104009}, is ``Any
+		non-malicious (as, e.g. in \autocite{Stallman2002hacker}).
+	\item A \emph{Threat}, as defined in\autocite{cnssi20104009}, is ``Any
 		circumstance or event with the potential to adversely impact
 		organizational operations (including mission, functions, image,
 		or reputation), organizational assets, individuals, other
@@ -500,15 +503,15 @@ by a weakness.
 		unauthorized access, destruction, disclosure, modification of
 		information, and/or denial of service''.
 	\item \emph{Defect}, ``anything that renders the product not reasonably
-		safe''\cite{Robinson2019writing} (i.e. a characteristic of
+		safe''\autocite{Robinson2019writing} (i.e. a characteristic of
 		an object which hinders its proper usability).
-	\item \emph{Failure}, as defined in\cite{Merriam2020failure} as ``a state of
+	\item \emph{Failure}, as defined in\autocite{Merriam2020failure} as ``a state of
 		inability to perform a normal function''. The term is
 		structured and detailed in
-		\cite{cnssi20104009,iet2017glossary} but relying on an
+		\autocite{cnssi20104009,iet2017glossary} but relying on an
 		abstract notion of failure without a specific definition.
 	\item \emph{Hazard}, ``a potential source of
-		harm''\cite{iet2017glossary}.
+		harm''\autocite{iet2017glossary}.
 \end{itemize}
 
 \begin{figure}[t]
@@ -536,10 +539,10 @@ whenever it has a bug, it can be exploited causing an Incident. However, this
 hypothesis has lead to the un-testable conclusion that the dishonest behaviors
 of agents cannot be defined in general (e.g. due to the heterogeneity of agents
 and systems) and that huge repository of dishonest behaviors should be kept as
-definition, such as CAPEC\cite{MITRE2020CAPEC}; or that dishonesty of an agent
+definition, such as CAPEC\autocite{MITRE2020CAPEC}; or that dishonesty of an agent
 with respect to a security protocol should be defined as a number of predefined
 actions as in
-\cite{Turuani2006clatse,Basin2005ofmc,Armando2016satmc,Rocchetto2017interpolation}
+\autocite{Turuani2006clatse,Basin2005ofmc,Armando2016satmc,Rocchetto2017interpolation}
 (to name a few). As depicted in Figure~\ref{fig:causality}, in order to define
 a theory on cybersecurity and on the malicious behaviors of agents we noticed
 that Attack Patterns (or Attacks) are caused-by the presence of Vulnerabilities
@@ -630,9 +633,8 @@ to the definition of Information and then with its relation to the
 probabilistic correlation to truth/reality, we consider information in relation
 with an agent's beliefs. Similarly, we consider beliefs to define the actual
 behavior of an agent or a system.
-
-The difference between Knowledge and Information as used by Hintikka and Facts
-and Assertions as used in \autocite{Santaca2016abf} are not precisely discussed
+The difference between Knowledge and Information as used by Hintikka, and Facts
+and Assertions as used in \autocite{Santaca2016abf}, are not precisely discussed
 in \autocite{Santaca2016abf}.  Furthermore, those epistemological concepts are
 difficult to define
 \autocite{Gettier2012knowledge}\footnote{``\emph{Theaetetus}: [\ldots] He said
@@ -647,15 +649,17 @@ would at once be adding to it existence or non-existence, whereas we must add
 nothing to it, if we are to speak of that itself alone.  [\ldots]'' Plato --
 Theaetetus 201 \autocite{Plato1914Plato}}.  For example, Hintikka in
 \autocite{Hintikka1993Information} states that ``A purely logical definition of
-information is impossible''. A detailed formalization of those concepts is out
-of the scope of this paper. We now define them abstractly, inspired by the
+information is impossible''. However, a detailed formalization of those concepts is out
+of the scope of this paper. 
+
+We now define them abstractly, inspired by the
 ABF-theory  defined in \autocite{Santaca2016abf} and, in
 Section~\ref{sec:theory} we detail them as engineering concepts.
 \begin{enumerate}
 	\item We consider Information only when the intention of exchanging 
 		that Information is from a sender to 
 		recipient is defined; and we call it \emph{Assertion}  
-	\item Similarly, the portion of Beliefs we consider for system
+	\item Similarly, the portion of \emph{Beliefs} we consider for system
 		engineering is the one that builds (input) or describes
 		(output) the behavior of an agent (strategy rules
 		\footnote{``The logical structure of information is one of the
@@ -673,10 +677,10 @@ Section~\ref{sec:theory} we detail them as engineering concepts.
 		rules}'' -- Hintikka in \autocite{Hintikka1993Information}}),
 		and
 	\item We consider a set of axiomatic \emph{Facts} (definitory
-		rules\fixnote{mr}{facts are definitory rule, as they don't
-		define how a real system is finally implemented (currently) but
-		how it should, trough a series of requirements which may not be
-		respected, through insecurity, in the implemented system})
+		rules\footnote{Facts are definitory rule as they don't
+		define how a real system is finally implemented but
+		how it should be, trough a series of requirements. Those requirements 
+		may not hold, through insecurity, in the implemented system.})
 		instead of considering the more general epistemic definition of
 		Knowledge. Specifically, Facts describes:
 		\begin{itemize}
@@ -687,7 +691,6 @@ Section~\ref{sec:theory} we detail them as engineering concepts.
 		\end{itemize}
 \end{enumerate}
 We give a graphical representation of (sub-)system and agent in Figure~\ref{fig:system-agent}
-\fixnote{mr}{remove ``functional behavior'' in the figure and leave only ``behavior''}.
 
 \begin{figure}[t]
 	\centering
@@ -733,13 +736,14 @@ readability, we use the term \emph{Region} both to refer to a mereological Part
 and to a topological Region.  Our aim is to create a meronomy
 instead of the taxonomies such as the one provided
 in\autocite{NIST2020NVD,MITRE2020CVE} with the
-CVSS\autocite{Mell2007CVSS} scoring system.  
+so that we don't need to rely on a scoring system such as the 
+CVSS\autocite{Mell2007CVSS}. Instead, we want to precisely calculate
+the number of insecurity configurations as a scoring system.
 
 A mereotopology, as defined e.g. in\autocite{Rachavelpula2017mereotopology}, is
 an ordered mathematical structure where the basic relation between Regions is
-the reflexive and symmetric\fixnote{mr}{I guess it must be monotonic as defined
-in\autocite{Rachavelpula2017mereotopology} but I don't find it consistently in
-other papers.} \emph{Parthood} relation $\subseteq$.  
+the reflexive and symmetric
+\emph{Parthood} relation $\subseteq$.  
 \begin{definition}{\bf Parthood --}\label{def:parthood}
 Given any pair of mereotopological Regions $X$ and $Y$,
 	\begin{enumerate}[noitemsep]
@@ -752,7 +756,7 @@ The Parthood relation orders a universe of agents $\agentuniverse$ by defining t
 \emph{Connects with} (see in Table~\ref{tab:rcc358}) relation between Regions.
 We use the
 Region Connection Calculus (RCC), as defined
-in~\cite{bennettLogics,improvingRCC}, to provide an axiomatization of the
+in~\autocite{bennettLogics,improvingRCC}, to provide an axiomatization of the
 mereo-topological concepts. In its broader definition, the RCC theory is composed
 by eight axioms, and is known as RCC8. In the text, for brevity, 
 we will often focus only on RCC5 (without
@@ -770,7 +774,7 @@ We can now define a system over the mereotopology using the RCC calculus, as fol
 \end{definition}
 
 As already presented in \autocite{Santaca2016abf} it follows that, defining
-a system (or an operational system) with a fixed number of regions, there exist
+a system with a fixed number of regions, there exist
 an upper-bound to the number of possible configuration of a system, defined by
 the possible relations between the different regions.
 For completeness, we report in the next paragraph 
@@ -779,15 +783,15 @@ the calculation done in \autocite{Santaca2016abf}.
 \paragraph{Number of different configurations of a system}
 The general formula to calculate the number of different types of agents is
 $r^{\binom{n}{k}}$, where $r$ is the number of relations with arity $k$,
-between $n$ different sets, where $r^e$ is the number of permutation of $r$
+between $n$ different regions, where $r^e$ is the number of permutation of $r$
 relations over $e$ elements with repetitions, with $e$ being the number of
-$k$-ary combinations of $n$ sets, $\binom{n}{k}$.
-In our case, $\binom{n}{k}=3$ since we consider $3$ sets
+$k$-ary combinations of $n$ regions, $\binom{n}{k}$.
+In our case, $\binom{n}{k}=3$ since we consider $3$ regions 
 ($\assertionRegion,\beliefRegion,\factRegion$), and all the relations
 considered in the RCC are binary.  Hence, using RCC5 (with five different
-spatial relations) over three sets, we can theoretically define up to 125
+spatial relations) over three regions, we can theoretically define up to 125
 different type of agents. However, only 54 of the 125 (as showed in
-\cite{improvingRCC}) combinations are topologically correct with respect to
+\autocite{improvingRCC}) combinations are topologically correct with respect to
 the definition of the relations of RCC5. Generalizing to all the RCCs:
 
 \begin{itemize}%[nosep]
@@ -796,8 +800,8 @@ the definition of the relations of RCC5. Generalizing to all the RCCs:
 \item \emph{RCC8} --- theoretical: $8^3=512$, correct: 193
 \end{itemize}
 
-Hence, even if considering a different number of sets than the three
-$\assertionRegion$, $\beliefRegion$ and $\factRegion$ exponentially affects
+Hence, even if considering a different number of regions than the three
+$\assertionRegion$, $\beliefRegion$, and $\factRegion$ exponentially affects
 the number of theoretical agents, the application of RCC downscales that number
 of a factor that ranges from 1.8 to 2.5. In addition, using RCC5 we consider
 3.6 times more (different) types of agents than RCC3, but using RCC8 would
@@ -937,9 +941,7 @@ the following, however, with the RCC one should consider different ``degrees''
 of non-soundness. For example, in RCC5, if we consider EQ between two Regions
 as representing soundness, DR over the same Regions represents non-soundness;
 while PP, PO, PPi represents the different degrees of non-soundness.  A similar
-argument can be done for completeness.  \fix{mr}{it's missing the relation with
-equivalence. missing parallelism with knowledge-belief/assertion (see slide
-v-research-demo)}
+argument can be done for completeness.  
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\columnwidth]{soundness.pdf}
@@ -985,20 +987,21 @@ Time\autocite{Mctaggart1908unreality}}:
 
 
 \paragraph{\Rcc{$\assertionRegion$}{$\factRegion$} and
-\Rcc{$\beliefRegion$}{$\factRegion$} -- Honesty and Competence} While
-Assertions and Beliefs generated by the Behavior determines how a system should
-work, and the relation between the two defines the quality (i.e. the
-completeness w.r.t the specification) of the agent, the relation of Assertions
+\Rcc{$\beliefRegion$}{$\factRegion$} -- Honesty and Competence} 
+%While
+%Assertions and Beliefs generated by the Behavior determines how a system should
+%work, and the relation between the two defines the quality (i.e. the
+%completeness w.r.t the specification) of the agent, 
+The relation of Assertions
 and Behavior with Facts determines the quality with respect to the nominal
-(specified) system.  Given that Facts defines what must be true in the system,
+(specified) system.  Given that Facts defines what needs to be true in the system,
 the relation of Assertions an Facts determines the degree of quality between
-the information circulating in a system (or within an agent) and
-reality\fixnote{mr}{assertions are reality while facts are dogmatic assertions
-at specification level, i.e. requirements}.  Since the transfer of information
+the real information circulating in a system (or within an agent) and
+the one specified.  Since the transfer of information
 through Assertions generates Beliefs, a dishonest agent may circulate false
 information, generating false Beliefs.  We note that it is often implied that
 the intention behind circulating false information discerns a dishonest and an
-incompetent agent, however, we consider honesty related to sharing
+incompetent agent. However, we consider honesty related to sharing
 truths\footnote{``[\ldots] truth exists only in the good man, but the true in
 the bad man as well; for it is possible for the bad man to utter something
 true.'' Sextus Empiricus, Outlines of Pyrrhonism,
@@ -1058,7 +1061,7 @@ how to quantify it in a risk matrix.
 	each agent composing the system.
 \end{definition}
 The ISO 31000 consider risk as the ``effect of uncertainty on objectives'' and
-the refers both of positive and negative consequences of uncertainty.
+refers both to positive and negative consequences of uncertainty.
 Accordingly, we consider risk as follows. 
 \begin{definition}{\bf Risk --}
 The whole space of potential designs of a specification with respect to the
@@ -1075,9 +1078,13 @@ Figure~\ref{fig:quantitative}, defined as follows.
 	possible intermediate configuration is defined by the calculus used
 	(RCC5 in our case).
 \end{definition}
-We note that often the risk matrix is defined by the relation between
-likelihood and impact which we discuss in the next section.
-
+The risk matrix is often defined as a function between 
+likelihood and impact of attacks. We suggest
+that security weaknesses are all equally likely to be exploited
+if there's a connection between the weakness and the asset that
+an attacker wants to impact. Therefore, a risk matrix should
+capture the number of insecure configurations of a system, rather
+than predicating over likelihoods of weaknesses exploitation.
 
 \section{Prediction of Security Weaknesses}\label{sec:theory}
 Several standards mandates a secure-by-design approach in which cybersecurity
@@ -1103,16 +1110,18 @@ However, standards do not describe in detail how to perform a security risk
 assessment and only vaguely define the overall objective. The overall
 objective of this first step of the cybersecurity engineering process
 is to provide an understanding of the potential security risks.
-Roughly speaking, a security risk assessment (a.g. \autocite{coras,secram}) 
+Roughly speaking, a security risk assessment (e.g. CORAS\autocite{Lund2010model}) 
 methodology starts from the (i) identification of assets, (ii) determines
 the threat scenarios (correlating vulnerabilities, threats and incidents) e.g. 
-threat diagrams in the CORAS approach, (iii) calculate the risk as a function
+threat diagrams in the CORAS
+approach, (iii) calculate the risk as a function
 between impact and likelihood of threat scenarios, and (iv) finally provides
 treatments (mandating a partial re-design) and residual risks.
-All the methodologies and tools we reviewed (Threatmodeler, CORAS, SECRAM, ...)
+All the methodologies and tools we reviewed (e.g. Threatmodeler \autocite{Threatmodeler},
+CORAS \autocite{Lund2010model}, SECRAM \autocite{De2015role})
 relies on the expertise of the person who performs the risk assessment for
 the identification of threats and for the quantitative estimation of risks.
-As Herley puts it \autocite{cite}, ``we don't have a test for security and
+As Herley puts it \autocite{Herley2016usenixvideo}, ``we don't have a test for security and
 we don't have a metric for security'' while standards requires a security risk assessment
 which, in turn, mandates a metric to evaluate the security risk. 
 
@@ -1214,7 +1223,6 @@ notation is reported for input-ports, i.e. on the lef-hand side of the arrow):
 	\end{enumerate}
 \end{enumerate}
 
-\fixnote{mr}{this proof needs to be restructured as in slides v-research-demo}
 \begin{proof}
 An input port is, in the $\abf$-theory, defined secure as long as the relation
 	between the two regions of input assertions $\assertionRegion$ and
@@ -1397,7 +1405,7 @@ is determined by the relation between Facts/Requirements and I/O Beliefs.
 In other words, a functional block is a generic agent with no pre-defined general
 behavior (while ports and channels have a pre-defined behavior).
 
-\begin{itemize}
+\begin{enumerate}[start=50, label={W\arabic*)}]
 	\item $\po{\beliefRegion}{\factRegion}$ the component has a Byzantine behavior where occasionally outputs the expected
 	        output given the correct inputs. Not all the inputs are handled
 	        properly, nor all the expected outputs are always generated
@@ -1412,7 +1420,7 @@ behavior (while ports and channels have a pre-defined behavior).
 	\item $\dr{\beliefRegion}{\factRegion}$ the component
 		never performs the expected behavior (e.g. physical
 		damage)
-\end{itemize}
+\end{enumerate}
 
 \paragraph{Requirements as Facts}
 During the specification phase, for any agent, channel, port, functional block
@@ -1482,7 +1490,7 @@ Based on these hypothesis, security ($S$) can be expressed as the following equa
 \end{displaymath}
 where $r^{\binom{n}{k}}$ represents the number of possible configurations (permutations) 
 of an agent based on the number $r$ of relations (e.g. EQ, DR, PO) with arity $k$ between
-$n$ different sets in the $\abftheory$ theory. $\delta_T$ represents the 
+$n$ different regions in the $\abftheory$ theory. $\delta_T$ represents the 
 number of configurations which are not satisfiable with respect to the logical theory
 defining the 
 algebraic structure (topology) and constraints of the calculus (RCC). $Ag$ is the 
@@ -1492,7 +1500,7 @@ only secure configuration. The product represents all the unintended, insecure, 
 
 \subsection{Security Risk Assessment}\label{sec:secra}
 In order to test our theory we implemented a tool-chain (open-source under the
-AGPLv3 license and available at \autocite{cybersecurityGitHubRepo}) for the
+AGPLv3 license and available at \autocite{v-research2020cybersecurity}) for the
 identification of weaknesses and the precise calculation of potential insecure
 configurations. The engineering of the $\abftheory$ is summarized in the UML
 Class diagram in Figure~\ref{fig:secraclassdiagram} (in appendix). 
@@ -1522,10 +1530,13 @@ translated into a UML design where:
 \end{itemize}
 
 The tool generates a graph-like internal structure which represents
-the specification (called ABF graph). The graph is translated into 
+the specification (called ABF graph). The ABF graph defines the system as
+a number of regions of assertions, beliefs, and facts. Those regions
+are connected by a generic relation which is evaluated as follows.
+The graph is translated into 
 a logical formula that represents the specification in the $\abftheory$-theory and,
 along with the axiomatization of the RCC5 calculus, is given as input to the Z3 SMT solver.
-The solver is used to identify all possible configurations of the system and, in turn,
+The solver identifies all possible configurations of the system and, in turn,
 to identify all potential weaknesses. 
 The internal structures of the tool
 can be viewed as PDF and the results are reported into an Excel file.
@@ -1536,8 +1547,16 @@ to ``mitigated''. As a consequence, the risk is re-calculated on-the-fly, i.e.
 without the need of running the tool again, based on annotations and formulas 
 in the Excel file.
 
-We note that, in this approach, security requirements are not imposed by the
+In our approach, security requirements are not imposed by the
 specification but are automatically extracted by our tool as potential weaknesses.
+Those weaknesses are related to the different insecure configurations 
+of the specified system. 
+
+The risk matrix is often defined as a function between 
+likelihood and impact of attacks. We suggest
+that security weaknesses are all equally likely to be exploited
+if there's a connection between the weakness and the asset that
+an attacker wants to impact. 
 
 \paragraph{Case Studies}
 We report the results of the evaluation of a water level reader (sensor ad-hoc example). 
