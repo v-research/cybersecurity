@@ -1,4 +1,4 @@
-## On Etiology of Cybersecurity (paper 0) 
+## (paper 0) On Etiology of Cybersecurity 
 
 ### Authors
 Francesco Beltramini [@V-Research](http://v-research.it), Marco Rocchetto [@V-Research](http://v-research.it)
