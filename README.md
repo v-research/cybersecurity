@@ -17,7 +17,7 @@ This is our educated guess but "there is no royal road to science"; if you have 
 want to share it with us, feel free to drop me an email (marco@v-research.it)
 
 This repository is currently structured into the following sections
-- [presentations](./presentations), where we share the slides related to our cybersecurity initiative (under [CC-SA license](./presentations/LICENSE.md)
+- [presentations](./presentations), where we share the slides related to our cybersecurity initiative (under [CC-SA license](./presentations/LICENSE.md))
 - [reports](./reports), where we share our papers and pre-prints (mostly under [CC-SA license](./presentations/LICENSE.md))
 - [prototype](./prototypes), where we share our prototypes under the [AGPLv3 license](./reports/LICENSE.md)
 
