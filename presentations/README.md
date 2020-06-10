@@ -1,4 +1,4 @@
-## (presentation 0) Cybersecurity Theory and Security Risk Assessment Application
+## (presentation 0) Cybersecurity Theory and Risk Assessment Application
 
 ### Authors
 Francesco Beltramini [@V-Research](http://v-research.it), Marco Rocchetto [@V-Research](http://v-research.it)
