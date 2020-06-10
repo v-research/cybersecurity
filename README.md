@@ -1,2 +1,23 @@
 ## Research and Development for Cybersecurity Engineering
-With this repository we share our research reports and prototypes.
+This is the public repository of the cybersecurity research initiative of [V-Research](http://v-research.it).
+As V-Research we believe in freedom and openness. 
+We want to share our results, fostering collaboration rather than competition. 
+We hope that, by sharing our research prototypes and reports, we'll be able to make the world a better place :)
+
+Our research initiative is driven by the (Purple Challenge), in which we want to 
+showcase a 100% secure cyber-physical system. The challenge is bold and ambitious but
+we believe that a scientific approach should aim at something precise and rigorous. 
+There is no more-or-less in science, either you have a theory that precisely predicts
+some phenomenon or you keep searching for that theory. In fact, the first journey
+we have undertaken is towards the definition of a ([currently missing](https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/herley)) scientific theory of cybersecurity.
+We now live in a world where (pen)testing is the main weapon against cybersecurity attacks.
+But, if there is no cybersecurity theory, what are we testing? We believe a more scientific 
+apporach will stem from a secure-by-design approach and this is how we started.
+This is our educated guess but "there is no royal road to science"; if you have a better idea and you 
+want to share it with us, feel free to drop me an email (marco@v-research.it)
+
+This repository is currently structured into the following sections
+- [presentations](./presentations), where we share the slides related to our cybersecurity initiative (under CC-SA license)
+- [reports](./reports), where we share our papers and pre-prints (mostly under CC-SA license)
+- [prototype](./prototypes), where we share our prototypes under the AGPLv3 license
+
