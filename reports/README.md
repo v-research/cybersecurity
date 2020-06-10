@@ -1,7 +1,6 @@
 ## (paper 0) On Etiology of Cybersecurity 
 
-### Authors
-Francesco Beltramini [@V-Research](http://v-research.it), Marco Rocchetto [@V-Research](http://v-research.it)
+**Authors**: Francesco Beltramini [@V-Research](http://v-research.it), Marco Rocchetto [@V-Research](http://v-research.it)
 
 **Abstract**: The objective of this research is the development of a theory that defines (all
 and only) the possible insecurity and security configurations of any
