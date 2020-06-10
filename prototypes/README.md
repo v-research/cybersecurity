@@ -3,3 +3,6 @@ Contains formalizations of the ABF Theory published in: https://link.springer.co
 
 ### (Alpha 1) Cybersecurity Risk Assessment Tool
 Contains a tool-chain for the cybersecurity risk assessment based on the theory defined in [(paper 0)](../reports)
+1. Download Modelio
+2. Import zip
+3. blablabla
