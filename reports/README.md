@@ -1,5 +1,5 @@
 ## Index
-- [Preface](https://github.com/v-research/a-free-preface)
+- [Preface](https://v-research.github.io/a-free-preface/)
 - [Cybersecurity Theory and Risk Assessment](https://github.com/v-research/cybersecurity/tree/master/reports#paper-0-on-etiology-of-cybersecurity)
 - Cybersecurity Attacks (work in progress)
 
