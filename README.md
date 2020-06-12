@@ -1,8 +1,8 @@
 ## Research and Development for Cybersecurity Engineering
 This is the public repository of the cybersecurity research initiative of [V-Research](http://v-research.it).
 As V-Research we believe in freedom and openness. 
-We want to share our results, fostering collaboration rather than competition. 
-We hope that, by sharing our research prototypes and reports, we'll be able to make the world a better place :)
+We want to share our results, fostering collaborations rather than competition.
+We hope that, by sharing our research prototypes and reports we'll be able to make the world a secure place :)
 
 Our research initiative is driven by the [Purple Challenge](http://v-research.it/purplechallenge), in which we want to 
 showcase a 100% secure cyber-physical system. The challenge is bold and ambitious but
