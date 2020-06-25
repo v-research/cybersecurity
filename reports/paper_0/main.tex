@@ -160,6 +160,7 @@
 
 \newtheorem{definition}{Definition}%[section]
 \newtheorem{hypothesis}{Hypothesis}%[section]
+\newtheorem{theorem}{Theorem}%[section]
 
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
@@ -205,11 +206,44 @@ The objective of this research is the development of a theory that defines (all
 \IEEEpeerreviewmaketitle
 
 \section{Introduction}\label{sec:intro}
+A scientific theory is an explanation of a phenomenon such that the explanation
+follows the scientific method. The scientific method is an \emph{empirical}
+method that aims at mitigating potential fallacies in theories.  K. Popper
+famously argued (e.g. in \autocite{Popper1959logic}) that a scientific theory
+can never been verified but only falsified, that a theory should not be
+conceived by using the principle of induction\footnote{A.  Einstein wrote to K.
+Popper: ``[...] and I think (like you, by the way) that theory cannot be
+fabricated out of the results of observation, but that it can only be
+invented.''\autocite{Popper1959logic}}, and that empirical experiments should
+be considered as the only evidence to support the non-falseness of a scientific
+theory. If we consider a natural (real-world) phenomenon, such as gravity, we
+can think of a scientific theory as an \emph{abstract} mathematical formula (or
+a set of formulas) that axiomatically define a certain (natural) phenomenon in
+a specific algebraic structure. While such a theory can be proved to be correct
+within the mathematical setting it has been conceived in (e.g. with respect to
+other axioms of the algebraic structure where it has been postulated, or with
+respect to other background theories), no proof (for soundness or completeness)
+can be carried out to verify that the theory correctly abstracts  the
+phenomenon it describes. Similarly, the results of the application of a
+scientific theory (i.e. its predictions) can be verified in the abstract
+mathematical structure but how can we be sure that the theory correctly
+characterize the phenomenon it describes? With his famous ``demarcation
+principle'', K. Popper draw a line between scientific and pseudo-scientific
+theories by proposing that \emph{any} scientific theory can be considered
+correct as long as no empirical experiment falsify it. For example, the theory
+of gravity, in its mathematical setting, can predict how object attracts with
+each other, and those predictions can be tested by empirical experiment. If the
+theory correctly abstracts the phenomenon no empirical experiment should
+falsify the predictions of that theory.
+
 In \autocite{Herley2016unfalsifiability}, Cormac Herley explores what he calls
 ``an asymmetry in computer security'', which he defines as follows: ``Things
 can be declared insecure by observation, but not the reverse. There is no
 observation that allows us to declare an arbitrary system or technique
-secure''. Herley then uses this argument to show that ``claims that any measure
+secure''. His intuition is that there is no scientific theory that can predict
+the security of a system, nor a theory that can predict all possible
+insecurity of a system (which, by negation it would become a theory on security). 
+Herley then uses this argument to show that ``claims that any measure
 is necessary for security are empirically unfalsifiable''. Given that, any
 theory which is not falsifiable by an empirical experiment is well
 known\footnote{``A theory which is not refutable by any conceivable event is
@@ -228,22 +262,30 @@ in \autocite{Herley2016unfalsifiability}, no solution is provided nor envisioned
 contrary, the goal of this work is to lay the foundations of a
 scientific cybersecurity theory. 
 
-We consider the problem raised by Herley not confined to
-``computer security'' but to any abstract system (so that our theory may hold
-for any sound implementation such as networks, mechanical, cyber, or
-cyber-physical system, or even a single computer or a single device such as an
-hard-drive).  There is also an apparent inconsistency in
-\autocite{Herley2016unfalsifiability} that we seek to clarify before following (as
-we agree) the scientific path draw by Herley: cybersecurity is defined as an
-abstract property in many formal approaches to the investigation of the
-security of systems, and the security of the design of a formally verified
-protocol is indeed falsifiable (against the security properties verified).  For
-example, in the protocol verification community, security is often defined as a
-formalization of the high-level properties confidentiality, integrity, and
-availability. The problem in such approaches is not the definition of what
-cybersecurity is but the generality of the results, since they tackle a specific
-step (and not the first) of the engineering process (of systems).  Therefore,
-the theories underlying the verification are based on assumptions which
+We consider the problem raised by Herley not confined to ``computer security''
+but to any abstract system (so that our theory may hold for any sound
+implementation such as networks, mechanical, cyber, or cyber-physical system,
+or even a single computer or a single device such as an hard-drive).  There is
+also an apparent inconsistency in \autocite{Herley2016unfalsifiability} that we
+seek to clarify before following (as we agree) the scientific path draw by
+Herley: cybersecurity is defined as an abstract property in many formal
+approaches to the investigation of the security of systems, and the security of
+the design of a formally verified protocol is indeed falsifiable (against the
+security properties verified).  For example, in the protocol verification
+community, security is often defined as a formalization of the high-level
+properties confidentiality, integrity, and authentication. The problem in such
+approaches is not the definition of what cybersecurity is but the generality of
+the results, since they tackle a specific step\footnote{In fact, many standards
+(e.g. ) used for the engineering of systems starts with the requirements
+definition, and physical and functional architecture design, before the logic
+of protocols is even considered.} of the engineering process (of systems)
+without considering many aspects related to the implementation of a protocol
+that may generate security vulnerabilities later in the development process. An
+infamous example is the KRAK attack on the WPA2 4-way handshake protocol where
+the authors wrote\autocite{krak2020web}: ``our attacks do not violate the security properties proven
+in formal analysis of the 4-way handshake'' but ``the problem is that the
+proofs do not model key installation.''.
+The theories underlying the verification of security protocols are based on assumptions which
 non-evidently apply to a general security theory.  As an example, the so called
 Dolev-Yao attacker model\footnote{For the sake of simplicity, the Dolev-Yao
 attacker can be considered as an abstraction of an active attacker who controls
@@ -1059,7 +1101,8 @@ requirement for a CPS specification can be summarized:
 
 We are now in the position to define what a secure system is (with respect to
 the $\abf$-theory) and, based on that definition, what the security risk is and
-how to quantify it in a risk matrix.
+how to quantify it in a risk matrix (where a risk matrix is usually defined as
+a function between the likelihood and the impact of all potential attacks).
 \begin{definition}{\bf Security of a System or an Agent --}\label{def:security}
 	A secure system is a system where SE-$1$, SE-$2$, and SE-$3$ holds for
 	each agent composing the system.
@@ -1082,8 +1125,8 @@ Figure~\ref{fig:quantitative}, defined as follows.
 	possible intermediate configuration is defined by the calculus used
 	(RCC5 in our case).
 \end{definition}
-The risk matrix is often defined as a function between 
-likelihood and impact of attacks. We suggest
+While a risk matrix is often defined as a function between 
+likelihood and impact of attacks, we suggest
 that security weaknesses are all equally likely to be exploited
 if there's a connection between the weakness and the asset that
 an attacker wants to impact. Therefore, a risk matrix should
@@ -1202,30 +1245,31 @@ but the definition of a secure output port is symmetrical.
 	%$\varphi\in\beliefRegion_a$ for any $\world\modalrelation\world'$.
 \end{definition}
 
-\paragraph{Port Weaknesses}
+\begin{theorem}{Port Weaknesses.}
 From our definition of ports, it follows that there exist only the following \emph{six}
 types of weaknesses, generating six types of insecure port in RCC5 (the
-notation is reported for input-ports, i.e. on the lef-hand side of the arrow):
+notation is reported for input-ports, i.e. on the left-hand side of the arrow):
 \begin{enumerate}[start=1, label={W\arabic*)}]
-	\item \emph{replace port} ($s\dropport a$), where assertions reaches
+	\item \emph{replace port}, where assertions reaches
 		the port but do not pass the boundary of the agent (i.e. do not
 		become belief of the agent)
-	\item \emph{drop port} ($s\dropport a$), where assertions reaches the
+	\item \emph{drop port}, where assertions reaches the
 		port but do not pass the boundary of the agent (i.e. do not
 		become belief of the agent)
-	\item \emph{insertion port} ($s\insertport a$), where some new
+	\item \emph{insertion port}, where some new
 		information is believed by $a$ as incoming from the port but
 		$s$ didn't send it
-	\item \emph{injection port} ($s\injectionport a$), where information
+	\item \emph{injection port}, where information
 		coming from $s$ is substituted with new information which
 		becomes believed by $a$
 	\item \emph{selective port}, where some information passes the port and
 		part is either:
-	\begin{enumerate}[start=1, label={W4.\arabic*)}]
-		\item drop ($s\selectivedropport a$), 
-		\item drop+insert ($s\selectiveinsertport a$).
+	\begin{enumerate}[start=1, label={W5.\arabic*)}]
+		\item drop, 
+		\item drop+insert.
 	\end{enumerate}
 \end{enumerate}
+\end{theorem}
 
 \begin{proof}
 An input port is, in the $\abf$-theory, defined secure as long as the relation
@@ -1319,12 +1363,12 @@ readability, we report 6 examples in the following but the proof by exhaustion
 over all the possible cases is straightforward.
 
 \begin{enumerate}[start=6, label={W\arabic*)}]
-	\item \emph{secure output port} and \emph{input drop port} ($s\sdcom r$), 
-	\item \emph{secure output port} and \emph{input insertion port} ($s\sicom r$), 
-	\item \emph{output drop port} and \emph{input drop port} ($s\ddcom r$)
-	\item \emph{output drop port} and \emph{input insertion port} ($s\dicom r$)
-	\item \emph{output drop port} and \emph{input secure port} ($s\dscom r$)
-	\item \emph{output injection port} and \emph{input secure port} ($s\jscom r$)
+	\item \emph{secure output port} and \emph{input drop port}
+	\item \emph{secure output port} and \emph{input insertion port}
+	\item \emph{output drop port} and \emph{input drop port}
+	\item \emph{output drop port} and \emph{input insertion port}
+	\item \emph{output drop port} and \emph{input secure port}
+	\item \emph{output injection port} and \emph{input secure port}
 \end{enumerate}
 
 \paragraph{Security Weaknesses} 
@@ -1689,7 +1733,7 @@ Requirements.
 
 \section*{Acknowledgment}
 We thank Katia Santac\`a for the help in the development of the initial ideas, and for
-the helpful discussions that allowed us to make this step.
+the helpful discussions that allowed us to make this step forward.
 
 \appendix
 %\section{Engineering $\abftheory$-theory}
