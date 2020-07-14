@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.5.23)  9 JUN 2020 18:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.5.23)  14 JUL 2020 11:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -895,49 +895,50 @@ Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 ))
 \c@definition=\count417
 \c@hypothesis=\count418
+\c@theorem=\count419
 
 
 Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing.
 (biblatex)                Loading 'csquotes' recommended.
 
-\@quotelevel=\count419
-\@quotereset=\count420
+\@quotelevel=\count420
+\@quotereset=\count421
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count421
+\l__kernel_color_stack_int=\count422
 \l__pdf_internal_box=\box66
 )
 (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 164.
-LaTeX Font Info:    ... okay on input line 164.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 164.
-LaTeX Font Info:    ... okay on input line 164.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 164.
-LaTeX Font Info:    ... okay on input line 164.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 164.
-LaTeX Font Info:    ... okay on input line 164.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 164.
-LaTeX Font Info:    ... okay on input line 164.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 164.
-LaTeX Font Info:    ... okay on input line 164.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 164.
-LaTeX Font Info:    ... okay on input line 164.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 169.
+LaTeX Font Info:    ... okay on input line 169.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 169.
+LaTeX Font Info:    ... okay on input line 169.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 169.
+LaTeX Font Info:    ... okay on input line 169.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 169.
+LaTeX Font Info:    ... okay on input line 169.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 169.
+LaTeX Font Info:    ... okay on input line 169.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 169.
+LaTeX Font Info:    ... okay on input line 169.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 169.
+LaTeX Font Info:    ... okay on input line 169.
 
 -- Lines per column: 56 (exact).
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count422
+\scratchcounter=\count423
 \scratchdimen=\dimen299
 \scratchbox=\box67
-\nofMPsegments=\count423
-\nofMParguments=\count424
+\nofMPsegments=\count424
+\nofMParguments=\count425
 \everyMPshowfont=\toks48
-\MPscratchCnt=\count425
+\MPscratchCnt=\count426
 \MPscratchDim=\dimen300
-\MPnumerator=\count426
-\makeMPintoPDFobject=\count427
+\MPnumerator=\count427
+\makeMPintoPDFobject=\count428
 \everyMPtoPDFconversion=\toks49
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -962,99 +963,117 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
  (./main.bbl)
-Package biblatex Info: Reference section=0 on input line 164.
-Package biblatex Info: Reference segment=0 on input line 164.
+Package biblatex Info: Reference section=0 on input line 169.
+Package biblatex Info: Reference segment=0 on input line 169.
 ABD: EveryShipout initializing macros
-LaTeX Font Info:    Trying to load font information for U+wasy on input line 21
-3.
+LaTeX Font Info:    Trying to load font information for U+wasy on input line 18
+7.
 
 (/usr/share/texlive/texmf-dist/tex/latex/wasysym/uwasy.fd
 File: uwasy.fd 2020/01/19 v2.4 Wasy-2 symbol font definitions
 )
-<../images/protocol-example.pdf, id=4, 426.96513pt x 261.236pt>
-File: ../images/protocol-example.pdf Graphic file (type pdf)
-<use ../images/protocol-example.pdf>
-Package pdftex.def Info: ../images/protocol-example.pdf  used on input line 270
+
+LaTeX Warning: Citation 'Popper1959logic' on page 1 undefined on input line 216
 .
-(pdftex.def)             Requested size: 176.39923pt x 107.92859pt.
- [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+
+
+LaTeX Warning: Citation 'Popper1959logic' on page 1 undefined on input line 221
+.
+
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
 
-pdfTeX warning: pdflatex (file ../images/safety-security_3.pdf): PDF inclusion:
- found PDF version <1.7>, but at most version <1.5> allowed
-<../images/safety-security_3.pdf, id=13, 755.26166pt x 200.2231pt>
-File: ../images/safety-security_3.pdf Graphic file (type pdf)
-<use ../images/safety-security_3.pdf>
-Package pdftex.def Info: ../images/safety-security_3.pdf  used on input line 31
-3.
-(pdftex.def)             Requested size: 464.39685pt x 123.11354pt.
-[2 <../images/protocol-example.pdf>] [3 <../images/safety-security_3.pdf>]
+LaTeX Warning: Citation 'krak2020web' on page 2 undefined on input line 297.
 
-pdfTeX warning: pdflatex (file ../images/causality.pdf): PDF inclusion: found P
-DF version <1.7>, but at most version <1.5> allowed
-<../images/causality.pdf, id=38, 268.06908pt x 126.45242pt>
-File: ../images/causality.pdf Graphic file (type pdf)
-<use ../images/causality.pdf>
-Package pdftex.def Info: ../images/causality.pdf  used on input line 519.
-(pdftex.def)             Requested size: 176.39923pt x 83.21187pt.
-[4 <../images/causality.pdf>]
+<./images/protocol-example.pdf, id=16, 426.96513pt x 261.236pt>
+File: ./images/protocol-example.pdf Graphic file (type pdf)
+<use ./images/protocol-example.pdf>
+Package pdftex.def Info: ./images/protocol-example.pdf  used on input line 327.
 
-pdfTeX warning: pdflatex (file ../images/system-agent.pdf): PDF inclusion: foun
-d PDF version <1.7>, but at most version <1.5> allowed
-<../images/system-agent.pdf, id=48, 359.93471pt x 198.71765pt>
-File: ../images/system-agent.pdf Graphic file (type pdf)
-<use ../images/system-agent.pdf>
-Package pdftex.def Info: ../images/system-agent.pdf  used on input line 697.
+(pdftex.def)             Requested size: 176.39923pt x 107.92859pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 3386) has occurred while \output is active []
+
+ [2]
+
+pdfTeX warning: pdflatex (file ./images/safety-security_3.pdf): PDF inclusion: 
+found PDF version <1.7>, but at most version <1.5> allowed
+<./images/safety-security_3.pdf, id=20, 755.26166pt x 200.2231pt>
+File: ./images/safety-security_3.pdf Graphic file (type pdf)
+<use ./images/safety-security_3.pdf>
+Package pdftex.def Info: ./images/safety-security_3.pdf  used on input line 372
+.
+(pdftex.def)             Requested size: 412.80157pt x 109.43562pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3 <./images/protocol-example.pdf>] [4 <./images/safety-security_3.pdf>]
+
+pdfTeX warning: pdflatex (file ./images/causality.pdf): PDF inclusion: found PD
+F version <1.7>, but at most version <1.5> allowed
+<./images/causality.pdf, id=44, 268.06908pt x 126.45242pt>
+File: ./images/causality.pdf Graphic file (type pdf)
+<use ./images/causality.pdf>
+Package pdftex.def Info: ./images/causality.pdf  used on input line 578.
+(pdftex.def)             Requested size: 151.20154pt x 71.32417pt.
+[5 <./images/causality.pdf>]
+
+pdfTeX warning: pdflatex (file ./images/system-agent.pdf): PDF inclusion: found
+ PDF version <1.7>, but at most version <1.5> allowed
+<./images/system-agent.pdf, id=54, 359.93471pt x 198.71765pt>
+File: ./images/system-agent.pdf Graphic file (type pdf)
+<use ./images/system-agent.pdf>
+Package pdftex.def Info: ./images/system-agent.pdf  used on input line 758.
 (pdftex.def)             Requested size: 226.79846pt x 125.21703pt.
-[5 <../images/system-agent.pdf>]
-Underfull \hbox (badness 7667) in paragraph at lines 768--774
+[6 <./images/system-agent.pdf>]
+Underfull \hbox (badness 7667) in paragraph at lines 829--835
 []\OT1/ptm/b/n/10 Definition 2. []Sys-tem State --[] \OT1/ptm/m/it/10 A CPS sys
 -tem (or
  []
 
 
-Underfull \hbox (badness 7012) in paragraph at lines 768--774
+Underfull \hbox (badness 7012) in paragraph at lines 829--835
 \OT1/ptm/m/it/10 a sub-system) state is de-fined as the tu-ple $\OML/cmm/m/it/1
 0 s \OT1/cmr/m/n/10 =
  []
 
-<../images/quantitative.pdf, id=62, 536.47423pt x 156.72552pt>
-File: ../images/quantitative.pdf Graphic file (type pdf)
-<use ../images/quantitative.pdf>
-Package pdftex.def Info: ../images/quantitative.pdf  used on input line 818.
+<./images/quantitative.pdf, id=68, 536.47423pt x 156.72552pt>
+File: ./images/quantitative.pdf Graphic file (type pdf)
+<use ./images/quantitative.pdf>
+Package pdftex.def Info: ./images/quantitative.pdf  used on input line 879.
 (pdftex.def)             Requested size: 252.0pt x 73.61795pt.
 LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 9
-21.
+82.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/sc' in size <8> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 921.
- [6 <../images/quantitative.pdf>]
-<../images/soundness.pdf, id=86, 459.11525pt x 263.23344pt>
-File: ../images/soundness.pdf Graphic file (type pdf)
-<use ../images/soundness.pdf>
-Package pdftex.def Info: ../images/soundness.pdf  used on input line 947.
-(pdftex.def)             Requested size: 252.0pt x 144.4816pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [7 <../images/soundness.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 1072--1080
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 982.
+ [7 <./images/quantitative.pdf>]
+<./images/soundness.pdf, id=90, 459.11525pt x 263.23344pt>
+File: ./images/soundness.pdf Graphic file (type pdf)
+<use ./images/soundness.pdf>
+Package pdftex.def Info: ./images/soundness.pdf  used on input line 1008.
+(pdftex.def)             Requested size: 226.79846pt x 130.03384pt.
+ [8 <./images/soundness.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 1134--1142
 []\OT1/ptm/b/n/10 Definition 5. []Risk Ma-trix -- \OT1/ptm/m/it/10 The risk ma-
 trix
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1072--1080
+Underfull \hbox (badness 10000) in paragraph at lines 1134--1142
 \OT1/ptm/m/it/10 is a func-tion be-tween the three re-la-tions $\OML/cmm/m/it/1
 0 s \OT1/cmr/m/n/10 =
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1072--1080
+Underfull \hbox (badness 10000) in paragraph at lines 1134--1142
 \OMS/cmsy/m/n/10 h\OML/cmm/m/it/10 rcc\OT1/cmr/m/n/10 (\OMS/cmsy/m/n/10 F\OML/c
 mm/m/it/10 ; \OMS/cmsy/m/n/10 B\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ; rcc\OT1/cmr/
 m/n/10 (\OMS/cmsy/m/n/10 F\OML/cmm/m/it/10 ; \OMS/cmsy/m/n/10 A\OT1/cmr/m/n/10 
@@ -1064,150 +1083,145 @@ e max-i-mum
  []
 
 
-Underfull \hbox (badness 2253) in paragraph at lines 1101--1108
+Underfull \hbox (badness 2253) in paragraph at lines 1163--1170
 []\OT1/ptm/m/n/10 J3061:2016-1 [44] -- ``Cy-ber-se-cu-rity Guide-book for
  []
 
-[8]
+[9]
 
-pdfTeX warning: pdflatex (file ../images/mashyp.pdf): PDF inclusion: found PDF 
-version <1.7>, but at most version <1.5> allowed
-<../images/mashyp.pdf, id=100, 557.97461pt x 127.95805pt>
-File: ../images/mashyp.pdf Graphic file (type pdf)
-<use ../images/mashyp.pdf>
-Package pdftex.def Info: ../images/mashyp.pdf  used on input line 1136.
-(pdftex.def)             Requested size: 464.39685pt x 106.49802pt.
-<../images/IOports.pdf, id=101, 542.50677pt x 182.85313pt>
-File: ../images/IOports.pdf Graphic file (type pdf)
-<use ../images/IOports.pdf>
-Package pdftex.def Info: ../images/IOports.pdf  used on input line 1166.
+pdfTeX warning: pdflatex (file ./images/mashyp.pdf): PDF inclusion: found PDF v
+ersion <1.7>, but at most version <1.5> allowed
+<./images/mashyp.pdf, id=103, 557.97461pt x 127.95805pt>
+File: ./images/mashyp.pdf Graphic file (type pdf)
+<use ./images/mashyp.pdf>
+Package pdftex.def Info: ./images/mashyp.pdf  used on input line 1198.
+(pdftex.def)             Requested size: 412.80157pt x 94.66599pt.
+<./images/IOports.pdf, id=104, 542.50677pt x 182.85313pt>
+File: ./images/IOports.pdf Graphic file (type pdf)
+<use ./images/IOports.pdf>
+Package pdftex.def Info: ./images/IOports.pdf  used on input line 1228.
 (pdftex.def)             Requested size: 252.0pt x 84.93652pt.
-<../images/channel.pdf, id=102, 347.59862pt x 67.32152pt>
-File: ../images/channel.pdf Graphic file (type pdf)
-<use ../images/channel.pdf>
-Package pdftex.def Info: ../images/channel.pdf  used on input line 1270.
+<./images/channel.pdf, id=105, 347.59862pt x 67.32152pt>
+File: ./images/channel.pdf Graphic file (type pdf)
+<use ./images/channel.pdf>
+Package pdftex.def Info: ./images/channel.pdf  used on input line 1333.
 (pdftex.def)             Requested size: 252.0pt x 48.80632pt.
-[9] [10 <../images/mashyp.pdf> <../images/IOports.pdf
+[10] [11 <./images/mashyp.pdf> <./images/IOports.pdf
 
-pdfTeX warning: pdflatex (file ../images/IOports.pdf): PDF inclusion: multiple 
-pdfs with page group included in a single page
-> <../images/channel.pdf
+pdfTeX warning: pdflatex (file ./images/IOports.pdf): PDF inclusion: multiple p
+dfs with page group included in a single page
+> <./images/channel.pdf
 
-pdfTeX warning: pdflatex (file ../images/channel.pdf): PDF inclusion: multiple 
-pdfs with page group included in a single page
+pdfTeX warning: pdflatex (file ./images/channel.pdf): PDF inclusion: multiple p
+dfs with page group included in a single page
 >]
-<../images/engineering_relations.pdf, id=149, 386.78502pt x 126.59296pt>
-File: ../images/engineering_relations.pdf Graphic file (type pdf)
-<use ../images/engineering_relations.pdf>
-Package pdftex.def Info: ../images/engineering_relations.pdf  used on input lin
-e 1377.
+<./images/engineering_relations.pdf, id=152, 386.78502pt x 126.59296pt>
+File: ./images/engineering_relations.pdf Graphic file (type pdf)
+<use ./images/engineering_relations.pdf>
+Package pdftex.def Info: ./images/engineering_relations.pdf  used on input line
+ 1441.
 (pdftex.def)             Requested size: 226.79846pt x 74.22945pt.
 
-Underfull \hbox (badness 1917) in paragraph at lines 1426--1433
- \OT1/ptm/m/it/10 g) Re-quire-ments as Facts: [][] \OT1/ptm/m/n/10 Dur-ing the 
-spec-i-fi-ca-tion
- []
 
-
-
-pdfTeX warning: pdflatex (file ../images/sum.pdf): PDF inclusion: found PDF ver
-sion <1.7>, but at most version <1.5> allowed
-<../images/sum.pdf, id=150, 157.37764pt x 61.7206pt>
-File: ../images/sum.pdf Graphic file (type pdf)
-<use ../images/sum.pdf>
-Package pdftex.def Info: ../images/sum.pdf  used on input line 1436.
+pdfTeX warning: pdflatex (file ./images/sum.pdf): PDF inclusion: found PDF vers
+ion <1.7>, but at most version <1.5> allowed
+<./images/sum.pdf, id=153, 157.37764pt x 61.7206pt>
+File: ./images/sum.pdf Graphic file (type pdf)
+<use ./images/sum.pdf>
+Package pdftex.def Info: ./images/sum.pdf  used on input line 1500.
 (pdftex.def)             Requested size: 100.79846pt x 39.53116pt.
 
-Underfull \vbox (badness 3189) has occurred while \output is active []
+LaTeX Warning: Reference `tab:weaknesses' on page 12 undefined on input line 15
+45.
 
- [11 <../images/engineering_relations.pdf> <../images/sum.pdf>]
+[12 <./images/engineering_relations.pdf> <./images/sum.pdf>]
 
-pdfTeX warning: pdflatex (file ../images/v-secra.pdf): PDF inclusion: found PDF
- version <1.7>, but at most version <1.5> allowed
-<../images/v-secra.pdf, id=170, 516.55986pt x 387.64827pt>
-File: ../images/v-secra.pdf Graphic file (type pdf)
-<use ../images/v-secra.pdf>
-Package pdftex.def Info: ../images/v-secra.pdf  used on input line 1510.
+pdfTeX warning: pdflatex (file ./images/v-secra.pdf): PDF inclusion: found PDF 
+version <1.7>, but at most version <1.5> allowed
+<./images/v-secra.pdf, id=173, 516.55986pt x 387.64827pt>
+File: ./images/v-secra.pdf Graphic file (type pdf)
+<use ./images/v-secra.pdf>
+Package pdftex.def Info: ./images/v-secra.pdf  used on input line 1601.
 (pdftex.def)             Requested size: 252.0pt x 189.1153pt.
-<../images/eng_cs1.png, id=171, 417.56pt x 389.455pt>
-File: ../images/eng_cs1.png Graphic file (type png)
-<use ../images/eng_cs1.png>
-Package pdftex.def Info: ../images/eng_cs1.png  used on input line 1565.
-(pdftex.def)             Requested size: 176.39923pt x 164.52673pt.
-<../images/internal_cs1.png, id=173, 749.80125pt x 409.53pt>
-File: ../images/internal_cs1.png Graphic file (type png)
-<use ../images/internal_cs1.png>
-Package pdftex.def Info: ../images/internal_cs1.png  used on input line 1575.
-(pdftex.def)             Requested size: 361.19843pt x 197.28453pt.
+<./images/eng_cs1.png, id=174, 417.56pt x 389.455pt>
+File: ./images/eng_cs1.png Graphic file (type png)
+<use ./images/eng_cs1.png>
+Package pdftex.def Info: ./images/eng_cs1.png  used on input line 1656.
+(pdftex.def)             Requested size: 151.20154pt x 141.02376pt.
+<./images/internal_cs1.png, id=176, 749.80125pt x 409.53pt>
+File: ./images/internal_cs1.png Graphic file (type png)
+<use ./images/internal_cs1.png>
+Package pdftex.def Info: ./images/internal_cs1.png  used on input line 1666.
+(pdftex.def)             Requested size: 309.60315pt x 169.10193pt.
 
 
-pdfTeX warning: pdflatex (file ../images/results_excel.pdf): PDF inclusion: fou
-nd PDF version <1.7>, but at most version <1.5> allowed
-<../images/results_excel.pdf, id=174, 564.74991pt x 189.68501pt>
-File: ../images/results_excel.pdf Graphic file (type pdf)
-<use ../images/results_excel.pdf>
-Package pdftex.def Info: ../images/results_excel.pdf  used on input line 1584.
-(pdftex.def)             Requested size: 516.0pt x 173.32852pt.
-[12 <../images/v-secra.pdf>]
-<../images/secra_classDiagram.png, id=188, 1323.94624pt x 804.00375pt>
-File: ../images/secra_classDiagram.png Graphic file (type png)
-<use ../images/secra_classDiagram.png>
-Package pdftex.def Info: ../images/secra_classDiagram.png  used on input line 1
-675.
+pdfTeX warning: pdflatex (file ./images/results_excel.pdf): PDF inclusion: foun
+d PDF version <1.7>, but at most version <1.5> allowed
+<./images/results_excel.pdf, id=177, 564.74991pt x 189.68501pt>
+File: ./images/results_excel.pdf Graphic file (type pdf)
+<use ./images/results_excel.pdf>
+Package pdftex.def Info: ./images/results_excel.pdf  used on input line 1675.
+(pdftex.def)             Requested size: 361.19843pt x 121.32272pt.
+[13 <./images/v-secra.pdf>] [14 <./images/eng_cs1.png>]
+<./images/secra_classDiagram.png, id=196, 1323.94624pt x 804.00375pt>
+File: ./images/secra_classDiagram.png Graphic file (type png)
+<use ./images/secra_classDiagram.png>
+Package pdftex.def Info: ./images/secra_classDiagram.png  used on input line 17
+68.
 (pdftex.def)             Requested size: 672.0pt x 408.08586pt.
- [13 <../images/eng_cs1.png>]
-Underfull \hbox (badness 1515) in paragraph at lines 1680--1680
+ [15 <./images/internal_cs1.png> <./images/results_excel.pdf>] [16 <./images/se
+cra_classDiagram.png>]
+Underfull \hbox (badness 1515) in paragraph at lines 1773--1773
 []\OT1/ptm/m/n/10 Cas JF Cre-mers, Pas-cal Lafour-cade, and Philippe
  []
 
 
-Underfull \hbox (badness 1371) in paragraph at lines 1680--1680
+Underfull \hbox (badness 1371) in paragraph at lines 1773--1773
 []\OT1/ptm/m/it/10 Dialectical Ma-te-ri-al-ism\OT1/ptm/m/n/10 . Progress Pub-li
 sh-ers, 1983.
  []
 
-[14 <../images/internal_cs1.png> <../images/results_excel.pdf>] [15 <../images/
-secra_classDiagram.png>]
-Underfull \hbox (badness 1552) in paragraph at lines 1680--1680
+
+Underfull \hbox (badness 1552) in paragraph at lines 1773--1773
 \OT1/ptm/m/it/10 Model-driven risk anal-y-sis: the CORAS ap-proach\OT1/ptm/m/n/
 10 .
  []
 
 
-Underfull \hbox (badness 1406) in paragraph at lines 1680--1680
+Underfull \hbox (badness 1406) in paragraph at lines 1773--1773
 []\OT1/ptm/m/n/10 Committee on Na-tional Se-cu-rity Sys-tems (CNSS).
  []
 
-
-Underfull \hbox (badness 1622) in paragraph at lines 1680--1680
+[17]
+Underfull \hbox (badness 1622) in paragraph at lines 1773--1773
 []\OT1/ptm/m/n/10 R. Karl Pop-per. \OT1/ptm/m/it/10 Con-jec-tures and refu-ta-t
 ions: The
  []
 
-[16]
-Underfull \hbox (badness 3803) in paragraph at lines 1680--1680
+
+Underfull \hbox (badness 3803) in paragraph at lines 1773--1773
 []\OT1/ptm/m/n/10 National In-sti-tute of Stan-dards and Tech-nolo-gies
  []
 
 
-Underfull \hbox (badness 3803) in paragraph at lines 1680--1680
+Underfull \hbox (badness 3803) in paragraph at lines 1773--1773
 []\OT1/ptm/m/n/10 National In-sti-tute of Stan-dards and Tech-nolo-gies
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1680--1680
+Underfull \hbox (badness 10000) in paragraph at lines 1773--1773
 []\OT1/ptm/m/n/10 Threatmodeler. \OT1/ptm/m/it/10 Threat-Mod-eler\OT1/ptm/m/n/1
 0 . \OT1/ptm/m/sc/10 url\OT1/ptm/m/n/10 : $https : / /
  []
 
 
-Underfull \hbox (badness 7151) in paragraph at lines 1680--1680
+Underfull \hbox (badness 7151) in paragraph at lines 1773--1773
 []\OT1/ptm/m/n/10 V-Research. \OT1/ptm/m/it/10 V-Research Cy-ber-se-cu-rity Rep
 os-i-tory\OT1/ptm/m/n/10 .
  []
 
 
-Underfull \hbox (badness 6157) in paragraph at lines 1680--1680
+Underfull \hbox (badness 6157) in paragraph at lines 1773--1773
 []\OT1/ptm/m/n/10 David Von Ohe-imb and Se-bas-tian M[]oder-sheim.
  []
 
@@ -1222,17 +1236,28 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[17] (./main.aux)
+[18] (./main.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                main
+(biblatex)                and rerun LaTeX afterwards.
+
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 23211 strings out of 483183
- 449821 string characters out of 5966292
- 1098619 words of memory out of 5000000
- 37822 multiletter control sequences out of 15000+600000
- 576106 words of font info for 101 fonts, out of 8000000 for 9000
+ 23202 strings out of 483183
+ 448938 string characters out of 5966292
+ 1097708 words of memory out of 5000000
+ 37808 multiletter control sequences out of 15000+600000
+ 577462 words of font info for 106 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,14n,60p,1129b,1943s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
@@ -1251,10 +1276,10 @@ xmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/
 type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/time
 s/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb><
 /usr/share/texlive/texmf-dist/fonts/type1/public/wasy-type1/wasy8.pfb>
-Output written on main.pdf (17 pages, 649882 bytes).
+Output written on main.pdf (18 pages, 658606 bytes).
 PDF statistics:
- 273 PDF objects out of 1000 (max. 8388607)
- 164 compressed objects within 2 object streams
+ 276 PDF objects out of 1000 (max. 8388607)
+ 166 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  93 words of extra memory for PDF output out of 10000 (max. 10000000)
 
