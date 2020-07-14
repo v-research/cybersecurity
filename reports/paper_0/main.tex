@@ -167,7 +167,7 @@
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 \begin{document}
-\title{On Etiology of Cybersecurity}
+\title{The Etiology of Cybersecurity}
 
 \author{\IEEEauthorblockN{Marco Rocchetto}
 \IEEEauthorblockA{V-Research\\
@@ -183,66 +183,44 @@ Email: francesco@v-research.it}
 \maketitle
 
 \begin{abstract}
-\fixn{Luca}{Per il titolo, meglio: ``On the Etiology of Cybersecurity'' oppure ``The Etiology of Cybersecurity''.
-}
-The objective of this research is the development of a theory that defines (all
-	and only) the possible insecurity and security configurations of any
-	abstract system. The theory is structured upon other theories that
-	define how a component of a system can be abstracted into an agent,
-	defining how agents can be formalized (both syntactically and
-	semantically) to describe an abstract system, such as a graph.\fixn{Luca}{la frase subordinata ``defining...'' non si capisce a cosa si riferisca. Troppi ``define'' e troppo lunga la frase.} The core
-	theories are the epistemological definition of knowledge, Beliefs, and
-	Information, the Assertion-Belief-Fact framework, and mereotopology.
-	We\fixn{Luca}{Non si capisce come questa frase si colleghi a quanto sopra. E se e come questa formal theory sia related a sopra} implemented a formal theory (of axioms) of a mereotopology, and of
-	the Region Connection Calculus (RCC3 and RCC5) in a Python program that
-	uses the Z3 SMT solver. The results\fixn{Luca}{The results of what?} show that a single component (i.e.
-	agent) of an abstract system has a definite number of  different
-	insecurity configurations (e.g. 53 using RCC5 over a topological
-	structure) and only 1 secure (i.e.  expected) configuration. The
-	configurations are reported as models satisfying the abstract system
-	semantics.\fixn{Luca}{Non si capisce la relazione tra agent e abstract system semantics} We use these results to predict all possible security
-	weaknesses of a system, instead of relying on databases of known
-	weaknesses, and to lay the foundations of a scientific theory of
-	cybersecurity.  We show a concrete applications of our theory for the risk assessment of an ad-hoc system.\fixn{Luca}{Io continuo a pensare che non si capisca bene cosa stiate facendo. \`E ancora scritto in maniera troppo complicata e vengono dette troppe cose. Io accorcerei e semplificherei.}
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
 
 \section{Introduction}\label{sec:intro}
 \paragraph{Context and motivation} 
-A \emph{scientific theory} is an explanation of a phenomenon such that the explanation
-follows the scientific method. The \emph{scientific method} is an \emph{empirical}
-method that aims at mitigating potential fallacies in theories.  Karl Popper
-famously argued (e.g. in \autocite{Popper1959logic}) that a scientific theory
-can never be verified but only falsified, that a theory should not be
-conceived by using the principle of induction\footnote{Albert  Einstein wrote to 
-Popper: ``[...] and I think (like you, by the way) that theory cannot be
-fabricated out of the results of observation, but that it can only be
-invented.''~\autocite{Popper1959logic}}, and that empirical experiments should
-be considered as the only evidence to support the non-falseness of a scientific
-theory. 
+A \emph{scientific theory} is an explanation of a phenomenon such that the
+explanation follows the scientific method. The \emph{scientific method} is an
+\emph{empirical} method that aims at mitigating potential fallacies in
+theories.  Karl Popper famously argued (e.g. in \autocite{Popper1959logic})
+that a scientific theory can never be verified but only falsified, that a
+theory should not be conceived by using the principle of
+induction\footnote{Albert  Einstein wrote to Popper: ``[...] and I think (like
+you, by the way) that theory cannot be fabricated out of the results of
+observation, but that it can only be invented.''~\autocite{Popper1959logic}},
+and that empirical experiments should be considered as the only evidence to
+support the non-falseness of a scientific theory. 
 
-If we consider a natural (real-world) phenomenon, such as gravity, we
-can think of a scientific theory as an \emph{abstract} mathematical formula (or
-a set of formulas) that defines axiomatically a certain (natural) phenomenon in
-a specific algebraic structure. While such a theory can be proved to be correct
+If we consider a natural (real-world) phenomenon, such as gravity, we can think
+of a scientific theory as an \emph{abstract} mathematical formula (or a set of
+formulas) that defines axiomatically a certain (natural) phenomenon in a
+specific algebraic structure. While such a theory can be proved to be correct
 within the mathematical setting it has been conceived in (e.g. with respect to
 other axioms of the algebraic structure where it has been postulated, or with
-respect to other background theories), no proof (for soundness or completeness)
-can be carried out to verify that the theory correctly abstracts the
-phenomenon it describes.\fixn{Luca}{Troppi correct. Meglio chiarire bene cosa sono correctness, soundness e completeness} Similarly, the results of the application of a
-scientific theory (i.e. its predictions) can be verified in the abstract
-mathematical structure but how can we be sure that the theory correctly
-characterizes the phenomenon it describes? 
+respect to other background theories), no proof can be carried out to verify
+that the theory properly abstracts the phenomenon it describes (i.e. that the
+theory is a sound or complete approximation of the real phenomenon).
+Similarly, the results of the application of a scientific theory (i.e. its
+predictions) can be verified in the abstract mathematical structure but how can
+we be sure that the theory correctly characterizes the phenomenon it describes? 
 
-Popper's famous ``demarcation
-principle'' draws a line between scientific and pseudo-scientific
-theories by proposing that \emph{any} scientific theory can be considered
-correct as long as no empirical experiment falsify it. For example, the theory
-of gravity, in its mathematical setting, can predict how objects attract
-each other, and those predictions can be tested by empirical experiment. If the
-theory correctly abstracts the phenomenon, no empirical experiment should
-falsify the predictions of that theory.
+Popper's famous ``demarcation principle'' draws a line between scientific and
+pseudo-scientific theories by proposing that \emph{any} scientific theory can
+be considered correct as long as no empirical experiment falsify it. For
+example, the theory of gravity, in its mathematical setting, can predict how
+objects attract each other, and those predictions can be tested by empirical
+experiment. If the theory correctly abstracts the phenomenon, no empirical
+experiment should falsify the predictions of that theory.
 
 In \autocite{Herley2016unfalsifiability}, Cormac Herley explores what he calls
 ``an asymmetry in computer security'', which he defines as follows: ``Things
@@ -250,74 +228,92 @@ can be declared insecure by observation, but not the reverse. There is no
 observation that allows us to declare an arbitrary system or technique
 secure''. His intuition is that there is no scientific theory that can predict
 the security of a system, nor a theory that can predict all possible
-insecurities of a system (which, by negation would become a theory on security). 
-Herley then uses this argument to show that ``claims that any measure
-is necessary for security are empirically unfalsifiable''.\fixn{Luca}{Whay if I have a system that I have proved to be secure under a set of $n$ assumptions. Now I remove those $n$ assumptions one by one and run the proof again. What if the proof works whenever I remove one of the first $n-1$ assumptions, but fails (only) if I remove the $n$th assumption. Would the counterexample, which can be applied empirically, not be evidence that the assumption removed was a necessary measure?} Given that any
-theory that is not falsifiable by an empirical experiment is well
-known\footnote{``A theory which is not refutable by any conceivable event is
-nonscientific. Irrefutability is not a virtue of a theory (as people often
-think) but a vice.'' -- Karl Popper, Conjectures and
+insecurities of a system (which, by negation would become a theory on
+security).  Herley then uses this argument to show that ``claims that any
+measure is necessary for security are empirically unfalsifiable''. An example
+is whether or not password masking makes a system secure. Password masking
+prevents a complete leakage of the password and a system in which password
+masking is implemented is believed to be secure because an intruder won't be
+seeing the password by ``shoulder surging''.  However, this reasoning is
+circular and it is always true that a system in which password masking is
+implemented is a system in which a password is masked. No experiment can ever
+falsify this statement.  Given that any theory that is not falsifiable by an
+empirical experiment is well known\footnote{``A theory which is not refutable
+by any conceivable event is nonscientific. Irrefutability is not a virtue of a
+theory (as people often think) but a vice.'' -- Karl Popper, Conjectures and
 Refutations~\autocite{popper1962conjectures}.} to be nonscientific (i.e.
 unfalsifiability is a fallacy of a theory), Herley concludes that there is no
-scientific theory on cybersecurity; which means that cybersecurity lays in the
-realm of pseudo-sciences~\autocite{Herley2016usenixvideo}.\fixn{Luca}{Theory ON cybersecurity or theory OF cybersecurity. A me viene da dire OF}  Herley, e.g.
-in \autocite{Herley2017justifying}, discusses the implications of a
-nonscientific approach to cybersecurity, and highlights the tremendous impact on
-all the scientific research and engineering of systems; leading\fixn{Luca}{Questo suona un po' esagerato, Meglio chiarire.} often to
-terrorism and wars, and wasting of resources in useless protections or
-overspending.  While the criticism is investigated
-in \autocite{Herley2016unfalsifiability}, no solution is provided nor envisioned.  
+scientific theory of cybersecurity; which means that cybersecurity lays in the
+realm of pseudo-sciences~\autocite{Herley2016usenixvideo}. Herley, e.g.  in
+\autocite{Herley2017justifying}, discusses the implications of a nonscientific
+approach to cybersecurity, and highlights the tremendous impact on all the
+scientific research and engineering of systems. While the criticism is
+investigated in \autocite{Herley2016unfalsifiability}, no solution is provided
+nor envisioned.  
 
 \paragraph{Contributions} 
-The goal of this paper is to lay the foundations of a
-scientific cybersecurity theory. 
-We consider the problem raised by Herley not confined to ``computer security''
-but to any abstract system (so that our theory may hold for any sound
-implementation such as networks, mechanical, cyber, or cyber-physical system,
-or even a single computer or a single device such as a hard-drive).\fixn{Luca}{Non si capisce ``any'' system. Quindi anche un sistema che non ha nulla a che fare con security? La frase ``not confined to... but to... '' non \`e grammaticamente corretta. Il verbo non pu\`o rimanere ``confined'', casomai ``not confined to ``computer security''
-but rather we consider any abstract system'' o una cosa del genere}  
-
-There is
-also an apparent inconsistency in \autocite{Herley2016unfalsifiability} that we
-seek to clarify before following (as we agree) the scientific path drawn by
-Herley: cybersecurity is defined as an abstract property in many formal
-approaches to the investigation of the security of systems, and the security of
-the design of a formally verified protocol is indeed falsifiable (against the
-security properties verified).\fixn{Luca}{Questa frase non la capisco. Innanzitutto non capisco la differenza tra cybersecurity e security. E poi cybersecurity non \`e una property ma un set of properties. E non si capisce come si passa da un system ad un protocol... sembrano due frasi diverse. Io le spezzerei, parlando del problema in generale, e poi dicendo, As a concrete example, consider the case of security protocols...}  For example, in the protocol verification
-community, security is often defined as a formalization of the high-level
-properties confidentiality, integrity, and authentication. The problem in such
-approaches is not the definition of what cybersecurity is but the generality of
-the results, since they tackle a specific step\footnote{In fact, many standards
-(e.g. \fixn{Luca}{manca ref}) used for the engineering of systems start with the requirements
-definition, and physical and functional architecture design, before the logic
-of protocols is even considered.} of the engineering process (of systems)
-without considering many aspects related to the implementation of a protocol
-that may generate security vulnerabilities later in the development process.\fixn{Luca}{Qui si cercano di dire troppe cose. Improvvisamente, mentre si parlare di security definition, si parla del software life-cycle. Va spiegato molto meglio (e in maniera pi\`u semplice.) Inoltre, non \`e proprio corretto. Che dire di model-based testing in cui si fa analysis della specifica e dell'implementazione?} An
-infamous example is the KRAK attack on the WPA2 4-way handshake protocol where
-the authors\fixn{Luca}{The authors of what? Solo Vanhoef?} wrote~\autocite{krak2020web}: ``our attacks do not violate the security properties proven
-in formal analysis of the 4-way handshake'' but ``the problem is that the
-proofs do not model key installation.''\fixn{Luca}{Questo mi sembra un modo confuso e un po' specioso di dire un'ovviet\`a: i risultati di un'analisi formale sono buoni tanto quanto il modello. Se il modello non modella una cosa, allora non si possono dedurre conclusioni su quella cosa. Questo \`e un problema generico della modellizzazione di qualunque cosa, non solo di security. E non direi che questo sia un esempio infamous, visto che ne esistono molti altri molto pi\`u importanti.}
-The theories underlying the verification of security protocols are based on assumptions which
-non-evidently apply to a general security theory.\fixn{Luca}{Non capisco ``which
-non-evidently apply to a general security theory''}  As an example, the so called
-Dolev-Yao attacker model\footnote{For the sake of simplicity, the Dolev-Yao
-attacker can be considered as an abstraction of an active attacker who controls
-the network but cannot break cryptography.} \autocite{Dolev1983security} only
-applies to specific instances (often called scenarios) and abstraction of the
-protocol.\fix{Luca}{Io lo direi diversamente: ``Dolev-Yao attacker model'' is an abstract model of an attacker that can be used for the analysis of protocol specifications} This, in turn, creates a false sense of security since it requires
-non-justifiable assumptions on the abstraction of the system of which security
-is verified.\fixn{Luca}{Frase scorretta grammaticamente ma anche molto confusa. Io direi: a proof of security of the protocol specification under the Dolev-Yao attacker model may instill a false sense of security of the whole protocol, whereas we have only verified it for the speicification. O una cosa del genere. In generale, ci sono troppo salti logici nei claims, dettati dalla voglia di dire troppe cose subito.} More specifically, for the formal security verification of a
-system in which two or more agents are communicating, a formalized scenario
-needs to be defined by a modeler who chooses (among others): (i) a scope of the
-formalization (e.g.  excluding the server that distributes the public key is
-often done when verifying the security of authentication protocols),fixn{Luca}{Nowadays, most tools don't remove these} (ii) the
-number of sessions (even tough some approaches do reason on an infinite number
-of sessions such as \autocite{Escobar2007maudenpa}),\fixn{Luca}{Nowadays, most tools work for infinite sessions: Maude-NPA, Tamarin, ProVerif, OFMC.} (iii) honesty/dishonesty of
-the peers (e.g.  in the ASLan++ language \autocite{Oheimb2010aslan++}),\fixn{Luca}{Nowadays, most tools allow for easy switch of the resulting sessions} and (iv)
-the abstraction of the cryptographic primitives (e.g.  ProVerif vs CryptoVerif
-\autocite{Blanchet2017symbolic}).\fixn{Luca}{This is the only claim that, more or less, still holds, even though more and more tools do cryptoanalysis. The good news is that, I believe, you do not need (i)-(iv) at all, but you can simply say that by the nature of modeling a specification, you are abstracting away certain things (e.g., cryptography, actual message content, PKI, etc.), and the vulnerabilities might be hidden there} While many tools and theories improved those 
-issues, there is no agreement on which should be the definitive
-approach (if any).\fixn{Luca}{I don't think that this is important. In many fields of research you don't have a single definitive approach and it is good that it is so. I would remove this sentence, but only focus on the next point, which is the only important one of this discussion of protocols} More importantly, some of the choices made by the
+The goal of this paper is to lay the foundations of a scientific cybersecurity
+theory.  We consider the problem raised by Herley not confined to ``computer
+security'' but rather we reason on any abstract system (so that our theory may
+hold for any sound implementation such as networks, mechanical, cyber, or
+cyber-physical system, or even a single computer or a single device such as a
+hard-drive).  There is also an apparent inconsistency in
+\autocite{Herley2016unfalsifiability} that we seek to clarify before following
+(as we agree) the scientific path drawn by Herley: cybersecurity is defined as
+a set of abstract properties in many formal approaches to the investigation of
+the security of systems.  Let's, for the sake of simplicity, consider the case
+of a system implementing a security protocol (e.g. an authentication protocol).
+The proof of security obtained from the formal verification of the design of
+the protocol (e.g. with respect to a formalization of the authentication
+property) is indeed falsifiable against the security properties verified.  For
+example, in the protocol verification community, cybersecurity is often defined
+as a formalization of the high-level properties confidentiality, integrity, and
+authentication. The problem in such approaches is not the definition of what
+cybersecurity is but the generality of the results, since they tackle a
+specific step\footnote{In fact, engineering models such as the V-model start
+with the requirements definition, and physical and functional architecture
+design, before the logic of protocols is even considered.} of the engineering
+process (of systems) without considering many aspects related to the
+implementation of a protocol that may generate security vulnerabilities later
+in the development process.  An infamous example is the KRAK attack on the WPA2
+4-way handshake protocol where the author wrote~\autocite{krak2020web}: ``our
+attacks do not violate the security properties proven in formal analysis of the
+4-way handshake'' but ``the problem is that the proofs do not model key
+installation.'' The theories underlying the verification of security protocols
+are based on assumptions which non-evidently apply to a general security
+theory; otherwise the assumptions would clearly state the necessary element
+that needs to be considered (e.g. modeled) in order to obtain a secure system.
+As an example, the so called Dolev-Yao attacker model\footnote{The Dolev-Yao
+attacker model can be considered as abstract model of an attacker that can be
+used for the analysis of protocol specifications.} \autocite{Dolev1983security}
+only applies to specific instances (often called scenarios) and abstraction of
+the protocol.  This, in turn, creates a false sense of security since it
+requires non-justifiable assumptions on the abstraction of the system under
+verification.
+%More specifically, for the formal security verification of a system in which
+%two or more agents are communicating, a formalized scenario needs to be
+%defined by a modeler who chooses (among others): (i) a scope of the
+%formalization (e.g.  excluding the server that distributes the public key is
+%often done when verifying the security of authentication protocols), (ii) the
+%number of sessions (even tough some approaches do reason on an infinite number
+%of sessions such as \autocite{Escobar2007maudenpa}),\fixn{Luca}{Nowadays, most
+%tools work for infinite sessions: Maude-NPA, Tamarin, ProVerif, OFMC.} (iii)
+%honesty/dishonesty of the peers (e.g.  in the ASLan++ language
+%\autocite{Oheimb2010aslan++}),\fixn{Luca}{Nowadays, most tools allow for easy
+%switch of the resulting sessions} and (iv) the abstraction of the
+%cryptographic primitives (e.g.  ProVerif vs CryptoVerif
+%\autocite{Blanchet2017symbolic}).\fixn{Luca}{This is the only claim that, more
+%or less, still holds, even though more and more tools do cryptoanalysis. The
+%good news is that, I believe, you do not need (i)-(iv) at all, but you can
+%simply say that by the nature of modeling a specification, you are abstracting
+%away certain things (e.g., cryptography, actual message content, PKI, etc.),
+%and the vulnerabilities might be hidden there} While many tools and theories
+%improved those issues, there is no agreement on which should be the definitive
+%approach (if any).\fixn{Luca}{I don't think that this is important. In many
+%fields of research you don't have a single definitive approach and it is good
+%that it is so. I would remove this sentence, but only focus on the next point,
+%which is the only important one of this discussion of protocols} 
+More importantly, some of the choices made by the
 modelers/engineers using those formal approaches may completely change the
 results of the formal verification of the system (an interesting example on how
 difficult it is to even just compare the approaches is given in
@@ -328,43 +324,31 @@ difficult it is to even just compare the approaches is given in
 	\caption{Abstraction of an ad-hoc esemplificative protocol execution}
 	\label{fig:protocol-example}
 \end{figure}
-For example, in Figure~\ref{fig:protocol-example}, under the perfect
-cryptography assumption\footnote{As defined in \autocite{Rocchetto2016cpdy}: ``In
-the so called perfect cryptography assumption, the security encryption scheme
-is supposed to be perfect, without any exploitable flaw, and so the only way for
-the attacker to decrypt a message is by using the proper key. That assumption
-is widely accepted in the security protocol community, and most of the formal
-reasoning tools for the analysis of security protocols abstract away the
-mathematical and implementation details of the encryption scheme
-\autocite{Turuani2006clatse,Basin2005ofmc,Armando2016satmc,Rocchetto2017interpolation}''}\fixn{Luca}{I would not quote your own paper for something for which there are hundreds of other equivalent quotes. Just say ``under the perfect
-cryptography assumption of the Dolev-Yao attacker model''}
-and assuming that no violation to any security property occurs after message
-I), the freedom of choosing the scope
-determines that the flaws related to the dishonest impersonification of the Server
-may or may not be considered in the verification process.  This choice has a
-tremendous impact on the focus and findings of the verification of the security
-of the protocol.  While this may seem to turn upon minutiae and foreseeable,
-this highlights the false sense of security that may derive from a
-non-falsifiable theory of system security.\fixn{Luca}{Frase troppo complicata, alla fine di un paragrafo alquanto confuso e ridondante. Secondo me tutto questo discorso si pu\`o ridurre a tre frasi, come ho suggerito sopra.'}
-%\footnote{``To the superficial
-%observer, the analysis of these forms seems to turn upon minutiae. It does in
-%fact deal with minutiae, but they are of the same order as those dealt with in
-%microscopic anatomy.'' -- Karl Marx, Capital Volume 1, 1867}.
+As an illustrative example, in Figure~\ref{fig:protocol-example}, under the perfect
+cryptography assumption (i.e. assuming that the cryptographic primitives have
+no security flaw), and assuming that no violation to any security property
+occurs after message I), the freedom of choosing the scope determines that the
+flaws related to the dishonest impersonification of the Server may or may not
+be considered in the verification process.  This choice has a tremendous impact
+on the focus and findings of the verification of the security of the protocol.
+While this may seem to turn upon minutiae and foreseeable, this highlights the
+false sense of security that may derive from a non-falsifiable theory of system
+security.
 
 \paragraph{Structure} 
-We start, in
-Section~\ref{sec:literature}, by detailing the problem statement, reporting a
-literature review on the main concepts and definitions related to security.  We
-formulate a security hypothesis in Section~\ref{sec:hypothesis}; which we use
-to propose a theory on system security in Section~\ref{sec:theory}. In
-Section~\ref{sec:secra}, we apply our theory for the tool-assisted security
-risk assessment of a CPS (with an ad-hoc example, based on the SWaT testbed
-\autocite{Mathur2016swat}).  This application shows how our theory can be used to
-predict all of the possible security weaknesses of a system, allowing the
-falsification of our theory.  In fact, if any security weaknesses were to be
-found in a system and not predicted by our theory, the theory could be declared
-incomplete.  Similarly, if a security weakness would be predicted by our theory
-but found to be impossible to realize, our theory could be declared as wrong.
+We start, in Section~\ref{sec:literature}, by detailing the problem statement,
+reporting a literature review on the main concepts and definitions related to
+security.  We formulate a security hypothesis in Section~\ref{sec:hypothesis};
+which we use to propose a theory on system security in
+Section~\ref{sec:theory}. In Section~\ref{sec:secra}, we apply our theory for
+the tool-assisted security risk assessment of a CPS (with an ad-hoc example,
+based on the SWaT testbed \autocite{Mathur2016swat}).  This application shows
+how our theory can be used to predict all of the possible security weaknesses
+of a system, allowing the falsification of our theory.  In fact, if any
+security weaknesses were to be found in a system and not predicted by our
+theory, the theory could be declared incomplete.  Similarly, if a security
+weakness would be predicted by our theory but found to be impossible to
+realize, our theory could be declared as wrong.
 
 \section{Literature Review}\label{sec:literature}
 \begin{figure*}[t]
