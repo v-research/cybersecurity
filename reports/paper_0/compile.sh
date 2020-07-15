@@ -3,11 +3,14 @@ latexOutputDir="latex-output-dir"
 latexInputFile="main.tex"
 pdfOutputDir="${latexOutputDir}/${latexInputFile%.*}.pdf"
 
+if [ "$1" != "-short" ] && [ "$1" != "-s" ]; then
+	echo "remove"
+	rm -rf $latexOutputDir
+fi
 
-#if [[ ! -d $latexOutputDir ]]; then 
-rm -rf $latexOutputDir
-mkdir $latexOutputDir
-#fi
+if [[ ! -d $latexOutputDir ]]; then 
+	mkdir $latexOutputDir
+fi
 
 if pdflatex -halt-on-error -output-directory=$latexOutputDir $latexInputFile
 then 
