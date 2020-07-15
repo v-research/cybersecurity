@@ -45,7 +45,7 @@
 
 %fix commands
 \newcommand{\fixnote}[2]{\textbf{\color{red}{FIX}}\footnote{{\bf #1:} #2}}
-\newcommand{\fix}[2]{{\color{red} {\bf tofix:} #2}}
+\newcommand{\fix}[2]{{\color{red}{\bf tofix:} #2}}
 % \renewcommand{\fixnote}[2]{}
 % \renewcommand{\fix}[2]{}
 
@@ -248,7 +248,7 @@ security).  Herley then uses this argument to show that ``claims that any
 measure is necessary for security are empirically unfalsifiable''. An example
 is whether or not password masking makes a system secure. Password masking
 prevents a complete leakage of the password and a system in which password
-masking is implemented is believed to be secure because an intruder won't be
+masking is implemented is believed to be secure because an attacker won't be
 seeing the password by ``shoulder surging''.  However, this reasoning is
 circular and it is always true that a system in which password masking is
 implemented is a system in which a password is masked. No experiment can ever
@@ -350,7 +350,18 @@ While this may seem to turn upon minutiae and foreseeable, this highlights the
 false sense of security that may derive from a non-falsifiable theory of system
 security.
 
-\fix{mr}{add description of our approach and theory}
+Our hypothesis is that cybersecurity attacks are caused by 
+the presence of errors in the design or implementation of a system.
+For example, a design or implementation error in a sanitization function
+may allow an attacker to perform SQL-injections. If errors are necessary
+to enable cybersecurity attacks, a theory that predicts all potential 
+errors (or source of errors) can be effectively used to predict the
+security of a system. With our approach, a list of weaknesses emerges
+from the mathematical formulation of the system and predicts 4 main classes
+of weaknesses. Those classes of weaknesses are used to calculate
+all the insecurity configurations of all the components of a system,
+obtaining a precise estimation of all potential cybersecurity-related risks
+in any given system.
 
 \paragraph{Structure} 
 We start, in Section~\ref{sec:literature}, by detailing the problem statement,
@@ -642,16 +653,19 @@ potential designs of a system, we start by defining a general framework for the 
 of a system. On top of this framework we will identify system weaknesses as potential
 design errors.
 
-\subsection{Multi-Agent Systems}\label{sec:system}
+\subsection{Epistemology and Multi-Agent Systems}\label{sec:system}
 The ISO/IEC/IEEE 15288:2015 (System Life Cycle Processes) provides a definition
 of system as ``A combination of interacting elements organized to achieve one
-or more stated purposes.''\autocite{ISO201515288}.  Therefore, a system can be
-considered as a network of interacting elements. \fixnote{mv}{il ragionamento dell'intro, in particolare il "Therefore", non mi convince del tutto; dalla definizione mi verrebbe da pensare un sistema come un insieme di agenti che interagiscono piuttosto che come un agente singolo}
-%single agent where its interacting elements are the
-%constituents of the agent itself. 
+or more stated purposes.''\autocite{ISO201515288}. If a system is structured
+into multiple sub-systems, a sub-system can be defines in the same way as a system (i.e. as
+a composition of interacting elements). A hierarchy of sub-systems 
+can be limited by a ``bottom-subsystem'' often called device (or element in the
+aforementioned definition) which is not itself composed by 
+other elements but is considered atomic.         
 For the sake of simplicity we first define a
-system as an agent and then extend the definition to a ``combination of
-interacting'' agents.  
+system as composed by a single element and then extend the definition to a ``combination of
+interacting'' elements. Given that we use concepts from the multi-agent system
+research field, instead of using the word element we use agent.
 
 There is no agreement between the research communities (e.g.
 Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent
@@ -802,12 +816,16 @@ we extend the mereology to a
 mereo-topology\autocite{Smith1996mereotopology,Varzi1994mereotopology,Rachavelpula2017mereotopology},
 considering the relations in Table~\ref{tab:rcc358}.  For the sake of
 readability, we use the term \emph{Region} both to refer to a mereological Part
-and to a topological Region.  Our aim is to create a meronomy
-instead of the taxonomies such as the one provided
-in\autocite{NIST2020NVD,MITRE2020CVE} with the
-so that we don't need to rely on a scoring system such as the 
-CVSS\autocite{Mell2007CVSS}. Instead, we want to precisely calculate
-the number of insecurity configurations as a scoring system.
+and to a topological Region.  Our aim is to create a meronomy (hierarchy of part-whole
+relations)
+instead of the taxonomies (categorization based on discrete sets) 
+such as the one provided
+in\autocite{NIST2020NVD,MITRE2020CVE} 
+so that we don't need to rely on a scoring system (such as the 
+CVSS\autocite{Mell2007CVSS}) to assign a quantitative evaluation 
+of the security of each entry. Instead, we want a precise calculation
+of the number of insecurity configurations to emerge from the mathematical
+formulation of our cybersecurity theory.
 
 A mereotopology, as defined e.g. in\autocite{Rachavelpula2017mereotopology}, is
 an ordered mathematical structure where the basic relation between Regions is
