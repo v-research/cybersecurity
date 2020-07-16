@@ -657,19 +657,20 @@ design errors.
 The ISO/IEC/IEEE 15288:2015 (System Life Cycle Processes) provides a definition
 of system as ``A combination of interacting elements organized to achieve one
 or more stated purposes.''\autocite{ISO201515288}. If a system is structured
-into multiple sub-systems, a sub-system can be defines in the same way as a system (i.e. as
-a composition of interacting elements). A hierarchy of sub-systems 
-can be limited by a ``bottom-subsystem'' often called device (or element in the
-aforementioned definition) which is not itself composed by 
-other elements but is considered atomic.         
-For the sake of simplicity we first define a
-system as composed by a single element and then extend the definition to a ``combination of
-interacting'' elements. Given that we use concepts from the multi-agent system
-research field, instead of using the word element we use agent.
+into multiple sub-systems, a sub-system can be defined in the same way as a
+system is defined (i.e. as a composition of interacting elements). A hierarchy
+of sub-systems can be limited by a ``bottom-subsystem'' often called device (or
+element in the aforementioned definition) which is not itself composed by other
+elements but is considered atomic.         For the sake of simplicity, we
+consider a device as a system with only one element: itself.  We then first define a
+system as composed by a single element and then extend the definition to a
+``combination of interacting'' elements. Given that we use concepts from the
+multi-agent system research field, instead of using the word element we will
+use the word agent.
 
 There is no agreement between the research communities (e.g.
-Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent
-as a system. However, the same ideas revolved around for thousands of years.
+Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent.
+However, the same ideas revolved around for thousands of years.
 Some relevant examples for our objective are the following\footnote{
 It is interesting to notice that 
 in \autocite{Empiricus1990Pyrrhonism}, the author states: ``The
@@ -684,31 +685,32 @@ in \autocite{Empiricus1990Pyrrhonism}, the author states: ``The
 }.
 \begin{itemize}
 	\item In \autocite{Hintikka1962knowledge}, Hintikka describes the
-		difference between Knowledge and Belief (as epistemological
+		difference between knowledge and belief (as epistemological
 		concepts), and the whole Doxastic logic defines in details how
-		Beliefs can be formalized.
+		beliefs can be formalized.
 	\item In \autocite{Hintikka1993Information}, Hintikka describes the concept
-		of Information and the difference with Knowledge and Belief.
+		of information and the difference with knowledge and belief.
 	\item In \autocite{Santaca2016abf}, the authors defines an agent as a
-		tuple of Assertions, Beliefs, and Facts.
+		tuple of assertions, beliefs, and facts.
 \end{itemize}
 For our argument, as in \autocite{Santaca2016abf}, an agent is composed by its
 knowledge, beliefs, and the information or assertions it provides; where
 knowledge is defined, as in \autocite{Steup2020epistemology}, as a set of
 proposition known by an agent, such that: (i) knowledge requires belief, (ii)
 knowledge require truth, (iii) knowledge must be \emph{properly justified}, and
-the only objective of Information is to exchange beliefs between agents.  As
-defined in \autocite{Hintikka1993Information}, ``Information is specified by
+the only objective of information is to exchange beliefs between agents.  As
+defined in \autocite{Hintikka1993Information}, ``information is specified by
 specifying which alternatives concerning the reality it admits and which
 alternatives excludes''. This means that if we consider a propositional
 variable (which admits the two alternatives True/False) its information is
 defined as Believed to be True/False and not Believed to be the opposite.  Due
-to the definition of Information and then with its relation to the
+to the definition of information and then with its relation to the
 probabilistic correlation to truth/reality, we consider information in relation
 with an agent's beliefs. Similarly, we consider beliefs to define the actual
-behavior of an agent or a system.
-The difference between Knowledge and Information as used by Hintikka, and Facts
-and Assertions as used in \autocite{Santaca2016abf}, are not precisely discussed
+behavior of an agent or a system; i.e. we consider behaviors as belief revision
+systems.
+The difference between knowledge and information as used by Hintikka, and facts
+and assertions as used in \autocite{Santaca2016abf}, are not precisely discussed
 in \autocite{Santaca2016abf}.  Furthermore, those epistemological concepts are
 difficult to define
 \autocite{Gettier2012knowledge}.
@@ -728,14 +730,14 @@ For example, Hintikka in
 information is impossible''. However, a detailed formalization of those concepts is out
 of the scope of this paper. 
 
-We now define them abstractly, inspired by the
-ABF-theory  defined in \autocite{Santaca2016abf} and, in
+We now define those concepts abstractly, inspired by the
+$\abf$-framework  defined in \autocite{Santaca2016abf} and, in
 Section~\ref{sec:theory} we detail them as engineering concepts.
 \begin{enumerate}
-	\item We consider Information only when the intention of exchanging 
-		that Information is from a sender to 
-		recipient is defined; and we call it \emph{Assertion}  
-	\item Similarly, the portion of \emph{Beliefs} we consider for system
+	\item We consider information only when the intention of exchanging 
+		that information is from a sender to 
+		recipient is defined; and we call it \emph{assertion}  
+	\item Similarly, the portion of \emph{beliefs} we consider for system
 		engineering is the one that builds (input) or describes
 		(output) the behavior of an agent (strategy rules
 		\footnote{``The logical structure of information is one of the
@@ -752,13 +754,13 @@ Section~\ref{sec:theory} we detail them as engineering concepts.
 		this subject. Rules which do can be called \emph{strategic
 		rules}'' -- Hintikka in \autocite{Hintikka1993Information}}),
 		and
-	\item We consider a set of axiomatic \emph{Facts} (definitory
+	\item We consider a set of axiomatic \emph{facts} (definitory
 		rules\footnote{Facts are definitory rule as they don't
 		define how a real system is finally implemented but
 		how it should be, trough a series of requirements. Those requirements 
 		may not hold, through insecurity, in the implemented system.})
 		instead of considering the more general epistemic definition of
-		Knowledge. Specifically, Facts describes:
+		knowledge. Specifically, facts describes:
 		\begin{itemize}
 			\item The functional architecture of each agent
 			\item The physical/structural (HW/SW) architecture of each
@@ -778,7 +780,7 @@ from the behavior block are then translated back into (outgoing) assertions.
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=.9\columnwidth]{system-agent.pdf}
-	\caption{Example of system and agent structure}
+	\caption{xample of system and agent structure}
 	\label{fig:system-agent}
 \end{figure}
 
@@ -907,9 +909,9 @@ representation of the system.
 \end{figure}
 
 \subsection{Qualitative Evaluation of Agent Space in $\abf$}\label{sec:agentspace}
-\begin{table*}[t]
+\begin{table}[t]
 \centering
-\begin{adjustbox}{width=.6\textwidth}
+\begin{adjustbox}{width=\columnwidth}
 \begin{tabular}{r||c|c|c|c|c} 
 & \dr{$\assertionRegion$}{$\beliefRegion$} & 
 	\po{$\assertionRegion$}{$\beliefRegion$}& 
@@ -929,11 +931,11 @@ representation of the system.
 	\cellcolor{abf-rg-2}\dr{$\assertionRegion$}{$\factRegion$} & %pp
 	\cellcolor{abf-rg-3}\po{$\assertionRegion$}{$\factRegion$} & %ppi
 	\cellcolor{abf-rg-4}\dr{$\assertionRegion$}{$\factRegion$}\\ % e q
- & \cellcolor{abfred}& %dr
-	\cellcolor{abf-rg-1}\pp{$\assertionRegion$}{$\factRegion$} & %po
-	\cellcolor{abf-rg-2}  & %pp
-	\cellcolor{abf-rg-3}\pp{$\assertionRegion$}{$\factRegion$} & %ppi
-	\cellcolor{abf-rg-4} \\ %eq
+% & \cellcolor{abfred}& %dr
+%	\cellcolor{abf-rg-1}& %\pp{$\assertionRegion$}{$\factRegion$} & %po
+%	\cellcolor{abf-rg-2}  & %pp
+%	\cellcolor{abf-rg-3} & %\pp{$\assertionRegion$}{$\factRegion$} & %ppi
+%	\cellcolor{abf-rg-4} \\ %eq
 \hline %po
  \multirow{3}{*}{\po{$\beliefRegion$}{$\factRegion$}} &
 	\cellcolor{abf-rg-1}\dr{$\assertionRegion$}{$\factRegion$} & %dr
@@ -1005,38 +1007,45 @@ exist 54 possible relations and the coloring anticipates the ideal risk matrix
 of medium risk states). 
 \all{$\assertionRegion$}{$\factRegion$} = \{\dr{$\assertionRegion$}{$\factRegion$}, \po{$\assertionRegion$}{$\factRegion$}, \pp{$\assertionRegion$}{$\factRegion$}, \ppi{$\assertionRegion$}{$\factRegion$}, \eq{$\assertionRegion$}{$\factRegion$}\}
 \label{tab:5com}}
-\end{table*}
+\end{table}
 While a quantitative analysis reveals how many possible configurations of an
 agent (i.e. a system) exist w.r.t. the $\abf$ theory (i.e. $54/125$ in RCC5), a
-qualitative analysis of the different configurations describes the
+qualitative analysis of the different configurations describe the
 configurations allowed by the $\abf$ theory, and how those configurations can
 be categorized.  In Table~\ref{tab:5com}, we provide the generic composition
 table of RCC5 over 3 regions instantiated over $\abf$, which shows the whole
 state space for a single agent. The color coding of the table represents the
-security risk related to a generic agent. 
+security risk related to a generic agent, the risk is highest on the top left
+corner of the matrix, lowest on the bottom right corner. 
 
-As depicted in Figure~\ref{fig:soundness}, the relation between Facts, and
-Assertions and Behavior defines the soundness of the design (admissible
-configurations of Assertions, Behaviors and, in turn, Beliefs) w.r.t. the
-specification (what the specification mandates, such as by the nature of the
-physical/functional architectural models). We categorize agents by first
+In Figure~\ref{fig:soundness},
+the relation between facts, and
+assertions and beliefs (as inputs and outputs of the Behavior of an agent)
+is illustrated. assertions and beliefs generated by the design of a system
+may not be exactly aligned with what the facts mandate (i.e. what the specification mandates.
+The relation between facts, and assertions and beliefs 
+can be used as a metric to determine the soundess of the 
+design with respect to the specification.
+
+We categorize agents by first
 analyzing the relations between each pair of Regions defining an agent (i.e.
 $\abf$), and then we categorize the different agents as tuple of the three
 Regions.  For the sake of simplicity, soundness is opposed to non-soundness in
 the following, however, with the RCC one should consider different ``degrees''
-of non-soundness. For example, in RCC5, if we consider EQ between two Regions
+of non-soundness\fixnote{mv}{In particolare, spiegherei meglio Fig. 6 e il discorso della soundness}. 
+For example, in RCC5, if we consider EQ between two Regions
 as representing soundness, DR over the same Regions represents non-soundness;
 while PP, PO, PPi represents the different degrees of non-soundness.  A similar
 argument can be done for completeness.  
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=.9\columnwidth]{soundness.pdf}
-	\caption{Example relation between Facts, and Assertions and Beliefs}
+	\caption{Example relation between facts, and assertions and beliefs}
 	\label{fig:soundness}
 \end{figure}
 
 \paragraph{\Rcc{$\assertionRegion$}{$\beliefRegion$} -- Collaboration} In order
-to reason on the relation between assertions and behavior we first need to
+to reason on the relation between assertions and beliefs we first need to
 consider that, by definition, assertions are defined as transfer of information
 between two agents, e.g., $a$ and $b$.  Therefore, as depicted in
 Figure~\ref{fig:system-agent}, an agent has two main categories of assertions,
@@ -1054,13 +1063,13 @@ quality.'' --  Ellis J. McTaggart, The Unreality of
 Time\autocite{Mctaggart1908unreality}}: 
 \begin{itemize}
 	\item \Rcc{$\assertionRegion_{s\rightarrow a}$}{$\beliefRegion$},
-		where the relation between Input-assertions and behavior
+		where the relation between Input-assertions and beliefs
 		describes the soundness of the execution of the functional
 		architecture w.r.t. input elicitation. With more details, the
 		ideal specification of the functional architecture, along with
 		the expected inputs, defines the functional behavior of an
-		ideal system.  If all the inputs (Assertions) are correctly
-		handled in the functional specification (behavior) the
+		ideal system.  If all the inputs (assertions) are correctly
+		handled in the functional specification (beliefs) the
 		specification is complete. 
 
 	\item \Rcc{$\assertionRegion_{a\rightarrow r}$}{$\beliefRegion$},
@@ -1074,39 +1083,31 @@ Time\autocite{Mctaggart1908unreality}}:
 
 \paragraph{\Rcc{$\assertionRegion$}{$\factRegion$} and
 \Rcc{$\beliefRegion$}{$\factRegion$} -- Honesty and Competence} 
-%While
-%Assertions and Beliefs generated by the Behavior determines how a system should
-%work, and the relation between the two defines the quality (i.e. the
-%completeness w.r.t the specification) of the agent, 
-The relation of Assertions
-and Behavior with Facts determines the quality with respect to the nominal
-(specified) system.  Given that Facts defines what needs to be true in the system,
-the relation of Assertions an Facts determines the degree of quality between
+The relation of assertions
+and beliefs with facts determines the quality with respect to the nominal
+(specified) system.  Given that facts defines what needs to be true in the system,
+the relation of assertions an facts determines the degree of quality between
 the real information circulating in a system (or within an agent) and
 the one specified.  Since the transfer of information
-through Assertions generates Beliefs, a dishonest agent may circulate false
-information, generating false Beliefs.  We note that it is often implied that
+through assertions generates beliefs, a dishonest agent may circulate false
+information, generating false beliefs.  We note that it is often implied that
 the intention behind circulating false information discerns a dishonest and an
 incompetent agent. However, we consider honesty related to sharing
 truths\footnote{``[\ldots] truth exists only in the good man, but the true in
 the bad man as well; for it is possible for the bad man to utter something
 true.'' Sextus Empiricus, Outlines of Pyrrhonism,
-II-83\autocite{Empiricus1990Pyrrhonism}}.  The relation between Beliefs and
-Facts determines the competence (on the subjects defined by the Facts) of an
-agent (i.e. the more competent an agent is, the more likely a Belief of that
+II-83\autocite{Empiricus1990Pyrrhonism}}.  The relation between beliefs and
+facts determines the competence (on the subjects defined by the facts) of an
+agent (i.e. the more competent an agent is, the more likely a belief of that
 agent is true).
 
 \subsubsection{$\abf$ Security Enumeration (SE)} The following security
 requirement for a CPS specification can be summarized:
 \begin{enumerate}
-	\item[SE-$1$] Proper interaction between correctly-behaving agents (in
-		contrast with the ``Improper Interaction Between Multiple
-		Correctly-Behaving Entities'' defined by the CWE--$435$ as one
-		of the top ``view'' of the ``research concepts'' in
-		\autocite{MITRE2020CWEresearch}) is defined as
-		$\eq{\assertionRegion_a}{\beliefRegion_a}$ for an agent $a$
-		while can be detailed as follows when multiple agents are
-		considered.
+	\item[SE-$1$] Proper interaction between correctly-behaving agents is
+		defined as $\eq{\assertionRegion_a}{\beliefRegion_a}$ for an
+		agent $a$ while can be detailed as follows when multiple agents
+		are considered.
 	\begin{enumerate}
 		\item[SE-$1.1$] The equality relation
 			$\eq{\assertionRegion_{s\rightarrow
@@ -1127,22 +1128,26 @@ requirement for a CPS specification can be summarized:
 			agent $a$ shall be the outputs of the functional
 			architecture.
 	\end{enumerate}
-	\item[SE-$2$]Sufficient Control Flow Management (in contrast with
-		the ``Insufficient Control Flow Management'' defined by MITRE
-		in the CWE--$691$ as one of the top ``view'' of the ``research
-		concepts'' in\autocite{MITRE2020CWEresearch}) is defined as
-		$\eq{\assertionRegion}{\factRegion}$.
-	\item[SE-$3$] Correct Calculation (in contrast with the ``Improper
-		Calculation'' defined by MITRE in the CWE--$682$ as one of the
-		top ``view'' of the ``research concepts''
-		in\autocite{MITRE2020CWEresearch}) is defined as
-		$\eq{\beliefRegion}{\factRegion}$.
+\item[SE-$2$] The proper adherence of the data transmitted between agents with respect to
+	requirements, is defined as $\eq{\assertionRegion}{\factRegion}$. 
+\item[SE-$3$] The proper adherence of the behavior (in terms of input and output beliefs) with respect to
+		requirements is defined as $\eq{\beliefRegion}{\factRegion}$.
 \end{enumerate}
 
+We note that our SE define the properties of a secure system, and correlated
+weaknesses can be found in the CWE dataset.  For example, SE-$1$ can be sees as
+correlated to the weakness class of ``Improper Interaction Between Multiple
+Correctly-Behaving Entities'' defined by the CWE--$435$, SE-$2$ with the
+``Insufficient Control Flow Management'' defined by MITRE in the CWE--$691$,
+and SE-$3$ with the ``Improper Calculation'' defined by MITRE in the
+CWE--$682$. All those CWE are in the top ``view'' of the ``research concepts''
+in\autocite{MITRE2020CWEresearch}, while the other classes of weaknesses do not
+have a direct counterpart in our theory; we believe they can be sees as sub-classes,
+but a full comparison with the CWE is out of the scope of this article.
+
 We are now in the position to define what a secure system is (with respect to
-the $\abf$-theory) and, based on that definition, what the security risk is and
-how to quantify it in a risk matrix (where a risk matrix is usually defined as
-a function between the likelihood and the impact of all potential attacks).
+the $\abf$-framework) and, based on that definition, what the security risk is and
+how to quantify it in a risk matrix.
 \begin{definition}{\bf Security of a System or an Agent --}\label{def:security}
 	A secure system is a system where SE-$1$, SE-$2$, and SE-$3$ holds for
 	each agent composing the system.
@@ -1151,13 +1156,13 @@ The ISO 31000 consider risk as the ``effect of uncertainty on objectives'' and
 refers both to positive and negative consequences of uncertainty.
 Accordingly, we consider risk as follows. 
 \begin{definition}{\bf Risk --}
-The whole space of potential designs of a specification with respect to the
-	$\abf$-theory.
+A risk is the whole space of potential designs of a specification with respect to the
+	$\abf$-framework.
 \end{definition}
 The definition of Risk leads to the risk matrix in
 Figure~\ref{fig:quantitative}, defined as follows.
 \begin{definition}{\bf Risk Matrix --}
-	The risk matrix is a function between the three relations
+	The risk matrix, as summarized in Table~\ref{tab:5com}, is a function of the three relations
 	$s=\langle\rcc(\factRegion,\beliefRegion),\rcc(\factRegion,\assertionRegion),\rcc(\beliefRegion,\assertionRegion)\rangle$,
 	where the maximum risk is defined by the $DR$ relation between the
 	three groups of Regions, and the minimum risk by the $EQ$ relation over
@@ -1165,8 +1170,10 @@ Figure~\ref{fig:quantitative}, defined as follows.
 	possible intermediate configuration is defined by the calculus used
 	(RCC5 in our case).
 \end{definition}
-While a risk matrix is often defined as a function between 
-likelihood and impact of attacks, we suggest
+While a risk matrix is often defined as a function of the 
+likelihood and impact of attacks (based on quantitative ad-hoc estimation
+of how likely it is that an attacker will exploit one or more vulnerabilities
+and what is the magnitude of the incidents produced by this exploitation), we suggest
 that security weaknesses are all equally likely to be exploited
 if there's a connection between the weakness and the asset that
 an attacker wants to impact. Therefore, a risk matrix should
@@ -1194,15 +1201,14 @@ example,
 		decommissioning''
 \end{enumerate}
 However, standards do not describe in detail how to perform a security risk 
-assessment and only vaguely define the overall objective. The overall
-objective of this first step of the cybersecurity engineering process
-is to provide an understanding of the potential security risks.
+assessment and only vaguely define the overall objective, which
+can be summarized as to provide an understanding of the potential security risks.
 Roughly speaking, a security risk assessment (e.g. CORAS\autocite{Lund2010model}) 
 methodology starts from the (i) identification of assets, (ii) determines
 the threat scenarios (correlating vulnerabilities, threats and incidents) e.g. 
 threat diagrams in the CORAS
 approach, (iii) calculate the risk as a function
-between impact and likelihood of threat scenarios, and (iv) finally provides
+of impact and likelihood of threat scenarios, and (iv) finally provides
 treatments (mandating a partial re-design) and residual risks.
 All the methodologies and tools we reviewed (e.g. Threatmodeler \autocite{Threatmodeler},
 CORAS \autocite{Lund2010model}, SECRAM \autocite{De2015role})
@@ -1233,15 +1239,15 @@ As depicted in Figure~\ref{fig:mashyp}, we relate MAS and CPS as follows.
 		specific device, as in Figure~\ref{fig:mashyp}. In this case,
 		the system is not decomposed into sub-systems or devices and
 		the device is considered as an agent.
-	\item Agents reason over Beliefs (i.e. transform Beliefs into other
-		Beliefs) and for each \emph{component of a CPS} (system, sub-system,
+	\item Agents reason over beliefs (i.e. transform beliefs into other
+		beliefs) and for each \emph{component of a CPS} (system, sub-system,
 		or device) is composed by a \emph{functional architecture} that
-		transforms input-Beliefs into output-Beliefs.
+		transforms input-beliefs into output-beliefs.
 	\item Components of a CPS have \emph{ports} to exchange information
 		with the outer environment (which may be a sub-system),
-		similarly to Agents. The transfer of information in a CPS is
+		similarly to agents. The transfer of information in a CPS is
 		defined by \emph{channels}.
-	\item The concept of Knowledge is related to the \emph{requirements}
+	\item The concept of knowledge is related to the \emph{requirements}
 		that, in a factorial way, describe how the CPS shall behave and
 		its \emph{physical architecture}.
 
@@ -1254,7 +1260,7 @@ As depicted in Figure~\ref{fig:mashyp}, we relate MAS and CPS as follows.
 	\caption{Input and Output Port of an agent}
 	\label{fig:ioports}
 \end{figure}
-Since the $\abf$-theory is a theory of agents, we could consider ports as
+Since the $\abf$-framework is a theory of agents, we could consider ports as
 agents that allows the exchange of information between a channel and another
 agent.  However, we considered a port as a special type of agent that to avoid
 an \emph{infinite regress} in which a port needs a port to transfer information
@@ -1264,7 +1270,7 @@ between the outside of the port to the inside of itself.
 	A port forwards information from the outside of an agent's boundary to
 	the inside (input-port) or vice versa (output-port).  There exist two
 	types of ports with the following behavior: an input-port changes
-	transforms Assertions from a sender $s$ ($\rassert{s}{a}$) to Beliefs
+	transforms assertions from a sender $s$ ($\rassert{s}{a}$) to beliefs
 	of an agent $a$ ($\beliefRegion_a$), while an output-port from belief
 	to assertion.
 \end{definition}
@@ -1272,11 +1278,11 @@ The \emph{quality of a port} is determined by the $\rcc$ relation between the
 assertions received or sent and the belief, i.e.
 $\Rcc{\assertionRegion_s}{\beliefRegion_a}$ for the input-port or
 $\Rcc{\assertionRegion_r}{\beliefRegion_a}$. A port is, in fact, syntactic sugar to express the 
-relation between Assertions and Beliefs. We only define secure input port
+relation between assertions and beliefs. We only define secure input port
 but the definition of a secure output port is symmetrical.
 
 \begin{definition}{\bf Secure Input Port --}\label{def:secport}
-	A secure input port ($s\secureport a$) always allow information as
+	A secure input port always allow information as
 	incoming assertions to flow from a sender $s$ to the behavior of the
 	recipient $a$ (agent).  
 	%If $p_I$ is a secure input port,
@@ -1312,7 +1318,7 @@ notation is reported for input-ports, i.e. on the left-hand side of the arrow):
 \end{theorem}
 
 \begin{proof}
-An input port is, in the $\abf$-theory, defined secure as long as the relation
+An input port is, in the $\abf$-framework, defined secure as long as the relation
 	between the two regions of input assertions $\assertionRegion$ and
 	output beliefs $\beliefRegion$ are equal, i.e.
 	$\eq{\assertionRegion}{\beliefRegion}$. Therefore, any other relation
@@ -1325,7 +1331,7 @@ An input port is, in the $\abf$-theory, defined secure as long as the relation
 	represents the smallest possible cardinality of a (mereo)topological base for
 	$X$; where a base is a collection of regions in a (mereo)topology such that
 	every open region can be written as union of elements of that base. 
-	We distinguish between Regions that contain Information and Regions that
+	We distinguish between Regions that contain information and Regions that
 	don't by writing the latter as $\emptyset$.
 	\begin{enumerate}
 		\item if $\eq{\assertionRegion}{\beliefRegion})$ then either
@@ -1367,9 +1373,9 @@ the channel).
 
 We start by considering the difference between a (communication)
 mono-directional channel (channel from now on) and an agent, as we did for the
-ports, since the $\abf$-theory is a theory of agents.  In fact, if a channel
+ports, since the $\abf$-framework is a theory of agents.  In fact, if a channel
 were considered an agent (channel-agent) then the question would be how an
-agent would transfer its Assertions to the channel-agent. If the channel
+agent would transfer its assertions to the channel-agent. If the channel
 between the agent and the channel-agent is again an agent, we would generate an
 \emph{infinite regress}. Therefore, we do allow channel-agents but we assume a
 finite depth (of detail) for a channel, where there exists a bottom-channel
@@ -1379,21 +1385,21 @@ we consider channels to be bottom-channels,
 defined as agents with the pre-defined behavior (i.e. defined in a axiomatic
 way) of forwarding any input-assertion as output-assertion, without modifying it\footnote{Nothing
 prevents us from introducing additional constraints to the channel as storing
-Assertions that are transferred over the channel, or filter out some
+assertions that are transferred over the channel, or filter out some
 input-assertions.}. 
 
 \begin{definition}{\bf Secure Mono-directional Channel (bottom-channel) --}\label{def:monochannel}
 	A mono-directional channel between the two agents ($s \rightarrow r$) is defined as 
-	an agent which behavior is (dogmatically) defined as: to forward any Assertion received from $s$ over an input-port, to  
+	an agent which behavior is (dogmatically) defined as: to forward any assertion received from $s$ over an input-port, to  
 	the output-port where $r$ is listening to.
 \end{definition}
 The \emph{quality of a mono-directional} channel is defined as the $\rcc$
-relation between the Assertions made by the sender and the ones received by the
+relation between the assertions made by the sender and the ones received by the
 receiver, i.e. $\Rcc{\assertionRegion_s}{\assertionRegion_r}$.
 
 \paragraph{Channel Weaknesses}
 Given that a mono-directional bottom-channel is assumed to be perfectly
-forwarding any Assertion from its input-port to its output-port, there is no
+forwarding any assertion from its input-port to its output-port, there is no
 insecure behavior but only the combination of the weaknesses of the input and
 output port; therefore there exists $(7^2)-2=47$ theoretical configurations
 ($7^2$ because there are $6$ insecure types of port, plus $1$ secure type, on
@@ -1411,9 +1417,9 @@ over all the possible cases is straightforward.
 	\item \emph{output injection port} and \emph{input secure port}
 \end{enumerate}
 
-\paragraph{Security Weaknesses} 
+\paragraph{Security Weaknesses -- The RIDI-Hypothesis} 
 It is important to note that all the results of the application of the
-$\abf$-theory to channels (the analysis of the relation
+$\abf$-framework to channels (the analysis of the relation
 $\Rcc{\assertionRegion_o}{\assertionRegion_i}$) lead to the same results of the
 analysis of a pair of an input and output port (i.e.
 $\Rcc{\beliefRegion_1}{\assertionRegion_2}$ and
@@ -1422,34 +1428,35 @@ by analyzing the relation between the outputs of a functional block and the
 inputs of another functional block ($\Rcc{\beliefRegion_o}{\beliefRegion_i}$), 
 where functional blocks are constituents of
 the functional architecture as described afterwards.  As depicted in
-Figure~\ref{fig:atom}, so far, we have considered Information generated by a
-Port $P_I$ and then sent through a channel $C$ to another (recipient) port
-$P_O$. In this scenario where Ports and then Channels are atomic (otherwise
-raising infinite regress), we can only  consider the relations between Ports
-and Channel; considering both input-port to channel and channel to output-port.
+Figure~\ref{fig:atom}, so far we have considered information generated by a
+port $P_I$ and then sent through a channel $C$ to another (recipient) port
+$P_O$. In this scenario where ports and then channels are atomic (otherwise
+raising infinite regress), we can only  consider the relations between ports
+and channel; considering both input-port to channel and channel to output-port.
 In fact, the Weaknesses of a channel are defined in terms of the Weaknesses of
-Ports. We now introduce the concept of functional architecture and its
-decomposition into functional blocks.  Io order to define a functional block
+ports.  Io order to define a functional block
 without encountering a infinitely recursive definition, we must reach the same
-conclusions as for the Channel. Therefore, describing the information as
+conclusions as for the channel. Therefore, describing the information as
 flowing over a channel or in a functional block is purely syntactic sugar.
 
-We can summarize these results by saying that the relations between Assertions
-and Beliefs, Output Assertions of an Agent and Input Assertions of another
-Agent, or Output Beliefs of a Functional Block and Input Beliefs of another
-Block can \emph{only} be affected by the following weaknesses: replace, drop,
-injection, insertion, selective drop, and selective drop + insertion.  We can,
+We can summarize these results by saying that the relations between assertions
+and beliefs, Output assertions of an agent and Input assertions of another
+agent, or Output beliefs of a functional block and Input beliefs of another
+block can \emph{only} be affected by the following weaknesses: replace, drop,
+injection, insertion, selective drop, and selective drop + insertion. 
+We call this the RIDI-Hypothesis, being the
+four main categories of weakness: Replace, Insertion, Drop, Injection. We can,
 then, deduce the following security properties to mitigate security weaknesses
 of a port or a channel (between ports, functional blocks, or both).
 \begin{itemize}
-	\item \emph{Order-preserving} -- it shall be known if Information is \emph{replaced}
-	\item \emph{Availability} -- it shall be known if Information is \emph{dropped} or \emph{selectively dropped}
-	\item \emph{Integrity} -- it shall be known if Information is \emph{injected}
-	\item \emph{Authentication} -- it shall be known if Information is \emph{inserted}
+	\item \emph{Order-preserving} -- it shall be known if information is \emph{replaced}
+	\item \emph{Availability} -- it shall be known if information is \emph{dropped} or \emph{selectively dropped}
+	\item \emph{Integrity} -- it shall be known if information is \emph{injected}
+	\item \emph{Authentication} -- it shall be known if information is \emph{inserted}
 \end{itemize}
 %We can also generalize the weaknesses related to the data flow (i.e. the flow
-%of Information as Assertions or Beliefs) as the relation between output-input
-%Beliefs between functional blocks, output-input Assertions of a channel,
+%of information as assertions or beliefs) as the relation between output-input
+%beliefs between functional blocks, output-input assertions of a channel,
 %inputs-outputs of a port, as follows.
 %\begin{itemize}
 %	\item \emph{equal}, expected nominal behavior
@@ -1469,17 +1476,17 @@ of a port or a channel (between ports, functional blocks, or both).
 \end{figure}
 
 \paragraph{Functional Architecture}
-A Functional Architecture takes Information as input-Beliefs and transforms the
-Information into output-Beliefs. Those transformations occurs within the
-Functional Architecture, where Functional Blocks transforms Beliefs into other
-Beliefs. Similarly to channels, we could consider a Functional Block as a
-Functional Architecture occurring in an infinite regress. Therefore, we
-consider Functional Blocks as executing an abstract undefined behavior, of
-which we only observe the inputs and the resulting outputs (Beliefs).
+A functional architecture takes information as input-beliefs and transforms the
+information into output-beliefs. Those transformations occurs within the
+functional architecture, where functional blocks transforms beliefs into other
+beliefs. Similarly to channels, we could consider a functional block as a
+functional architecture occurring in an infinite regress. Therefore, we
+consider functional blocks as executing an abstract undefined behavior, of
+which we only observe the inputs and the resulting outputs (beliefs).
 
 \begin{definition}{\bf Functional Block and Architecture --}\label{def:funblock}
 	A functional block of an agent 
-	takes a region of input-Beliefs and outputs a region of output-Beliefs. 
+	takes a region of input-beliefs and outputs a region of output-beliefs. 
 	A functional architecture is an interconnected system of functional blocks.
 \end{definition}
 It is evident that the quality of a functional block cannot be determined
@@ -1488,8 +1495,8 @@ ports and channels). The behavior of a functional block
 cannot be determined in general; since any functional block will have 
 its own purpose based on functional requirements. 
 Therefore, while a port semantics is determined by the relation 
-between Assertions and Beliefs, the semantics of a Functional Block 
-is determined by the relation between Facts/Requirements and I/O Beliefs.
+between assertions and beliefs, the semantics of a functional block 
+is determined by the relation between facts/requirements and I/O beliefs.
 
 In other words, a functional block is a generic agent with no pre-defined general
 behavior (while ports and channels have a pre-defined behavior).
@@ -1513,16 +1520,16 @@ behavior (while ports and channels have a pre-defined behavior).
 
 \paragraph{Requirements as Facts}
 During the specification phase, for any agent, channel, port, functional block
-and architecture, there may exist a factorial requirement (Fact) predicating over them.
-In other words, any requirement is defined as a Fact since they must be true in
+and architecture, there may exist a factorial requirement (fact) predicating over them.
+In other words, any requirement is defined as a fact since they must be true in
 any design or implementation. As we stated in Section~\ref{sec:theory} and depicted in
-Figure~\ref{fig:soundness}, Facts are strategic rules that defines how
+Figure~\ref{fig:soundness}, facts are strategic rules that defines how
 the system shall behave (by specification), while reality may be shown to
 be insecure.
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.4\columnwidth]{sum.pdf}
+	\includegraphics[width=0.3\columnwidth]{sum.pdf}
 	\caption{Example of a Functional Block}
 	\label{fig:sum}
 \end{figure}
@@ -1531,7 +1538,7 @@ As an example, consider a functional block that performs the summation of two
 inputs, as in Figure~\ref{fig:sum}, defined by the requirement $r := b_3 = b_1
 + b_2$. The possible relations between the behavior of the functional block and
 the requirements (i.e. $\Rcc{\beliefRegion}{\factRegion}$ is determined by
-the relations between the I/O Beliefs $sum(b_1,b_2)=b_3$ and the requirement
+the relations between the I/O beliefs $sum(b_1,b_2)=b_3$ and the requirement
 $sum(b_1,b_2)=b_1+b_2$, as follows.
 \begin{itemize}
 	\item $\eq{\beliefRegion}{\factRegion}=\eq{\beliefRegion_3}{\beliefRegion_1+\beliefRegion_2}$, 
@@ -1557,15 +1564,35 @@ $sum(b_1,b_2)=b_1+b_2$, as follows.
 \end{itemize}
 
 \paragraph{Assertions and Facts}
-The whole reasoning on the relation between Beliefs and Facts can be duplicated
-for the relation between Assertions and Facts; we cannot appreciate the
+The whole reasoning on the relation between beliefs and facts can be duplicated
+for the relation between assertions and facts; we cannot appreciate the
 difference at this level of abstraction.  If the functional architecture would
 be extended to capture the semantics (i.e. the logic) of the communication and
-security protocols, with the relation between Assertions and Facts we would
-compare protocol logics with the requirements. We consider the verification of
-the functional architecture and protocol logic in subsequent steps of the
-engineering process (as we describe in Section~\ref{sec:discussion}).
-Therefore, we can summarize our results by categorizing the weaknesses
+security protocols, with the relation between assertions and facts we would
+compare protocol logics with the requirements. We won't consider the verification of
+the functional architecture and protocol logic in this paper since we
+focus on the architecture specification step of the engineering process
+without going into the design of the behavior of agents. We can give an example
+but research is needed to apply our theory
+to the behavior of agents. 
+
+If we consider a functional block that generates nonces (i.e. number used
+only once), the semantics of this block must define a procedure such that 
+a freshness requirement holds. By the RIDI-Hypothesis we have that
+the following weaknesses may occur:
+\begin{itemize}
+	\item Replace: the output-nonces of the block are replaced with
+		non-fresh numbers
+	\item Insert: the output-nonces are concatenated with other numbers,
+		resulting in non-fresh nonces. For example, the nonces 110 and
+		111 are modified by inserting a 1 and a 0 at the beginning and
+		end respectively, resulting in the two identical (and the
+		non-fresh) nonces 1110 and 1110
+	\item Delete: part of output-nonce is dropped. For example, the last bit of 1101 and 1100 is dropped, resulting in the two equal and non-fresh nonces: 110 and 110.
+	\item Inject: substitution at bit level results in non-fresh nonces. For example, 110 becomes 111 becomes equal by flipping either the last 0 of the former nonce or the last 1 of the latter.
+\end{itemize}
+
+We summarize our results by categorizing the weaknesses
 predicted by our theory into: data-flow-related and functionality-related
 weaknesses; as in Table~\ref{tab:weaknesses}.
 \begin{table*}[t]
@@ -1588,7 +1615,7 @@ weaknesses; as in Table~\ref{tab:weaknesses}.
 	A system security design is given by a precise system 
 	specification over the physical and functional architectures, that
 	uniquely, i.e.  tested against the range of design possible in the
-	$\abftheory$-theory, defines the design built on top of those
+	$\abftheory$-framework, defines the design built on top of those
 	requirements.
 \end{hypothesis}
 
@@ -1623,7 +1650,7 @@ Class diagram in Figure~\ref{fig:secraclassdiagram} (in appendix).
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{v-secra.pdf}
+	\includegraphics[width=.9\columnwidth]{v-secra.pdf}
 	\caption{Security Risk Assessment Tool}
 	\label{fig:secra}
 \end{figure}
@@ -1634,12 +1661,12 @@ translated into a UML design where:
 \begin{itemize}
 	\item a \emph{Deployment Diagram} describes the \emph{Physical
 		Architecture}. Each agent is defined as a Node with (physical)
-		Ports, and Agent's ports are connected via Information Flow
+		ports, and agent's ports are connected via information Flow
 		connectors, representing the physical channel.
 	\item a \emph{Functional Architecture} is linked to each agent in the
 		deployment diagram and is defined by an \emph{Object Diagram}.
-		The Object Diagram is composed by Instances of Functional
-		Blocks, connected via Information Flow connectors.
+		The Object Diagram is composed by Instances of functional
+		blocks, connected via information Flow connectors.
 	\item the connection between the two diagrams is implemented by
 		``sockets'', functional blocks connected to a 
 		physical port.
@@ -1650,7 +1677,7 @@ the specification (called ABF graph). The ABF graph defines the system as
 a number of regions of assertions, beliefs, and facts. Those regions
 are connected by a generic relation which is evaluated as follows.
 The graph is translated into 
-a logical formula that represents the specification in the $\abftheory$-theory and,
+a logical formula that represents the specification in the $\abftheory$-framework and,
 along with the axiomatization of the RCC5 calculus, is given as input to the Z3 SMT solver.
 The solver identifies all possible configurations of the system and, in turn,
 to identify all potential weaknesses. 
@@ -1668,7 +1695,7 @@ specification but are automatically extracted by our tool as potential weaknesse
 Those weaknesses are related to the different insecure configurations 
 of the specified system. 
 
-The risk matrix is often defined as a function between 
+The risk matrix is often defined as a function of 
 likelihood and impact of attacks. We suggest
 that security weaknesses are all equally likely to be exploited
 if there's a connection between the weakness and the asset that
@@ -1686,12 +1713,12 @@ As in Figure~\ref{fig:eng_cs1}, we defined 2 agents: sensorInTank and sensorBoar
 which represent the physical reader that needs to be placed in a tank of water, and 
 the board that interprets the readings and outputs them as digital signals.
 The two components are connected by a wire.
-\begin{figure*}
+\begin{figure}
 	\centering
-	\includegraphics[width=.6\textwidth]{internal_cs1.png}
+	\includegraphics[width=.9\columnwidth]{internal_cs1.png}
 	\caption{Sensor Board Object Diagram}
 	\label{fig:int_cs1}
-\end{figure*}
+\end{figure}
 In Figure~\ref{fig:int_cs1} we report the functional architecture that
 receives the incoming communications from the sensor in the tank, and 
 communicates them encrypted.
@@ -1704,51 +1731,51 @@ communicates them encrypted.
 The results, summarized in Figure~\ref{fig:results} reports more than 16 millions
 possible scenarios in which at least one component diverge from the specification.
 
-\section{Discussions}\label{sec:discussion}
-\paragraph{Abstraction Level}
-The level of abstraction is always a concern when it comes to the definition of
-a system model.  In this paper, we justified our assumptions on the atomicity
-of ports, channels, and functional blocks but nothing prevents a modeler to
-consider other atomic element of the system specification and design.  Those
-additional elements may detail the system and may change the syntactic sugar we
-defined; however, it won't change the underlying (semantic) reasoning unless
-another calculus is used (instead of RCC).  Furthermore, other Infosec
-properties may be considered, such as authenticity or non-repudiation. We,
-however, leave them as future development.
-
-\paragraph{$\abftheory$ Falsification} The theory we developed can be falsified
-by providing an experiment that shows a weaknesses not predicted by the
-$\abftheory$-theory, or by showing that the weaknesses predicted for a certain
-experiment are impossible to realize.  This theory, however, needs to be
-detailed to be applicable to a full engineering process (we only cover the
-first steps).  We propose the following complete process as a draft for
-potential next steps in this direction.
-\begin{enumerate}
-\item System Specification
-\item Architecture Design
-\item Security Risk Assessment and Security Requirement Extraction
-\item Design Refinement, where the semantics of the functional behavior and
-	communication protocols are defined 
-\item Security Requirement Extension, based on the design refinement
-\item Verification of Security Requirements (data flow, behaviors, \& protocol
-	logic)
-\item Software Prototype Implementation/Synthesis
-\item Automated Security Testing (abstract test-suite generation \&
-	concretization)
-\item Hardware Prototype Implementation
-\item Automated Security Testing
-\item Penetration Testing
-  \end{enumerate}
-
-\paragraph{Relation with DY}
-The DY attacker model has been extensively
-used for the identification of logical weaknesses in security protocols.
-Our theory should predict all possible weaknesses which, in turn,
-should enable all the attacks identified by the DY model. 
-A proof that the two theories/models correctly predicts
-(or lacks in predicting) weaknesses and related protocol flaws would
-connect risk assessment and protocol verification, the first
-two steps of the secure engineering of systems.
+%\section{Discussions}\label{sec:discussion}
+%\paragraph{Abstraction Level}
+%The level of abstraction is always a concern when it comes to the definition of
+%a system model.  In this paper, we justified our assumptions on the atomicity
+%of ports, channels, and functional blocks but nothing prevents a modeler to
+%consider other atomic element of the system specification and design.  Those
+%additional elements may detail the system and may change the syntactic sugar we
+%defined; however, it won't change the underlying (semantic) reasoning unless
+%another calculus is used (instead of RCC).  Furthermore, other Infosec
+%properties may be considered, such as authenticity or non-repudiation. We,
+%however, leave them as future development.
+%
+%\paragraph{$\abftheory$ Falsification} The theory we developed can be falsified
+%by providing an experiment that shows a weaknesses not predicted by the
+%$\abftheory$-framework, or by showing that the weaknesses predicted for a certain
+%experiment are impossible to realize.  This theory, however, needs to be
+%detailed to be applicable to a full engineering process (we only cover the
+%first steps).  We propose the following complete process as a draft for
+%potential next steps in this direction.
+%\begin{enumerate}
+%\item System Specification
+%\item Architecture Design
+%\item Security Risk Assessment and Security Requirement Extraction
+%\item Design Refinement, where the semantics of the functional behavior and
+%	communication protocols are defined 
+%\item Security Requirement Extension, based on the design refinement
+%\item Verification of Security Requirements (data flow, behaviors, \& protocol
+%	logic)
+%\item Software Prototype Implementation/Synthesis
+%\item Automated Security Testing (abstract test-suite generation \&
+%	concretization)
+%\item Hardware Prototype Implementation
+%\item Automated Security Testing
+%\item Penetration Testing
+%  \end{enumerate}
+%
+%\paragraph{Relation with DY}
+%The DY attacker model has been extensively
+%used for the identification of logical weaknesses in security protocols.
+%Our theory should predict all possible weaknesses which, in turn,
+%should enable all the attacks identified by the DY model. 
+%A proof that the two theories/models correctly predicts
+%(or lacks in predicting) weaknesses and related protocol flaws would
+%connect risk assessment and protocol verification, the first
+%two steps of the secure engineering of systems.
 
 \section{Conclusion and Future Works}
 We proposed a foundational theory on security, arguing that
@@ -1764,20 +1791,20 @@ The security verification and test-case generation will be the focus of our next
 We conclude that the problem of security is a problem related to the 
 many possible design and, in turn, implementation given a specification.
 The problem is correlated to the epistemological search for truth,
-where the challenge is to relate Information and Belief to Human Knowledge.
-Scientifically, generalizing the Human to an Agent, the problem is
-to relate Assertions and Behaviors, to Facts. From an engineering standpoint,
-by generalizing the concept of Agents as architectural subsystems, the
-problem is to link Channels (and Ports) and Functional Architectures to 
-Requirements.
+where the challenge is to relate information and belief to human knowledge.
+Scientifically, generalizing the human to an agent, the problem is
+to relate assertions and beliefs, to facts. From an engineering standpoint,
+by generalizing the concept of agents as architectural subsystems, the
+problem is to link channels (and ports) and functional architectures to 
+requirements.
 
 \section*{Acknowledgment}
 We thank Katia Santac\`a for the help in the development of the initial ideas, and for
 the helpful discussions that allowed us to make this step forward.
 
 \appendix
-%\section{Engineering $\abftheory$-theory}
-The Class Diagram for the Engineering of the $\abftheory$-theory is reported in
+%\section{Engineering $\abftheory$-framework}
+The Class Diagram for the Engineering of the $\abftheory$-framework is reported in
 Figure~\ref{fig:secraclassdiagram}. A \emph{specification} of a CPS is viewed
 as an aggregation of \emph{architectures} which can describe the functional or
 physical requirements. The physical components of the architecture are
