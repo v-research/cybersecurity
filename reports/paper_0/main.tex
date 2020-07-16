@@ -732,7 +732,7 @@ information is impossible''. However, a detailed formalization of those concepts
 of the scope of this paper. 
 
 We now define them abstractly, inspired by the
-ABF-theory  defined in \autocite{Santaca2016abf} and, in
+$\abf$-framework  defined in \autocite{Santaca2016abf} and, in
 Section~\ref{sec:theory} we detail them as engineering concepts.
 \begin{enumerate}
 	\item We consider Information only when the intention of exchanging 
@@ -902,7 +902,6 @@ implement or diverge from the intended nominal behavior. We note
 that, the numbers reported here do not consider the details of the
 engineering process and should be considered a limit of an abstract 
 representation of the system.
-\fixnote{mv}{In Fig. 5 e 6, i simboli A, B e F hanno un font diverso dal solito}
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\columnwidth]{quantitative.pdf}
@@ -1126,11 +1125,10 @@ requirement for a CPS specification can be summarized:
 			agent $a$ shall be the outputs of the functional
 			architecture.
 	\end{enumerate}
-\item[SE-$2$]\fixnote{mv}{Are agents missing in the notation A,B,F for SE-2 and SE-3?}
-	Sufficient Control Flow Management  is defined as
-		$\eq{\assertionRegion}{\factRegion}$.
-	\item[SE-$3$] Correct Calculation  is defined as
-		$\eq{\beliefRegion}{\factRegion}$.
+\item[SE-$2$] The proper adherence of the data transmitted between agents with respect to
+	requirements, is defined as $\eq{\assertionRegion}{\factRegion}$. 
+	\item[SE-$3$] The proper adherence of the behavior with respect to
+		requirements is defined as $\eq{\beliefRegion}{\factRegion}$.
 \end{enumerate}
 
 We note that our SE define the properties of a secure system, and correlated
@@ -1145,9 +1143,8 @@ have a direct counterpart in our theory; we believe they can be sees as sub-clas
 but a full comparison with the CWE is out of the scope of this article.
 
 We are now in the position to define what a secure system is (with respect to
-the $\abf$-theory) and, based on that definition, what the security risk is and
-how to quantify it in a risk matrix (where a risk matrix is usually defined as
-a function of the likelihood and the impact of all potential attacks).
+the $\abf$-framework) and, based on that definition, what the security risk is and
+how to quantify it in a risk matrix.
 \begin{definition}{\bf Security of a System or an Agent --}\label{def:security}
 	A secure system is a system where SE-$1$, SE-$2$, and SE-$3$ holds for
 	each agent composing the system.
@@ -1157,7 +1154,7 @@ refers both to positive and negative consequences of uncertainty.
 Accordingly, we consider risk as follows. 
 \begin{definition}{\bf Risk --}
 A risk is the whole space of potential designs of a specification with respect to the
-	$\abf$-theory.
+	$\abf$-framework.
 \end{definition}
 The definition of Risk leads to the risk matrix in
 Figure~\ref{fig:quantitative}, defined as follows.
@@ -1170,8 +1167,10 @@ Figure~\ref{fig:quantitative}, defined as follows.
 	possible intermediate configuration is defined by the calculus used
 	(RCC5 in our case).
 \end{definition}
-While a risk matrix is often defined as a function of 
-likelihood and impact of attacks, we suggest
+While a risk matrix is often defined as a function of the 
+likelihood and impact of attacks (based on quantitative ad-hoc estimation
+of how likely it is that an attacker will exploit one or more vulnerabilities
+and what is the magnitude of the incidents produced by this exploitation), we suggest
 that security weaknesses are all equally likely to be exploited
 if there's a connection between the weakness and the asset that
 an attacker wants to impact. Therefore, a risk matrix should
@@ -1199,9 +1198,8 @@ example,
 		decommissioning''
 \end{enumerate}
 However, standards do not describe in detail how to perform a security risk 
-assessment and only vaguely define the overall objective. The overall
-objective of this first step of the cybersecurity engineering process
-is to provide an understanding of the potential security risks.
+assessment and only vaguely define the overall objective, which
+can be summarized as to provide an understanding of the potential security risks.
 Roughly speaking, a security risk assessment (e.g. CORAS\autocite{Lund2010model}) 
 methodology starts from the (i) identification of assets, (ii) determines
 the threat scenarios (correlating vulnerabilities, threats and incidents) e.g. 
@@ -1259,7 +1257,7 @@ As depicted in Figure~\ref{fig:mashyp}, we relate MAS and CPS as follows.
 	\caption{Input and Output Port of an agent}
 	\label{fig:ioports}
 \end{figure}
-Since the $\abf$-theory is a theory of agents, we could consider ports as
+Since the $\abf$-framework is a theory of agents, we could consider ports as
 agents that allows the exchange of information between a channel and another
 agent.  However, we considered a port as a special type of agent that to avoid
 an \emph{infinite regress} in which a port needs a port to transfer information
@@ -1281,7 +1279,7 @@ relation between Assertions and Beliefs. We only define secure input port
 but the definition of a secure output port is symmetrical.
 
 \begin{definition}{\bf Secure Input Port --}\label{def:secport}
-	A secure input port ($s\secureport a$) always allow information as
+	A secure input port always allow information as
 	incoming assertions to flow from a sender $s$ to the behavior of the
 	recipient $a$ (agent).  
 	%If $p_I$ is a secure input port,
@@ -1317,7 +1315,7 @@ notation is reported for input-ports, i.e. on the left-hand side of the arrow):
 \end{theorem}
 
 \begin{proof}
-An input port is, in the $\abf$-theory, defined secure as long as the relation
+An input port is, in the $\abf$-framework, defined secure as long as the relation
 	between the two regions of input assertions $\assertionRegion$ and
 	output beliefs $\beliefRegion$ are equal, i.e.
 	$\eq{\assertionRegion}{\beliefRegion}$. Therefore, any other relation
@@ -1372,7 +1370,7 @@ the channel).
 
 We start by considering the difference between a (communication)
 mono-directional channel (channel from now on) and an agent, as we did for the
-ports, since the $\abf$-theory is a theory of agents.  In fact, if a channel
+ports, since the $\abf$-framework is a theory of agents.  In fact, if a channel
 were considered an agent (channel-agent) then the question would be how an
 agent would transfer its Assertions to the channel-agent. If the channel
 between the agent and the channel-agent is again an agent, we would generate an
@@ -1416,9 +1414,9 @@ over all the possible cases is straightforward.
 	\item \emph{output injection port} and \emph{input secure port}
 \end{enumerate}
 
-\paragraph{Security Weaknesses} 
+\paragraph{Security Weaknesses -- The RIDI-Hypothesis} 
 It is important to note that all the results of the application of the
-$\abf$-theory to channels (the analysis of the relation
+$\abf$-framework to channels (the analysis of the relation
 $\Rcc{\assertionRegion_o}{\assertionRegion_i}$) lead to the same results of the
 analysis of a pair of an input and output port (i.e.
 $\Rcc{\beliefRegion_1}{\assertionRegion_2}$ and
@@ -1427,14 +1425,13 @@ by analyzing the relation between the outputs of a functional block and the
 inputs of another functional block ($\Rcc{\beliefRegion_o}{\beliefRegion_i}$), 
 where functional blocks are constituents of
 the functional architecture as described afterwards.  As depicted in
-Figure~\ref{fig:atom}, so far, we have considered Information generated by a
+Figure~\ref{fig:atom}, so far we have considered Information generated by a
 Port $P_I$ and then sent through a channel $C$ to another (recipient) port
 $P_O$. In this scenario where Ports and then Channels are atomic (otherwise
 raising infinite regress), we can only  consider the relations between Ports
 and Channel; considering both input-port to channel and channel to output-port.
 In fact, the Weaknesses of a channel are defined in terms of the Weaknesses of
-Ports. We now introduce the concept of functional architecture and its
-decomposition into functional blocks.  Io order to define a functional block
+Ports.  Io order to define a functional block
 without encountering a infinitely recursive definition, we must reach the same
 conclusions as for the Channel. Therefore, describing the information as
 flowing over a channel or in a functional block is purely syntactic sugar.
@@ -1443,7 +1440,9 @@ We can summarize these results by saying that the relations between Assertions
 and Beliefs, Output Assertions of an Agent and Input Assertions of another
 Agent, or Output Beliefs of a Functional Block and Input Beliefs of another
 Block can \emph{only} be affected by the following weaknesses: replace, drop,
-injection, insertion, selective drop, and selective drop + insertion.  We can,
+injection, insertion, selective drop, and selective drop + insertion. 
+We call this the RIDI-Hypothesis, being the
+four main categories of weaknesse: Replace, Insertion, Drop, Injection. We can,
 then, deduce the following security properties to mitigate security weaknesses
 of a port or a channel (between ports, functional blocks, or both).
 \begin{itemize}
@@ -1567,10 +1566,30 @@ for the relation between Assertions and Facts; we cannot appreciate the
 difference at this level of abstraction.  If the functional architecture would
 be extended to capture the semantics (i.e. the logic) of the communication and
 security protocols, with the relation between Assertions and Facts we would
-compare protocol logics with the requirements. We consider the verification of
-the functional architecture and protocol logic in subsequent steps of the
-engineering process (as we describe in Section~\ref{sec:discussion}).
-Therefore, we can summarize our results by categorizing the weaknesses
+compare protocol logics with the requirements. We won't consider the verification of
+the functional architecture and protocol logic in this paper since we
+focus on the architecture specification step of the engineering process
+without going into the design of the behavior of agents. We can give an example
+but research is needed to apply our theory
+to the behavior of agents. 
+
+If we consider a functional block that generates nonces (i.e. number used
+only once), the semantics of this block must define a procedure such that 
+a freshness requirement holds. By the RIDI-Hypothesis we have that
+the following weaknesses may occur:
+\begin{itemize}
+	\item Replace: the output-nonces of the block are replaced with
+		non-fresh numbers
+	\item Insert: the output-nonces are concatenated with other numbers,
+		resulting in non-fresh nonces. For example, the nonces 110 and
+		111 are modified by inserting a 1 and a 0 at the beginning and
+		end respectively, resulting in the two identical (and the
+		non-fresh) nonces 1110 and 1110
+	\item Delete: part of output-nonce is dropped. For example, the last bit of 1101 and 1100 is dropped, resulting in the two equal and non-fresh nonces: 110 and 110.
+	\item Inject: substitution at bit level results in non-fresh nonces. For example, 110 becomes 111 becomes equal by flipping either the last 0 of the former nonce or the last 1 of the latter.
+\end{itemize}
+
+We summarize our results by categorizing the weaknesses
 predicted by our theory into: data-flow-related and functionality-related
 weaknesses; as in Table~\ref{tab:weaknesses}.
 \begin{table*}[t]
@@ -1593,7 +1612,7 @@ weaknesses; as in Table~\ref{tab:weaknesses}.
 	A system security design is given by a precise system 
 	specification over the physical and functional architectures, that
 	uniquely, i.e.  tested against the range of design possible in the
-	$\abftheory$-theory, defines the design built on top of those
+	$\abftheory$-framework, defines the design built on top of those
 	requirements.
 \end{hypothesis}
 
@@ -1655,7 +1674,7 @@ the specification (called ABF graph). The ABF graph defines the system as
 a number of regions of assertions, beliefs, and facts. Those regions
 are connected by a generic relation which is evaluated as follows.
 The graph is translated into 
-a logical formula that represents the specification in the $\abftheory$-theory and,
+a logical formula that represents the specification in the $\abftheory$-framework and,
 along with the axiomatization of the RCC5 calculus, is given as input to the Z3 SMT solver.
 The solver identifies all possible configurations of the system and, in turn,
 to identify all potential weaknesses. 
@@ -1723,7 +1742,7 @@ possible scenarios in which at least one component diverge from the specificatio
 %
 %\paragraph{$\abftheory$ Falsification} The theory we developed can be falsified
 %by providing an experiment that shows a weaknesses not predicted by the
-%$\abftheory$-theory, or by showing that the weaknesses predicted for a certain
+%$\abftheory$-framework, or by showing that the weaknesses predicted for a certain
 %experiment are impossible to realize.  This theory, however, needs to be
 %detailed to be applicable to a full engineering process (we only cover the
 %first steps).  We propose the following complete process as a draft for
@@ -1781,8 +1800,8 @@ We thank Katia Santac\`a for the help in the development of the initial ideas, a
 the helpful discussions that allowed us to make this step forward.
 
 \appendix
-%\section{Engineering $\abftheory$-theory}
-The Class Diagram for the Engineering of the $\abftheory$-theory is reported in
+%\section{Engineering $\abftheory$-framework}
+The Class Diagram for the Engineering of the $\abftheory$-framework is reported in
 Figure~\ref{fig:secraclassdiagram}. A \emph{specification} of a CPS is viewed
 as an aggregation of \emph{architectures} which can describe the functional or
 physical requirements. The physical components of the architecture are
