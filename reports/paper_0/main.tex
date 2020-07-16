@@ -662,10 +662,11 @@ a composition of interacting elements). A hierarchy of sub-systems
 can be limited by a ``bottom-subsystem'' often called device (or element in the
 aforementioned definition) which is not itself composed by 
 other elements but is considered atomic.         
-For the sake of simplicity we first define a
+For the sake of simplicity, we consider a device as a system with only one element.
+We then first define a
 system as composed by a single element and then extend the definition to a ``combination of
 interacting'' elements. Given that we use concepts from the multi-agent system
-research field, instead of using the word element we use agent.
+research field, instead of using the word element we will use the word agent.
 
 There is no agreement between the research communities (e.g.
 Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent
@@ -693,7 +694,9 @@ in \autocite{Empiricus1990Pyrrhonism}, the author states: ``The
 		tuple of Assertions, Beliefs, and Facts.
 \end{itemize}
 For our argument, as in \autocite{Santaca2016abf}, an agent is composed by its
-knowledge, beliefs, and the information or assertions it provides; where
+knowledge, beliefs, and the information or assertions\fixnote{mv}{
+In generale, farei attenzione a uniformare upper/lower case per assertion, behavior, beliefs, ecc.
+} it provides; where
 knowledge is defined, as in \autocite{Steup2020epistemology}, as a set of
 proposition known by an agent, such that: (i) knowledge requires belief, (ii)
 knowledge require truth, (iii) knowledge must be \emph{properly justified}, and
@@ -778,7 +781,7 @@ from the behavior block are then translated back into (outgoing) assertions.
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=.9\columnwidth]{system-agent.pdf}
-	\caption{Example of system and agent structure}
+	\caption{xample of system and agent structure}
 	\label{fig:system-agent}
 \end{figure}
 
@@ -899,6 +902,7 @@ implement or diverge from the intended nominal behavior. We note
 that, the numbers reported here do not consider the details of the
 engineering process and should be considered a limit of an abstract 
 representation of the system.
+\fixnote{mv}{In Fig. 5 e 6, i simboli A, B e F hanno un font diverso dal solito}
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\columnwidth]{quantitative.pdf}
@@ -907,9 +911,9 @@ representation of the system.
 \end{figure}
 
 \subsection{Qualitative Evaluation of Agent Space in $\abf$}\label{sec:agentspace}
-\begin{table*}[t]
+\begin{table}[t]
 \centering
-\begin{adjustbox}{width=.6\textwidth}
+\begin{adjustbox}{width=\columnwidth}
 \begin{tabular}{r||c|c|c|c|c} 
 & \dr{$\assertionRegion$}{$\beliefRegion$} & 
 	\po{$\assertionRegion$}{$\beliefRegion$}& 
@@ -929,11 +933,11 @@ representation of the system.
 	\cellcolor{abf-rg-2}\dr{$\assertionRegion$}{$\factRegion$} & %pp
 	\cellcolor{abf-rg-3}\po{$\assertionRegion$}{$\factRegion$} & %ppi
 	\cellcolor{abf-rg-4}\dr{$\assertionRegion$}{$\factRegion$}\\ % e q
- & \cellcolor{abfred}& %dr
-	\cellcolor{abf-rg-1}\pp{$\assertionRegion$}{$\factRegion$} & %po
-	\cellcolor{abf-rg-2}  & %pp
-	\cellcolor{abf-rg-3}\pp{$\assertionRegion$}{$\factRegion$} & %ppi
-	\cellcolor{abf-rg-4} \\ %eq
+% & \cellcolor{abfred}& %dr
+%	\cellcolor{abf-rg-1}& %\pp{$\assertionRegion$}{$\factRegion$} & %po
+%	\cellcolor{abf-rg-2}  & %pp
+%	\cellcolor{abf-rg-3} & %\pp{$\assertionRegion$}{$\factRegion$} & %ppi
+%	\cellcolor{abf-rg-4} \\ %eq
 \hline %po
  \multirow{3}{*}{\po{$\beliefRegion$}{$\factRegion$}} &
 	\cellcolor{abf-rg-1}\dr{$\assertionRegion$}{$\factRegion$} & %dr
@@ -1005,18 +1009,20 @@ exist 54 possible relations and the coloring anticipates the ideal risk matrix
 of medium risk states). 
 \all{$\assertionRegion$}{$\factRegion$} = \{\dr{$\assertionRegion$}{$\factRegion$}, \po{$\assertionRegion$}{$\factRegion$}, \pp{$\assertionRegion$}{$\factRegion$}, \ppi{$\assertionRegion$}{$\factRegion$}, \eq{$\assertionRegion$}{$\factRegion$}\}
 \label{tab:5com}}
-\end{table*}
+\end{table}
 While a quantitative analysis reveals how many possible configurations of an
 agent (i.e. a system) exist w.r.t. the $\abf$ theory (i.e. $54/125$ in RCC5), a
-qualitative analysis of the different configurations describes the
+qualitative analysis of the different configurations describe the
 configurations allowed by the $\abf$ theory, and how those configurations can
 be categorized.  In Table~\ref{tab:5com}, we provide the generic composition
 table of RCC5 over 3 regions instantiated over $\abf$, which shows the whole
 state space for a single agent. The color coding of the table represents the
-security risk related to a generic agent. 
+security risk related to a generic agent, the risk is highest on the top left
+corner of the matrix, lowest on the bottom right corner. 
 
 As depicted in Figure~\ref{fig:soundness}, the relation between Facts, and
-Assertions and Behavior defines the soundness of the design (admissible
+Assertions and Behavior\fixnote{mv}{io ho inteso A B e F come Assertions, Beliefs e Facts, rispettivamente; di tanto in tanto tornate a usare il termine Behavior e questo secondo me confonde} 
+defines the soundness of the design (admissible
 configurations of Assertions, Behaviors and, in turn, Beliefs) w.r.t. the
 specification (what the specification mandates, such as by the nature of the
 physical/functional architectural models). We categorize agents by first
@@ -1024,7 +1030,8 @@ analyzing the relations between each pair of Regions defining an agent (i.e.
 $\abf$), and then we categorize the different agents as tuple of the three
 Regions.  For the sake of simplicity, soundness is opposed to non-soundness in
 the following, however, with the RCC one should consider different ``degrees''
-of non-soundness. For example, in RCC5, if we consider EQ between two Regions
+of non-soundness\fixnote{mv}{In particolare, spiegherei meglio Fig. 6 e il discorso della soundness}. 
+For example, in RCC5, if we consider EQ between two Regions
 as representing soundness, DR over the same Regions represents non-soundness;
 while PP, PO, PPi represents the different degrees of non-soundness.  A similar
 argument can be done for completeness.  
@@ -1074,10 +1081,6 @@ Time\autocite{Mctaggart1908unreality}}:
 
 \paragraph{\Rcc{$\assertionRegion$}{$\factRegion$} and
 \Rcc{$\beliefRegion$}{$\factRegion$} -- Honesty and Competence} 
-%While
-%Assertions and Beliefs generated by the Behavior determines how a system should
-%work, and the relation between the two defines the quality (i.e. the
-%completeness w.r.t the specification) of the agent, 
 The relation of Assertions
 and Behavior with Facts determines the quality with respect to the nominal
 (specified) system.  Given that Facts defines what needs to be true in the system,
@@ -1099,14 +1102,10 @@ agent is true).
 \subsubsection{$\abf$ Security Enumeration (SE)} The following security
 requirement for a CPS specification can be summarized:
 \begin{enumerate}
-	\item[SE-$1$] Proper interaction between correctly-behaving agents (in
-		contrast with the ``Improper Interaction Between Multiple
-		Correctly-Behaving Entities'' defined by the CWE--$435$ as one
-		of the top ``view'' of the ``research concepts'' in
-		\autocite{MITRE2020CWEresearch}) is defined as
-		$\eq{\assertionRegion_a}{\beliefRegion_a}$ for an agent $a$
-		while can be detailed as follows when multiple agents are
-		considered.
+	\item[SE-$1$] Proper interaction between correctly-behaving agents is
+		defined as $\eq{\assertionRegion_a}{\beliefRegion_a}$ for an
+		agent $a$ while can be detailed as follows when multiple agents
+		are considered.
 	\begin{enumerate}
 		\item[SE-$1.1$] The equality relation
 			$\eq{\assertionRegion_{s\rightarrow
@@ -1127,22 +1126,28 @@ requirement for a CPS specification can be summarized:
 			agent $a$ shall be the outputs of the functional
 			architecture.
 	\end{enumerate}
-	\item[SE-$2$]Sufficient Control Flow Management (in contrast with
-		the ``Insufficient Control Flow Management'' defined by MITRE
-		in the CWE--$691$ as one of the top ``view'' of the ``research
-		concepts'' in\autocite{MITRE2020CWEresearch}) is defined as
+\item[SE-$2$]\fixnote{mv}{Are agents missing in the notation A,B,F for SE-2 and SE-3?}
+	Sufficient Control Flow Management  is defined as
 		$\eq{\assertionRegion}{\factRegion}$.
-	\item[SE-$3$] Correct Calculation (in contrast with the ``Improper
-		Calculation'' defined by MITRE in the CWE--$682$ as one of the
-		top ``view'' of the ``research concepts''
-		in\autocite{MITRE2020CWEresearch}) is defined as
+	\item[SE-$3$] Correct Calculation  is defined as
 		$\eq{\beliefRegion}{\factRegion}$.
 \end{enumerate}
+
+We note that our SE define the properties of a secure system, and correlated
+weaknesses can be found in the CWE dataset.  For example, SE-$1$ can be sees as
+correlated to the weakness class of ``Improper Interaction Between Multiple
+Correctly-Behaving Entities'' defined by the CWE--$435$, SE-$2$ with the
+``Insufficient Control Flow Management'' defined by MITRE in the CWE--$691$,
+and SE-$3$ with the ``Improper Calculation'' defined by MITRE in the
+CWE--$682$. All those CWE are in the top ``view'' of the ``research concepts''
+in\autocite{MITRE2020CWEresearch}, while the other classes of weaknesses do not
+have a direct counterpart in our theory; we believe they can be sees as sub-classes,
+but a full comparison with the CWE is out of the scope of this article.
 
 We are now in the position to define what a secure system is (with respect to
 the $\abf$-theory) and, based on that definition, what the security risk is and
 how to quantify it in a risk matrix (where a risk matrix is usually defined as
-a function between the likelihood and the impact of all potential attacks).
+a function of the likelihood and the impact of all potential attacks).
 \begin{definition}{\bf Security of a System or an Agent --}\label{def:security}
 	A secure system is a system where SE-$1$, SE-$2$, and SE-$3$ holds for
 	each agent composing the system.
@@ -1151,13 +1156,13 @@ The ISO 31000 consider risk as the ``effect of uncertainty on objectives'' and
 refers both to positive and negative consequences of uncertainty.
 Accordingly, we consider risk as follows. 
 \begin{definition}{\bf Risk --}
-The whole space of potential designs of a specification with respect to the
+A risk is the whole space of potential designs of a specification with respect to the
 	$\abf$-theory.
 \end{definition}
 The definition of Risk leads to the risk matrix in
 Figure~\ref{fig:quantitative}, defined as follows.
 \begin{definition}{\bf Risk Matrix --}
-	The risk matrix is a function between the three relations
+	The risk matrix, as summarized in Table~\ref{tab:5com}, is a function of the three relations
 	$s=\langle\rcc(\factRegion,\beliefRegion),\rcc(\factRegion,\assertionRegion),\rcc(\beliefRegion,\assertionRegion)\rangle$,
 	where the maximum risk is defined by the $DR$ relation between the
 	three groups of Regions, and the minimum risk by the $EQ$ relation over
@@ -1165,7 +1170,7 @@ Figure~\ref{fig:quantitative}, defined as follows.
 	possible intermediate configuration is defined by the calculus used
 	(RCC5 in our case).
 \end{definition}
-While a risk matrix is often defined as a function between 
+While a risk matrix is often defined as a function of 
 likelihood and impact of attacks, we suggest
 that security weaknesses are all equally likely to be exploited
 if there's a connection between the weakness and the asset that
@@ -1202,7 +1207,7 @@ methodology starts from the (i) identification of assets, (ii) determines
 the threat scenarios (correlating vulnerabilities, threats and incidents) e.g. 
 threat diagrams in the CORAS
 approach, (iii) calculate the risk as a function
-between impact and likelihood of threat scenarios, and (iv) finally provides
+of impact and likelihood of threat scenarios, and (iv) finally provides
 treatments (mandating a partial re-design) and residual risks.
 All the methodologies and tools we reviewed (e.g. Threatmodeler \autocite{Threatmodeler},
 CORAS \autocite{Lund2010model}, SECRAM \autocite{De2015role})
@@ -1522,7 +1527,7 @@ be insecure.
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.4\columnwidth]{sum.pdf}
+	\includegraphics[width=0.3\columnwidth]{sum.pdf}
 	\caption{Example of a Functional Block}
 	\label{fig:sum}
 \end{figure}
@@ -1623,7 +1628,7 @@ Class diagram in Figure~\ref{fig:secraclassdiagram} (in appendix).
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{v-secra.pdf}
+	\includegraphics[width=.9\columnwidth]{v-secra.pdf}
 	\caption{Security Risk Assessment Tool}
 	\label{fig:secra}
 \end{figure}
@@ -1668,7 +1673,7 @@ specification but are automatically extracted by our tool as potential weaknesse
 Those weaknesses are related to the different insecure configurations 
 of the specified system. 
 
-The risk matrix is often defined as a function between 
+The risk matrix is often defined as a function of 
 likelihood and impact of attacks. We suggest
 that security weaknesses are all equally likely to be exploited
 if there's a connection between the weakness and the asset that
@@ -1686,12 +1691,12 @@ As in Figure~\ref{fig:eng_cs1}, we defined 2 agents: sensorInTank and sensorBoar
 which represent the physical reader that needs to be placed in a tank of water, and 
 the board that interprets the readings and outputs them as digital signals.
 The two components are connected by a wire.
-\begin{figure*}
+\begin{figure}
 	\centering
-	\includegraphics[width=.6\textwidth]{internal_cs1.png}
+	\includegraphics[width=.9\columnwidth]{internal_cs1.png}
 	\caption{Sensor Board Object Diagram}
 	\label{fig:int_cs1}
-\end{figure*}
+\end{figure}
 In Figure~\ref{fig:int_cs1} we report the functional architecture that
 receives the incoming communications from the sensor in the tank, and 
 communicates them encrypted.
@@ -1704,51 +1709,51 @@ communicates them encrypted.
 The results, summarized in Figure~\ref{fig:results} reports more than 16 millions
 possible scenarios in which at least one component diverge from the specification.
 
-\section{Discussions}\label{sec:discussion}
-\paragraph{Abstraction Level}
-The level of abstraction is always a concern when it comes to the definition of
-a system model.  In this paper, we justified our assumptions on the atomicity
-of ports, channels, and functional blocks but nothing prevents a modeler to
-consider other atomic element of the system specification and design.  Those
-additional elements may detail the system and may change the syntactic sugar we
-defined; however, it won't change the underlying (semantic) reasoning unless
-another calculus is used (instead of RCC).  Furthermore, other Infosec
-properties may be considered, such as authenticity or non-repudiation. We,
-however, leave them as future development.
-
-\paragraph{$\abftheory$ Falsification} The theory we developed can be falsified
-by providing an experiment that shows a weaknesses not predicted by the
-$\abftheory$-theory, or by showing that the weaknesses predicted for a certain
-experiment are impossible to realize.  This theory, however, needs to be
-detailed to be applicable to a full engineering process (we only cover the
-first steps).  We propose the following complete process as a draft for
-potential next steps in this direction.
-\begin{enumerate}
-\item System Specification
-\item Architecture Design
-\item Security Risk Assessment and Security Requirement Extraction
-\item Design Refinement, where the semantics of the functional behavior and
-	communication protocols are defined 
-\item Security Requirement Extension, based on the design refinement
-\item Verification of Security Requirements (data flow, behaviors, \& protocol
-	logic)
-\item Software Prototype Implementation/Synthesis
-\item Automated Security Testing (abstract test-suite generation \&
-	concretization)
-\item Hardware Prototype Implementation
-\item Automated Security Testing
-\item Penetration Testing
-  \end{enumerate}
-
-\paragraph{Relation with DY}
-The DY attacker model has been extensively
-used for the identification of logical weaknesses in security protocols.
-Our theory should predict all possible weaknesses which, in turn,
-should enable all the attacks identified by the DY model. 
-A proof that the two theories/models correctly predicts
-(or lacks in predicting) weaknesses and related protocol flaws would
-connect risk assessment and protocol verification, the first
-two steps of the secure engineering of systems.
+%\section{Discussions}\label{sec:discussion}
+%\paragraph{Abstraction Level}
+%The level of abstraction is always a concern when it comes to the definition of
+%a system model.  In this paper, we justified our assumptions on the atomicity
+%of ports, channels, and functional blocks but nothing prevents a modeler to
+%consider other atomic element of the system specification and design.  Those
+%additional elements may detail the system and may change the syntactic sugar we
+%defined; however, it won't change the underlying (semantic) reasoning unless
+%another calculus is used (instead of RCC).  Furthermore, other Infosec
+%properties may be considered, such as authenticity or non-repudiation. We,
+%however, leave them as future development.
+%
+%\paragraph{$\abftheory$ Falsification} The theory we developed can be falsified
+%by providing an experiment that shows a weaknesses not predicted by the
+%$\abftheory$-theory, or by showing that the weaknesses predicted for a certain
+%experiment are impossible to realize.  This theory, however, needs to be
+%detailed to be applicable to a full engineering process (we only cover the
+%first steps).  We propose the following complete process as a draft for
+%potential next steps in this direction.
+%\begin{enumerate}
+%\item System Specification
+%\item Architecture Design
+%\item Security Risk Assessment and Security Requirement Extraction
+%\item Design Refinement, where the semantics of the functional behavior and
+%	communication protocols are defined 
+%\item Security Requirement Extension, based on the design refinement
+%\item Verification of Security Requirements (data flow, behaviors, \& protocol
+%	logic)
+%\item Software Prototype Implementation/Synthesis
+%\item Automated Security Testing (abstract test-suite generation \&
+%	concretization)
+%\item Hardware Prototype Implementation
+%\item Automated Security Testing
+%\item Penetration Testing
+%  \end{enumerate}
+%
+%\paragraph{Relation with DY}
+%The DY attacker model has been extensively
+%used for the identification of logical weaknesses in security protocols.
+%Our theory should predict all possible weaknesses which, in turn,
+%should enable all the attacks identified by the DY model. 
+%A proof that the two theories/models correctly predicts
+%(or lacks in predicting) weaknesses and related protocol flaws would
+%connect risk assessment and protocol verification, the first
+%two steps of the secure engineering of systems.
 
 \section{Conclusion and Future Works}
 We proposed a foundational theory on security, arguing that
