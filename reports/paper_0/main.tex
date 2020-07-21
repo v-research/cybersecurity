@@ -193,9 +193,8 @@ Email: francesco@v-research.it}
 	an abstract system.  Our theory is based on a correlation between the
 	epistemological concepts of knowledge, beliefs, and information with
 	the engineering concepts of requirements, functional architectures, and
-	channels.  Our theory allows the definition of the security of a system
-	as a mathematical formula correlating the security and insecurity
-	configurations of a system.  We implemented a prototype cybersecurity
+	channels.  Ultimately, our theory allows the definition of cybersecurity of a system
+	as a mathematical formula.  We implemented a prototype cybersecurity
 	risk assessment tool that, based on our theory, predicts weaknesses in
 	a UML model of a (cyber-physical) system.
 \end{abstract}
@@ -228,7 +227,6 @@ theory is a sound or complete approximation of the real phenomenon).
 Similarly, the results of the application of a scientific theory (i.e. its
 predictions) can be verified in the abstract mathematical structure but how can
 we be sure that the theory correctly characterizes the phenomenon it describes? 
-
 Popper's famous ``demarcation principle'' draws a line between scientific and
 pseudo-scientific theories by proposing that \emph{any} scientific theory can
 be considered correct as long as no empirical experiment falsify it. For
@@ -241,9 +239,10 @@ In \autocite{Herley2016unfalsifiability}, Cormac Herley explores what he calls
 ``an asymmetry in computer security'', which he defines as follows: ``Things
 can be declared insecure by observation, but not the reverse. There is no
 observation that allows us to declare an arbitrary system or technique
-secure''. His intuition is that there is no scientific theory that can predict
+secure''. With security, Herley (as in the reminder of this paper) only 
+focuses on cybersecurity and his intuition is that there is no scientific theory that can predict
 the security of a system, nor a theory that can predict all possible
-insecurities of a system (which, by negation would become a theory on
+insecurities of a system (which, by negation may be used as a theory of
 security).  Herley then uses this argument to show that ``claims that any
 measure is necessary for security are empirically unfalsifiable''. An example
 is whether or not password masking makes a system secure. Password masking
@@ -311,20 +310,20 @@ verification.
 %formalization (e.g.  excluding the server that distributes the public key is
 %often done when verifying the security of authentication protocols), (ii) the
 %number of sessions (even tough some approaches do reason on an infinite number
-%of sessions such as \autocite{Escobar2007maudenpa}),\fixn{Luca}{Nowadays, most
+%of sessions such as \autocite{Escobar2007maudenpa}),\fixnote{Luca}{Nowadays, most
 %tools work for infinite sessions: Maude-NPA, Tamarin, ProVerif, OFMC.} (iii)
 %honesty/dishonesty of the peers (e.g.  in the ASLan++ language
-%\autocite{Oheimb2010aslan++}),\fixn{Luca}{Nowadays, most tools allow for easy
+%\autocite{Oheimb2010aslan++}),\fixnote{Luca}{Nowadays, most tools allow for easy
 %switch of the resulting sessions} and (iv) the abstraction of the
 %cryptographic primitives (e.g.  ProVerif vs CryptoVerif
-%\autocite{Blanchet2017symbolic}).\fixn{Luca}{This is the only claim that, more
+%\autocite{Blanchet2017symbolic}).\fixnote{Luca}{This is the only claim that, more
 %or less, still holds, even though more and more tools do cryptoanalysis. The
 %good news is that, I believe, you do not need (i)-(iv) at all, but you can
 %simply say that by the nature of modeling a specification, you are abstracting
 %away certain things (e.g., cryptography, actual message content, PKI, etc.),
 %and the vulnerabilities might be hidden there} While many tools and theories
 %improved those issues, there is no agreement on which should be the definitive
-%approach (if any).\fixn{Luca}{I don't think that this is important. In many
+%approach (if any).\fixnote{Luca}{I don't think that this is important. In many
 %fields of research you don't have a single definitive approach and it is good
 %that it is so. I would remove this sentence, but only focus on the next point,
 %which is the only important one of this discussion of protocols} 
@@ -350,7 +349,9 @@ While this may seem to turn upon minutiae and foreseeable, this highlights the
 false sense of security that may derive from a non-falsifiable theory of system
 security.
 
-Our hypothesis is that cybersecurity attacks are caused by 
+Instead of reasoning of what makes a system secure or insecure,
+we reason on what causes insecurities.
+Our hypothesis is that cybersecurity attacks are only caused by 
 the presence of errors in the design or implementation of a system.
 For example, a design or implementation error in a sanitization function
 may allow an attacker to perform SQL-injections. If errors are necessary
@@ -361,7 +362,11 @@ from the mathematical formulation of the system and predicts 4 main classes
 of weaknesses. Those classes of weaknesses are used to calculate
 all the insecurity configurations of all the components of a system,
 obtaining a precise estimation of all potential cybersecurity-related risks
-in any given system.
+in any given system. Our hypothesis can be falsified by means of experiments,
+testing if all the predicted weaknesses are present in the system under
+test, or testing if other (not predicted by our hypothesis) weaknesses are
+present.
+
 
 \paragraph{Structure} 
 We start, in Section~\ref{sec:literature}, by detailing the problem statement,
@@ -395,46 +400,62 @@ to be true by the majority of people in our society, without a scientific
 underlying theory but based on partial empirical evidences or inductive reasoning based on partial empirical evidences.} that
 safety deals with \emph{accidents} (i.e. an unfortunate incident) posed by the
 natural environment (e.g. natural events such as wearing of hardware
-components) while security deals with \emph{incidents} posed by mankind (e.g.
-attackers and bugs).  The fundamental difference between nature and mankind (and,
+components), whereas security deals with \emph{incidents} posed by mankind (e.g.
+attackers and bugs). The fundamental difference between nature and mankind (and,
 in turn, between safety and cybersecurity) is believed to be on the different
-intents (incidents are intentional while accidents are not) of the causes
-that generates a threat; namely, nature is believed not to have malicious
-intents (but unfortunate causes-effects) while threats generated by mankind are
+intents (incidents are intentional, whereas accidents are not) of the causes
+that generates a threat. Namely, nature is believed not to have malicious
+intents (but unfortunate causes-effects), whereas threats generated by mankind are
 malicious\footnote{Of course, logical flaws or bugs may be
 introduced by other means (e.g. ignorance) without explicit malicious intents,
 but the exploitation of those flaws is considered (for now, and detailed
-afterwards in the article) malicious, and then we consider any vulnerability to
-be malicious even if due to the lack of skills.}.
+afterwards in the article) malicious, and thus we consider any vulnerability to
+be malicious even if it is due to the lack of skills.}.
 This conclusion seems to be against a general formulation of a cybersecurity theory;
 how can we define a theory that predicts what a human being will do?
-Cybersecurity attacks seems to be related to the creativity of the attacker
-and then unpredictable. Currently, our understanding of cybersecurity is
-stored into a network of databases of weaknesses (e.g.
-CWE\autocite{MITRE2020CWEresearch}), vulnerabilities (e.g. CVE\autocite{CVE},
-NVD\autocite{NIST2020NVD}),
-and attacks (e.g. CAPEC\autocite{MITRE2020CAPEC}, ATT\&CK\autocite{MITRE2020ATTACK}). Systems are
-nowadays tested against 
-known attacks, ignoring that considering a system secure
-if no known attack is possible is against the scientific method.
-As an example, if we have a system which is secure against all of the
-vulnerabilities in the CVE we just need to wait for a month to have 1000+ more
-vulnerabilities to test \autocite{NVD2020dashboard}. If even just one of those new vulnerabilities
-affects our system, that falsify the hypothesis that a
-system is secure if no known attacks apply. 
-We argue that this ``implement and test'' approach should be changed.
-Even tough the field 
-of security protocols is still lacking of a general cybersecurity theory,
-the secure-by-design approach they apply can be considered as going
-into the opposite direction of the ``implement and test'' approach.
+Cybersecurity attacks seem to be related to the creativity of the attacker
+and thus unpredictable. 
+
+Currently, the most complete understanding of insecurity issues, is stored into
+a network of databases of weaknesses (e.g.
+CWE~\autocite{MITRE2020CWEresearch}), vulnerabilities (e.g. CVE~\autocite{CVE},
+NVD~\autocite{NIST2020NVD}), and attacks (e.g. CAPEC~\autocite{MITRE2020CAPEC},
+ATT\&CK~\autocite{MITRE2020ATTACK}).  Those insecurity issues can be related to
+the violation of one or more requirements (explicit or implicit) in the
+specification, design or implementation of a system. The correlation 
+between insecurity flaws and security requirements has been used to define
+standards such as the IEC 62443-1-3 (the Industrial communication networks -
+Network and system security -- Part 3-3: System security requirements and
+security levels) which defines requirements as ``confidentiality of information
+in transit/at-rest''. More generally, the idea of defining security requirements
+as properties of a system was initially defined in 1970s with the 
+CIA triad (Confidentiality, Integrity, Availability) and refined 
+over the decades introducing related concepts such as authenticity or
+non-repudiation, or introducing new ones such as ``responsibility'' in the
+RITE approach (see~\autocite{Samonas2014cia} for an overview of the evolution of the CIA triad).
+The link between security requirements and vulnerabilities is reported 
+in the NVD databases by the CVSS\autocite{Mell2007CVSS}) scoring system.
+The CVSS evaluates of the severity of a vulnerability
+by means of different metrics (such as attack complexity and user interaction)
+and quantitatively evaluates the impact on the CIA triad.
+While security requirements, weaknesses, vulnerabilities, and attacks
+have been extensively studied and implemented both in academia and industry
+to provide tools for the testing or verification of systems, 
+no scientific falsifiable theory correlate
+security requirements to necessary and sufficient conditions (e.g. mitigations) 
+to declare a system secure \autocite{Herley2016unfalsifiability}.
+Nonetheless, the extensive body of literature have scientific foundations,
+for example, providing either providing necessary or sufficient conditions
+for cybersecurity.
+As a driver for our argumentation, we start by reviewing the key concepts
+in the cybersecurity domain.
 
 \subsection{Terminology}
 Most of the safety-preserving principles in the field of engineering of
 safety-critical cyber-physical systems (such as elevators and aircraft), upon
 which safety requirements are defined (e.g. in standards such as the IEC 61508
-or 61511\autocite{IEC201761511}), are based on empirical tests and measurements
-(therefore should be considered hypothesis and not definitions). While
-reasoning by induction
+or 61511\autocite{IEC201761511}), are based on empirical tests and measurements.
+While reasoning by induction
 %\footnote{``So, whenever they argue ``Every man is an
 %animal and Socrates is a man; therefore Socrates is an animal,'' proposing to
 %deduce from the universal proposition ``every man is an animal'' the particular
@@ -444,30 +465,32 @@ reasoning by induction
 %universal proposition inductively by means of each of the particulars and
 %deducing the particular proposition from the universal syllogistically.''
 %Sextus Empiricus, Outlines of Pyrrhonism II-195 \autocite{Empiricus1990Pyrrhonism}}
-based on the empirical observation should be avoided, since it may easily lead
-to false beliefs, this approach is often justified by the supposed
-impossibility of defining a theory that correctly predicts failures.  A failure
-of a wire due to environment (e.g. due to humidity, dust, heat \&c) is defined
-from empirical evidences and processes have been standardized to test qualities
-of hardware components.  This process completely breaks down when a malicious
-environment (i.e. an attacker) is considered instead of the (supposedly honest
-and predictable) natural environment. Therefore, the same approach that is in
-use for safety, seems not to be applicable for security (e.g. for security
-testing).
-An overview on the aforementioned aspects of safety and security is depicted in
+based on the empirical observation should be avoided in general,
+since it may easily lead to false beliefs \autocite{Popper1959logic}, 
+inducing general principle by means of tests
+is often justified by the supposed impossibility of defining a theory
+that correctly predicts failures.
+A failure of a wire due to environment (e.g. due to humidity,
+dust, heat \&c) is defined from empirical evidences and processes have been
+standardized to test qualities of hardware components.  This process completely
+breaks down when a malicious environment (i.e. an attacker) is considered
+instead of the (supposedly honest and predictable) natural environment.
+Therefore, the same approach that is in use for safety, seems not to be
+applicable for cybersecurity (e.g. for cybersecurity testing).  An overview on the
+aforementioned aspects of safety and cybersecurity is depicted in
 Figure~\ref{fig:safety-security} and is used as a baseline for a definition of
-the terms that structure our current understanding of security. 
+the terms that structure our current understanding of cybersecurity.
+ 
 \begin{itemize}
 	\item \emph{Mankind} ``refers collectively to humans''
 \autocite{wiki-mankind}, while the concept of \emph{Nature} is
 		related ``to the intrinsic characteristics that plants,
 		animals, and other features of the world develop of their own
-		accord'' (e.g. the physical universe)\autocite{wiki-nature}. 
+		accord'' (e.g. the physical universe)~\autocite{wiki-nature}. 
 		\begin{itemize}
 			\item There exist several terms to refer to an
-				\emph{attacker}, i.e. threat agent or threat source,
-				considering those terms to be semantically
-				equivalent.  From now on, we consider the
+				\emph{attacker}, e.g. threat agent or threat source,
+				but, from now on, we consider the
 				Causality principle to be the \emph{threat
 				source}, Nature or Mankind to be the
 				\emph{threat agents} and an \emph{attacker} as
@@ -480,7 +503,7 @@ the terms that structure our current understanding of security.
 		``penetration testing'' \autocite{caddy2005pentest})
 		highlighting how commonly this word is used without a proper
 		supporting semantics.}, as defined in \autocite{cnssi20104009}
-		(and adopted in \autocite{nist2013800-53}), is ``weakness in an
+		(and adopted in \autocite{nist2013800-53}), is a ``weakness in an
 		information system, system security procedures, internal
 		controls, or implementation that could be exploited by a threat
 		source''. On the one hand, the definition is broad to enclose
@@ -499,14 +522,14 @@ the terms that structure our current understanding of security.
 		%(circa 500 B.C.), fragments B7.1–8.2
 		%\autocite{Hakim2016philosophy}}.
 		Furthermore, the term ``threat sources'' used in the definition
-		in\autocite{cnssi20104009} may be identified with both Nature
+		in~\autocite{cnssi20104009} may be identified with both Nature
 		and Mankind, not differentiating between safety and security.
 \end{itemize}
 
 As depicted in Figure~\ref{fig:safety-security}, a vulnerability does not
 necessarily become a threat for the system, unless exploited ``through a
 channel that allows the violation of the security policy
-[\ldots]''\autocite{cnssi20104009}. For example, a software or procedure that takes
+[\ldots]''~\autocite{cnssi20104009}. For example, a software or procedure that takes
 advantage of the vulnerability causing an \emph{attack} to the system may
 result in several correlated incidents and threats.  The process of
 exploitation of a defect as a vulnerability is reported in
@@ -516,26 +539,24 @@ that causes this process (i.e. excluding the intent, the terms are just syntacti
 accident to incident). 
 
 \begin{itemize}
-	\item \emph{Weakness}. The definition given by the MITRE
-		in \autocite{MITRE2020CWEweakness} of weakness is: ``Software
-		weaknesses are errors that can lead to software
-		vulnerabilities. A software vulnerability, such as those
-		enumerated on the Common Vulnerabilities and Exposures (CVE)
-		List, is a mistake in software that can be directly used by a
-		hacker to gain access to a system or network''.  The definition
-		is circular if we interpret the word ``error'' and ``mistake''
-		with the same semantics: a weakness is an error that leads to a
-		vulnerability and a vulnerability is a mistake which, in turn,
-		is a weakness.  
-\end{itemize}
-
-The only difference between a weakness and vulnerability seems to be that one
-can consider weakness as a ground term and state that a vulnerability is caused
-by a weakness.
-
-\begin{itemize}
+	\item \emph{Weakness}. The definition given by the MITRE in
+		\autocite{MITRE2020CWEweakness} of weakness is: `` a type of
+		mistake that, in proper conditions, could contribute to the
+		introduction of vulnerabilities within that product. This term
+		applies to mistakes regardless of whether they occur in
+		implementation, design, or other phases of a product
+		lifecycle.'' A vulnerability, such as those enumerated on the
+		Common vulnerabilities and Exposures (CVE) List, is a mistake
+		that can be directly used by a hacker to gain access to a
+		system or network.  The definition is circular if we interpret
+		the word ``error'' and ``mistake'' with the same semantics: a
+		weakness is an error that leads to a vulnerability and a
+		vulnerability is a mistake which, in turn, is a weakness. The
+		only difference between a weakness and vulnerability seems to
+		be that one can consider weakness as a ground term and state
+		that a vulnerability is caused by a weakness.
 	\item \emph{Causality} refers to the causality principle; defined
-		in\autocite{Spirkin1983Dialectical} as ``Causality is a genetic
+		in~\autocite{Spirkin1983Dialectical} as ``Causality is a genetic
 		connection of phenomena through which one thing (the cause)
 		under certain conditions gives rise to, causes something else
 		(the effect). The essence of causality is the generation and
@@ -545,16 +566,15 @@ by a weakness.
 		regularities of accompanying processes''. 
 		%One can consider the
 		%causality principle to be formalized by the K Modal Logic.
-	\item An \emph{Exploit}\footnote{We note that the term exploit is only
-		used as a verb in\autocite{ISO2009information}} ``[\ldots]
+	\item An \emph{Exploit} ``[\ldots]
 		(from the English verb to exploit, meaning to use something to
 		one’s own advantage) is a piece of software, a chunk of data,
 		or a sequence of commands that takes advantage of a bug or
 		vulnerability to cause unintended or unanticipated behavior to
 		occur on computer software, hardware, or something electronic
-		(usually computerized).''\autocite{wiki-exploit}.
+		(usually computerized).''~\autocite{wiki-exploit}.
 	\item An \emph{Attack}, as defined by the International Standard
-		ISO/IEC 27000 is an ``attempt to destroy, expose, alter,
+		ISO/IEC 27000, is an ``attempt to destroy, expose, alter,
 		disable, steal or gain unauthorized access to or make
 		unauthorized use of an asset''; where an \emph{Asset} is
 		``anything that has value to the organization''. We note that for
@@ -563,24 +583,24 @@ by a weakness.
 		abstract organization (e.g. a company or a society).
 		We do not consider ethical hackers as attacking a system. 
 		In fact, we consider the term \emph{hack} as
-		non-malicious (as, e.g. in \autocite{Stallman2002hacker}).
-	\item A \emph{Threat}, as defined in\autocite{cnssi20104009}, is ``Any
+		non-malicious (as, e.g. in~\autocite{Stallman2002hacker}).
+	\item A \emph{Threat}, as defined in~\autocite{cnssi20104009}, is ``Any
 		circumstance or event with the potential to adversely impact
 		organizational operations (including mission, functions, image,
 		or reputation), organizational assets, individuals, other
 		organizations, or the Nation through an information system via
 		unauthorized access, destruction, disclosure, modification of
 		information, and/or denial of service''.
-	\item \emph{Defect}, ``anything that renders the product not reasonably
-		safe''\autocite{Robinson2019writing} (i.e. a characteristic of
+	\item \emph{Defect}: ``anything that renders the product not reasonably
+		safe''~\autocite{Robinson2019writing} (i.e. a characteristic of
 		an object which hinders its proper usability).
-	\item \emph{Failure}, as defined in\autocite{Merriam2020failure} as ``a state of
+	\item \emph{Failure}, as defined in\autocite{Merriam2020failure}, is ``a state of
 		inability to perform a normal function''. The term is
 		structured and detailed in
-		\autocite{cnssi20104009,iet2017glossary} but relying on an
+		\autocite{cnssi20104009,iet2017glossary}, but relying on an
 		abstract notion of failure without a specific definition.
 	\item \emph{Hazard}, ``a potential source of
-		harm''\autocite{iet2017glossary}.
+		harm''~\autocite{iet2017glossary}.
 \end{itemize}
 
 \begin{figure}[t]
@@ -590,35 +610,36 @@ by a weakness.
 	\label{fig:causality}
 \end{figure}
 
-Our literature review shows that most of the definitions relates insecurity to
+Our literature review shows that most of the definitions relate insecurity to
 dis-honesty (also called maliciousness or adversarial) of an agent (often
-called adversary or attacker). This, however, just moves the problem of
-defining what cybersecurity is as the problem of defining what an dishonest
-agent can or cannot do in a system\footnote{where an agent is any virtual or
-physical entity of the system or using the system (e.g. a device, a software,
-or a human being) and dishonesty is not necessarily related to malicious
-motivation but also to incompetence or lack of skills.} As in the Dolev-Yao
-theory, we may correlate ``being dishonest'' to ``not following the intended
-behavior/rules''.  In the case of a generic system, a dishonest agent is,
-therefore, any agent that doesn't follow the intended behavior (or
-functionality or logic) of the system.  Given the generality of the definition,
-and its high level of abstraction, we may conclude that the hypothesis seems
-evident. For example, a software can be considered an agent of the system and
+called adversary or attacker). In fact, weaknesses become vulnerability if an
+attacker exploits them in an attack.  This, however, just moves the problem of
+defining what cybersecurity is as the problem of defining what a dishonest
+agent can or cannot do in a system, where an agent is any virtual or physical
+entity of the system or using the system (e.g. a device, a software, or a human
+being) and dishonesty is not necessarily related to malicious motivation but
+also to incompetence or lack of skills. As in the Dolev-Yao theory, we may
+correlate ``being dishonest'' to ``not following the intended behavior/rules''.
+In the case of a generic system, a dishonest agent is, therefore, any agent
+that doesn't follow the intended behavior (or functionality or logic) of the
+system.  For example, a software can be considered an agent of the system and
 whenever it has a bug, it can be exploited causing an Incident. However, this
-hypothesis has lead to the un-testable conclusion that the dishonest behaviors
-of agents cannot be defined in general (e.g. due to the heterogeneity of agents
-and systems) and that huge repository of dishonest behaviors should be kept as
-definition, such as CAPEC\autocite{MITRE2020CAPEC}; or that dishonesty of an agent
-with respect to a security protocol should be defined as a number of predefined
-actions as in
+may lead to the conclusion that the dishonest behaviors of agents cannot be
+defined in general (e.g. due to the heterogeneity of agents and systems) and
+that huge repository of dishonest behaviors should be kept as definition, such
+as CAPEC~\autocite{MITRE2020CAPEC}; or that dishonesty of an agent with respect
+to a security protocol should be defined as a number of predefined actions as
+in
 \autocite{Turuani2006clatse,Basin2005ofmc,Armando2016satmc,Rocchetto2017interpolation}
-(to name a few). As depicted in Figure~\ref{fig:causality}, in order to define
-a theory on cybersecurity and on the malicious behaviors of agents we noticed
-that Attack Patterns (or Attacks) are caused-by the presence of Vulnerabilities
-in the system. Those Vulnerabilities are, in turn, cause-by the presence of
-Weaknesses in the system.  Weaknesses are Errors in the design or
-implementation of a system.  Therefore, a theory on cybersecurity should first
-predict the Errors in a system design.
+(to name a few)\footnote{In formal protocol verifiers, in the DY model, the
+attacker has a set of hardcoded inference rules that defines how the attacker
+deduces new messages based on the observed message exchange.}.  As depicted in
+Figure~\ref{fig:causality}, in order to define a theory on cybersecurity we may
+say that the presence of vulnerabilities is a necessary condition in order to
+cause an Attack in the system.  Those vulnerabilities are, in turn, caused by
+the presence of weaknsesses in the system.  Weaknesses are errors in the design
+or implementation of a system.  Therefore, a theory on cybersecurity should
+first predict the errors in a system design.
 
 \section{Security Hypothesis -- ABF Theory of Agents}\label{sec:hypothesis}
 In order to address the problem raised by Herley, we shall define how to
@@ -824,7 +845,7 @@ instead of the taxonomies (categorization based on discrete sets)
 such as the one provided
 in\autocite{NIST2020NVD,MITRE2020CVE} 
 so that we don't need to rely on a scoring system (such as the 
-CVSS\autocite{Mell2007CVSS}) to assign a quantitative evaluation 
+CVSS) to assign a quantitative evaluation 
 of the security of each entry. Instead, we want a precise calculation
 of the number of insecurity configurations to emerge from the mathematical
 formulation of our cybersecurity theory.
@@ -1433,7 +1454,7 @@ port $P_I$ and then sent through a channel $C$ to another (recipient) port
 $P_O$. In this scenario where ports and then channels are atomic (otherwise
 raising infinite regress), we can only  consider the relations between ports
 and channel; considering both input-port to channel and channel to output-port.
-In fact, the Weaknesses of a channel are defined in terms of the Weaknesses of
+In fact, the weaknesses of a channel are defined in terms of the weaknesses of
 ports.  Io order to define a functional block
 without encountering a infinitely recursive definition, we must reach the same
 conclusions as for the channel. Therefore, describing the information as
