@@ -230,7 +230,7 @@ predictions) can be verified in the abstract mathematical structure but how can
 we be sure that the theory correctly characterizes the phenomenon it describes? 
 Popper's famous ``demarcation principle'' draws a line between scientific and
 pseudo-scientific theories by proposing that \emph{any} scientific theory can
-be considered correct as long as no empirical experiment falsify it. For
+be considered correct (or, better, acceptable) as long as no empirical experiment falsify it. For
 example, the theory of gravity, in its mathematical setting, can predict how
 objects attract each other, and those predictions can be tested by empirical
 experiment. If the theory correctly abstracts the phenomenon, no empirical
@@ -348,17 +348,41 @@ be considered in the verification process.  This choice has a tremendous impact
 on the focus and findings of the verification of the security of the protocol.
 While this may seem to turn upon minutiae and foreseeable, this highlights the
 false sense of security that may derive from a non-falsifiable theory of system
-security.
-
-Instead of reasoning of what makes a system secure or insecure,
+security. 
+\fix{mr}{In other words, if (as Herley mentions in \autocite{herley}) 
+the problem is in the way we reason on cybersecurity, we should
+see it in the way we reply to simple cybersecurity (foundamental) questions.
+Let us consider the foundamental question ``what is cybersecurity?'',
+as in \autocite{hintikka}, we can translate the wh-question into an equivalent
+existentially quantified formula. 
+But if the formula is the following second-order formula: $\exists P. P(s)\rightarrow Secure(s)$,
+(where we ask if there exists a predicate $P$ such that, given any arbitrary 
+system $s$, when $P$ holds for $s$ then $s$ can be considered secure),
+when the answer is (for example) ``if the system is confidential, the
+system is secure'' the formula becomes tautological. In fact, $P$ and $Secure$ can 
+be considered as semantically equivalent (security is confidentiality and vice-versa).}
+Instead of starting from reasoning on what makes a system secure or insecure,
 we reason on what causes insecurities.
+\fix{mr}{We focus on insecurities only caused by the exploitation of
+cybersecurity attacks, and we assume that achieving security means preventing all those attacks 
+from being exploitable or exploited.}
 Our hypothesis is that cybersecurity attacks are only caused by 
 the presence of errors in the design or implementation of a system.
 For example, a design or implementation error in a sanitization function
 may allow an attacker to perform SQL-injections. If errors are necessary
 to enable cybersecurity attacks, a theory that predicts all potential 
 errors (or source of errors) can be effectively used to predict the
-security of a system. With our approach, a list of weaknesses emerges
+security of a system.
+\fix{mr}{Therefore, 
+a possible answer to the initial question can be that cybersecurity is the 
+absence of attacks and the absence of errors implies cybersecurity.
+This, however, raises another question: ``which are all the errors
+in (the engineering of) a system that make it possible for a cybersecurity attack
+to happen?''. More rigorusly, which scientific theory predicts all
+possible errors that causes cybersecurity attacks? 
+}
+
+With our approach, a list of weaknesses emerges
 from the mathematical formulation of the system and predicts 4 main classes
 of weaknesses. Those classes of weaknesses are used to calculate
 all the insecurity configurations of all the components of a system,
@@ -1686,12 +1710,12 @@ such that $\sigma(p)=1$ (where $p\in\Pi$) iff the input configuration is satisfi
 the logical theory defining the algebraic structure (mereotopology) and constraints
 of the calculus RCC (otherwise $\sigma$ returns $0$), we can define
 \begin{displaymath}
-	I=\sum_{p\in\{\Pi\setminus\pi_{EQ}\}} \sigma(p)
+	I=\sum_{p\in\{\Pi\setminus\pi_{eq}\}} \sigma(p)
 \end{displaymath}
-where $\pi_{EQ}\in\Pi$ is the output of the function $\pi$ that associates only EQ relations
+where $\pi_{eq}\in\Pi$ is the output of the function $\pi$ that associates only EQ relations
 to any $e\in E'$, and $I\in\mathbb{N}$ represents all the insecurity configurations
 of the CPS $S$ where, at least, one of the RCC relations isn't EQ.
-In other words, we consider $\pi_{EQ}$ as the only secure configuration.
+In other words, we consider $\pi_{eq}$ as the only secure configuration.
 
 %the insecurity of a system 
 %($I$) can be expressed as the following equation.
