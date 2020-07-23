@@ -1695,20 +1695,22 @@ weaknesses; as in Table~\ref{tab:weaknesses}.
 \end{hypothesis}
 
 Based on these hypothesis, we can formulate the concepts of security and
-insecurity (in the $\abftheory$-framework) as mathematical equations.  Let us consider a CPS
-$S$, represented as a graph $G=\langle V,E\rangle$ where $V$ represents the
-set of functional blocks and ports of $S$, and $E\subseteq V\times E$ is the
-set of pairs representing the channels and connections (data flows) between
-functional blocks. We define $R\subseteq V\times F$, where $F$ is the set
-of all the requirements of $S$, and extend $G$ as $G'=\langle E'\times V'\rangle$
-with $E'= E\cup R$ and $V'=V\cup F$. Let $\pi: E'\rightarrow RCC$ (where $RCC$ is
-the set of relations in the RCC) be
-the total function associating an RCC relation to each edge in $G'$, and
-$\Pi$ be the set of all different permutations of RCC relations over $E'$
-(i.e. $\Pi=\{\langle\pi(e_0)=EQ,\ldots,\pi(e_n)=EQ\rangle,\ldots,\langle \pi(e_0)=DR,\ldots,\pi(e_n)=DR\rangle\}$). If $\sigma:\Pi\rightarrow\{0,1\}$ is an evaluation function
-such that $\sigma(p)=1$ (where $p\in\Pi$) iff the input configuration is satisfiable with respect to
-the logical theory defining the algebraic structure (mereotopology) and constraints
-of the calculus RCC (otherwise $\sigma$ returns $0$), we can define
+insecurity (in the $\abftheory$-framework) as mathematical equations.  Let us
+consider a CPS $S$, represented as a graph $G=\langle V,E\rangle$ where $V$
+represents the set of functional blocks and ports of $S$, and $E\subseteq
+V\times E$ is the set of pairs representing the channels and connections (data
+flows) between functional blocks. We define $R\subseteq V\times F$, where $F$
+is the set of all the requirements of $S$, and extend $G$ as $G'=\langle
+E'\times V'\rangle$ with $E'= E\cup R$ and $V'=V\cup F$. Let $\pi:
+E'\rightarrow RCC$ (where $RCC$ is the set of relations in the RCC) be the
+total function associating an RCC relation to each edge in $G'$, and $\Pi$ be
+the set of all different permutations of RCC relations over $E'$ (i.e.
+$\Pi=\{\langle\pi(e_0)=EQ,\ldots,\pi(e_n)=EQ\rangle,\ldots,\langle
+\pi(e_0)=DR,\ldots,\pi(e_n)=DR\rangle\}$ where $e_i\in E'$ for $0\leq i \leq n$ and $|E'|=n$). If $\sigma:\Pi\rightarrow\{0,1\}$ is
+an evaluation function such that $\sigma(p)=1$ (where $p\in\Pi$) iff the input
+configuration is satisfiable with respect to the logical theory defining the
+algebraic structure (mereotopology) and constraints of the calculus RCC
+(otherwise $\sigma$ returns $0$), we can define
 \begin{displaymath}
 	I=\sum_{p\in\{\Pi\setminus\pi_{eq}\}} \sigma(p)
 \end{displaymath}
@@ -1742,7 +1744,7 @@ In other words, we consider $\pi_{eq}$ as the only secure configuration.
 %otherwise $I$ represents the number of possible insecure configurations, where
 %$I\in\mathbb{N}$.
 
-\subsection{Security Risk Assessment}\label{sec:secra}
+\subsection{Cybersecurity Risk Assessment}\label{sec:secra}
 In order to test our theory we implemented a tool-chain (open-source under the
 AGPLv3 license and available at \autocite{v-research2020cybersecurity}) for the
 identification of weaknesses and the precise calculation of potential insecure
