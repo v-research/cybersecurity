@@ -231,9 +231,9 @@ we be sure that the theory correctly characterizes the phenomenon it describes?
 Popper's famous ``demarcation principle'' draws a line between scientific and
 pseudo-scientific theories by proposing that a scientific theory can
 be considered acceptable as long as no empirical experiment falsify it. For
-example, the theory of gravity, in its mathematical setting, can predict how
+example, a theory of gravity, in its mathematical setting, can predict how
 objects attract each other, and those predictions can be tested by empirical
-experiment. If the theory correctly abstracts the phenomenon, no empirical
+experiment. If the theory correctly represents the phenomenon, no empirical
 experiment should falsify the predictions of that theory.
 
 In \autocite{Herley2016unfalsifiability}, Cormac Herley explores what he calls
@@ -345,47 +345,44 @@ difficult it is to even just compare the approaches is given in
 	\caption{Abstraction of an ad-hoc esemplificative protocol execution}
 	\label{fig:protocol-example}
 \end{figure}
-As an illustrative example, in Figure~\ref{fig:protocol-example}, under the perfect
-cryptography assumption (i.e. assuming that the cryptographic primitives have
-no cybersecurity flaw), and assuming that no violation to any cybersecurity property
-occurs after message I), the freedom of choosing the scope determines that the
-flaws related to the dishonest impersonification of the Server may or may not
-be considered in the verification process.  This choice has a tremendous impact
-on the focus and findings of the verification of the cybersecurity of the protocol.
-While this may seem to turn upon minutiae and foreseeable, this highlights the
-false sense of security that may derive from a non-falsifiable theory of system
-cybersecurity. 
-In other words, if (as Herley mentions in \autocite{Herley2016usenixvideo}) 
-the problem is in the way we reason on cybersecurity, we should
-see it in the way we reply to simple cybersecurity (foundamental) questions.
-Let us consider the foundamental question ``what is cybersecurity?'',
-as in \autocite{hintikka2013inquiry}, we can translate the wh-question into an equivalent
-existentially quantified formula. 
-But if the formula is $\exists P. P(s)\rightarrow Secure(s)$,
-(where we ask if there exists a predicate $P$ such that, given any arbitrary 
-system $s$, when $P$ holds for $s$ then $s$ can be considered secure),
-when the answer is (for example) ``if the system is confidential, the
-system is secure'' the formula becomes tautological. In fact, $P$ and $Secure$ can 
-be considered as semantically equivalent (cybersecurity is confidentiality and vice-versa).
+As an illustrative example, in Figure~\ref{fig:protocol-example}, under the
+perfect cryptography assumption (i.e. assuming that the cryptographic
+primitives have no cybersecurity flaw), and assuming that no violation to any
+cybersecurity property occurs after message I), the freedom of choosing the
+scope determines that the flaws related to the dishonest impersonification of
+the Server may or may not be considered in the verification process.  This
+choice has a tremendous impact on the focus and findings of the verification of
+the cybersecurity of the protocol.  While this may seem to turn upon minutiae
+and foreseeable, this highlights the false sense of security that may derive
+from a non-falsifiable theory of system cybersecurity.  In other words, as
+Herley mentions in \autocite{Herley2016usenixvideo}, the problem is in the way
+we reason on cybersecurity, and we can see it in the way we reply to simple
+cybersecurity (foundamental) questions.  Let us consider the general question
+``what is cybersecurity?''; as in \autocite{hintikka2013inquiry}, we can
+translate the wh-question into an equivalent existentially quantified formula.
+But if the formula is $\exists P. P(s)\rightarrow Secure(s)$, (where we ask if
+there exists a predicate $P$ such that, given any arbitrary system $s$, when
+$P$ holds for $s$ then $s$ can be considered secure), when the answer is (for
+example) ``if the system is confidential, the system is secure'' the formula
+becomes tautological. In fact, $P$ and $Secure$ can be considered as
+semantically equivalent (cybersecurity is confidentiality and vice-versa).
 Instead of starting from reasoning on what makes a system secure or insecure,
-we reason on what causes insecurities.
-We focus on insecurities only caused by the exploitation of
-cybersecurity attacks, and we assume that achieving cybersecurity means preventing all those attacks 
-from being exploitable or exploited.
-Our hypothesis is that cybersecurity attacks are only caused by 
-the presence of errors in the design or implementation of a system (i.e. cybersecurity weaknesses).
-For example, a design or implementation weakness in a sanitization function
-may allow an attacker to perform SQL-injections. If weaknesses are necessary
-to enable cybersecurity attacks, a theory that predicts all potential 
-weaknesses can be effectively used to predict the
-(in)security of a system.
-Therefore, 
-a possible answer to the initial question can be that (definition) cybersecurity is the 
-absence of attacks and (claim) the absence of weaknesses implies cybersecurity.
-This, however, raises another question: ``which are all the errors/weaknesses
-in (the engineering of) a system that make it possible for a cybersecurity attack
-to happen?''. More rigorously, which scientific theory predicts all
-possible weaknesses that causes cybersecurity attacks? 
+we reason on what causes insecurities.  We focus on insecurities only caused by
+the exploitation of cybersecurity attacks, and we assume that achieving
+cybersecurity means preventing all those attacks from being exploitable or
+exploited.  Our hypothesis is that \emph{cybersecurity attacks are only caused by the
+presence of errors in the design or implementation of a system} (i.e.
+cybersecurity weaknesses).  For example, a design or implementation weakness in
+a sanitization function may allow an attacker to perform SQL-injections. If
+weaknesses are necessary to enable cybersecurity attacks, a theory that
+predicts all potential weaknesses can be effectively used to predict the
+(in)security of a system.  Therefore, a possible answer to the initial question
+can be that (definition) cybersecurity is the absence of attacks and (claim)
+the absence of weaknesses implies cybersecurity.  This, however, raises another
+question: ``which are all the errors/weaknesses in (the engineering of) a
+system that make it possible for a cybersecurity attack to happen?''. More
+rigorously, which scientific theory predicts all possible weaknesses that
+causes cybersecurity attacks? 
 
 With our approach, a list of weaknesses emerges from the mathematical
 formulation of a system in a framework called $\abftheory$-framework and
