@@ -197,7 +197,7 @@ Email: francesco@v-research.it}
 	requirements, functional architectures, and channels.  Ultimately, our
 	hypothesis allows the definition of the cybersecurity of a system as a
 	mathematical formula.  We implemented a prototype cybersecurity risk
-	assessment tool that, based on our hypothesis, predicts weaknesses in a
+	assessment tool that, based on our hypothesis, predicts the weaknesses in a
 	UML model of a (cyber-physical) system.
 \end{abstract}
 
@@ -241,16 +241,16 @@ In \autocite{Herley2016unfalsifiability}, Cormac Herley explores what he calls
 can be declared insecure by observation, but not the reverse. There is no
 observation that allows us to declare an arbitrary system or technique
 secure''. With security, Herley only focuses on cybersecurity (we also use
-security and insecurity, in this paper, only to refer to cyberinsecurity and
+security and insecurity, in this paper, only to refer to cyber-insecurity and
 cybersecurity) and his intuition is that there is no scientific theory that can
 predict the cybersecurity of a system, nor a theory that can predict all
 possible insecurities of a system (which, by negation may be used as a theory
 of cybersecurity).  Herley then uses this argument to show that ``claims that
 any measure is necessary for security are empirically unfalsifiable''. An
 example is whether or not password masking makes a system secure. Password
-masking prevents a complete leakage of the password and a system, in which
+masking prevents a complete leakage of the password, and a system, in which
 password masking is implemented, is believed to be secure because an attacker
-won't be seeing the password by ``shoulder surfing''.  However, this reasoning
+won't be seeing the password by ``shoulder surfing''.  This reasoning
 is circular and it is always true that a system in which password masking is
 implemented is a system in which a password is masked. No experiment can ever
 falsify this statement.  Given that any theory that is not falsifiable by an
@@ -278,39 +278,40 @@ theory that has not gone through an extensive series of tests. Instead, we
 use ``logical theory'' to refer to a set of formal logical axioms.} may
 be tested in any sound implementation such as networks, mechanical, cyber, or
 cyber-physical system, or even a single computer or a single device such as a
-hard-drive).  There is also an apparent inconsistency in
-\autocite{Herley2016unfalsifiability} that we seek to clarify before following
-(as we agree) the scientific path drawn by Herley: cybersecurity is defined as
-a set of abstract properties in many formal approaches to the investigation of
-the cybersecurity of systems.  Let's, for the sake of simplicity, consider the case
-of a system implementing a cybersecurity protocol (e.g. an authentication protocol).
-The proof of cybersecurity obtained from the formal verification of the design of
-the protocol (e.g. with respect to a formalization of the authentication
-property) is indeed falsifiable against the cybersecurity properties verified.  For
-example, in the protocol verification community, cybersecurity is often defined
-as a formalization of the high-level properties confidentiality, integrity, and
-authentication. The problem in such approaches is not the definition of what
-cybersecurity is but the generality of the results, since they tackle a
-specific step\footnote{In fact, engineering models such as the V-model start
-with the requirements definition, and physical and functional architecture
-design, before the logic of protocols is even considered.} of the engineering
-process (of systems) without considering many aspects related to the design or
-implementation of a protocol that may generate cybersecurity vulnerabilities later
-in the development process.  An infamous example is the KRAK attack on the WPA2
-4-way handshake protocol where the author wrote \autocite{krak2020web}: ``our
-attacks do not violate the security properties proven in formal analysis of the
-4-way handshake'' but ``the problem is that the proofs do not model key
-installation.'' The theories underlying the verification of cybersecurity protocols
-are based on assumptions which non-evidently apply to a general cybersecurity
-theory; otherwise the assumptions would clearly state the necessary element
-that needs to be considered (e.g. modeled) in order to obtain a secure system.
-As an example, the so called Dolev-Yao attacker model\footnote{The Dolev-Yao
-attacker model can be considered as abstract model of an attacker that can be
-used for the analysis of protocol specifications.} \autocite{Dolev1983security}
-only applies to specific instances (often called scenarios) and abstraction of
-the protocol.  This, in turn, creates a false sense of security since it
-requires non-justifiable assumptions on the abstraction of the system under
-verification.
+hard-drive).  
+%There is also an apparent inconsistency in
+%\autocite{Herley2016unfalsifiability} that we seek to clarify before following
+%(as we agree) the scientific path drawn by Herley: cybersecurity is defined as
+%a set of abstract properties in many formal approaches to the investigation of
+%the cybersecurity of systems.  Let's, for the sake of simplicity, consider the case
+%of a system implementing a cybersecurity protocol (e.g. an authentication protocol).
+%The proof of cybersecurity obtained from the formal verification of the design of
+%the protocol (e.g. with respect to a formalization of the authentication
+%property) is indeed falsifiable against the cybersecurity properties verified.  For
+%example, in the protocol verification community, cybersecurity is often defined
+%as a formalization of the high-level properties confidentiality, integrity, and
+%authentication. The problem in such approaches is not the definition of what
+%cybersecurity is but the generality of the results, since they tackle a
+%specific step\footnote{In fact, engineering models such as the V-model start
+%with the requirements definition, and physical and functional architecture
+%design, before the logic of protocols is even considered.} of the engineering
+%process (of systems) without considering many aspects related to the design or
+%implementation of a protocol that may generate cybersecurity vulnerabilities later
+%in the development process.  An infamous example is the KRAK attack on the WPA2
+%4-way handshake protocol where the author wrote \autocite{krak2020web}: ``our
+%attacks do not violate the security properties proven in formal analysis of the
+%4-way handshake'' but ``the problem is that the proofs do not model key
+%installation.'' The theories underlying the verification of cybersecurity protocols
+%are based on assumptions which non-evidently apply to a general cybersecurity
+%theory; otherwise the assumptions would clearly state the necessary element
+%that needs to be considered (e.g. modeled) in order to obtain a secure system.
+%As an example, the so called Dolev-Yao attacker model\footnote{The Dolev-Yao
+%attacker model can be considered as abstract model of an attacker that can be
+%used for the analysis of protocol specifications.} \autocite{Dolev1983security}
+%only applies to specific instances (often called scenarios) and abstraction of
+%the protocol.  This, in turn, creates a false sense of security since it
+%requires non-justifiable assumptions on the abstraction of the system under
+%verification.
 %More specifically, for the formal security verification of a system in which
 %two or more agents are communicating, a formalized scenario needs to be
 %defined by a modeler who chooses (among others): (i) a scope of the
@@ -334,27 +335,28 @@ verification.
 %fields of research you don't have a single definitive approach and it is good
 %that it is so. I would remove this sentence, but only focus on the next point,
 %which is the only important one of this discussion of protocols} 
-More importantly, some of the choices made by the
-modelers/engineers using those formal approaches may completely change the
-results of the formal verification of the system (an interesting example on how
-difficult it is to even just compare the approaches is given in
-\autocite{Cremers2009comparing}). 
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=.7\columnwidth]{protocol-example.pdf}
-	\caption{Abstraction of an ad-hoc esemplificative protocol execution}
-	\label{fig:protocol-example}
-\end{figure}
-As an illustrative example, in Figure~\ref{fig:protocol-example}, under the
-perfect cryptography assumption (i.e. assuming that the cryptographic
-primitives have no cybersecurity flaw), and assuming that no violation to any
-cybersecurity property occurs after message I), the freedom of choosing the
-scope determines that the flaws related to the dishonest impersonification of
-the Server may or may not be considered in the verification process.  This
-choice has a tremendous impact on the focus and findings of the verification of
-the cybersecurity of the protocol.  While this may seem to turn upon minutiae
-and foreseeable, this highlights the false sense of security that may derive
-from a non-falsifiable theory of system cybersecurity.  In other words, as
+%More importantly, some of the choices made by the
+%modelers/engineers using those formal approaches may completely change the
+%results of the formal verification of the system (an interesting example on how
+%difficult it is to even just compare the approaches is given in
+%\autocite{Cremers2009comparing}). 
+%\begin{figure}[t]
+%	\centering
+%	\includegraphics[width=.7\columnwidth]{protocol-example.pdf}
+%	\caption{Abstraction of an ad-hoc esemplificative protocol execution}
+%	\label{fig:protocol-example}
+%\end{figure}
+%As an illustrative example, in Figure~\ref{fig:protocol-example}, under the
+%perfect cryptography assumption (i.e. assuming that the cryptographic
+%primitives have no cybersecurity flaw), and assuming that no violation to any
+%cybersecurity property occurs after message I), the freedom of choosing the
+%scope determines that the flaws related to the dishonest impersonification of
+%the Server may or may not be considered in the verification process.  This
+%choice has a tremendous impact on the focus and findings of the verification of
+%the cybersecurity of the protocol.  While this may seem to turn upon minutiae
+%and foreseeable, this highlights the false sense of security that may derive
+%from a non-falsifiable theory of system cybersecurity.  In other words, 
+As
 Herley mentions in \autocite{Herley2016usenixvideo}, the problem is in the way
 we reason on cybersecurity, and we can see it in the way we reply to simple
 cybersecurity (foundamental) questions.  Let us consider the general question
@@ -366,8 +368,10 @@ $P$ holds for $s$ then $s$ can be considered secure), when the answer is (for
 example) ``if the system is confidential, the system is secure'' the formula
 becomes tautological. In fact, $P$ and $Secure$ can be considered as
 semantically equivalent (cybersecurity is confidentiality and vice-versa).
+
 Instead of starting from reasoning on what makes a system secure or insecure,
-we reason on what causes insecurities.  We focus on insecurities only caused by
+we reason on what causes insecurities. 
+We focus on insecurities only caused by
 the exploitation of cybersecurity attacks, and we assume that achieving
 cybersecurity means preventing all those attacks from being exploitable or
 exploited.  Our hypothesis is that \emph{cybersecurity attacks are only caused by the
@@ -472,7 +476,7 @@ no scientific falsifiable theory correlate
 cybersecurity requirements to necessary and sufficient conditions (e.g. mitigations) 
 to declare a system secure \autocite{Herley2016unfalsifiability}.
 Nonetheless, the extensive body of literature have scientific foundations,
-for example, providing either providing necessary or sufficient conditions
+for example, providing either necessary or sufficient conditions
 for cybersecurity.
 As a driver for our argumentation, we start by reviewing the key concepts
 in the cybersecurity domain.
@@ -574,7 +578,7 @@ accident to incident).
 		implementation, design, or other phases of a product
 		lifecycle.'' A vulnerability, such as those enumerated on the
 		Common vulnerabilities and Exposures (CVE) List, is a mistake
-		that can be directly used by a hacker to gain access to a
+		that can be directly used by an attacker to gain access to a
 		system or network.  The definition is circular if we interpret
 		the word ``error'' and ``mistake'' with the same semantics: a
 		weakness is an error that leads to a vulnerability and a
@@ -604,7 +608,7 @@ accident to incident).
 		ISO/IEC 27000, is an ``attempt to destroy, expose, alter,
 		disable, steal or gain unauthorized access to or make
 		unauthorized use of an asset''; where an \emph{Asset} is
-		``anything that has value to the organization''. We note that for
+		``anything that has value to the organization''. Furthermore, we note that for
 		the purpose of this article, we do not want to focus on a specific
 		organization or business to define asset but, in general, on any 
 		abstract organization (e.g. a company or a society).
@@ -640,17 +644,19 @@ accident to incident).
 Our literature review shows that most of the definitions relate insecurity to
 dis-honesty (also called maliciousness or adversarial) of an agent (often
 called adversary or attacker). In fact, weaknesses become vulnerability if an
-attacker exploits them in an attack.  This, however, just moves the problem of
+attacker exploits them in an attack.  This, however, just shifts the problem of
 defining what cybersecurity is as the problem of defining what a dishonest
 agent can or cannot do in a system, where an agent is any virtual or physical
 entity of the system or using the system (e.g. a device, a software, or a human
-being) and dishonesty is not necessarily related to malicious motivation but
-also to incompetence or lack of skills. As in the Dolev-Yao theory, we may
+being), and dishonesty is not necessarily related to malicious motivation but
+also to incompetence or lack of skills. As in the Dolev-Yao attacker model\footnote{The Dolev-Yao
+attacker model can be considered as abstract model of an attacker that can be
+used for the analysis of protocol specifications.} \autocite{Dolev1983security}, we may
 correlate ``being dishonest'' to ``not following the intended behavior/rules''.
 In the case of a generic system, a dishonest agent is, therefore, any agent
 that doesn't follow the intended behavior (or functionality or logic) of the
 system.  For example, a software can be considered an agent of the system and
-whenever it has a bug, it can be exploited causing an Incident. However, this
+whenever it has a bug, it can be exploited causing an incident. This
 may lead to the conclusion that the dishonest behaviors of agents cannot be
 defined in general (e.g. due to the heterogeneity of agents and systems) and
 that huge repository of dishonest behaviors should be kept as definition, such
@@ -787,26 +793,28 @@ Section~\ref{sec:theory} we detail them as engineering concepts.
 		recipient is defined; and we call it \emph{assertion}  
 	\item Similarly, the portion of \emph{beliefs} we consider for system
 		engineering is the one that builds (input) or describes
-		(output) the behavior of an agent (strategy rules
-		\footnote{``The logical structure of information is one of the
-		most basic and one of the simplest
-		thing in the wide and wonderful world of logical analysis. This
-		point can be put in a deeper perspective. A distinction
-		[\ldots] ought to be made [--] between two kinds of rules (or
-		principles) in any strategic activity like knowledge seeking.
-		On the one hand you have the rules that define the game, e.g.
-		how chessmen are moved on a board. The can be called
-		\emph{definitory} rules.  They must be distinguished from rules
-		[\ldots] that deal with what is better and what is worse in the
-		game in question.  Definitory rules do not say anything about
-		this subject. Rules which do can be called \emph{strategic
-		rules}'' -- Hintikka in \autocite{Hintikka1993Information}}),
+		(output) the behavior of an agent 
+		%(definitory rules
+		%\footnote{``The logical structure of information is one of the
+		%most basic and one of the simplest
+		%thing in the wide and wonderful world of logical analysis. This
+		%point can be put in a deeper perspective. A distinction
+		%[\ldots] ought to be made [--] between two kinds of rules (or
+		%principles) in any strategic activity like knowledge seeking.
+		%On the one hand you have the rules that define the game, e.g.
+		%how chessmen are moved on a board. The can be called
+		%\emph{definitory} rules.  They must be distinguished from rules
+		%[\ldots] that deal with what is better and what is worse in the
+		%game in question.  Definitory rules do not say anything about
+		%this subject. Rules which do can be called \emph{strategic
+		%rules}'' -- Hintikka in \autocite{Hintikka1993Information}},
 		and
-	\item We consider a set of axiomatic \emph{facts} (definitory
+	\item We consider a set of axiomatic \emph{facts} 
+		(definitory
 		rules\footnote{Facts are definitory rule as they don't
 		define how a real system is finally implemented but
 		how it should be, trough a series of requirements. Those requirements 
-		may not hold, through insecurity, in the implemented system.})
+		may not hold, through insecurity, in the implemented system.}\autocite{Hintikka1993Information})
 		instead of considering the more general epistemic definition of
 		knowledge. Specifically, facts describes:
 		\begin{itemize}
@@ -874,11 +882,11 @@ in \autocite{NIST2020NVD,MITRE2020CVE}
 so that we don't need to rely on a scoring system (such as the 
 CVSS) to assign a quantitative evaluation 
 of the cybersecurity of each entry. Instead, we want a precise calculation
-of the number of insecurity configurations to emerge from the mathematical
+of the number of insecure configurations to emerge from the mathematical
 formulation of our cybersecurity hypothesis.
 
 A mereotopology, as defined e.g. in \autocite{Rachavelpula2017mereotopology},
-is an ordered mathematical structure where the basic relation between regions
+is a mathematical structure where the basic relation between regions
 is the reflexive and symmetric relation \emph{Connects With} $\subseteq$,
 that we use to order a universe of agents
 $\agentuniverse$ (see in Table~\ref{tab:rcc358}).  We use the Region Connection
@@ -1095,14 +1103,14 @@ input and output assertions.  Given an agent $a$ and a collection of asserted
 predicates $\Phi$, the input assertions are those received by $a$ from an agent
 $s$ acting as a sender, $\rassert{s}{a}{\Phi}$; similarly, output assertions
 are sent from $a$ to a receiver $r$, $\rassert{a}{r}{\Phi}$. We shall consider
-two pairs of regions\footnote{``I am not asserting, as Lotze did, that a
-relation between $X$ and $Y$ consists of a quality in $X$ and a quality in $Y$
--- a view which I regard as quite indefensible. -- I assert that a relation $Z$
-between $X$ and $Y$ involves the existence in $X$ of the quality ``having the
-relation $Z$ to $Y$'' so that a difference of relations always involves a
-difference in quality, and a change of relations always involves a change of
-quality.'' --  Ellis J. McTaggart, The Unreality of
-Time \autocite{Mctaggart1908unreality}}: 
+two pairs of regions:%\footnote{``I am not asserting, as Lotze did, that a
+%relation between $X$ and $Y$ consists of a quality in $X$ and a quality in $Y$
+%-- a view which I regard as quite indefensible. -- I assert that a relation $Z$
+%between $X$ and $Y$ involves the existence in $X$ of the quality ``having the
+%relation $Z$ to $Y$'' so that a difference of relations always involves a
+%difference in quality, and a change of relations always involves a change of
+%quality.'' --  Ellis J. McTaggart, The Unreality of
+%Time \autocite{Mctaggart1908unreality}}
 \begin{itemize}
 	\item \Rcc{$\assertionRegion_{s\rightarrow a}$}{$\beliefRegion$},
 		where the relation between input-assertions and beliefs
@@ -1135,10 +1143,12 @@ through assertions generates beliefs, a dishonest agent may circulate false
 information, generating false beliefs.  We note that it is often implied that
 the intention behind circulating false information discerns a dishonest and an
 incompetent agent. However, we consider honesty related to sharing
-truths\footnote{``[\ldots] truth exists only in the good man, but the true in
-the bad man as well; for it is possible for the bad man to utter something
-true.'' Sextus Empiricus, Outlines of Pyrrhonism,
-II-83 \autocite{Empiricus1990Pyrrhonism}}.  The relation between beliefs and
+truths.
+%\footnote{``[\ldots] truth exists only in the good man, but the true in
+%the bad man as well; for it is possible for the bad man to utter something
+%true.'' Sextus Empiricus, Outlines of Pyrrhonism,
+%II-83 \autocite{Empiricus1990Pyrrhonism}}
+The relation between beliefs and
 facts determines the competence (on the subjects defined by the facts) of an
 agent (i.e. the more competent an agent is, the more likely a belief of that
 agent is true).
@@ -1296,7 +1306,7 @@ As depicted in Figure~\ref{fig:mashyp}, we relate MAS and CPS as follows.
 		similarly to agents. The transfer of information in a CPS is
 		defined by \emph{channels}.
 	\item The concept of knowledge is related to the \emph{requirements}
-		that, in a factorial way, describe how the CPS shall behave and
+		that describe how the CPS shall behave and
 		its \emph{physical architecture}.
 
 \end{itemize}
@@ -1311,12 +1321,12 @@ As depicted in Figure~\ref{fig:mashyp}, we relate MAS and CPS as follows.
 Since the $\abftheory$-framework is a theory of agents, we could consider ports as
 agents that allows the exchange of information between a channel and another
 agent.  However, we considered a port as a special type of agent to avoid
-an \emph{infinite regress}. While a channel transfers information between agents and
+an \emph{infinite regress}, as describe in the following. While a channel transfers information between agents, and
 a functional architecture elaborate information, a port is simply a connector between
 a channel and a functional architecture. One, however, may argue that a similar
 connection is needed between a channel and the port itself. While this is not 
 excluded by the $\abftheory$-framework, it would obviously lead to an infinite
-nested structure of ports. In order to avoid this, we assume
+nested structure of ports. In order to avoid this infinite structure, we assume
 that a port doesn't require any other means to transfer information from/to a channel
 or from/to a functional architecture. 
 
@@ -1331,7 +1341,7 @@ or from/to a functional architecture.
 The \emph{quality of a port} is determined by the $\rcc$ relation between the
 assertions received or sent and the belief, i.e.
 $\Rcc{\rassert{s}{a}}{\beliefRegion_a}$ for the input-port or
-$\Rcc{\rassert{r}{*}}{\beliefRegion_a}$ for the output-port.  A port is, in
+$\Rcc{\rassert{r}{*}}{\beliefRegion_a}$ for the output-port (where $*$ is a wildcard for an agent).  A port is, in
 fact, syntactic sugar to express the relation between assertions and beliefs.
 We note that the definition of an input/output port can
 be considered ``secure'', meaning that we implicitly formulated the requirement
@@ -1702,7 +1712,7 @@ Based on these hypothesis, we can formulate the concepts of security and
 insecurity (in the $\abftheory$-framework) as mathematical equations.  Let us
 consider a CPS $S$, represented as a graph $G=\langle V,E\rangle$ where $V$
 represents the set of functional blocks and ports of $S$, and $E\subseteq
-V\times E$ is the set of pairs representing the channels and connections (data
+V\times V$ is the set of pairs representing the channels and connections (data
 flows) between functional blocks. We define $R\subseteq V\times F$, where $F$
 is the set of all the requirements of $S$, and extend $G$ as $G'=\langle V',E'\rangle$ with $E'= E\cup R$ and $V'=V\cup F$. Let $\pi:
 E'\rightarrow RCC$ (where $RCC$ is the set of relations in the RCC) be the
@@ -1796,7 +1806,7 @@ to ``mitigated''. As a consequence, the risk is re-calculated on-the-fly, i.e.
 without the need of running the tool again, based on annotations and formulas 
 in the Excel file.
 In our approach, cybersecurity requirements are not imposed by the
-specification but are automatically extracted by our tool as potential weaknesses.
+specification but are automatically extracted by our tool as mitigations to potential weaknesses.
 Those weaknesses are related to the different insecure configurations 
 of the specified system. 
 
@@ -1810,7 +1820,7 @@ We report the results of the evaluation of a water level reader (sensor ad-hoc e
 	\label{fig:eng_cs1}
 \end{figure}
 As in Figure~\ref{fig:eng_cs1}, we defined 2 agents: sensorInTank and sensorBoard,
-which represent the physical reader that needs to be placed in a tank of water, and 
+which represent the physical reader that needs to be placed in a tank, and 
 the board that interprets the readings and outputs them as digital signals.
 The two components are connected by a wire.
 \begin{figure}
@@ -1819,7 +1829,7 @@ The two components are connected by a wire.
 	\caption{Sensor Board Object Diagram}
 	\label{fig:int_cs1}
 \end{figure}
-In Figure~\ref{fig:int_cs1} we report the functional architecture that
+In Figure~\ref{fig:int_cs1}, we report the functional architecture that
 receives the incoming communications from the sensor in the tank, and 
 communicates them encrypted.
 \begin{figure*}
@@ -1890,11 +1900,13 @@ possible scenarios in which at least one component diverge from the specificatio
 We proposed an hypothesis for a foundational theory on security, arguing that
 cybersecurity-related issues are not related to the maliciousness of an agent but to
 the vagueness of the cybersecurity controls on the engineering processes.
-The current state-of-the-art processes allow, given a specification,
-an engineer to design the system in such a way that cybersecurity issues arise due to the lack
-of proper cybersecurity risk assessment processes.
-Those designs, again, lack of cybersecurity verification processes based on a solid 
-cybersecurity foundational theory and then permit the generation of insecure implementation.
+We also provided a prototype tool for the quantitative estimation of the cybersecurity
+risk, based on a UML model of the system under assessment.
+%The current state-of-the-art processes allow, given a specification,
+%an engineer to design the system in such a way that cybersecurity issues arise due to the lack
+%of proper cybersecurity risk assessment processes.
+%Those designs, again, lack of cybersecurity verification processes based on a solid 
+%cybersecurity foundational theory and then permit the generation of insecure implementation.
 The cybersecurity verification and test-case generation will be the focus of our next steps.
 %We conclude that the problem of security is a problem related to the 
 %many possible design and, in turn, implementation given a specification.
