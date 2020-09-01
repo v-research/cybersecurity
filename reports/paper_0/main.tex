@@ -14,6 +14,15 @@
 \usepackage{amsthm}
 \usepackage{rotating}
 
+% Space hacks, ...yes, from outer space!
+%\addtolength{\textfloatsep}{-6mm}
+%\addtolength{\abovecaptionskip}{-3mm}
+%\addtolength{\columnsep}{-1mm}
+%\setlength{\evensidemargin}{0.1in}
+%\setlength{\oddsidemargin}{0.1in}
+%\setlength{\textwidth}{6.47in}
+%\setlength{\textwidth}{5.1in}
+ 
 % circles
 \usepackage{wasysym}
 \newcommand{\Tdot}{$\CIRCLE$}
@@ -170,15 +179,16 @@
 \begin{document}
 \title{The Etiology of Cybersecurity}
 
-\author{\IEEEauthorblockN{Marco Rocchetto}
-\IEEEauthorblockA{V-Research\\
-Verona, Italy\\
-Email: marco@v-research.it}
-\and
-\IEEEauthorblockN{Francesco Beltramini}
-\IEEEauthorblockA{V-Research\\
-Verona, Italy\\
-Email: francesco@v-research.it}
+\author{
+%	\IEEEauthorblockN{Marco Rocchetto}
+%\IEEEauthorblockA{V-Research\\
+%Verona, Italy\\
+%Email: marco@v-research.it}
+%\and
+%\IEEEauthorblockN{Francesco Beltramini}
+%\IEEEauthorblockA{V-Research\\
+%Verona, Italy\\
+%Email: francesco@v-research.it}
 }
 
 \maketitle
@@ -724,7 +734,8 @@ use the word agent.
 
 There is no agreement between the research communities (e.g.
 Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent.
-However, the same ideas revolved around for thousands of years\footnote{
+However, the same ideas revolved around for thousands of years
+\footnote{
 It is interesting to notice that 
 in \autocite{Empiricus1990Pyrrhonism}, the author states: ``The
  logical criterion also may be used in three senses -- of the
@@ -1256,7 +1267,7 @@ example,
 		from concept phase through production, operation, service, and
 		decommissioning''
 \end{enumerate}
-However, standards do not describe in detail how to perform a cybersecurity risk 
+Standards do not describe in detail how to perform a cybersecurity risk 
 assessment and only vaguely define the overall objective, which
 can be summarized as to provide an understanding of the potential cybersecurity risks.
 Roughly speaking, a cybersecurity risk assessment (e.g. CORAS \autocite{Lund2010model}) 
@@ -1284,7 +1295,7 @@ to predict cybersecurity weaknesses in a system.
 \subsection{From Multi-Agent to Cyber-Physical Systems}
 \begin{figure*}[t]
 	\centering
-	\includegraphics[width=.8\textwidth]{mashyp.pdf}
+	\includegraphics[width=.7\textwidth]{mashyp.pdf}
 	\caption{Mapping Epistemological Concepts to (Cyber-Physical) Systems Engineering}
 	\label{fig:mashyp}
 \end{figure*}
