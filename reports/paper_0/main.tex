@@ -524,26 +524,24 @@ the terms that structure our current understanding of cybersecurity.
  
 \begin{itemize}
 	\item \emph{Mankind} ``refers collectively to humans''
-\autocite{wiki-mankind}, while the concept of \emph{Nature} is
+		\autocite{wiki-mankind}, while the concept of \emph{Nature} is
 		related ``to the intrinsic characteristics that plants,
 		animals, and other features of the world develop of their own
-		accord'' (e.g. the physical universe) \autocite{wiki-nature}. 
-		\begin{itemize}
-			\item There exist several terms to refer to an
-				\emph{attacker}, e.g. threat agent or threat source,
-				but, from now on, we consider the
-				Causality principle to be the \emph{threat
-				source}, Nature or Mankind to be the
-				\emph{threat agents} and an \emph{attacker} as
-				a specific malicious threat agent which materializes a
-				threat.
-		\end{itemize}
-	\item \emph{Vulnerability}\footnote{The term vulnerability is not
-		present in the Encyclopedia of Cryptography and Security, while
-		it is used in 12 entries (such as in the definition of
-		``penetration testing'' \autocite{caddy2005pentest})
-		highlighting how commonly this word is used without a proper
-		supporting semantics.}, as defined in \autocite{cnssi20104009}
+		accord'' (e.g. the physical universe) \autocite{wiki-nature}.
+		There exist several terms to refer to an \emph{attacker}, e.g.
+		threat agent or threat source, but, from now on, we consider
+		the Causality principle to be the \emph{threat source}, Nature
+		or Mankind to be the \emph{threat agents} and an
+		\emph{attacker} as a specific malicious threat agent which
+		materializes a threat.
+	\item \emph{Vulnerability},
+		%\footnote{The term vulnerability is not
+		%present in the Encyclopedia of Cryptography and Security, while
+		%it is used in 12 entries (such as in the definition of
+		%``penetration testing'' \autocite{caddy2005pentest})
+		%highlighting how commonly this word is used without a proper
+		%supporting semantics.}, 
+		as defined in \autocite{cnssi20104009}
 		(and adopted in \autocite{nist2013800-53}), is a ``weakness in an
 		information system, system security procedures, internal
 		controls, or implementation that could be exploited by a threat
@@ -696,7 +694,6 @@ reported today are simply the realization of potential system configurations,
 which deviate from the nominal behavior because the \emph{intended (or
 nominal) behavior} of the system is not precisely defined in the specification
 at the very early stages of the engineering process.
-
 As a reference, we consider the following steps of the engineering process
 and our objective is to be able to predict the cybersecurity requirements
 instead of axiomatically assume them.
@@ -734,19 +731,14 @@ use the word agent.
 
 There is no agreement between the research communities (e.g.
 Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent.
-However, the same ideas revolved around for thousands of years
-\footnote{
+However, the same ideas revolved around for thousands of years\footnote{
 It is interesting to notice that 
-in \autocite{Empiricus1990Pyrrhonism}, the author states: ``The
- logical criterion also may be used in three senses -- of the
- agent, or the instrument, or the ``according to what''; the
- agent, for instance, may be a man, the instrument either sense
- perception or intelligence, and the ``according to what'' the
- application of the impression ``according to'' which the man
- proceeds to judge by means of one of the aforesaid
- instruments.''. The author than proceeds showing that
- even in this framework, knowledge still is non-apprehensible.
-}.
+in \autocite{Empiricus1990Pyrrhonism}, the author states: ``The logical
+criterion also may be used in three senses -- of the agent, or the instrument,
+or the ``according to what''; the agent, for instance, may be a man, the
+instrument either sense perception or intelligence, and the ``according to
+what'' the application of the impression ``according to'' which the man
+proceeds to judge by means of one of the aforesaid instruments''.}.
 Some relevant examples for our objective are the following.
 \begin{itemize}
 	\item In \autocite{Hintikka1962knowledge}, Hintikka describes the
@@ -827,13 +819,10 @@ Section~\ref{sec:theory} we detail them as engineering concepts.
 		how it should be, trough a series of requirements. Those requirements 
 		may not hold, through insecurity, in the implemented system.}\autocite{Hintikka1993Information})
 		instead of considering the more general epistemic definition of
-		knowledge. Specifically, facts describes:
-		\begin{itemize}
-			\item The functional architecture of each agent
-			\item The physical/structural (HW/SW) architecture of each
-				subsystem of agents and agent within a
-				subsystem
-		\end{itemize}
+		knowledge. Specifically, facts describes: the functional
+		architecture of each agent, and the physical/structural (HW/SW)
+		architecture of each subsystem of agents and agent within a
+		subsystem
 \end{enumerate}
 We give a graphical representation of (sub-)system and agent in Figure~\ref{fig:system-agent}.
 The notation will be introduced in the next section but, intuitively,
@@ -1323,12 +1312,12 @@ As depicted in Figure~\ref{fig:mashyp}, we relate MAS and CPS as follows.
 \end{itemize}
 
 \paragraph{Input and Output Ports}
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=\columnwidth]{IOports.pdf}
-	\caption{Input and Output Port of an agent}
-	\label{fig:ioports}
-\end{figure}
+%\begin{figure}[t]
+%	\centering
+%	\includegraphics[width=\columnwidth]{IOports.pdf}
+%	\caption{Input and Output Port of an agent}
+%	\label{fig:ioports}
+%\end{figure}
 Since the $\abftheory$-framework is a theory of agents, we could consider ports as
 agents that allows the exchange of information between a channel and another
 agent.  However, we considered a port as a special type of agent to avoid
@@ -1442,12 +1431,12 @@ An input port is, in the $\abftheory$-framework, defined secure as long as the r
 \end{proof}
 
 \paragraph{Communication Channels}
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=\columnwidth]{channel.pdf}
-	\caption{Communication over a Mono-directional Channel}
-	\label{fig:channel}
-\end{figure}
+%\begin{figure}[t]
+%	\centering
+%	\includegraphics[width=\columnwidth]{channel.pdf}
+%	\caption{Communication over a Mono-directional Channel}
+%	\label{fig:channel}
+%\end{figure}
 In this work, we only consider
 mono-directional channels and communication but the extension to bi-directional
 channel can be considered as the union of two unidirectional channels. A
