@@ -486,7 +486,8 @@ no scientific falsifiable theory correlate
 cybersecurity requirements to necessary and sufficient conditions (e.g. mitigations) 
 to declare a system secure \autocite{Herley2016unfalsifiability}.
 Nonetheless, the extensive body of literature have scientific foundations,
-for example, providing either necessary or sufficient conditions
+for example, providing formal frameworks for the verification of 
+properties %either necessary or sufficient conditions
 for cybersecurity.
 As a driver for our argumentation, we start by reviewing the key concepts
 in the cybersecurity domain.
@@ -730,8 +731,8 @@ multi-agent system research field, instead of using the word element we will
 use the word agent.
 
 There is no agreement between the research communities (e.g.
-Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent.
-However, the same ideas revolved around for thousands of years\footnote{
+Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent
+but the same ideas revolved around for thousands of years\footnote{
 It is interesting to notice that 
 in \autocite{Empiricus1990Pyrrhonism}, the author states: ``The logical
 criterion also may be used in three senses -- of the agent, or the instrument,
@@ -786,14 +787,13 @@ For example, Hintikka in
 \autocite{Hintikka1993Information} states that ``A purely logical definition of
 information is impossible''. However, a detailed formalization of those concepts is out
 of the scope of this paper. 
-
-We now define those concepts abstractly, inspired by the
+Instead, we now define those concepts abstractly, inspired by the
 $\abftheory$-framework  defined in \autocite{Santaca2016abf} and, in
 Section~\ref{sec:theory} we detail them as engineering concepts.
 \begin{enumerate}
 	\item We consider information only when the intention of exchanging 
 		that information is from a sender to 
-		recipient is defined; and we call it \emph{assertion}  
+		recipient; and we call it \emph{assertion}  
 	\item Similarly, the portion of \emph{beliefs} we consider for system
 		engineering is the one that builds (input) or describes
 		(output) the behavior of an agent 
@@ -811,7 +811,6 @@ Section~\ref{sec:theory} we detail them as engineering concepts.
 		%game in question.  Definitory rules do not say anything about
 		%this subject. Rules which do can be called \emph{strategic
 		%rules}'' -- Hintikka in \autocite{Hintikka1993Information}},
-		and
 	\item We consider a set of axiomatic \emph{facts} 
 		(definitory
 		rules\footnote{Facts are definitory rule as they don't
@@ -918,7 +917,7 @@ a system with a fixed number of regions, there exist
 an upper-bound to the number of possible configuration of a system, defined by
 the possible relations between the different regions.
 For completeness, we report in the next paragraph 
-the calculation done in \autocite{Santaca2016abf}.
+the calculation done by the authors in \autocite{Santaca2016abf}.
 
 \paragraph{Number of different configurations of a system}
 The general formula to calculate the number of different types of agents is
@@ -1224,17 +1223,16 @@ Figure~\ref{fig:quantitative}, defined as follows.
 	possible intermediate configuration is defined by the calculus used
 	(RCC5 in our case).
 \end{definition}
-While a risk matrix is often defined as a function of the 
-likelihood and impact of attacks (based on quantitative ad-hoc estimation
-of how likely it is that an attacker will exploit one or more vulnerabilities
-and what is the magnitude of the incidents produced by this exploitation), we suggest
-that cybersecurity weaknesses are all equally likely to be exploited
-if there's a connection between the weakness and the asset that
-an attacker wants to impact. When the whole system is considered an asset,
-all weaknesses are equally likely to be exploited.
-Therefore, a risk matrix should
-capture the number of insecure configurations of a system, rather
-than predicating over likelihoods of weaknesses exploitation.
+While a risk matrix is often defined as a function of the likelihood and impact
+of attacks (based on quantitative ad-hoc estimation of how likely it is that an
+attacker will exploit one or more vulnerabilities and what is the magnitude of
+the incidents produced by this exploitation), we suggest that cybersecurity
+weaknesses are all equally likely to be exploited if there's a connection
+between the weakness and the asset that an attacker wants to impact. When the
+whole system is considered an asset, all weaknesses are equally likely to be
+exploited.  Therefore, a risk matrix should capture the number of insecure
+configurations of a system, rather than predicating over likelihoods of
+weaknesses exploitation.
 
 \section{Prediction of Cybersecurity Weaknesses}\label{sec:theory}
 Several standards mandate a secure-by-design approach in which cybersecurity
@@ -1294,9 +1292,8 @@ As depicted in Figure~\ref{fig:mashyp}, we relate MAS and CPS as follows.
 	\item We consider a System as a hierarchy of agents. So, we map agents
 		to \emph{systems, sub-systems, or devices}, depending on the
 		granularity of the design. For example, a modeler can model a
-		specific device, as in Figure~\ref{fig:mashyp}. In this case,
-		the system is not decomposed into sub-systems or devices and
-		the device is considered as an agent.
+		specific device as a system not decomposed into sub-systems or devices (and
+		the device is considered as an agent).
 	\item Agents reason over beliefs (i.e. transform beliefs into other
 		beliefs) and each \emph{component of a CPS} (system, sub-system,
 		or device) is composed by a \emph{functional architecture} that
@@ -1406,24 +1403,24 @@ An input port is, in the $\abftheory$-framework, defined secure as long as the r
 	We distinguish between regions that contain information and regions that
 	don't by writing the latter as $\emptyset$.
 	\begin{enumerate}
-		\item if $\eq{\assertionRegion}{\beliefRegion})$ then either
+		\item if $\eq{\assertionRegion}{\beliefRegion}$ then either
 			$\assertionRegion=\beliefRegion=\emptyset$ (no
 			communication) or
 			$\assertionRegion=\beliefRegion\neq\emptyset$ (forward
 			communication)
-		\item if $\dr{\assertionRegion}{\beliefRegion})$ then
+		\item if $\dr{\assertionRegion}{\beliefRegion}$ then
 			$\assertionRegion=\emptyset\oplus\beliefRegion=\emptyset$
 			(we call \emph{insert} the former and \emph{full drop}
 			the latter case), or
 			$\assertionRegion\neq\emptyset\wedge\beliefRegion\neq\emptyset\wedge\assertionRegion\neq\beliefRegion$
 			which we call \emph{replace} (i.e. drop and insert)
-		\item if $\pp{\assertionRegion}{\beliefRegion})$ then
+		\item if $\pp{\assertionRegion}{\beliefRegion}$ then
 			$\beliefRegion$ contains and extend $\assertionRegion$
 			which we call \emph{insertion}
-		\item if $\ppi{\assertionRegion}{\beliefRegion})$ then
+		\item if $\ppi{\assertionRegion}{\beliefRegion}$ then
 			$\assertionRegion$ contains and extend $\beliefRegion$
 			which we call \emph{drop} (or selective drop to stress the difference with the full drop)
-		\item if $\po{\assertionRegion}{\beliefRegion})$ then a part of
+		\item if $\po{\assertionRegion}{\beliefRegion}$ then a part of
 			the $\assertionRegion$ is contained in the
 			$\beliefRegion$ which is a combination of
 			\emph{selective drop and generation} which we call \emph{injection}.
