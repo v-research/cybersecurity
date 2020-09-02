@@ -1667,7 +1667,7 @@ the following weaknesses may occur:
 		end respectively, resulting in the two identical (and the
 		non-fresh) nonces 1110 and 1110
 	\item Delete: part of output-nonce is dropped. For example, the last bit of 1101 and 1100 is dropped, resulting in the two equal and non-fresh nonces: 110 and 110.
-	\item Inject: substitution at bit level results in non-fresh nonces. For example, 110 becomes 111 becomes equal by flipping either the last 0 of the former nonce or the last 1 of the latter.
+	\item Inject: substitution at bit level results in non-fresh nonces. For example, 110 and 111 becomes equal by flipping either the last 0 of the former or the last 1 of the latter.
 \end{itemize}
 
 We summarize our results by categorizing the weaknesses predicted by our hypothesis
@@ -1689,7 +1689,7 @@ application of our hypothesis to components with defined behavior/requirements.
 \caption{Weaknesses Categorization~\label{tab:weaknesses}}
 \end{table*}
 
-\subsection{Security and Insecurity of a System}
+\subsection{Security and Insecurity of a System}\label{sec:formula}
 \begin{hypothesis}{\bf System Security Design --}\label{hyp:security}
 	A system security design is given by a precise system 
 	specification over the physical and functional architectures, that
@@ -1789,7 +1789,8 @@ translated into a UML design where:
 The tool generates a graph-like internal structure which represents
 the specification (called $\abftheory$-graph). The $\abftheory$-graph defines the system as
 a number of regions of assertions, beliefs, and facts. Those regions
-are connected by a generic relation which is evaluated as follows.
+are connected by a generic relation which is evaluated as follows (according to
+the formula in Section~\ref{sec:formula}).
 The graph is translated into 
 a logical formula that represents the specification in the $\abftheory$-framework and,
 along with the axiomatization of the RCC5 calculus, is given as input to the Z3 SMT solver.
@@ -1819,7 +1820,7 @@ We report the results of the evaluation of a water level reader (sensor ad-hoc e
 \end{figure}
 As in Figure~\ref{fig:eng_cs1}, we defined 2 agents: sensorInTank and sensorBoard,
 which represent the physical reader that needs to be placed in a tank, and 
-the board that interprets the readings and outputs them as digital signals.
+the board that interprets the readings and outputs them as signals.
 The two components are connected by a wire.
 \begin{figure}
 	\centering
@@ -1896,7 +1897,7 @@ possible scenarios in which at least one component diverge from the specificatio
 %ad esempio il considerare la generazione di test cases, se avete già qualche
 %idea su come procedere, potreste discuterne brevemente.}
 We proposed an hypothesis for a foundational theory on security, arguing that
-cybersecurity-related issues are not related to the maliciousness of an agent but to
+cybersecurity-related issues are not linked to the maliciousness of an agent but to
 the vagueness of the cybersecurity controls on the engineering processes.
 We also provided a prototype tool for the quantitative estimation of the cybersecurity
 risk, based on a UML model of the system under assessment.
