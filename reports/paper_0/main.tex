@@ -205,7 +205,7 @@
 	based on a correlation between the epistemological concepts of
 	knowledge, beliefs, and information with the engineering concepts of
 	requirements, functional architectures, and channels.  Ultimately, our
-	hypothesis allows the definition of the cybersecurity of a system as a
+	hypothesis allows for the definition of the cybersecurity of a system as a
 	mathematical formula.  We implemented a prototype cybersecurity risk
 	assessment tool that, based on our hypothesis, predicts the weaknesses in a
 	UML model of a (cyber-physical) system.
@@ -457,7 +457,7 @@ how can we define a theory that predicts what a human being will do?
 Cybersecurity attacks seem to be related to the creativity of the attacker
 and thus unpredictable. 
 
-Currently, the most complete understanding of insecurity issues, is stored into
+Currently, the most complete understanding of insecurity issues is stored into
 a network of databases of weaknesses (e.g.
 CWE \autocite{MITRE2020CWEresearch}), vulnerabilities (e.g. CVE \autocite{CVE},
 NVD \autocite{NIST2020NVD}), and attacks (e.g. CAPEC \autocite{MITRE2020CAPEC},
@@ -482,10 +482,10 @@ and quantitatively evaluates the impact on the CIA triad.
 While cybersecurity requirements, weaknesses, vulnerabilities, and attacks
 have been extensively studied and implemented both in academia and industry
 to provide tools for the testing or verification of systems, 
-no scientific falsifiable theory correlate
+no scientific falsifiable theory correlates
 cybersecurity requirements to necessary and sufficient conditions (e.g. mitigations) 
 to declare a system secure \autocite{Herley2016unfalsifiability}.
-Nonetheless, the extensive body of literature have scientific foundations,
+Nonetheless, the extensive body of literature has scientific foundations,
 for example, providing formal frameworks for the verification of 
 properties %either necessary or sufficient conditions
 for cybersecurity.
@@ -668,7 +668,7 @@ system.  For example, a software can be considered an agent of the system and
 whenever it has a bug, it can be exploited causing an incident. This
 may lead to the conclusion that the dishonest behaviors of agents cannot be
 defined in general (e.g. due to the heterogeneity of agents and systems) and
-that huge repository of dishonest behaviors should be kept as definition, such
+that a huge repository of dishonest behaviors should be kept as definition, such
 as CAPEC \autocite{MITRE2020CAPEC}; or that dishonesty of an agent with respect
 to a cybersecurity protocol should be defined as a number of predefined actions as
 in
@@ -699,8 +699,8 @@ As a reference, we consider the following steps of the engineering process
 and our objective is to be able to predict the cybersecurity requirements
 instead of axiomatically assume them.
 \begin{enumerate}
-	\item \emph{System Specification}, where the \emph{functional and physical requirements} are defined
-	\item \emph{Architecture Design}, where the specification is structured into \emph{functional and physical architectures}
+	\item \emph{System Specification}, where the \emph{functional and physical requirements} are defined.
+	\item \emph{Architecture Design}, where the specification is structured into \emph{functional and physical architectures}.
 	\item \emph{Cybersecurity Risk Assessment}, where the potential \emph{weaknesses} (errors)
 		are identified and, consequently, \emph{cybersecurity requirements} are
 		captured.
@@ -731,7 +731,7 @@ multi-agent system research field, instead of using the word element we will
 use the word agent.
 
 There is no agreement between the research communities (e.g.
-Multi-Agent-System, Epistemic Logic) on which are the constituent of an agent
+Multi-Agent-System, Epistemic Logic) on what the constituent of an agent are,
 but the same ideas revolved around for thousands of years\footnote{
 It is interesting to notice that 
 in \autocite{Empiricus1990Pyrrhonism}, the author states: ``The logical
@@ -754,8 +754,8 @@ Some relevant examples for our objective are the following.
 For our argument, as in \autocite{Santaca2016abf}, an agent is composed by its
 knowledge, beliefs, and the information or assertions it provides; where
 knowledge is defined, as in \autocite{Steup2020epistemology}, as a set of
-proposition known by an agent, such that: (i) knowledge requires belief, (ii)
-knowledge require truth, (iii) knowledge must be \emph{properly justified}, and
+propositions known by an agent, such that: (i) knowledge requires belief, (ii)
+knowledge requires truth, (iii) knowledge must be \emph{properly justified}, and
 the only objective of information is to exchange beliefs between agents.  As
 defined in \autocite{Hintikka1993Information}, ``information is specified by
 specifying which alternatives concerning the reality it admits and which
@@ -764,7 +764,7 @@ variable (which admits the two alternatives True/False) its information is
 defined as believed to be True/False and not believed to be the opposite.  Due
 to the definition of information and then with its relation to the
 probabilistic correlation to truth/reality, we consider information in relation
-with an agent's beliefs. Similarly, we consider beliefs to define the actual
+to an agent's beliefs. Similarly, we consider beliefs to define the actual
 behavior of an agent or a system; i.e. we consider behaviors as belief revision
 systems.
 The difference between knowledge and information as used by Hintikka, and facts
@@ -793,10 +793,10 @@ Section~\ref{sec:theory} we detail them as engineering concepts.
 \begin{enumerate}
 	\item We consider information only when the intention of exchanging 
 		that information is from a sender to 
-		recipient; and we call it \emph{assertion}  
+		recipient; and we call it \emph{assertion}.
 	\item Similarly, the portion of \emph{beliefs} we consider for system
 		engineering is the one that builds (input) or describes
-		(output) the behavior of an agent 
+		(output) the behavior of an agent.
 		%(definitory rules
 		%\footnote{``The logical structure of information is one of the
 		%most basic and one of the simplest
@@ -818,10 +818,10 @@ Section~\ref{sec:theory} we detail them as engineering concepts.
 		how it should be, trough a series of requirements. Those requirements 
 		may not hold, through insecurity, in the implemented system.}\autocite{Hintikka1993Information})
 		instead of considering the more general epistemic definition of
-		knowledge. Specifically, facts describes: the functional
+		knowledge. Specifically, facts describe: the functional
 		architecture of each agent, and the physical/structural (HW/SW)
 		architecture of each subsystem of agents and agent within a
-		subsystem
+		subsystem.
 \end{enumerate}
 We give a graphical representation of (sub-)system and agent in Figure~\ref{fig:system-agent}.
 The notation will be introduced in the next section but, intuitively,
@@ -865,7 +865,7 @@ from the behavior block are then translated back into (outgoing) assertions.
 \end{table*}
 
 Similarly to \autocite{Santaca2016abf}, we define agents as a meronomy (an
-hierarchy of Part-Whole relations) over the constituent that we previously defined
+hierarchy of Part-Whole relations) over the constituents that we previously defined
 (assertions, beliefs, and facts), based on a standard definition of mereology,
 i.e. based on the definition of parthood relation between \emph{parts}.  Due to
 the necessity of considering different relations between parts (as we'll show afterwards)
@@ -902,7 +902,7 @@ In Table~\ref{tab:rcc}, we summarize the axioms of the RCC (see, e.g., \autocite
 over the mereotopology using the RCC calculus, as follows, where $\rcc(X,Y)$ on
 two generic regions $X,Y$ represents one of the possible RCC relations between
 $X$ and $Y$. We note that all the RCC relations are symmetric with the exception
-of those that has an explicit (related) inverse.
+of those that have an explicit (related) inverse.
 
 \begin{definition}{\bf System State --}\label{def:opsystem}
 	A CPS system (or a sub-system) state is defined as the tuple
@@ -913,7 +913,7 @@ of those that has an explicit (related) inverse.
 \end{definition}
 
 As in \autocite{Santaca2016abf}, it follows that, defining
-a system with a fixed number of regions, there exist
+a system with a fixed number of regions, there exists
 an upper-bound to the number of possible configuration of a system, defined by
 the possible relations between the different regions.
 For completeness, we report in the next paragraph 
@@ -936,9 +936,9 @@ different type of agents. However, only 54 of the 125 (as showed in
 the definition of the relations of RCC5. Generalizing to all the RCCs:
 
 \begin{itemize}%[nosep]
-\item \emph{RCC3} --- theoretical: $3^3=27$,  correct: 15 
-\item \emph{RCC5} --- theoretical: $5^3=125$, correct: 54
-\item \emph{RCC8} --- theoretical: $8^3=512$, correct: 193
+\item \emph{RCC3} --- theoretical: $3^3=27$,  correct: 15.
+\item \emph{RCC5} --- theoretical: $5^3=125$, correct: 54.
+\item \emph{RCC8} --- theoretical: $8^3=512$, correct: 193.
 \end{itemize}
 
 Hence, even if considering a different number of regions than the three
@@ -951,7 +951,7 @@ In the quantitative evaluation of a single agent, depicted in Figure~\ref{fig:qu
 we argue that only 1 configuration represents the nominal (expected) behavior 
 of the agent while the other configurations are either impossible to 
 implement or diverge from the intended nominal behavior. We note 
-that, the numbers reported here do not consider the details of the
+that the numbers reported here do not consider the details of the
 engineering process and should be considered a limit of an abstract 
 representation of the system.
 \begin{figure}[t]
@@ -1134,8 +1134,8 @@ two pairs of regions:%\footnote{``I am not asserting, as Lotze did, that a
 \Rcc{$\beliefRegion$}{$\factRegion$} -- Honesty and Competence} 
 The relation of assertions
 and beliefs with facts determines the quality with respect to the nominal
-(specified) system.  Given that facts defines what needs to be true in the system,
-the relation of assertions an facts determines the degree of quality between
+(specified) system.  Given that facts define what needs to be true in the system,
+the relation of assertions and facts determines the degree of quality between
 the real information circulating in a system (or within an agent) and
 the one specified.  Since the transfer of information
 through assertions generates beliefs, a dishonest agent may circulate false
@@ -1245,14 +1245,14 @@ example,
 		\& EASA for aviation cyber-security airworthiness certification,
 		as of 2019'' as pointed out by SAE in \autocite{SAE2019DO326A}.
 	\item NIST 800-82 \autocite{Stouffer2011guide} -- ``guide to Industrial
-		Control System (ICS) Security''
+		Control System (ICS) Security''.
 	\item J3061:2016-1 \autocite{SAE2016J3061} -- ``Cybersecurity Guidebook
 		for Cyber-Physical Vehicle Systems'' defines ``set of
 		high-level guiding principles for Cybersecurity as it relates
 		to cyber-physical vehicle systems'' and states that
 		``incorporate Cybersecurity into cyber-physical vehicle systems
 		from concept phase through production, operation, service, and
-		decommissioning''
+		decommissioning''.
 \end{enumerate}
 Standards do not describe in detail how to perform a cybersecurity risk 
 assessment and only vaguely define the overall objective, which
@@ -1366,22 +1366,22 @@ From our definition of ports, it follows that there exist only the following \em
 types of weaknesses, generating six types of insecure port in RCC5:
 %(the notation is reported for input-ports, i.e. on the left-hand side of the arrow):
 \begin{enumerate}[start=1, label={W\arabic*)}]
-	\item \emph{replace port}, where assertions reach
+	\item \emph{Replace port}, where assertions reach
 		the port but is replaced with different and un-related information
-		before passing the boundary 
-	\item \emph{drop port}, where assertions reach the
+		before passing the boundary.
+	\item \emph{Drop port}, where assertions reach the
 		port but do not pass the boundary of the agent (i.e. do not
-		become belief of the agent)
-	\item \emph{insertion port}, where some new information is transferred along with 
+		become belief of the agent).
+	\item \emph{Insertion port}, where some new information is transferred along with 
 		the information incoming from a channel, and then sent to
-		the intended recipient (agent)
-	\item \emph{injection port}, where part of the incoming information
-		is substituted with new information and transferred to the intended recipient
-	\item \emph{selective port}, where some information passes the port and
+		the intended recipient (agent).
+	\item \emph{Injection port}, where part of the incoming information
+		is substituted with new information and transferred to the intended recipient.
+	\item \emph{Selective port}, where some information passes the port and
 		part is either:
 	\begin{enumerate}[start=1, label={W5.\arabic*)}]
-		\item dropped, 
-		\item replaced.
+		\item Dropped, or 
+		\item Replaced.
 	\end{enumerate}
 \end{enumerate}
 \end{theorem}
@@ -1403,24 +1403,24 @@ An input port is, in the $\abftheory$-framework, defined secure as long as the r
 	We distinguish between regions that contain information and regions that
 	don't by writing the latter as $\emptyset$.
 	\begin{enumerate}
-		\item if $\eq{\assertionRegion}{\beliefRegion}$ then either
+		\item If $\eq{\assertionRegion}{\beliefRegion}$ then either
 			$\assertionRegion=\beliefRegion=\emptyset$ (no
 			communication) or
 			$\assertionRegion=\beliefRegion\neq\emptyset$ (forward
-			communication)
-		\item if $\dr{\assertionRegion}{\beliefRegion}$ then
+			communication).
+		\item If $\dr{\assertionRegion}{\beliefRegion}$ then
 			$\assertionRegion=\emptyset\oplus\beliefRegion=\emptyset$
 			(we call \emph{insert} the former and \emph{full drop}
 			the latter case), or
 			$\assertionRegion\neq\emptyset\wedge\beliefRegion\neq\emptyset\wedge\assertionRegion\neq\beliefRegion$
-			which we call \emph{replace} (i.e. drop and insert)
-		\item if $\pp{\assertionRegion}{\beliefRegion}$ then
+			which we call \emph{replace} (i.e. drop and insert).
+		\item If $\pp{\assertionRegion}{\beliefRegion}$ then
 			$\beliefRegion$ contains and extend $\assertionRegion$
-			which we call \emph{insertion}
-		\item if $\ppi{\assertionRegion}{\beliefRegion}$ then
+			which we call \emph{insertion}.
+		\item If $\ppi{\assertionRegion}{\beliefRegion}$ then
 			$\assertionRegion$ contains and extend $\beliefRegion$
-			which we call \emph{drop} (or selective drop to stress the difference with the full drop)
-		\item if $\po{\assertionRegion}{\beliefRegion}$ then a part of
+			which we call \emph{drop} (or selective drop to stress the difference with the full drop).
+		\item If $\po{\assertionRegion}{\beliefRegion}$ then a part of
 			the $\assertionRegion$ is contained in the
 			$\beliefRegion$ which is a combination of
 			\emph{selective drop and generation} which we call \emph{injection}.
@@ -1480,12 +1480,12 @@ following but the proof by exhaustion over all the possible cases is
 straightforward.
 
 \begin{enumerate}[start=6, label={W\arabic*)}]
-	\item \emph{secure output port} and \emph{input drop port}
-	\item \emph{secure output port} and \emph{input insertion port}
-	\item \emph{output drop port} and \emph{input drop port}
-	\item \emph{output drop port} and \emph{input insertion port}
-	\item \emph{output drop port} and \emph{input secure port}
-	\item \emph{output injection port} and \emph{input secure port}
+	\item \emph{Secure output port} and \emph{input drop port}.
+	\item \emph{Secure output port} and \emph{input insertion port}.
+	\item \emph{Output drop port} and \emph{input drop port}.
+	\item \emph{Output drop port} and \emph{input insertion port}.
+	\item \emph{Output drop port} and \emph{input secure port}.
+	\item \emph{Output injection port} and \emph{input secure port}.
 \end{enumerate}
 
 \paragraph{Cybersecurity Weaknesses -- The RIDI-Hypothesis} 
@@ -1524,10 +1524,10 @@ four main categories of weaknesses: Replace, Insertion, Drop, Injection. We can,
 then, deduce the following cybersecurity properties to mitigate cybersecurity weaknesses
 of a port or a channel (between ports, functional blocks, or both).
 \begin{itemize}
-	\item \emph{Order-preserving} -- it shall be known if information is \emph{replaced}
-	\item \emph{Availability} -- it shall be known if information is \emph{dropped} or \emph{selectively dropped}
-	\item \emph{Integrity} -- it shall be known if information is \emph{injected}
-	\item \emph{Authentication} -- it shall be known if information is \emph{inserted}
+	\item \emph{Order-preserving} -- it shall be known if information is \emph{replaced}.
+	\item \emph{Availability} -- it shall be known if information is \emph{dropped} or \emph{selectively dropped}.
+	\item \emph{Integrity} -- it shall be known if information is \emph{injected}.
+	\item \emph{Authentication} -- it shall be known if information is \emph{inserted}.
 \end{itemize}
 %We can also generalize the weaknesses related to the data flow (i.e. the flow
 %of information as assertions or beliefs) as the relation between output-input
