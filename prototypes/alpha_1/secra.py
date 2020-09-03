@@ -532,7 +532,8 @@ def write_report(path,spec_package,risk_structure,cyclic_risk_struct,components)
                 risk_sheet.write_formula(risk_id, 1, i)
                 risk_id+=1
                 relation_count+=1
-            risk_sheet.write(risk_id-1,2,"=SUM(B"+str(risk_id)+":B"+str(risk_id-(relation_count-1)))
+            sum_in_if_tmp="SUM(B"+str(risk_id-(relation_count-1))+":B"+str(risk_id)+")"
+            risk_sheet.write(risk_id-1,2,"=IF("+sum_in_if_tmp+"=0,\"\","+sum_in_if_tmp+")")
 
     cyclic_sheet_id=0
     for subgraph in cyclic_risk_struct.values():
@@ -543,7 +544,7 @@ def write_report(path,spec_package,risk_structure,cyclic_risk_struct,components)
             for rel in relations:
                 if(str(rel).lower() in relation2row.keys()):
                     #If status is mitigated 0, 1 oth.
-                    cyclic_struct_sheet.write(row,col,"=IF('"+weak_sheet_name+"'!H"+str(relation2row[str(rel).lower()])+"=\"mitigated\", 0, 1")
+                    cyclic_struct_sheet.write(row,col,"=IF('"+weak_sheet_name+"'!H"+str(relation2row[str(rel).lower()])+"=\"mitigated\", 0, 1)")
                 else:
                     cyclic_struct_sheet.write(row,col,1)
                 col+=1
@@ -558,7 +559,7 @@ def write_report(path,spec_package,risk_structure,cyclic_risk_struct,components)
     risk_id+=1
     risk_sheet.write(risk_id+1, 0, "RISK", cell_format['first_risk'])
     risk_sheet.write_formula(risk_id+1, 2, "=PRODUCT(C"+str(risk_id+1)+":C1)", cell_format['all_risk'])
-    risk_sheet.write(risk_id+2, 0, "The total risk is the total number of configurations of the system", cell_format['all_risk'])
+    risk_sheet.write(risk_id+2, 0, "The total risk is the total number of insecure configurations of the system", cell_format['all_risk'])
 
     workbook.close()
 
