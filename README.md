@@ -2,7 +2,7 @@
 This is the public repository of the cybersecurity research initiative of [V-Research](http://v-research.it).
 As V-Research we believe in freedom and openness. 
 We want to share our results, fostering collaborations rather than competition.
-We hope that, by sharing our research prototypes and reports we'll be able to make the world a secure place :)
+We hope that by sharing our research prototypes and reports we'll be able to make the world a secure place :)
 
 Our research initiative is driven by the [Purple Challenge](http://v-research.it/purplechallenge), in which we want to 
 showcase a 100% secure cyber-physical system. The challenge is bold and ambitious but
@@ -12,7 +12,7 @@ some phenomenon or you keep searching for that theory. In fact, the first journe
 we have undertaken is towards the definition of a ([currently missing](https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/herley)) scientific theory of cybersecurity.
 We now live in a world where (pen)testing is the main weapon against cybersecurity attacks.
 But, if there is no cybersecurity theory, what are we testing? We believe a more scientific 
-apporach will stem from a secure-by-design approach and this is how we started.
+approach will stem from a secure-by-design approach and this is how we started.
 This is our educated guess but "there is no royal road to science"; if you have other ideas and you 
 want to share them with us, feel free to drop me an email (marco@v-research.it)
 
