@@ -376,7 +376,7 @@ def write_report(path,spec_package,risk_structure,cyclic_risk_struct,components)
     #weak_semantics['channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"}, 'ppb0':{'weakness':"generates new outputs even when there's no incoming data from the socket",'mitigation':"m5"}, 'ppia0':{'weakness':"drops all the incoming data",'mitigation':"m6"} }
     weak_semantics['weak_port']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
     weak_semantics['weak_channel']={ 'po':{'weakness':"selectively drops inputs and inserts new malicious data",'mitigation':"m1"}, 'pp':{'weakness':"forwards all the inputs but crafts and inserts new malicious data",'mitigation':"m2"}, 'ppi':{'weakness':"selectively drops inputs",'mitigation':"m3"}, 'dr':{'weakness':"drops all the inputs and inserts new malicious data",'mitigation':"m4"} }
-    weak_semantics['weak_out_block']={ 'po':{'weakness':"the component has a Byzantine behavior where occasionally outputs the expected output given the correct inputs. Not all the inputs are handled properly, nor all the expected outputs are always generated when correct inputs are given.",'mitigation':"m5"}, 'pp':{'weakness':"part of the expected outputs are not generated in response to the correct inputs",'mitigation':"m6"}, 'ppi':{'weakness':"the components correctly performs the expected behavior when the correct inputs are provided but is subject to input injections",'mitigation':"m7"}, 'dr':{'weakness':"the component never performs the expected behavior (e.g. physical damage)",'mitigation':"m8"} }
+    weak_semantics['weak_out_block']={ 'po':{'weakness':"the component has a Byzantine behavior where occasionally outputs the expected output given the correct inputs. Not all the inputs are handled properly, nor all the expected outputs are always generated when correct inputs are given.",'mitigation':"m5"}, 'pp':{'weakness':"part of the expected outputs are not generated in response to the correct inputs",'mitigation':"m6"}, 'ppi':{'weakness':"the component correctly performs the expected behavior when the correct inputs are provided but is subject to input injections",'mitigation':"m7"}, 'dr':{'weakness':"the component never performs the expected behavior (e.g. physical damage)",'mitigation':"m8"} }
     weak_semantics['weak_in_block']={ 'po':{'weakness':"po",'mitigation':"m5"}, 'pp':{'weakness':"pp",'mitigation':"m6"}, 'ppi':{'weakness':"ppi",'mitigation':"m7"}, 'dr':{'weakness':"dr",'mitigation':"m8"} }
 
     # if R(left,right)=R(B,F) or R(F,B)
@@ -532,7 +532,8 @@ def write_report(path,spec_package,risk_structure,cyclic_risk_struct,components)
                 risk_sheet.write_formula(risk_id, 1, i)
                 risk_id+=1
                 relation_count+=1
-            risk_sheet.write(risk_id-1,2,"=SUM(B"+str(risk_id)+":B"+str(risk_id-(relation_count-1)))
+            sum_in_if_tmp="SUM(B"+str(risk_id-(relation_count-1))+":B"+str(risk_id)+")"
+            risk_sheet.write(risk_id-1,2,"=IF("+sum_in_if_tmp+"=0,\"\","+sum_in_if_tmp+")")
 
     cyclic_sheet_id=0
     for subgraph in cyclic_risk_struct.values():
@@ -543,7 +544,7 @@ def write_report(path,spec_package,risk_structure,cyclic_risk_struct,components)
             for rel in relations:
                 if(str(rel).lower() in relation2row.keys()):
                     #If status is mitigated 0, 1 oth.
-                    cyclic_struct_sheet.write(row,col,"=IF('"+weak_sheet_name+"'!H"+str(relation2row[str(rel).lower()])+"=\"mitigated\", 0, 1")
+                    cyclic_struct_sheet.write(row,col,"=IF('"+weak_sheet_name+"'!H"+str(relation2row[str(rel).lower()])+"=\"mitigated\", 0, 1)")
                 else:
                     cyclic_struct_sheet.write(row,col,1)
                 col+=1
@@ -558,7 +559,7 @@ def write_report(path,spec_package,risk_structure,cyclic_risk_struct,components)
     risk_id+=1
     risk_sheet.write(risk_id+1, 0, "RISK", cell_format['first_risk'])
     risk_sheet.write_formula(risk_id+1, 2, "=PRODUCT(C"+str(risk_id+1)+":C1)", cell_format['all_risk'])
-    risk_sheet.write(risk_id+2, 0, "The total risk is the total number of configurations of the system", cell_format['all_risk'])
+    risk_sheet.write(risk_id+2, 0, "The total risk is the total number of insecure configurations of the system", cell_format['all_risk'])
 
     workbook.close()
 
