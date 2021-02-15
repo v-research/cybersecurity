@@ -5,7 +5,7 @@
 
 ## (paper 0) On Etiology of Cybersecurity 
 
-**Authors**: Francesco Beltramini [@V-Research](http://v-research.it), Marco Rocchetto [@V-Research](http://v-research.it)
+**Authors**: The Science Club [@V-Research](http://v-research.it) (knowledgezero@v-research.it)
 
 **Abstract**: The objective of this research is the development of a theory that defines (all
 and only) the possible insecurity and security configurations of any
@@ -32,11 +32,10 @@ risk assessment of an ad-hoc system.
 - [Source](./paper_0)
 - [Slides](../presentations/presentation_0.odp)
 - [License](./LICENSE.md)
-WARNING: This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible.
 
 ```
-@online{Rocchetto2020Etiology,
-  author    = {Francesco Beltramini and Marco Rocchetto},
+@online{TheScienceClub2020Etiology,
+  author    = {Science-Club, The},
   title     = {On Etiology of Cybersecurity},
   year      = {2020},
   url       = {https://github.com/v-research/cybersecurity/tree/marco/reports/paper_0}
