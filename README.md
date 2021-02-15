@@ -14,7 +14,7 @@ We now live in a world where (pen)testing is the main weapon against cybersecuri
 But, if there is no cybersecurity theory, what are we testing? We believe a more scientific 
 approach will stem from a secure-by-design approach and this is how we started.
 This is our educated guess but "there is no royal road to science"; if you have other ideas and you 
-want to share them with us, feel free to drop me an email (marco@v-research.it)
+want to share them with us, feel free to drop us an email (knowledgezero@v-research.it)
 
 This repository is currently structured into the following sections
 - [presentations](./presentations), where we share the slides related to our cybersecurity initiative (under [CC-SA license](./presentations/LICENSE.md))
