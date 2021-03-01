@@ -8,5 +8,5 @@ introduce [V-Research](http://v-research.it) and the [Purple
 Challenge](link-to-challenge). Finally, we show how to apply our cybersecurity theory for the
 precise security risk estimation of cyber-physical systems.
 
-- [Slides](../presentations/presentation_0.odp)
+- Slides \[[odp](../presentations/presentation_0.odp), [pdf](../presentations/presentation_0.odp)\]
 - [License](./LICENSE.md)
