@@ -19,8 +19,8 @@ a prototype cybersecurity risk assessment tool that, based on
 our hypothesis, predicts
 
 - [PDF](./main.pdf)
-- [Source](https://raw.githubusercontent.com/v-research/cybersecurity/master/reports/paper_0/main.tex)
-- [Slides](https://raw.githubusercontent.com/v-research/cybersecurity/master/presentations/presentation_0.pdf)
+- [Source](./main.tex)
+- [Slides](../../presentations/presentation_0.pdf)
 - [License](./LICENSE.md)
 
 ```
