@@ -1,4 +1,4 @@
-## (paper 0) On Etiology of Cybersecurity 
+## (paper 0) The Etiology of Cybersecurity 
 
 **Authors**: The Science Club [@V-Research](http://v-research.it) (knowledgezero@v-research.it)
 
