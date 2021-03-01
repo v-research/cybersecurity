@@ -4,7 +4,7 @@ As V-Research we believe in freedom and openness.
 We want to share our results, fostering collaborations rather than competition.
 We hope that by sharing our research prototypes and reports we'll be able to make the world a secure place :)
 
-Our research initiative is driven by the [Purple Challenge](http://v-research.it/purplechallenge), in which we want to 
+Our research initiative is driven by the [Purple Challenge](https://www.v-research.it/globalpurplechallenge), in which we want to 
 showcase a 100% secure cyber-physical system. The challenge is bold and ambitious but
 we believe that a scientific approach should aim at something precise and rigorous. 
 There is no more-or-less in science, either you have a theory that precisely predicts
@@ -19,5 +19,5 @@ want to share them with us, feel free to drop us an email (knowledgezero@v-resea
 This repository is currently structured into the following sections
 - [presentations](./presentations), where we share the slides related to our cybersecurity initiative (under [CC-SA license](./presentations/LICENSE.md))
 - [reports](./reports), where we share our papers and pre-prints (mostly under [CC-SA license](./presentations/LICENSE.md))
-- [prototypes](./prototypes), where we share our prototypes under the [AGPLv3 license](./reports/LICENSE.md)
+- [prototypes](./prototypes), where we share our prototypes under the [AGPLv3 license](./prototypes/LICENSE.md)
 
