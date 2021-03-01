@@ -32,7 +32,7 @@ You can find a **example model** in "Engineering"->"UC1_CPS"
     2. run "python3 secra.py"
 
 **Review the results** in the directory output_secra, where:
-1. <package_name>_securityAssessment.xlsx - the Excel file with the results of the Risk Assessment (Ctrl-Shift F9 to update the formulas)
+1. <package_name>_securityAssessment.xlsx - the spreadsheet file with the results of the Risk Assessment (Ctrl-Shift F9 to update the formulas)
 2. <package_name>_model.dot - dot file with the model extracted from the XMI (run "dot -Tpdf <package_name>_model.dot <package_name>_model.pdf" to create a PDF)
 3. <package_name>_graph.dot - dot file with the relations considered by [our security theory](../reports/report_0) (run "dot -Tpdf <package_name>_graph.dot <package_name>_graph.pdf" to create a PDF)
 4. <package_name>_model.out - internal representation of the model

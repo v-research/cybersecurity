@@ -1,12 +1,11 @@
 ## (presentation 0) Cybersecurity Theory and Risk Assessment Application
 
-**Authors**: Francesco Beltramini [@V-Research](http://v-research.it), Marco Rocchetto [@V-Research](http://v-research.it)
+**Authors**: The Science Club [@V-Research](http://v-research.it)
 
 **Abstract**: We propose a new foundational theory of cybersecurity (see our
-paper "[On Etiology of Cybersecurity](../reports/paper_0)" for more details),
-introduce [V-Research](http://v-research.it) and the [Purple
-Challenge](link-to-challenge). Finally, we show how to apply our cybersecurity theory for the
+paper "[On Etiology of Cybersecurity](../reports/paper_0)" for more details)
+and we show how to apply our cybersecurity theory for the
 precise security risk estimation of cyber-physical systems.
 
-- [Slides](../presentations/presentation_0.odp)
+- Slides \[[odp](./presentation_0.odp), [pdf](./presentation_0.odp)\]
 - [License](./LICENSE.md)
