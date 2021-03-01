@@ -19,8 +19,8 @@ a prototype cybersecurity risk assessment tool that, based on
 our hypothesis, predicts
 
 - [PDF](./main.pdf)
-- [Source](./paper_0)
-- [Slides](https://raw.githubusercontent.com/v-research/cybersecurity_internal/master_private/presentations/presentation_0.pdf?token=ADR6TLBQDR5YYT3IQM24UYDAHVRTA)
+- [Source](https://raw.githubusercontent.com/v-research/cybersecurity_internal/master_private/reports/paper_0/main.tex)
+- [Slides](https://raw.githubusercontent.com/v-research/cybersecurity_internal/master_private/presentations/presentation_0.pdf)
 - [License](./LICENSE.md)
 
 ```
@@ -28,6 +28,6 @@ our hypothesis, predicts
   author    = {Science-Club, The},
   title     = {On Etiology of Cybersecurity},
   year      = {2020},
-  url       = {https://github.com/v-research/cybersecurity/tree/marco/reports/paper_0}
+  url       = {https://raw.githubusercontent.com/v-research/cybersecurity/master/reports/paper_0/main.pdf}
 }
 ```
