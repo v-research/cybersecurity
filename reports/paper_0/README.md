@@ -26,7 +26,7 @@ our hypothesis, predicts
 ```
 @online{TheScienceClub2020Etiology,
   author    = {Science-Club, The},
-  title     = {The Etiology of Cybersecurity},
+  title     = {The {E}tiology of {C}ybersecurity},
   year      = {2020},
   url       = {https://raw.githubusercontent.com/v-research/cybersecurity/master/reports/paper_0/main.pdf}
 }
