@@ -25,7 +25,7 @@ risk assessment of an ad-hoc system.
 
 - [PDF](./paper_0/main.pdf)
 - [Source](./paper_0)
-- [Slides](../presentations/presentation_0.odp)
+- [Slides](../presentations/presentation_0.pdf)
 - [License](./LICENSE.md)
 
 ```
