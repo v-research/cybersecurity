@@ -20,7 +20,7 @@ our hypothesis, predicts
 
 - [PDF](./paper_0/main.pdf)
 - [Source](./paper_0)
-- [Slides](../presentations/presentation_0.pdf)
+- [Slides](https://raw.githubusercontent.com/v-research/cybersecurity_internal/master_private/presentations/presentation_0.pdf?token=ADR6TLBQDR5YYT3IQM24UYDAHVRTA)
 - [License](./LICENSE.md)
 
 ```
