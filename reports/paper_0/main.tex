@@ -159,7 +159,6 @@
 \newcommand{\sjsjcom}{\mathrel{\halfbullet\!\!\rightleftbararrow\!\halfbullet}}
 \newcommand{\sjscom}{\mathrel{\halfbullet\!\!\leftbararrow}}
 
-\newcommand{\fixn}[2]{{\bf FIX}\footnote{#1: #2}}
 
 \newtheorem{definition}{Definition}%[section]
 \newtheorem{hypothesis}{Hypothesis}%[section]
@@ -181,23 +180,29 @@ Email: knowledgezero@v-research.it}
 
 \begin{abstract}
 	The objective of this research is to lay the foundations for the
-	development of a scientific theory that determines (all and only) the possible
-	insecure and secure configurations of any abstract system. We claim
-	that cybersecurity weaknesses (i.e. errors) are at the beginning of the
-	causality chain that leads to cybersecurity attacks.  We, then,
+	development of a scientific theory that determines (all and only) the
+	possible insecure and secure configurations of any abstract system. We
+	claim that cybersecurity weaknesses (i.e. errors) are at the beginning
+	of the causality chain that leads to cybersecurity attacks.  We, then,
 	formulate a scientific (falsifiable by experiments) hypothesis that we
 	use to predict all the weaknesses in the architectural design of an
 	abstract system. The mathematical formulation of our hypothesis is
 	based on a correlation between the epistemological concepts of
-	knowledge, beliefs, and information with the engineering concepts of
+	facts, beliefs, and assertions with the engineering concepts of
 	requirements, functional architectures, and channels.  Ultimately, our
-	hypothesis allows for the definition of the cybersecurity of a system as a
-	mathematical formula.  We implemented a prototype cybersecurity risk
-	assessment tool that, based on our hypothesis, predicts the weaknesses in a
-	UML model of a (cyber-physical) system.
+	hypothesis allows for the definition of a mathematical formula which
+	describes the cybersecurity of a system.  We implemented a prototype
+	cybersecurity risk assessment tool that, based on our hypothesis,
+	predicts the weaknesses in a UML model of a (cyber-physical) system.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
+
+\fixnote{Oliviero}{Two general remarks. First, I'd maybe specify more what concretely A, B and F "look like", if that makes sense. How do we concretely specify a fact in the ABF framework? If I am not mistaken, RCC defines axiomatically how in general a mereotopology should be, and a *concrete* mereotopology corresponds to a particular system specification. Is this correct? If so, make explicit how one would encode this, if this make sense. At the very end you talk about a particular configuration being SAT w.r.t. the algebraic strucutre; is this algebraic structure, indeed, the system specification? You also sometimes speak about logic formulas; what is the connection between these logical formulas and regions? Is a region a "set" of logical formulas, or is it that a region is logically defined?
+
+Secondly, and this is probably due to my inexperience with systems design (and ABF), it is not totally clear to me exactly what a belief is; more concretely, what is the difference between assertions and beliefs. Beliefs define the inputs and the outputs; assertions are what is exchanged between agents. Wouldn't the assertions already define the inputs and outputs? or are the beliefs the "expected" I/Os, while assertions are the "actual" I/Os? Indeed, a functional block is defined by its inputs/outputs. Then, if EQ(F,A) hold, aren't we already happy? Because, if all the inputs and outputs are compliant with your requirements, your system is functionally "correct", and behaves as you want. Am I mistaken? Perhaps there are some other aspects that I am not considering.}
+
+\fixnote{Oliviero}{Question: the region F encodes the requirements. Then, what if we encode a requirement wrongly? or, what if we do not realise that some implict requirements are missing? Indeed, one might not see why integrity is a requirement until a breach happens. Is this within the scope of the theory? Finally; are we sure that all reasonable requirements can be encoded in the region F?}
 
 \section{Introduction}\label{sec:intro}
 \paragraph{Context and motivation} 
@@ -222,7 +227,7 @@ respect to other background theories), no proof can be carried out to verify
 that the theory properly abstracts the phenomenon it describes (i.e. that the
 theory is a sound or complete approximation of the real phenomenon).
 Similarly, the results of the application of a scientific theory (i.e. its
-predictions) can be verified in the abstract mathematical structure but how can
+predictions) can be verified in the abstract mathematical structure, but how can
 we be sure that the theory correctly characterizes the phenomenon it describes? 
 Popper's famous ``demarcation principle'' draws a line between scientific and
 pseudo-scientific theories by proposing that a scientific theory can
@@ -240,7 +245,7 @@ secure''. With security, Herley only focuses on cybersecurity (we also use
 security and insecurity, in this paper, only to refer to cyber-insecurity and
 cybersecurity) and his intuition is that there is no scientific theory that can
 predict the cybersecurity of a system, nor a theory that can predict all
-possible insecurities of a system (which, by negation may be used as a theory
+possible insecurities of a system (which, by negation, may be used as a theory
 of cybersecurity).  Herley then uses this argument to show that ``claims that
 any measure is necessary for security are empirically unfalsifiable''. An
 example is whether or not password masking makes a system secure. Password
@@ -249,7 +254,10 @@ password masking is implemented, is believed to be secure because an attacker
 won't be seeing the password by ``shoulder surfing''.  This reasoning
 is circular and it is always true that a system in which password masking is
 implemented is a system in which a password is masked. No experiment can ever
-falsify this statement.  Given that any theory that is not falsifiable by an
+falsify this statement\footnote{In other words, one cannot design an experiment to show that
+password masking is not secure or unnecessary, and a correlated problem is that
+this may lead to a scenario where more measures are added but there is no good
+way of saying which measures are superflous.}. Given that any theory that is not falsifiable by an
 empirical experiment is well known\footnote{``A theory which is not refutable
 by any conceivable event is nonscientific. Irrefutability is not a virtue of a
 theory (as people often think) but a vice.'' -- Karl Popper, Conjectures and
@@ -390,7 +398,7 @@ rigorously, which scientific theory predicts all possible weaknesses that
 causes cybersecurity attacks? 
 
 With our approach, a list of weaknesses emerges from the mathematical
-formulation of a system in a framework called $\abftheory$-framework and
+formulation of a system in a framework called $\abftheory$-framework, and
 predicts 4 main classes of weaknesses. Those classes of weaknesses are used to
 calculate all the insecurity configurations of all the components of a system,
 obtaining a precise estimation of all potential cybersecurity-related risks in
@@ -425,11 +433,10 @@ of a system, allowing the falsification of our hypothesis.
 
 In most of the natural languages the concepts of safety
 and security are not syntactically differentiated and both terms (safety and
-security) are expressed by the same word, e.g. sicurezza in Italian.  A
+security) are expressed by the same word, e.g. ``sicurezza'' in Italian.  A
 semantic distinction between safety and (cyber)security is correlated to a
 belief\footnote{A belief has to be intended as a proposition which is supposed
-to be true by the majority of people in our society, without a scientific
-underlying theory but based on partial empirical evidences or inductive reasoning based on partial empirical evidences.} that
+to be true but no conclusive evidence makes it known to be true.} that
 safety deals with \emph{accidents} (i.e. an unfortunate incident) posed by the
 natural environment (e.g. natural events such as wearing of hardware
 components), whereas cybersecurity deals with \emph{incidents} posed by mankind (e.g.
@@ -683,8 +690,8 @@ cybersecurity doesn't seem to stem from a malicious nature but, rather, insecuri
 raises from the lack of well-defined cybersecurity requirements for the development
 process of a system. We argue that the high number of cybersecurity vulnerability
 reported today are simply the realization of potential system configurations,
-which deviate from the nominal behavior because the \emph{intended (or
-nominal) behavior} of the system is not precisely defined in the specification
+which deviate from the  \emph{intended (or
+nominal) behavior} because the nominal behavior of the system is not precisely defined in the specification
 at the very early stages of the engineering process.
 As a reference, we consider the following steps of the engineering process
 and our objective is to be able to predict the cybersecurity requirements
@@ -734,35 +741,40 @@ proceeds to judge by means of one of the aforesaid instruments''.}.
 Some relevant examples for our objective are the following.
 \begin{itemize}
 	\item In \autocite{Hintikka1962knowledge}, Hintikka describes the
-		difference between knowledge and belief (as epistemological
-		concepts), and the whole Doxastic logic defines in details how
+		belief (as epistemological
+		concepts) and their relation with knowledge,
+		and the whole Doxastic logic defines in details how
 		beliefs can be formalized.
 	\item In \autocite{Hintikka1993Information}, Hintikka describes the concept
-		of information and the difference with knowledge and belief.
+		of information (and the difference with knowledge and belief).
 	\item In \autocite{Santaca2016abf}, the authors defines an agent as a
-		tuple of assertions, beliefs, and facts.
+		tuple of assertions, beliefs, and facts. A detailed discussion
+		on facts and assertions can be found in \autocite{facts2007stanford} and
+		\autocite{assertion2007stanford} respectively.
 \end{itemize}
 For our argument, as in \autocite{Santaca2016abf}, an agent is composed by its
-knowledge, beliefs, and the information or assertions it provides; where
-knowledge is defined, as in \autocite{Steup2020epistemology}, as a set of
-propositions known by an agent, such that: (i) knowledge requires belief, (ii)
-knowledge requires truth, (iii) knowledge must be \emph{properly justified}, and
-the only objective of information is to exchange beliefs between agents.  As
-defined in \autocite{Hintikka1993Information}, ``information is specified by
-specifying which alternatives concerning the reality it admits and which
-alternatives excludes''. This means that if we consider a propositional
-variable (which admits the two alternatives True/False) its information is
-defined as believed to be True/False and not believed to be the opposite.  Due
-to the definition of information and then with its relation to the
-probabilistic correlation to truth/reality, we consider information in relation
-to an agent's beliefs. Similarly, we consider beliefs to define the actual
-behavior of an agent or a system; i.e. we consider behaviors as belief revision
-systems.
-The difference between knowledge and information as used by Hintikka, and facts
-and assertions as used in \autocite{Santaca2016abf}, are not precisely discussed
-in \autocite{Santaca2016abf}.  Furthermore, those epistemological concepts are
-difficult to define
-\autocite{Gettier2012knowledge}.
+beliefs, and the information or assertions it provides.
+%knowledge, beliefs, and the information or assertions it provides; where
+%knowledge is defined, as in \autocite{Steup2020epistemology}, as a set of
+%propositions known by an agent, such that: (i) knowledge requires belief, (ii)
+%knowledge requires truth, (iii) knowledge must be \emph{properly justified}, and
+%the only objective of information is to exchange beliefs between agents.
+As in \autocite{Steup2020epistemology}, the only objective of information is to
+exchange beliefs between agents and, as defined in \autocite{Hintikka1993Information},
+``information is specified by specifying which alternatives concerning the
+reality it admits and which alternatives excludes''. This means that if we
+consider a propositional variable (which admits the two alternatives
+True/False) its information is defined as believed to be True/False and not
+believed to be the opposite.  Due to the definition of information and then
+with its relation to the probabilistic correlation to truth/reality, we
+consider information in relation to an agent's beliefs. Similarly, we consider
+beliefs to define the actual behavior of an agent or a system; i.e. we consider
+behaviors as belief revision systems.
+%The difference between knowledge and information as used by Hintikka, and facts
+The concepts of facts and assertions as used in \autocite{Santaca2016abf}, are
+not precisely discussed in \autocite{Santaca2016abf}.  Furthermore, those
+epistemological concepts are difficult to define
+\autocite{Gettier2012knowledge} in general.
 %\footnote{``\emph{Theaetetus}: [\ldots] He said
 %that knowledge was true opinion accompanied by reason, but that unreasoning
 %true opinion was outside of the sphere of knowledge; and matters of which there
@@ -778,9 +790,10 @@ For example, Hintikka in
 \autocite{Hintikka1993Information} states that ``A purely logical definition of
 information is impossible''. However, a detailed formalization of those concepts is out
 of the scope of this paper. 
-Instead, we now define those concepts abstractly, inspired by the
+Instead, we now define those concepts informally, inspired by the
 $\abftheory$-framework  defined in \autocite{Santaca2016abf} and, in
-Section~\ref{sec:theory} we detail them as engineering concepts.
+Section~\ref{sec:theory} we detail them, and properly define them, as engineering concepts.
+\fixnote{Oliviero}{Is that actually what is happening? During this section III, we refer multiple times to engineering concepts such as system, functional specification and what not. We sometimes refer to the relationship between functional architecture and beliefs but that is not made precise. Maybe we should use only abstract terms, until the connection with those engineering aspects are introduced thoroughly? {\bf mr}: what I wanted to say here (and I probably failed) is that we define A, B, and F informally (and I changed abstractly with informally in the text) but we'll define them more precisely (and as engineering concept) later on. I modified the sentence to make this clearer but it seems to me to me that you're saying that the text is unnecessarily complicated by the mixed used of generic terms as beliefs and functional blocks/architecture. If that is the case we should definitely make the section clearer.}
 \begin{enumerate}
 	\item We consider information only when the intention of exchanging 
 		that information is from a sender to 
@@ -814,6 +827,9 @@ Section~\ref{sec:theory} we detail them as engineering concepts.
 		architecture of each subsystem of agents and agent within a
 		subsystem.
 \end{enumerate}
+
+\fixnote{Oliviero}{There are some parts I am perplexed about about this section from "There is no agreement..." up to here). It is unclear to me why we present and define the general concept of knowledge rather then the concept of fact, since we use mostly "facts" and as defined in [41] an agent is cmposed by assertions, beliefs and facts (and not knowledge). Indeed, it seems from your last bullet point that a fact is a particular case of knowledge (as you say, "more general"), but the exact definition of fact is not really clear from here, at least to me. Further; why are facts requirements? Intuitively, I would define a fact to be something that is true; requirements are something that we *want* to be true. I understood why we do so later on in the paper; we are later on interested, by RCC, in whether the beliefs of our agents are consistent (EQ) with the facts, that is, we want our system to behave consistently with the requirements. I would maybe make this explicit: we interpret requirements as facts, since we consider them to be the truth, towards which our agents must be compliant with (rather than: facts are requirements and not the actual truth). Another thing I found to be unclear is your definition of belief. You start by saying that we will define these things abstractly but you refer here to a very system-oriented definition of belief: inputs and outputs. Indeed, you say that beliefs define the behaviour, but the exact definition of belief was not super clear to me. {\bf mr}: I think you're right and the key points are (i) what's a fact? (ii) why stressing knowledge if abf is based on facts? (iii) what's the relation between facts and requirements? A fact is a statement which is taken as true. it's not necessarily true in general but the discussion is much complex (unfortunately). I wanted to add it to the paper but someone said that it may be tricky since those concepts have been used for 2k years at least. But, as an example, ``Socrates is a man'' is a fact (i.e. a true statement or, better, a statement taken as true), right? do we \emph{know} it? how? did we induce it from empirical evidences by testing every single man ever existed? I guess you see what I mean. So, in my limited view, facts are statement taken as true, knowledge can be expressed by true statements, and requirements are statement taken as true (by developers and everyone else). The link between those concepts seems rather strong but I think you are suggesting to simplify the text changing the focus on facts or detailing the relation between knowledge and facts. I chose the former and changed the text accordingly.}
+
 We give a graphical representation of (sub-)system and agent in Figure~\ref{fig:system-agent}.
 The notation will be introduced in the next section but, intuitively,
 Figure~\ref{fig:system-agent} shows a system composed by two agents. The system
@@ -830,18 +846,20 @@ from the behavior block are then translated back into (outgoing) assertions.
 	\label{fig:system-agent}
 \end{figure}
 
+\fixnote{Oliviero}{Further: what is a region? Is it a "prime" concept, that is, a primitive concept? Or is it a set? if it is a primitive concept, then defining connectedness in terms of set operations such as $\subseteq$ is a little counterintuitive; if a region is a set (or some other well-known mathematical concept), then state so explicitly somewhere, imho (as I said at the beginning, explicitly describing how these ABF regions look like would make this much clearer, I think). {\bf mr} you're right. it's a primitive concept, I changed it in the tab and in the text.}
+
 \subsection{Mereo-topological Reasoning}
 \begin{table*}[t]
 \centering
 \begin{tabular}{ccclll} 
 \rota{\textbf{RCC3}}&\rota{\textbf{RCC5}}&\rota{\textbf{RCC8}}&\textbf{Terminology} & \textbf{Notation} & \textbf{Definition} \\
 \hline
-&&&Connects with 			& $\mathit{C}(\mathit{X},\mathit{Y})$ 		& $\mathit{X}\subseteq \mathit{Y}$ \\
-&&&Disconnected from		& $\neg \mathit{C}(\mathit{X},\mathit{Y})$		& $\mathit{X}\not\subseteq \mathit{Y}$\\
+&&&Connects with 			& $\mathit{C}(\mathit{X},\mathit{Y})$ 		& reflexive and symmetric \\
+&&&Disconnected from		& $\neg \mathit{C}(\mathit{X},\mathit{Y})$		& irreflexive or antisymmetric\\
 &&&Part of				& $\mathit{P}(\mathit{X},\mathit{Y})$		& $\forall \mathit{Z} ~\mathit{C}(\mathit{Z},\mathit{X}) \rightarrow \mathit{C}(\mathit{Z},\mathit{Y})$\\
 &&&Overlaps			& $\mathit{O}(\mathit{X},\mathit{Y})$		& $\exists \mathit{Z} ~\mathit{P}(\mathit{Z},\mathit{X})\wedge \mathit{P}(\mathit{Z},\mathit{Y})$\\
-\Tdot&&&  \textbf{Overlaps Not Equal} 	& $\mathit{ONE}(\mathit{X},\mathit{Y})$		& $\mathit{O}(\mathit{X},\mathit{Y}) \land \neg \mathit{EQ}(\mathit{X},\mathit{Y})$ \\
 \Tdot&\Tdot&\Tdot& \textbf{Equal to} 		& $\mathit{EQ}(\mathit{X},\mathit{Y})$  		& $\mathit{P}(\mathit{X},\mathit{Y}) \wedge \mathit{P}(\mathit{Y},\mathit{X})$\\
+\Tdot&&&  \textbf{Overlaps Not Equal} 	& $\mathit{ONE}(\mathit{X},\mathit{Y})$		& $\mathit{O}(\mathit{X},\mathit{Y}) \land \neg \mathit{EQ}(\mathit{X},\mathit{Y})$ \\
 \Tdot&\Tdot&\Tdot& \textbf{DiscRete from} 		& $\mathit{DR}(\mathit{X},\mathit{Y})$		& $\neg \mathit{O}(\mathit{X},\mathit{Y})$\\
 &\Tdot&\Tdot&\textbf{Partial-Overlap}	& $\mathit{PO}(\mathit{X},\mathit{Y})$ 		& $\mathit{O}(\mathit{X},\mathit{Y})\wedge \neg \mathit{P}(\mathit{X},\mathit{Y}) \wedge \neg \mathit{P}(\mathit{Y},\mathit{X})$\\ 
 &\Tdot&&\textbf{Proper-Part-of} 	& $\mathit{PP}(\mathit{X},\mathit{Y})$ 		& $\mathit{P}(\mathit{X},\mathit{Y})\wedge \neg \mathit{P}(\mathit{Y},\mathit{X})$\\ 
@@ -872,7 +890,8 @@ in \autocite{NIST2020NVD,MITRE2020CVE}
 so that we don't need to rely on a scoring system (such as the 
 CVSS) to assign a quantitative evaluation 
 of the cybersecurity of each entry. Instead, we want a precise calculation
-of the number of insecure configurations to emerge from the mathematical
+of the number of insecure configurations
+\fixnote{Oliviero}{is this the same as a state? If so, maybe mention this in brackets in the definition. {\bf mr}: not necessarily but it will be in the next prototype and paper. For now, I'd keep it easy and general (plus, we'd need to introduce the concept of state oth.)} of a system to emerge from the mathematical
 formulation of our cybersecurity hypothesis.
 
 A mereotopology, as defined e.g. in \autocite{Rachavelpula2017mereotopology},
@@ -912,7 +931,7 @@ the calculation done by the authors in \autocite{Santaca2016abf}.
 
 \paragraph{Number of different configurations of a system}
 The general formula to calculate the number of different types of agents is
-$r^{\binom{n}{k}}$, where $r$ is the number of relations with arity $k$,
+$r^{\binom{n}{k}}$, where $r$ is the number of relations with arity $k$\fixnote{Oliviero}{What if our calculus uses relations of different arities? I guess we sum this up for all arities? {\bf mr}: I think so, and I see your point (we could generalize the formula) maybe it's not that important? not sure},
 between $n$ different regions. Therefore, $r^{\binom{n}{k}}$
 expresses the number of permutation of $r$
 relations over ${\binom{n}{k}}$ elements with repetitions, 
@@ -1069,8 +1088,8 @@ aligned with what the facts mandate (i.e. what the specification mandates).
 The relation between facts, and assertions and beliefs can be used as a metric
 to determine the soundness of the design with respect to the specification.
 
-We categorize agents by first analyzing the relations between each pair of
-regions defining an agent (i.e.  $\abf$), and then we categorize the different
+We first analyze the relations between each pair of
+regions (i.e.  $\abf$), and then we categorize the different
 agents as tuple of the three regions.  For the sake of simplicity, soundness is
 opposed to non-soundness in the following, however, with the RCC one should
 consider different ``degrees'' of non-soundness.  For example, in RCC5, if we
@@ -1087,12 +1106,17 @@ degrees of non-soundness.  A similar argument can be done for completeness.
 \paragraph{\Rcc{$\assertionRegion$}{$\beliefRegion$} -- Collaboration} In order
 to reason on the relation between assertions and beliefs we first need to
 consider that, by definition, assertions are defined as transfer of information
-between two agents, e.g., $a$ and $b$.  Therefore, as depicted in
+between two agents, e.g., between two agents.  Therefore, as depicted in
 Figure~\ref{fig:system-agent}, an agent has two main categories of assertions,
 input and output assertions.  Given an agent $a$ and a collection of asserted
-predicates $\Phi$, the input assertions are those received by $a$ from an agent
+predicates $\Phi$
+\fixnote{Oliviero}{If I am not mistaken, this is the first time we refer to assertions as concrete formulas/predicates. Perhaps we should make explicit before the "form" of such assertions? {\bf mr}: I'm not sure I got this point. Do you mean we should refer to a logic (e.g. FOL)? If so, we could but it has a cost (in terms of simplicity) and I'm not sure how to reuse that in the paper to justify that ``cost''},
+the input assertions are those received by $a$ from an agent
 $s$ acting as a sender, $\rassert{s}{a}{\Phi}$; similarly, output assertions
-are sent from $a$ to a receiver $r$, $\rassert{a}{r}{\Phi}$. We shall consider
+are sent from $a$ to a receiver $r$, $\rassert{a}{r}{\Phi}$. With a slight abuse
+of notation, in the text we simply write $\assertionRegion_{s\rightarrow a}$ when we abstract
+away from the content of the assertion (i.e. $\Phi$).
+We shall consider
 two pairs of regions:%\footnote{``I am not asserting, as Lotze did, that a
 %relation between $X$ and $Y$ consists of a quality in $X$ and a quality in $Y$
 %-- a view which I regard as quite indefensible. -- I assert that a relation $Z$
@@ -1148,7 +1172,7 @@ requirement for a CPS specification can be summarized:
 \begin{enumerate}
 	\item[CSE-$1$] Proper interaction between correctly-behaving agents is
 		defined as $\eq{\assertionRegion_a}{\beliefRegion_a}$ for an
-		agent $a$ while can be detailed as follows when multiple agents
+		agent $a$, and can be detailed as follows when multiple agents
 		are considered.
 	\begin{enumerate}
 		\item[CSE-$1.1$] The equality relation
@@ -1198,11 +1222,11 @@ for CPS afterwards in the paper.
 \end{definition}
 The ISO 31000 consider risk as the ``effect of uncertainty on objectives'' and
 refers both to positive and negative consequences of uncertainty.
-Accordingly, we consider risk as follows. 
+Accordingly, we consider risk as follows.
 \begin{definition}{\bf Risk --}
-A risk is determined by the uncertainty related to the whole space of potential designs of a specification with respect to the
-	$\abftheory$-framework.
-\end{definition}
+	\fix{mr}{A risk is determined by the uncertainty related to the whole space of potential designs of a specification with respect to the
+	$\abftheory$-framework.}
+\end{definition}\fixnote{Oliviero}{iirc, this is the first time we speak about uncertainity. What do you mean exactly? Do you mean that we are uncertain about which state our CPS is in? Is it not knowing that we are in the secure state?}
 The definition of Risk leads to the risk matrix in
 Figure~\ref{fig:quantitative}, defined as follows.
 \begin{definition}{\bf Risk Matrix --}
@@ -1213,7 +1237,7 @@ Figure~\ref{fig:quantitative}, defined as follows.
 	the same regions. In between the two extremes, the granularity of
 	possible intermediate configuration is defined by the calculus used
 	(RCC5 in our case).
-\end{definition}
+\end{definition}\fixnote{Oliviero}{So, the granularity is just uniformly distributed between all possible configurations, right? Or is it the actual numeric value unimportant, as long as it "ordered" in the right way? {\bf mr}: right, the former}
 While a risk matrix is often defined as a function of the likelihood and impact
 of attacks (based on quantitative ad-hoc estimation of how likely it is that an
 attacker will exploit one or more vulnerabilities and what is the magnitude of
@@ -1268,7 +1292,7 @@ and we identify a cybersecurity metric.
 So far, we have reasoned on systems in the abstract, considering
 generic Multi-Agent System (MAS); mapping Epistemological concepts
 to MAS. We now map MAS to CPS and show how this mapping allows us
-to predict cybersecurity weaknesses in a system.
+to predict cybersecurity weaknesses in a system.\fixnote{Oliviero}{again, to me we actually referred quite a lot to systems and architectures.}
 
 \subsection{From Multi-Agent to Cyber-Physical Systems}
 \begin{figure}[t]
@@ -1288,12 +1312,12 @@ As depicted in Figure~\ref{fig:mashyp}, we relate MAS and CPS as follows.
 	\item Agents reason over beliefs (i.e. transform beliefs into other
 		beliefs) and each \emph{component of a CPS} (system, sub-system,
 		or device) is composed by a \emph{functional architecture} that
-		transforms input-beliefs into output-beliefs.
+		transforms input-beliefs into output-beliefs.\fixnote{Oliviero}{We often times used functional architectures before. Mabybe we should make this connection precise before, then? Or maybe avoid using this CPS-oriented terminology before, and keep it more abstract?}
 	\item Components of a CPS have \emph{ports} to exchange information
 		with the outer environment (which may be a sub-system),
 		similarly to agents. The transfer of information in a CPS is
 		defined by \emph{channels}.
-	\item The concept of knowledge is related to the \emph{requirements}
+	\item The concept of facts is related to the \emph{requirements}
 		that describe how the CPS shall behave and
 		its \emph{physical architecture}.
 
@@ -1323,8 +1347,8 @@ or from/to a functional architecture.
 	the inside (input-port) or vice versa (output-port).  There exist two
 	types of ports with the following behavior: an input-port 
 	transforms assertions from a sender $s$ ($\rassert{s}{a}$) to beliefs
-	of an agent $a$ ($\beliefRegion_a$), while an output-port transforms belief
-	into assertion.
+	of an agent $a$ ($\beliefRegion_a$), while an output-port transforms beliefs
+	into assertions.
 \end{definition}
 The \emph{quality of a port} is determined by the $\rcc$ relation between the
 assertions received or sent and the belief, i.e.
@@ -1340,22 +1364,11 @@ assuming any RCC relation, between inputs and outputs of a port, which is not
 an equality can be considered as generating a weaknesses, as we describe in
 more details in the next paragraph.
 
-%\begin{definition}{\bf Secure Input Port \fixnote{mv}{chiarirei meglio intuitivamente, magari fuori della definizione, quale sia la differenza tra port e secure port. La differenza è in quell'always?}--}\label{def:secport}
-%	A secure input port always allows information as incoming assertions to
-%	flow from a sender $s$ to the beliefs (generated by the behavior) of
-%	the recipient $a$ (agent).  
-%	%If $p_I$ is a secure input port,
-%	%$\world\models\varphi$, $\varphi\in\rassert{s}{a}$, and $a$ has the
-%	%only input port $p_I$, $\world'\models\beliefRegion_a$ and
-%	%$\varphi\in\beliefRegion_a$ for any $\world\modalrelation\world'$.
-%\end{definition}
-
 \paragraph{Port Weaknesses} We now apply the $\abftheory$-framework to
 list all possible cybersecurity weaknesses of a port.
 \begin{theorem}{Port Weaknesses.}
 From our definition of ports, it follows that there exist only the following \emph{six}
 types of weaknesses, generating six types of insecure port in RCC5:
-%(the notation is reported for input-ports, i.e. on the left-hand side of the arrow):
 \begin{enumerate}[start=1, label={W\arabic*)}]
 	\item \emph{Replace port}, where assertions reach
 		the port but are replaced with different and un-related information
@@ -1390,9 +1403,12 @@ An input port is, in the $\abftheory$-framework, defined secure as long as the r
 	define a function weight $|X|$ such that, for any region $X$, it
 	represents the smallest possible cardinality of a (mereo)topological base for
 	$X$; where a base is a collection of regions in a (mereo)topology such that
-	every open region can be written as union of elements of that base. 
-	We distinguish between regions that contain information and regions that
-	don't by writing the latter as $\emptyset$.
+	%every open region\fixnote{Oliviero}{First time we refer to open regions; perhaps briefly introduce them?} can be written as union of elements of that base.
+	every region can be written as union of elements of that base. 
+	We distinguish between regions that are related to information and regions that
+	don't by writing the latter as $\emptyset$ (e.g. a region corresponding to
+	an assertion is written $A\neq\emptyset$, while a region corresponding to an empty assertion
+	as $A=\emptyset$).
 	\begin{enumerate}
 		\item If $\eq{\assertionRegion}{\beliefRegion}$ then either
 			$\assertionRegion=\beliefRegion=\emptyset$ (no
@@ -1462,10 +1478,10 @@ receiver, i.e. $\Rcc{\assertionRegion_s}{\assertionRegion_r}$.
 Given that a mono-directional bottom-channel is assumed to be perfectly
 forwarding any assertion (as we assumed for ports) from its input-port to its
 output-port, there is no insecure behavior but only the combination of the
-weaknesses of the input and output port; therefore there exist $(7^2)-2=47$
+weaknesses of the input and output port; therefore there exist $(7^2)-1=48$
 theoretical configurations ($7^2$ because there are $6$ insecure types of port,
 plus $1$ secure type, on both input and output side; and we exclude the
-configuration with $2$ secure types as input and output, $-2$); where only 43
+configuration with $2$ secure types as input and output, $-1$); where only 44
 are possible. For the sake of readability, we report 6 examples in the
 following but the proof by exhaustion over all the possible cases is
 straightforward.
@@ -1554,7 +1570,7 @@ which we only observe the inputs and the resulting outputs (beliefs).
 	A functional block of an agent takes beliefs as  inputs (input-beliefs) and
 	returns output-beliefs.  A functional architecture is an
 	interconnected system of functional blocks.
-\end{definition}
+\end{definition}\fixnote{Oliviero}{We referred to this notion many times in the esposition, and define it precisely only here. I'd perhaps speak more abstractly until this is introduced.}
 The quality of a functional block cannot be determined
 by the difference between its inputs and outputs (as we did for
 ports and channels), because the behavior of a functional block
@@ -1651,12 +1667,12 @@ a freshness requirement holds. By the RIDI-Hypothesis we have that
 the following weaknesses may occur:
 \begin{itemize}
 	\item Replace: the output-nonces of the block are replaced with
-		non-fresh numbers
+		non-fresh numbers.
 	\item Insert: the output-nonces are concatenated with other numbers,
 		resulting in non-fresh nonces. For example, the nonces 110 and
 		111 are modified by inserting a 1 and a 0 at the beginning and
 		end respectively, resulting in the two identical (and the
-		non-fresh) nonces 1110 and 1110
+		non-fresh) nonces 1110 and 1110.
 	\item Delete: part of output-nonce is dropped. For example, the last bit of 1101 and 1100 is dropped, resulting in the two equal and non-fresh nonces: 110 and 110.
 	\item Inject: substitution at bit level results in non-fresh nonces. For example, 110 and 111 becomes equal by flipping either the last 0 of the former or the last 1 of the latter.
 \end{itemize}
@@ -1697,13 +1713,17 @@ application of our hypothesis to components with defined behavior/requirements.
 	defines the magnitude of insecurity of a system design.
 \end{hypothesis}
 
+\fixnote{Oliviero}{Ok, maybe here my inexperience with systems design is showing, but these hypothesis are not super clear to me. I understand the next part quite well, but the actual hypthesis, not so much. What are the designs possible with respect to the framework? Do you mean all the possible configurations of <rcc(A,B),rcc(A,F),rcc(B,F)> for each agent? What does "testing against" this range of possible designs?}
+
 Based on these hypothesis, we can formulate the concepts of security and
 insecurity (in the $\abftheory$-framework) as mathematical equations.  Let us
 consider a CPS $S$, represented as a graph $G=\langle V,E\rangle$ where $V$
 represents the set of functional blocks and ports of $S$, and $E\subseteq
 V\times V$ is the set of pairs representing the channels and connections (data
 flows) between functional blocks. We define $R\subseteq V\times F$, where $F$
-is the set of all the requirements of $S$, and extend $G$ as $G'=\langle V',E'\rangle$ with $E'= E\cup R$ and $V'=V\cup F$. Let $\pi:
+is the set of all the requirements of $S$,
+\fixnote{Oliviero}{I assume that $(v,f)\in R$ iff f is a requirement over v? Is it possible that this is unknown, i.e., we do not know which devices a requirement predicates over? {\bf mr}: I guess it is possible but I believe we may not consider this case here. If there's a functional block $v$ there must be a requirement related to it. It may be wrong and we may not precisely know it, but it is there.}
+and extend $G$ as $G'=\langle V',E'\rangle$ with $E'= E\cup R$ and $V'=V\cup F$. Let $\pi:
 E'\rightarrow RCC$ (where $RCC$ is the set of relations in the RCC) be the
 total function associating an RCC relation to each edge in $G'$, and $\Pi$ be
 the set of all different permutations of RCC relations over $E'$ (i.e.
@@ -1711,10 +1731,10 @@ $\Pi=\{\langle\pi(e_0)=EQ,\ldots,\pi(e_n)=EQ\rangle,\ldots,\langle
 \pi(e_0)=DR,\ldots,\pi(e_n)=DR\rangle\}$ where $e_i\in E'$ for $0\leq i \leq n$ and $|E'|=n$). If $\sigma:\Pi\rightarrow\{0,1\}$ is
 an evaluation function such that $\sigma(p)=1$ (where $p\in\Pi$) iff the input
 configuration is satisfiable with respect to the logical theory defining the
-algebraic structure (mereotopology) and constraints of the calculus RCC
+algebraic structure (mereotopology)\fixnote{Oliviero}{Which structure are we talking about, here? Is it the system specification? See my previous comments on specifying what A,B, and F actually look like.} and constraints of the calculus RCC
 (otherwise $\sigma$ returns $0$), we can define
 \begin{displaymath}
-	I=\sum_{p\in\{\Pi\setminus\pi_{eq}\}} \sigma(p)
+	I=\sum_{p\in(\Pi\setminus\pi_{eq})} \sigma(p)
 \end{displaymath}
 where $\pi_{eq}\in\Pi$ is the output of the function $\pi$ that associates only EQ relations
 to any $e\in E'$, and $I\in\mathbb{N}$ represents all the insecurity configurations
