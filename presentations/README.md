@@ -8,4 +8,5 @@ and we show how to apply our cybersecurity theory for the
 precise security risk estimation of cyber-physical systems.
 
 - Slides \[[odp](./presentation_0.odp), [pdf](./presentation_0.odp)\]
+- [Demo](./v-research_riskassessment_alpha1_demo_full_sub.m4v) of the cybersecurity risk assessment prototype
 - [License](./LICENSE.md)
