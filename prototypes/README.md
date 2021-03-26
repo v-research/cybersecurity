@@ -1,6 +1,6 @@
 ## (Alpha 1) Cybersecurity Risk Assessment Tool
 
-Contains a tool-chain for the cybersecurity risk assessment based on the theory defined in [(paper 0)](../reports).
+Contains a tool-chain for the cybersecurity risk assessment based on the theory defined in our white paper [The Etiology of Cybersecurity](../reports).
 
 [![](../presentations/demo.webp)](https://www.youtube.com/watch?v=oakPpYRTCLg)
 
