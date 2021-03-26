@@ -1,7 +1,7 @@
 ## (Alpha 1) Cybersecurity Risk Assessment Tool
 
 Contains a tool-chain for the cybersecurity risk assessment based on the theory defined in our white paper [The Etiology of Cybersecurity](../reports).
-A demo (video) is available [here](../presentations/v-research_riskassessment_alpha1_demo_full_sub.m4v) or on [youtube](https://www.youtube.com/channel/UCmkVAd_HLXoE0OoDymGG7gw).
+A demo (video) is available [here](../presentations/v-research_riskassessment_alpha1_demo_full_sub.m4v) and on [youtube](https://www.youtube.com/channel/UCmkVAd_HLXoE0OoDymGG7gw).
 
 [![](../presentations/demo.webp)](https://www.youtube.com/watch?v=oakPpYRTCLg)
 
