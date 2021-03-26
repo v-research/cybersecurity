@@ -2,7 +2,7 @@
 
 Contains a tool-chain for the cybersecurity risk assessment based on the theory defined in [(paper 0)](../reports).
 
-[![](../presentations/demo.webp)](https://www.youtube.com/watch?v=oakPpYRTCLg&t=16s)
+[![](../presentations/demo.webp)](https://www.youtube.com/watch?v=oakPpYRTCLg)
 
 **Requires**
 - z3 python API (https://github.com/Z3Prover/z3/blob/master/README.md)
