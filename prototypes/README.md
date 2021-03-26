@@ -3,6 +3,8 @@
 Contains a tool-chain for the cybersecurity risk assessment based on the theory defined in [(paper 0)](../reports).
 A demo (video) is available [here](../presentations/v-research_riskassessment_alpha1_demo_full_sub.m4v) or on [youtube](https://www.youtube.com/channel/UCmkVAd_HLXoE0OoDymGG7gw).
 
+![](../presentations/demo.webp)
+
 **Requires**
 - z3 python API (https://github.com/Z3Prover/z3/blob/master/README.md)
 - Python3
