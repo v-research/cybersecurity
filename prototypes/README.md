@@ -1,8 +1,8 @@
 ## (Alpha 1) Cybersecurity Risk Assessment Tool
 
-Contains a tool-chain for the cybersecurity risk assessment based on the theory defined in [(paper 0)](../reports)
+Contains a tool-chain for the cybersecurity risk assessment based on the theory defined in our white paper [The Etiology of Cybersecurity](../reports).
 
-Demo (video) available [here](../presentations/v-research_riskassessment_alpha1_demo_full_sub.m4v)
+[![](../presentations/demo.webp)](https://www.youtube.com/watch?v=oakPpYRTCLg)
 
 **Requires**
 - z3 python API (https://github.com/Z3Prover/z3/blob/master/README.md)
