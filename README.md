@@ -4,7 +4,7 @@ As V-Research we believe in freedom and openness.
 We want to share our results, fostering collaborations rather than competition.
 We hope that by sharing our research prototypes and reports we'll be able to make the world a secure place :)
 
-Our research initiative is driven by the [Purple Challenge](https://www.v-research.it/globalpurplechallenge), in which we want to 
+Our research initiative is driven by the [Purple Challenge](https://www.v-research.it/about.html), in which we want to 
 showcase a 100% secure cyber-physical system. The challenge is bold and ambitious but
 we believe that a scientific approach should aim at something precise and rigorous. 
 There is no more-or-less in science, either you have a theory that precisely predicts
