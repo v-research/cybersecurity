@@ -332,10 +332,10 @@ the terms that structure our current understanding of cybersecurity.
 \emph{Attack}. As defined by the International Standard
 	ISO/IEC 27000, is an ``attempt to destroy, expose, alter,
 	disable, steal or gain unauthorized access to or make
-	unauthorized use of an asset''; where an{Asset} is
+	unauthorized use of an asset''; where an \emph{Asset} is
 	``anything that has value to the organization''.
 	We do not consider ethical hackers as attacking a system. 
-	In fact, we consider the term{hack} as
+	In fact, we consider the term \emph{hack} as
 	non-malicious (as, e.g. in \autocite{Stallman2002hacker}).
   
 \emph{Threat}. As defined in \autocite{cnssi20104009}, is ``Any
@@ -358,7 +358,7 @@ the terms that structure our current understanding of cybersecurity.
 	\label{fig:mashyp}
 \end{figure}
 
-As in Fig.~\ref{fig:causality}, order to define a theory on cybersecurity we may
+As in Fig.~\ref{fig:causality}, in order to define a theory on cybersecurity we may
 say that the presence of vulnerabilities is a necessary condition to
 cause an attack in the system.  Those vulnerabilities are, in turn, caused by
 the presence of weaknesses in the system.  Weaknesses are errors in the design
@@ -488,7 +488,7 @@ representation of the system.
 \begin{minipage}[t]{0.5\textwidth}
 \includegraphics[width=.9\columnwidth]{soundness.pdf}
 \end{minipage}
-  \caption{Cybersecurity risk for a single agent (left). Example relation between facts, and assertions and beliefs.}
+  \caption{Cybersecurity risk for a single agent (left). Example relation between facts, and assertions and beliefs (right).}
 \label{fig:quantitative}
 \label{fig:soundness}
 \end{figure}
@@ -697,7 +697,7 @@ Correctly-Behaving Entities'' defined by the CWE--$435$, CSE-$2$ with the
 and CSE-$3$ with the ``Improper Calculation'' defined by MITRE in the
 CWE--$682$. All those CWE are in the top ``view'' of the ``research concepts''
 in \autocite{MITRE2020CWEresearch}, while the other classes of weaknesses do not
-have a direct counterpart in our hypothesis; we believe they can be sees as sub-classes,
+have a direct counterpart in our hypothesis; we believe they can be seen as sub-classes,
 but a full comparison with the CWE is out of the scope of this article.
 We can now define what a secure system is (with respect to
 the $\abftheory$-framework) and, based on that definition, what the cybersecurity risk is and
@@ -716,7 +716,7 @@ The risk is the uncertainty related to the whole space of potential designs
 	resulting from a specification in the $\abftheory$-framework.
 \end{definition}
 The definition of Risk leads to the risk matrix in
-Fig.~\ref{fig:quantitative}, defined as follows.
+Tab.~\ref{fig:quantitative}, defined as follows.
 \begin{definition}{\bf Risk Matrix --}
 	The risk matrix, as summarized in Tab.~\ref{tab:5com}, is a function of the three relations
 	$s=\langle\rcc(\factRegion,\beliefRegion),\rcc(\factRegion,\assertionRegion),\rcc(\beliefRegion,\assertionRegion)\rangle$,
@@ -777,7 +777,7 @@ Since the $\abftheory$-framework is a theory of agents, we could consider ports 
 agents that allow the exchange of information between a channel and another
 agent.  However, we considered a port as a special type of agent to avoid
 an \emph{infinite regress}, as described in the following. While a channel transfers information between agents, and
-a functional architecture elaborate information, a port is simply a connector between
+a functional architecture processes information, a port is simply a connector between
 a channel and a functional architecture. One, however, may argue that a similar
 connection is needed between a channel and the port itself. While this is not 
 excluded by the $\abftheory$-framework, it would obviously lead to an infinite
@@ -1067,7 +1067,7 @@ application of our hypothesis to components with defined behavior/requirements.
 		\hline 
 		EQ & Expected/Nominal & Expected/Nominal\\[.1cm]
 	DR & Drops all inputs and inserts new data & The component never performs/carries the expected behavior/information\\[.1cm]
-	PP & Selectively drops inputs & part of the expected outputs are not generated in response to the correct inputs \\[.1cm]
+	PP & Selectively drops inputs & Part of the expected outputs are not generated in response to the correct inputs \\[.1cm]
 	PPi& Forwards all the inputs but crafts and inserts new malicious data & The components correctly performs/carries the expected behavior/information when the correct inputs are provided but is subject to input injections \\[.1cm]
 	PO & Selectively drops inputs and inserts new data & Byzantine behavior. Occasionally outputs the expected output given the correct inputs. Not all inputs are handled properly, nor all expected outputs always generated on correct inputs
 \end{tabular}
