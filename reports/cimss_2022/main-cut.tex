@@ -170,6 +170,8 @@
 
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
+\newcommand{\ON}[1]{\footnote{\textcolor{blue}{[[Oliviero: #1]]}}}
+
 \begin{document}
 \title{The Etiology of Cybersecurity}
 
@@ -186,7 +188,7 @@
 	possible insecure and secure configurations of any abstract system to be used for the risk assessment of systems. We
 	claim that cybersecurity weaknesses (i.e. errors) are at the beginning
 	of the causality chain that leads to cybersecurity attacks.  We
-	formulate an hypothesis that we
+	formulate a hypothesis that we
 	use to predict the weaknesses in the architectural design of an
 	system. Our
 	hypothesis allows for the definition of a mathematical formula which
@@ -205,9 +207,9 @@ explanation follows the scientific method. The \emph{scientific method} is an
 theories.  Karl Popper famously argued (e.g. in \autocite{Popper1959logic})
 that a scientific theory can never be verified but only falsified, that a
 theory should not be conceived by using the principle of
-induction\footnote{Einstein to Popper: ``[...] and I think (like
+induction,\footnote{Einstein to Popper: ``[...] and I think (like
 you, by the way) that theory cannot be fabricated out of the results of
-observation, but that it can only be invented.'' \autocite{Popper1959logic}},
+observation, but that it can only be invented.'' \autocite{Popper1959logic}}
 and that empirical experiments should be considered as the only evidence to
 support the non-falseness of a scientific theory. 
 In \autocite{Herley2016unfalsifiability}, Cormac Herley explores what he calls
@@ -226,15 +228,15 @@ any measure is necessary for security are empirically unfalsifiable''.
 The goal of this paper is to lay the foundations of a scientific cybersecurity
 theory.  We consider the problem raised by Herley not confined to ``computer
 security'' but rather we reason on any abstract system (so that our scientific
-hypothesis\footnote{In the reminder of this paper, we will use the word
+hypothesis\footnote{In the remainder of this paper, we will use the word
 hypothesis to refer to ``scientific hypothesis'' as a proposed scientific
 theory that has not gone through an extensive series of tests. We
 use ``logical theory'' to refer to a set of formal logical axioms.} may
-be tested in any sound implementation such as networks, mechanical, cyber, or
+be tested in any sound implementation such as a network, a mechanical, cyber, or
 cyber-physical system, or even a single computer or a single device such as a
 hard-drive).  
-Instead of starting from reasoning on what makes a system secure or insecure,
-we reason on what causes insecurities. 
+Instead of starting from reasoning about what makes a system secure or insecure,
+we reason about what causes insecurities. 
 We focus on insecurities only caused by
 the exploitation of cybersecurity attacks, and we assume that achieving
 cybersecurity means preventing all those attacks from being exploitable or
@@ -242,12 +244,12 @@ exploited.  Our hypothesis is that \emph{cybersecurity attacks are only caused b
 presence of errors in the design or implementation of a system} (i.e.
 cybersecurity weaknesses).
 With our approach, a list of weaknesses emerges from the mathematical
-formulation of a system in a framework called $\abftheory$-framework, and
-predicts 4 main classes of weaknesses. Those classes of weaknesses are used to
+formulation of a system in a framework called $\abftheory$-framework\ON{Qui, direi o "framework called ABF" o "framework called the ABF-framework"}, and
+predicts 4 main classes of weaknesses. Those classes of weaknesses\ON{rimuoverei ripetizione di "of weaknesses"} are used to
 calculate all the insecurity configurations of all the components of a system,
 obtaining a precise estimation of all potential cybersecurity-related risks in
 any given system. Our hypothesis can be falsified by means of experiments,
-testing if all the predicted weaknesses are present in the system under test,
+testing if all the predicted weaknesses are present in the system under consideration,
 or testing if other (not predicted by our hypothesis) weaknesses are present.
 In fact, if any cybersecurity weaknesses were to be found in a system and not
 predicted by our hypothesis, the hypothesis could be declared incomplete.  If a
@@ -370,8 +372,8 @@ To address the problem raised by Herley, we define how to
 distinguish between a secure and an insecure system in the following steps 
 of the engineering process:
 \begin{enumerate}
-	\item \emph{System Specification}: the \emph{functional and physical requirements} are defined.
-	\item \emph{Architecture Design}: the specification is structured into \emph{functional and physical architectures}.
+	\item \emph{System Specification}: the \emph{functional and physical requirements} \ON{proporrei di togliere l'and dal corsivo} are defined.
+	\item \emph{Architecture Design}: the specification is structured into \emph{functional and physical architectures}\ON{same as the above}.
 	\item \emph{Cybersecurity Risk Assessment}: potential \emph{weaknesses} (errors) and
 		\emph{cybersecurity requirements} are identified.	
 \end{enumerate}
@@ -380,7 +382,7 @@ potential design errors of a system. We now define a framework for the
 definition of a system that we use to identify weaknesses as potential design
 errors.
 
-\subsection{Mereo-topological Reasoning (2.5)}
+\subsection{Mereo-topological Reasoning}
 \begin{table*}[t]
 \centering
 \begin{tabular}{cclll} 
@@ -405,11 +407,11 @@ errors.
 \caption{RCC3 and RCC5 relations between regions $X$, $Y$ and $Z$ ~\label{tab:rcc358}~\label{tab:rcc}}
 \end{table*}
 
-As in \autocite{Santaca2016abf}, we define agents as a meronomy (an
+As in \autocite{Santaca2016abf}, we define agents\ON{so far, we spoke about systems, from now we focus on agents. Shall we briefly motivate why we think of systems in term of agents? Or, at least, say that we use the two terms intercambiabilmente? Later on in the paper, we do say "agent (i.e. system)", but that comes much after this, and so the text inbetween might be puzzling to some.}\ON{Further note: In section 4.1 we explicitly state this. Perhaps shall we here just say "we consider a CPS as a hierarchy of agents, as we will detail later in Section 4.1"? (or something similar)} as a meronomy (an
 hierarchy of Part-Whole relations) over the constituents that we previously defined
 (assertions, beliefs, and facts), based on a standard definition of mereology,
 i.e. based on the definition of parthood relation between \emph{parts}.  Due to
-the necessity of considering different relations between parts (as we'll show afterwards)
+the necessity of considering different relations between parts (as we will show afterwards)
 we extend the mereology to a
 mereo-topology \autocite{Smith1996mereotopology,Varzi1994mereotopology,Rachavelpula2017mereotopology},
 considering the relations in Tab.~\ref{tab:rcc358}.  For the sake of
@@ -440,25 +442,27 @@ $X$ and $Y$. We note that all the RCC relations are symmetric with the exception
 of those that have an explicit (related) inverse.
 
 \begin{definition}{\bf System State --}\label{def:opsystem}
-	A CPS system (or a sub-system) state is defined as the tuple
-	$s=\langle\rcc(\factRegion,\beliefRegion),\rcc(\factRegion,\assertionRegion),\rcc(\beliefRegion,\assertionRegion)\rangle$,
-	where $\assertionRegion,\beliefRegion,\factRegion$, are regions of
-	assertions, beliefs (i.e. the beliefs generated by the behavior), and
-	facts expressed as requirements respectively.
+	A CPS system (or a sub-system) state is defined as the\ON{the->a} tuple
+	$s=\langle\rcc(\factRegion,\beliefRegion),\,\rcc(\factRegion,\assertionRegion),\,\rcc(\beliefRegion,\assertionRegion)\rangle$,
+	where $\assertionRegion$,$\beliefRegion$, and $\factRegion$ are regions of
+	assertions, beliefs (i.e. the beliefs generated by the behavior)\ON{is "generated" the right word here? Anyhow, the bracketed part is not super clear to me.}, and
+	facts respectively, expressed as requirements.
 \end{definition}
 
-As in \autocite{Santaca2016abf}, it follows that, defining
-a system with a fixed number of regions, there exists
+\ON{Shouldn't we introduce these terms here? A, B, F? I mean even with short sentences: assertions are the exchanged data, facts requirements, beliefs are the behaviour...}
+
+As in \autocite{Santaca2016abf}, it follows that, by defining
+a system with \ON{with->as?} a fixed number of regions, there exists
 an upper-bound to the number of possible configuration of a system, defined by
 the possible relations between the different regions.
-For completeness, we report in Appendix~\ref{app:agcalc}
+For completeness, we report in Appendix~\ref{app:agcalc}\ON{here}
 some details on the calculation done by the authors in \autocite{Santaca2016abf}.
 The general formula to calculate the number of different types of agents is
 $r^{\binom{n}{k}}$, where $r$ is the number of relations with arity $k$,
 between $n$ different regions. In our case, $\binom{n}{k}=3$ since we consider $3$ regions 
-($\assertionRegion,\beliefRegion,\factRegion$), and all the relations
+($\assertionRegion$, $\beliefRegion$, and $\factRegion$), and all the relations
 considered in the RCC are binary.  Hence, we have up to 125
-different type of agents but only 54 of the 125 (as showed in
+different types of agents but only 54 of the 125 (as showed in
 \autocite{improvingRCC}) combinations are topologically correct. 
 Generalizing to all the RCCs:
 
@@ -476,7 +480,7 @@ Generalizing to all the RCCs:
 In the quantitative evaluation of a single agent, as in Fig.~\ref{fig:quantitative},
 we argue that only 1 configuration represents the nominal (expected) behavior 
 of the agent while the other configurations are either impossible to 
-implement or diverge from the intended nominal behavior. We note 
+implement or diverge from the intended nominal behavior.\ON{Here, I would explicitly say that what we mean is that, only when the assertiosn, beliefs and facts are equal, then the system is behaving as excepted. That is, I would explicitly say is that the only nominal state is EQ,EQ,EQ. I mean, it is in the table, but a bit implicit to me.} We note 
 that the numbers reported here do not consider the details of the
 engineering process and should be considered a limit of an abstract 
 representation of the system.
@@ -493,7 +497,7 @@ representation of the system.
 \label{fig:soundness}
 \end{figure}
 
-\subsection{Qualitative Evaluation of Agent Space in $\abf$ (3)}\label{sec:agentspace}
+\subsection{Qualitative Evaluation of Agent Space in $\abf$}\label{sec:agentspace}
 \begin{table}[t]
 \centering
 \begin{adjustbox}{width=.6\columnwidth}
@@ -582,13 +586,13 @@ representation of the system.
 \end{tabular}
 \end{adjustbox}
 \caption{RCC5 composition table over 3 regions generates the ideal risk matrix
-(green the low risk, red the high risk state, and a gradient
-of medium risk states). 
+(green the low-risk state, red the high-risk state, and a gradient
+of intermediate risk states). 
 \all{$\assertionRegion$}{$\factRegion$} = \{\dr{$\assertionRegion$}{$\factRegion$}, \po{$\assertionRegion$}{$\factRegion$}, \pp{$\assertionRegion$}{$\factRegion$}, \ppi{$\assertionRegion$}{$\factRegion$}, \eq{$\assertionRegion$}{$\factRegion$}\}
 \label{tab:5com}}
 \end{table}
 While a quantitative analysis reveals how many possible configurations of an
-agent (i.e. a system) exist w.r.t. the $\abftheory$-framework (i.e. $54/125$ in RCC5), a
+agent (i.e. a system) exist w.r.t. the $\abftheory$-framework (i.e.\ON{e.g.?} $54/125$ in RCC5), a
 qualitative analysis of the different configurations describe the
 configurations allowed by the $\abftheory$-framework, and how those configurations can
 be categorized.  In Tab.~\ref{tab:5com}, we provide the generic composition
@@ -603,23 +607,23 @@ aligned with what the facts mandate (i.e. what the specification mandates).
 The relation between facts, and assertions and beliefs can be used as a metric
 to determine the soundness of the design with respect to the specification.
 We first analyze the relations between each pair of
-regions (i.e.  $\abf$), and then we categorize the different
-agents as tuple of the three regions.  For the sake of simplicity, soundness is
-opposed to non-soundness in the following, however, with the RCC one should
+regions (i.e.  $\abf$), and then categorize different
+agents as tuples of the three regions.\ON{but we don't actually do this, right? Maybe I missed it. If not, we should remove this sentence. If yes, then we should clarify this. (At least to me :-))}  For the sake of simplicity, soundness is
+opposed to non-soundness in the following, however, with the RCC, one should\ON{should->could?}
 consider different ``degrees'' of non-soundness.  For example, in RCC5, if we
 consider EQ between two regions as representing soundness, DR over the same
-regions represents non-soundness; while PP, PO, PPi represents the different
+regions represents ``total'' non-soundness; while PP, PO, and PPi each represent different
 degrees of non-soundness.  A similar argument can be done for completeness.  
 
 \paragraph{\Rcc{$\assertionRegion$}{$\beliefRegion$} -- Collaboration.} 
 By definition, assertions are defined as transfer of information
-between two agents. An agent has two main categories of assertions,
+between two agents.\ON{first time we say this!} An agent has two main categories of assertions,
 input and output assertions.  Given an agent $a$ and a collection of asserted
 predicates $\Phi$,
 the input assertions are those received by $a$ from an agent
 $s$ acting as a sender, $\rassert{s}{a}{\Phi}$; similarly, output assertions
 are sent from $a$ to a receiver $r$, $\rassert{a}{r}{\Phi}$. With a slight abuse
-of notation, in the text we simply write $\assertionRegion_{s\rightarrow a}$ when we abstract
+of notation,\ON{alternative: in the text we drop the $\Phi$ when the content of the assertions is not relevant.} in the text we simply write $\assertionRegion_{s\rightarrow a}$ when we abstract
 away from the content of the assertion (i.e. $\Phi$).
 We shall consider
 two pairs of regions:
@@ -630,7 +634,7 @@ two pairs of regions:
 		architecture w.r.t. input elicitation.
 		If all the inputs (assertions) are correctly
 		handled in the functional specification (beliefs) the
-		specification is complete. 
+		specification is complete.\ON{Do we perhaps mean "sound"? We used sound above}
 
 	\item \Rcc{$\assertionRegion_{a\rightarrow r}$}{$\beliefRegion$},
 		where the relation between behavior and outputs describes the
@@ -796,7 +800,7 @@ or from/to a functional architecture.
 The \emph{quality of a port} is determined by the $\rcc$ relation between the
 assertions received or sent and the belief, i.e.
 $\Rcc{\rassert{s}{a}}{\beliefRegion_a}$ for input-port or
-$\Rcc{\rassert{r}{*}}{\beliefRegion_a}$, for output-port (where $*$ is a wildcard for an agent).  A port is, in
+$\Rcc{\rassert{r}{*}}{\beliefRegion_a}$, for output-port (where $*$ is a wildcard for an agent)\ON{should this $r$ be an $a$?}.  A port is, in
 fact, syntactic sugar to express the relation between assertions and beliefs.
 We note that the definition of an input/output port can
 be considered ``secure'', meaning that we implicitly formulated the requirement
@@ -806,8 +810,8 @@ between the input/output assertions and the input/output beliefs. In contrast,
 assuming any \emph{other} RCC relation between inputs and outputs of a port can be considered as generating a weaknesses.
 
 \paragraph{Port Weaknesses.} We now apply the $\abftheory$-framework to
-list all possible cybersecurity weaknesses of a port. From our definition of ports, it follows that
-\begin{theorem}{Port Weaknesses.}
+list all possible cybersecurity weaknesses of a port. From our definition of ports, the following holds.
+\begin{theorem}[Port Weaknesses]
 There exist only the following \emph{six}
 types of weaknesses, generating six types of insecure port in RCC5:
 \begin{enumerate}[start=1, label={W\arabic*)}]
@@ -848,7 +852,7 @@ An input port is, in the $\abftheory$-framework, defined secure as long as the r
 	We distinguish between regions that are related to information and regions that
 	don't by writing the latter as $\emptyset$ (e.g. a region corresponding to
 	an assertion is written $A\neq\emptyset$, while a region corresponding to an empty assertion
-	as $A=\emptyset$).
+	as $A=\emptyset$).\ON{Do we use the weight/$|A|$ thing in the proof? I don't see it... If not, should we get rid of it?}
 	\begin{enumerate}
 		\item If $\eq{\assertionRegion}{\beliefRegion}$ then either
 			$\assertionRegion=\beliefRegion=\emptyset$ (no
@@ -892,14 +896,14 @@ which is not an agent. For now, we do not constrain a channel-agent in any way
 so there is no difference between a channel agent and agent. Therefore,
 we consider channels to be bottom-channels,
 defined as agents with the pre-defined behavior (i.e. defined in an axiomatic
-way) of forwarding any input-assertion as output-assertion, without modifying it\footnote{Nothing
+way) of forwarding any input-assertion as output-assertion, without modifying it.\footnote{Nothing
 prevents us from introducing additional constraints to the channel as storing
 assertions that are transferred over the channel, or filter out some
-input-assertions.}. 
+input-assertions.}
 
 \begin{definition}{\bf Mono-directional Channel (bottom-channel) --}\label{def:monochannel}
 	A mono-directional channel between two agents ($s \rightarrow r$) is
-	defined as an agent whose behavior is (dogmatically) defined as: to
+	defined as\ON{remove defined as} an agent whose behavior is (dogmatically) defined as: to
 	forward any assertion received from $s$ over an input-port, to  the
 	output-port where $r$ is listening to.
 \end{definition}
@@ -912,9 +916,9 @@ Given that a mono-directional bottom-channel is assumed to be perfectly
 forwarding any assertion (as we assumed for ports) from its input-port to its
 output-port, there is no insecure behavior but only the combination of the
 weaknesses of the input and output port; therefore there exist $(7^2)-1=48$
-theoretical configurations ($7^2$ because there are $6$ insecure types of port,
+theoretical configurations ($7^2$ because there are $6$ insecure types of port,\ON{refer to Theorem 1?}
 plus $1$ secure type, on both input and output side; and we exclude the
-configuration with $2$ secure types as input and output, $-1$); where only 44
+configuration with $2$ secure types as input and output, hence the $-1$); where only 44
 are possible. For the sake of readability, we report 6 examples in the
 following but the proof by exhaustion over all the possible cases is
 straightforward.
@@ -992,6 +996,8 @@ In the following, for the sake of simplicity,
 we use the generic region $\beliefRegion$ to refer to the behavior (i.e.
 the beliefs generated by the behavior).
 
+\ON{why from 50?}
+
 \begin{enumerate}[start=50, label={W\arabic*)}]
 	\item $\po{\beliefRegion}{\factRegion}$ the component has a Byzantine
 		behavior. Not all the inputs are handled properly,
@@ -999,14 +1005,14 @@ the beliefs generated by the behavior).
 		inputs are given.
 	\item $\pp{\beliefRegion}{\factRegion}$ some expected outputs are not
 	        generated with the correct
-	        inputs
+	        inputs.
 	\item $\ppi{\beliefRegion}{\factRegion}$ the components
 	        correctly perform the expected behavior when the correct
 	        inputs are provided but is subject to input
-	        injections
+	        injections.
 	\item $\dr{\beliefRegion}{\factRegion}$ the component
 		never performs the expected behavior (e.g. physical
-		damage)
+		damage).
 \end{enumerate}
 
 \paragraph{Requirements as Facts.}
@@ -1033,10 +1039,10 @@ $sum(b_1,b_2)=b_1+b_2$, as follows.
 		requirements.
 	\item
 		$\dr{\beliefRegion}{\factRegion}=\dr{\beliefRegion_3}{\beliefRegion_{1+2}}$,
-		the functional block do not implement the requirements.
+		the functional block does not implement the requirements.
 	\item
-		$\pp{\beliefRegion}{\factRegion}=\pp{\beliefRegion_3}{\beliefRegion_{1+2}}$, some inputs produce incorrect output.
-	\item $\ppi{\beliefRegion}{\factRegion}=\ppi{\beliefRegion_3}{\beliefRegion_{1+2}}$, some outputs are not the result of the summation of the inputs but with the correct inputs the function outputs correctly.
+		$\pp{\beliefRegion}{\factRegion}=\pp{\beliefRegion_3}{\beliefRegion_{1+2}}$, the block produces incorrect outputs for some inputs.
+	\item $\ppi{\beliefRegion}{\factRegion}=\ppi{\beliefRegion_3}{\beliefRegion_{1+2}}$, some outputs are not the result of the summation of the inputs but with the correct inputs the function outputs correctly.\ON{I didn't understand this}
 	\item
 		$\po{\beliefRegion}{\factRegion}=\po{\beliefRegion_3}{\beliefRegion_{1+2}}$,
 		Byzantine behavior where occasionally
@@ -1075,18 +1081,21 @@ application of our hypothesis to components with defined behavior/requirements.
 \end{table*}
 
 \subsection{Security and Insecurity of a System}\label{sec:formula}
+
+\ON{Maybe start with "We are ready to state our main hypotheses."}
+
 \begin{hypothesis}{\bf System Security Design --}\label{hyp:security}
-	A system security design (in the $\abftheory$-framework) is given by a
+	A system security design\ON{A secure system design?} (in the $\abftheory$-framework) is given by a
 	precise system specification over the physical and functional
-	architectures that uniquely defines the design built on top of those
+	architectures that uniquely defines the design built\ON{maybe "to be built"?} on top of those
 	requirements.
 \end{hypothesis}
 
 \begin{hypothesis}{\bf System Insecurity Design --}\label{hyp:insecurity}
 	If, given a system specification as a collection of requirements, there
-	exist a non-unique design with respect to those requirements, the
-	number of equivalent designs (that fulfills the requirements)
-	quantitatively defines the magnitude of insecurity of a system design.
+	exist a non-unique design with respect to those requirements\ON{I'd change in: there exist more than one design satisfying these requirements}, the
+	number of equivalent\ON{equivalent in what sense? In the sense that they equivalently satisfy the requirements? If so, I would change this word with "possible".} designs (that fulfill the requirements)
+	quantitatively defines \ON{quantitatively defines->quantifies} the magnitude of insecurity of a system design\ON{I am not sure about this definition. But this maybe because of my lack of experience with security. My problem stems from the uses of the word "design". In someway, we seem to use "design" as "collection of requirements", but also as something to be built in accordance to such requirements. So what is insecure: the collection of requirements, of the design built on top of them? Right now, my intuition says that it is the collection of requirements that is insecure, but the use of the word "design" suggests otherwise. Maybe we need to discuss this on the science club...}.
 \end{hypothesis}
 
 Based on these hypothesis, we can formulate the concepts of security and
@@ -1096,7 +1105,7 @@ represents the set of functional blocks and ports of $S$, and $E\subseteq
 V\times V$ is the set of pairs representing the channels and connections (data
 flows) between functional blocks. We define $R\subseteq V\times F$, where $F$
 is the set of all the requirements of $S$,
-and extend $G$ as $G'=\langle V',E'\rangle$ with $E'= E\cup R$ and $V'=V\cup F$. Let $\pi:
+and extend $G$ as $G'=\langle V',E'\rangle$ with $V'=V\cup F$ and $E'= E\cup R$. Let $\pi:
 E'\rightarrow RCC$ (where $RCC$ is the set of relations in the RCC) be the
 total function associating an RCC relation to each edge in $G'$, and $\Pi$ be
 the set of all different permutations of RCC relations over $E'$ (i.e.
@@ -1105,11 +1114,11 @@ $\Pi=\{\langle\pi(e_0)=EQ,\ldots,\pi(e_n)=EQ\rangle,\ldots,\langle
 an evaluation function such that $\sigma(p)=1$ (where $p\in\Pi$) iff the input
 configuration is satisfiable with respect to the logical theory defining the
 algebraic structure (mereotopology) and constraints of the calculus RCC
-(otherwise $\sigma$ returns $0$), we can define
+(otherwise $\sigma$ returns $0$),\ON{I'd add a footnote here, saying: "In other words, $\sigma$ returns $1$ if and only if a configuration is possible with the respect to the axioms of the RCC." This might be redunant, but I think it miht help a bit.} we define:
 \begin{displaymath}
 	I=\sum_{p\in(\Pi\setminus\pi_{eq})} \sigma(p)
 \end{displaymath}
-where $\pi_{eq}\in\Pi$ is the output of the function $\pi$ that associates only EQ relations
+Here, $\pi_{eq}\in\Pi$ is the output of the function $\pi$ that associates only EQ relations
 to any $e\in E'$, and $I\in\mathbb{N}$ represents all the insecurity configurations
 of the CPS $S$ where, at least, one of the RCC relations isn't EQ.
 In other words, we consider $\pi_{eq}$ as the only secure configuration.
@@ -1130,15 +1139,15 @@ As in Fig.~\ref{fig:secra}, the cybersecurity risk assessment process
 starts with the definition of the use cases and architectural requirements.  In our process, the specification is manually
 translated into a UML design where:
 \begin{itemize}
-	\item a \emph{deployment diagram} describes the \emph{physical
+	\item A \emph{deployment diagram} describes the \emph{physical
 		architecture}. Each agent is defined as an UML node with (physical)
-		ports, and agent' ports are connected via UML information flow
+		ports, and agent's ports are connected via UML information flow
 		connectors, representing the physical channel.
-	\item a \emph{functional architecture} is linked to each agent in the
+	\item A \emph{functional architecture} is linked to each agent in the
 		deployment diagram and is defined by an \emph{object diagram}.
 		The object diagram is composed by instances of functional
 		blocks, connected via information flow connectors.
-	\item the connection between the two diagrams is implemented by
+	\item The connection between the two diagrams is implemented by
 		``sockets'', functional blocks connected to a 
 		physical port.
 \end{itemize}
@@ -1189,8 +1198,8 @@ communicates them encrypted.
 The tool (App.~\ref{app:results}) reports 16777216
 scenarios in which at least one component diverge from the specification.
 
-\section{Conclusion and Future Works}
-We proposed an hypothesis for a foundational theory on security, arguing that
+\section{Conclusion and Future Work}
+We proposed a hypothesis for a foundational theory on security, arguing that
 cybersecurity-related issues are not linked to the maliciousness of an agent
 but to the vagueness in the design processes.  We provided a prototype
 tool for the quantitative estimation of the cybersecurity risk based on a UML
