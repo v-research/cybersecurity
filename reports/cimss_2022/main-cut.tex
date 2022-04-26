@@ -178,7 +178,7 @@
 \author{Michele Ambrosi, Francesco Beltramini, Federico De Meo,
  Oliviero Nardi, Mattia Pacchin, and Marco Rocchetto}
 
-\authorrunning{}
+\authorrunning{Ambrosi et al.}
 
 \institute{V-Research, Verona, Italy\\email: knowledgezero@v-research.it}
 \maketitle
@@ -201,7 +201,6 @@
 
 
 \section{Introduction}\label{sec:intro}
-\paragraph{Context and motivation.}
 A \emph{scientific theory} is an explanation of a phenomenon such that the
 explanation follows the scientific method. The \emph{scientific method} is an
 \emph{empirical} method that aims at mitigating potential fallacies in
@@ -224,9 +223,7 @@ predict the cybersecurity of a system, nor a theory that can predict all
 possible insecurities of a system (which, by negation, may be used as a theory
 of cybersecurity).  Herley then uses this argument to show that ``claims that
 any measure is necessary for security are empirically unfalsifiable''. 
-
-\paragraph{Contributions.} 
-The goal of this paper is to lay the foundations of a scientific cybersecurity
+The goal of this paper is to address this issue and to lay the foundations of a scientific cybersecurity
 theory.  We consider the problem raised by Herley not confined to ``computer
 security'' but rather we reason on any abstract system (so that our scientific
 hypothesis\footnote{In the remainder of this paper, we will use the word
@@ -1118,7 +1115,7 @@ In other words, we consider $\pi_{eq}$ as the only secure configuration.
 	\label{fig:secra}
 \end{figure}
 To test our hypothesis we implemented a tool-chain (open-source with
-AGPLv3 license, available at \autocite{v-research2020cybersecurity-anonymous}) for the
+AGPLv3 license, available at \autocite{v-research2020cybersecurity}) for the
 identification of weaknesses and the calculation of potential insecure
 configurations. The engineering of the $\abftheory$-framework for CPS is summarized in the UML
 Class diagram in Fig.~\ref{fig:secraclassdiagram} (in appendix). 
@@ -1208,6 +1205,16 @@ functional blocks. Therefore, agents (which represents sub-systems or
 components) are composed by ports and functional blocks, as an aggregation of 
 architectures.
 
+\section{Overview of the Results of the Tool}\label{app:results}
+In Fig.~\ref{fig:results} we show a screenshot of the 
+results reported by our tool.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{results.pdf}
+	\caption{Partial View of the results in the spreadsheet file}
+	\label{fig:results}
+\end{figure}
+
 \begin{sidewaysfigure*}
 	\centering
 	\includegraphics[width=\textwidth]{secra_classDiagram.png}
@@ -1215,14 +1222,6 @@ architectures.
 	\label{fig:secraclassdiagram}
 \end{sidewaysfigure*}
 
-\section{Overview of the Results of the Tool}\label{app:results}
-In Fig.~\ref{fig:results} we show a screenshot of the 
-results reported by our tool.
-\begin{figure}
-	\centering
-	\includegraphics[width=\textwidth]{results.pdf}
-	\caption{Partial View of the results in the spreadsheet file}
-	\label{fig:results}
-\end{figure}
+
 
 \end{document}
