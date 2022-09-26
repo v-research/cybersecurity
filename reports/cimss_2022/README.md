@@ -1,4 +1,4 @@
-## (paper 0) The Etiology of Cybersecurity 
+## The Etiology of Cybersecurity 
 
 **Authors**: The Science Club [@V-Research](http://v-research.it) (knowledgezero@v-research.it)
 
@@ -23,6 +23,7 @@ the weaknesses in a UML model of a (cyber-physical) system.
 @online{Ambrosi2022Etiology,
   author    = {Ambrosi, Michele and Beltramini, Francesco and De Meo, Federico and Nardi, Oliviero and Pacchin, Mattia and Rocchetto, Marco},
   title     = {The {E}tiology of {C}ybersecurity},
+  Booktitle = {Porceeding of the International Workshop on Critical Infrastructure and Manufacturing System Security},
   year      = {2022}
 }
 ```
