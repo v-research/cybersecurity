@@ -17,7 +17,7 @@ the weaknesses in a UML model of a (cyber-physical) system.
 
 - [PDF](./main-cut.pdf)
 - [Source](./main-cut.tex)
-- [Slides](../../presentations/cimss_2022.pdf)
+- [Slides](../../presentations/cimss2022_etiology.pdf)
 
 ```
 @online{Ambrosi2022Etiology,
